@@ -1,0 +1,37 @@
+int8 a = 17
+decimal foo = 0.16
+
+uint8 Pdata = 2
+uint8 Pclock = 3
+uint8 PslaveSelectDevice1 = 4
+
+nothing main()
+    setup()
+    while(true)
+        loop()
+
+nothing setup()
+  // init pins
+  // init serial
+  /* This  
+  * is a 
+  * block comment
+  */
+
+nothing loop()
+  Serial.printLine( Analog(0)/4 )
+  sendData(PslaveSelectDevice1, Analog(0)/4)
+  wait_ms(100)
+
+nothing sendData(uint8 PslaveSelect, uint8 data)
+  OutPin(PslaveSelect).set(HIGH)
+  
+  for (uint8 i from 0 to 8)
+    OutPin(Pdata).set(data{7-i})
+    OutPin(Pclock).set(HIGH)
+    wait_ms(1)
+    OutPin(Pclock).set(LOW)
+  
+  OutPin(PslaveSelect).set(LOW)
+
+  
