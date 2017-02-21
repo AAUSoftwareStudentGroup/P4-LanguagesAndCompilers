@@ -1,3 +1,7 @@
+for (test hest)
+
+// !Jklsæaj
+
 int8 a = 17
 decimal foo = 0.16
 
@@ -33,5 +37,3 @@ nothing sendData(uint8 PslaveSelect, uint8 data)
     OutPin(Pclock).set(LOW)
   
   OutPin(PslaveSelect).set(LOW)
-
-  

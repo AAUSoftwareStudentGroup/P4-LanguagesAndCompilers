@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace P4.Lexer
 {
@@ -18,126 +19,110 @@ namespace P4.Lexer
     {
         public String Name;
         public Regex Pattern;
+        public String PatternString;
+        public bool SingleLine = false;
+        public bool Ignore = false;
     }
 
     public class Lexer
     {
         public static void Main(string[] args)
         {
+            List<TokenRule> rules;
+            string TokenCfg = System.IO.File.ReadAllText("Token.cfg.json");
+            rules = JsonConvert.DeserializeObject<List<TokenRule>>(TokenCfg);
+            foreach (TokenRule r in rules) 
+            {
+                var options = RegexOptions.None;
+                if (r.SingleLine) options |= RegexOptions.Singleline;
+                
+                r.Pattern = new Regex(r.PatternString, options);
+                // Console.WriteLine(r.PatternString);
+            }
+
             foreach (string arg in args)
             {
                 if(System.IO.File.Exists(arg)) {
                     // read File
                     String source = arg;
-                    Analyse(System.IO.File.ReadAllText(arg));
+                    List<Token> tokens = Analyse(System.IO.File.ReadAllText(arg), rules);
+                    foreach( Token t in tokens)
+                    {
+                        Console.WriteLine($"({t.Type}: {t.Value})");
+                    }
                 }
             }
         }
 
-        public static void Analyse(String source)
+        public static List<Token> Analyse(String source, List<TokenRule> rules)
         {
-            List<TokenRule> rules = new List<TokenRule> {
-                new TokenRule {
-                    Name = "LineComment",
-                    Pattern = new Regex(@"//.*")
-                },
-                new TokenRule {
-                    Name = "BlockComment",
-                    Pattern = new Regex(@"/\*.*\*/", RegexOptions.Singleline)
-                },
-                new TokenRule {
-                    Name = "Whitespace",
-                    Pattern = new Regex(@"[\t ]+")
-                },
-                new TokenRule {
-                    Name = "Indent",
-                    Pattern = new Regex(@"\n\r?[\t ]*")
-                },
-                new TokenRule {
-                    Name = "typeInteger",
-                    Pattern = new Regex(@"u?int(8|16|32)")
-                },
-                new TokenRule {
-                    Name = "typeNothing",
-                    Pattern = new Regex(@"nothing")
-                },
-                new TokenRule {
-                    Name = "TypeDecimal",
-                    Pattern = new Regex(@"decimal")
-                },
-                new TokenRule {
-                    Name = "Keyword",
-                    Pattern = new Regex(@"(if)|(while)|(for)")
-                },
-                new TokenRule {
-                    Name = "Decimal",
-                    Pattern = new Regex(@"[+-]?(0|([1-9][0-9]*))\.[0-9]+")
-                },
-                new TokenRule {
-                    Name = "Integer",
-                    Pattern = new Regex(@"[+-]?(0|([1-9][0-9]*))")
-                },
-                new TokenRule {
-                    Name = "Operator",
-                    Pattern = new Regex(@"(==)|=|/|\*|\+|-")
-                },
-                new TokenRule {
-                    Name = "ComponentSelector",
-                    Pattern = new Regex(@"\.")
-                },
-                new TokenRule {
-                    Name = "CommaSeperator",
-                    Pattern = new Regex(@",")
-                },
-                new TokenRule {
-                    Name = "OpenParenthesis",
-                    Pattern = new Regex(@"\(")
-                },
-                new TokenRule {
-                    Name = "CloseParenthesis",
-                    Pattern = new Regex(@"\)")
-                },
-                new TokenRule {
-                    Name = "OpenCurlybrace",
-                    Pattern = new Regex(@"\{")
-                },
-                new TokenRule {
-                    Name = "CloseCurlybrace",
-                    Pattern = new Regex(@"\}")
-                },
-                new TokenRule {
-                    Name = "Identifier",
-                    Pattern = new Regex(@"_*[a-zA-Z][a-zA-Z_0-9]*")
-                },
-            };
             List<Token> tokens = new List<Token>();
-
+            Token token = null;
+            Match match = null;
             int currentIndex = 0;
+
+            Regex BeforeIndent = new Regex(@"[\\t ]*[\n\r]+", RegexOptions.Singleline);
+            Regex Indentation = new Regex(@" *");
+            Stack<int> indentationLevel = new Stack<int>();
+            indentationLevel.Push(0);
+
             while(currentIndex < source.Length) 
             {
-                Token token = null;
+                // Generate indentation to
+                match = BeforeIndent.Match(source, currentIndex);
+                if(match.Success && match.Index == currentIndex)
+                {
+                    currentIndex += match.Value.Length;
+                    match = Indentation.Match(source, currentIndex);
+                    if(match.Success && match.Index == currentIndex) {
+                        int indentSize = match.Value.Length;
+                        currentIndex += indentSize;
+                        if(indentSize > indentationLevel.Peek())
+                        {
+                            token = new Token {
+                                Type = "Indent",
+                                Value = match.Value
+                            };
+                            tokens.Add(token);
+                            indentationLevel.Push(indentSize);
+                        }
+                        while(indentSize < indentationLevel.Peek())
+                        {
+                            indentationLevel.Pop();
+                            token = new Token {
+                                Type = "Dedent",
+                                Value = match.Value
+                            };
+                            tokens.Add(token);
+                        }
+                    }
+                    continue;
+                }
 
                 foreach (TokenRule rule in rules)
                 {
-                    Match match = rule.Pattern.Match(source, currentIndex);
-                    if(match.Success && match.Index - currentIndex == 0)
+                    match = rule.Pattern.Match(source, currentIndex);
+                    if(match.Success && match.Index == currentIndex)
                     {
+                        currentIndex += match.Value.Length;
                         token = new Token {
                             Type = rule.Name,
                             Value = match.Value
                         };
-                        currentIndex += token.Value.Length;
-                        Console.WriteLine(token);
+                        if(!rule.Ignore) {
+                            tokens.Add(token);
+                        }
                         break;
                     }
                 }
 
                 if(token == null)
                 {
-                    return;
+                    Console.WriteLine("Error before: ..."+source.Substring(currentIndex, 10));
+                    break;
                 }
-
             }
+            return tokens;
         }
     }
 }
