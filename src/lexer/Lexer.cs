@@ -5,31 +5,13 @@ using Newtonsoft.Json;
 
 namespace P4.Lexer
 {
-    public class Token 
-    {
-        public String Type;
-        public String Value;
-        
-        public override String ToString() {
-            return $"({this.Type}: '{this.Value}')";
-        }
-    }
-
-    public class TokenRule
-    {
-        public String Name;
-        public Regex Pattern;
-        public String PatternString;
-        public bool SingleLine = false;
-        public bool Ignore = false;
-    }
-
     public class Lexer
     {
-        public static void Main(string[] args)
+        private List<TokenRule> rules;
+
+        public Lexer(string configPath = "Token.cfg.json")
         {
-            List<TokenRule> rules;
-            string TokenCfg = System.IO.File.ReadAllText("Token.cfg.json");
+            string TokenCfg = System.IO.File.ReadAllText(configPath);
             rules = JsonConvert.DeserializeObject<List<TokenRule>>(TokenCfg);
             foreach (TokenRule r in rules) 
             {
@@ -37,24 +19,10 @@ namespace P4.Lexer
                 if (r.SingleLine) options |= RegexOptions.Singleline;
                 
                 r.Pattern = new Regex(r.PatternString, options);
-                // Console.WriteLine(r.PatternString);
-            }
-
-            foreach (string arg in args)
-            {
-                if(System.IO.File.Exists(arg)) {
-                    // read File
-                    String source = arg;
-                    List<Token> tokens = Analyse(System.IO.File.ReadAllText(arg), rules);
-                    foreach( Token t in tokens)
-                    {
-                        Console.WriteLine($"({t.Type}: {t.Value})");
-                    }
-                }
             }
         }
 
-        public static List<Token> Analyse(String source, List<TokenRule> rules)
+        public List<Token> Analyse(String source)
         {
             List<Token> tokens = new List<Token>();
             Token token = null;

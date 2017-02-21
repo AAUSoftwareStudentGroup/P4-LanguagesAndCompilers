@@ -29,7 +29,7 @@
     },
     {
         "Name": "Keyword",
-        "PatternString": "(if)|(while)|(for)"
+        "PatternString": "(return)|(if)|(while)|(for)"
     },
     {
         "Name": "Decimal",
