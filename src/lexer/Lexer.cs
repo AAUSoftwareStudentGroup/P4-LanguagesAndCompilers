@@ -22,9 +22,8 @@ namespace P4.Lexer
             }
         }
 
-        public List<Token> Analyse(String source)
+        public IEnumerable<Token> Analyse(String source)
         {
-            List<Token> tokens = new List<Token>();
             Token token = null;
             Match match = null;
             int currentIndex = 0;
@@ -51,8 +50,8 @@ namespace P4.Lexer
                                 Type = "Indent",
                                 Value = match.Value
                             };
-                            tokens.Add(token);
                             indentationLevel.Push(indentSize);
+                            yield return token;
                         }
                         while(indentSize < indentationLevel.Peek())
                         {
@@ -61,7 +60,7 @@ namespace P4.Lexer
                                 Type = "Dedent",
                                 Value = match.Value
                             };
-                            tokens.Add(token);
+                            yield return token;
                         }
                     }
                     continue;
@@ -78,7 +77,7 @@ namespace P4.Lexer
                             Value = match.Value
                         };
                         if(!rule.Ignore) {
-                            tokens.Add(token);
+                            yield return token;
                         }
                         break;
                     }
@@ -90,7 +89,7 @@ namespace P4.Lexer
                     break;
                 }
             }
-            return tokens;
+            yield break;
         }
     }
 }
