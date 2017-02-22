@@ -47,6 +47,8 @@ namespace bnf_parser
                 return Word.Type.GroupEnd;
             else if(inputFile[line][word] == "::=")
                 return Word.Type.Equals;
+            else if(inputFile[line][word] == "\\")
+                return Word.Type.Ignore;
             else
                 throw new SyntaxErrorException(line+1, word+1, inputFile[line][word]);
         }

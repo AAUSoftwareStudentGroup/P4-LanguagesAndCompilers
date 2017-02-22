@@ -9,9 +9,9 @@ namespace bnf_parser
             NameSet, // Name, as above, but on the left side on an Equals. Expecting to set the name
             String, // Strings in quotes
             Or, // |
-            Comment, // Comment
             GroupStart, // (
             GroupEnd, // )
+            Ignore, // Other stuff to ignore, like \ and comments
             Equals // ::=
             };
     }
