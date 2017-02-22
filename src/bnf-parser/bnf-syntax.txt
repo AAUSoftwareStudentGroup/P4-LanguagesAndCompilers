@@ -22,3 +22,5 @@ No escape characters. If a " is needed, use '"' and vice versa
 A tokens name is defined using <name>. < and > will not be included in the datastructure.
 
 Everything is case-sensitive
+
+Groups are defined with '(' and ')'

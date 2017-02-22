@@ -26,10 +26,29 @@ namespace bnf_parser
             {
                 for (word = 0; word < inputFileContentWords[line].Length; word++)
                 {
-                    Word.Type type = Word.DetectWordType(line, word, inputFileContentWords);
+                    Word.Type type = DetectWordType(line, word, inputFileContentWords);
                     Console.WriteLine("Line: {0}, Word: {1}: {2} Type {3}", line+1, word+1, inputFileContentWords[line][word], type);
                 }
             }
+        }
+        public static Word.Type DetectWordType(int line, int word, String[][] inputFile) {
+            // Check if this is the first word on a line and the last word on the last line wasn't \
+            if(word == 0 && (line == 0 || inputFile[line-1][inputFile[line-1].Length-1] != @"\"))
+                return Word.Type.NameSet;
+            else if(inputFile[line][word].StartsWith(@"<")) // This is a name we expect to read
+                return Word.Type.NameRead;
+            else if(inputFile[line][word].StartsWith("\"") || inputFile[line][word].StartsWith("'")) // This is a constant string
+                return Word.Type.String;
+            else if(inputFile[line][word] == "|")
+                return Word.Type.Or;
+            else if(inputFile[line][word] == "(")
+                return Word.Type.GroupStart;
+            else if(inputFile[line][word] == ")")
+                return Word.Type.GroupEnd;
+            else if(inputFile[line][word] == "::=")
+                return Word.Type.Equals;
+            else
+                throw new SyntaxErrorException(line+1, word+1, inputFile[line][word]);
         }
     }
 }
