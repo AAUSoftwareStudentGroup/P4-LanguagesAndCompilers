@@ -1,0 +1,74 @@
+[
+    {
+        "Name": "LineComment",
+        "PatternString": "//.*",
+        "Ignore": true
+    },
+    {
+        "Name": "BlockComment",
+        "PatternString": "/\\*.*\\*/",
+        "SingleLine": true,
+        "Ignore": true
+    },
+    {
+        "Name": "Whitespace",
+        "PatternString": "[\\t ]+",
+        "Ignore": true
+    },
+    {
+        "Name": "typeInteger",
+        "PatternString": "u?int(8|16|32)"
+    },
+    {
+        "Name": "typeNothing",
+        "PatternString": "nothing"
+    },
+    {
+        "Name": "typeDecimal",
+        "PatternString": "decimal"
+    },
+    {
+        "Name": "Keyword",
+        "PatternString": "(return)|(if)|(while)|(for)"
+    },
+    {
+        "Name": "Decimal",
+        "PatternString": "[+-]?(0|([1-9][0-9]*))\\.[0-9]+"
+    },
+    {
+        "Name": "Integer",
+        "PatternString": "[+-]?(0|([1-9][0-9]*))"
+    },
+    {
+        "Name": "Operator",
+        "PatternString": "(==)|=|/|\\*|\\+|-"
+    },
+    {
+        "Name": "ComponentSelector",
+        "PatternString": "\\."
+    },
+    {
+        "Name": "CommaSeperator",
+        "PatternString": ","
+    },
+    {
+        "Name": "OpenParenthesis",
+        "PatternString": "\\("
+    },
+    {
+        "Name": "CloseParenthesis",
+        "PatternString": "\\)"
+    },
+    {
+        "Name": "OpenCurlybrace",
+        "PatternString": "\\}"
+    },
+    {
+        "Name": "CloseCurlybrace",
+        "PatternString": "\\}"
+    },
+    {
+        "Name": "Identifier",
+        "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
+    }
+]
