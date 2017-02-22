@@ -6,7 +6,8 @@ namespace bnf_parser
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            BNF_Parser parser = new BNF_Parser();
+            parser.Parse(args[0]); // first program argument is filename to read
         }
     }
 }
