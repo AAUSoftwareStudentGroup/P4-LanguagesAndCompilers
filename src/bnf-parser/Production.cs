@@ -5,6 +5,9 @@ namespace P4.BNF.Parser
 {
     class Production : Symbol
     {
-        List<Expansion> Expansions;
+        public List<Expansion> expansions;
+        public Production() {
+            expansions = new List<Expansion>();
+        }
     }
 }

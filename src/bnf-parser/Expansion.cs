@@ -5,6 +5,9 @@ namespace P4.BNF.Parser
 {
     class Expansion
     {
-        List<Symbol> symbols;
+        public List<Symbol> symbols;
+        public Expansion() {
+            symbols = new List<Symbol>();
+        }
     }
 }

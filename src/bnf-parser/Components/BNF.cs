@@ -5,6 +5,10 @@ namespace P4.BNF.Parser
 {
     class BNF 
     {
-        List<Production> productions;
+        public List<Production> productions;
+
+        public BNF() {
+            productions = new List<Production>();
+        }
     }
 }

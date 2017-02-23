@@ -57,10 +57,6 @@ namespace P4.BNF.Parser
                 return Word.Type.NameSet;
             else if(inputFile[line][word] == "|")
                 return Word.Type.Or;
-            else if(inputFile[line][word] == "(")
-                return Word.Type.GroupStart;
-            else if(inputFile[line][word] == ")")
-                return Word.Type.GroupEnd;
             else if(inputFile[line][word] == "->")
                 return Word.Type.Equals;
             else if(inputFile[line][word] == "//")
@@ -69,7 +65,7 @@ namespace P4.BNF.Parser
                 return Word.Type.NameRead;
         }
         public static bool CheckBNFSyntax(List<Word> BNF) {
-            List<Token> token = new List<Token>();
+            List<Production> productions = new List<Production>();
             token.Add(new Nonterminal(BNF[0].type, BNF[0].word)); // First type must be nonterminal, add it to the list
             Token currentNonterminal = token[0];
             Stack<Token> groupParent = new Stack<Token>(); // Stack, to enable nested groups
@@ -87,15 +83,16 @@ namespace P4.BNF.Parser
             for(int tokenIndex = 1; tokenIndex < BNF.Count; tokenIndex++) {
                 switch(BNF[tokenIndex].type) {
                     case Word.Type.NameSet:
-                    
+                        // See if symbol exists, change symbol to production
+                        // If symbol doesnt exists, create new production
+                        // Set production as currentProduction
                     break;
                     case Word.Type.NameRead:
-                    break;
-                    case Word.Type.GroupStart:
-                    break;
-                    case Word.Type.GroupEnd:
+                        // See if production exists, use that
+                        // If no production, create symbol
                     break;
                     case Word.Type.Epsilon:
+                        // Add production
                     break;
                     case Word.Type.Equals:
                     case Word.Type.Ignore:

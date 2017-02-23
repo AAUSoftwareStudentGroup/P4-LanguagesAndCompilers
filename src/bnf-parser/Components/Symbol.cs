@@ -4,6 +4,9 @@ namespace P4.BNF.Parser
 {
     class Symbol
     {
-        string name;
+        public string name;
+        public Symbol() {
+            this.name = "";
+        }
     }
 }
