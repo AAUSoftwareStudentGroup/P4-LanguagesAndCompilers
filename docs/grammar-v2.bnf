@@ -1,0 +1,113 @@
+Statements  -> Statement StatementsP
+StatementsP -> NewLine Statement
+              | EPSILON
+
+Statement -> Declaration
+          |  Assignment
+          |  IfStatement
+          |  WhileStatement
+
+Declaration -> Type Identifier Definition
+
+Assignment -> Identifier Assign Expression
+
+IfStatement -> If Condition Block
+
+WhileStatement -> While Condition Block
+
+Condition -> StartDel Expression EndDel
+
+Definition -> TypedParameters Block
+           |  Assign Expression
+
+Block -> NewLine Indent BodyStatements Dedent
+
+TypedParameters -> StartDel Type Identifier TypedParametersP
+TypedParametersP -> SepOp Type Identifier TypedParametersP
+               | EndDel
+
+Type -> SimpleType TypeParameters
+     |  StartDel Type EndDel TypeParameters
+
+TypeParameters -> StartDel Type TypeParametersP EndDel
+               | EPSILON
+TypeParametersP -> SepOp Type TypeParametersP
+               | EPSILON
+
+SimpleType -> int | nothing
+
+BodyStatements  -> LocalStatement BodyStatementsP
+                
+BodyStatementsP -> NewLine LocalStatement
+              | EPSILON
+
+LocalStatement -> SimpleDeclaration
+                 |  Assignment
+                 |  IfStatement
+                 |  EPSILON
+
+SimpleDeclaration -> Type Identifier Assign Expression
+Expression    -> CompareOperation
+CompareOperation  -> OrOperation CompareOperationP
+CompareOperationP -> Compare OrOperation CompareOperationP
+              | EPSILON
+
+
+
+OrOperation  -> AndOperation OrOperationP
+OrOperationP -> Or AndOperation OrOperationP
+              | EPSILON
+
+AndOperation  -> AddOperation AndOperationP
+AndOperationP -> And AddOperation AndOperationP
+              | EPSILON
+
+AddOperation  -> MultOperation AddOperationP
+AddOperationP -> AddSubOpp MultOperation AddOperationP
+              | EPSILON
+
+MultOperation -> DelOperation MultOperationP
+MultOperationP -> MulDivOpp DelOperation MultOperationP
+               | EPSILON
+
+DelOperation -> Del
+             |  FunctionCall
+             |  Number
+
+Del          -> StartDel Expression EndDel
+
+FunctionCall -> Identifier Parameters
+
+TypedParameters -> StartDel Type Identifier TypedParametersP
+           |  EPSILON
+
+TypedParametersP -> SepOp Type Identifier TypedParametersP
+               | EndDel
+
+Parameters -> StartDel Expression ParametersP
+           |  EPSILON
+
+ParametersP -> SepOp Expression ParametersP
+               | EndDel
+
+Val -> Identifier
+    | Number
+
+Number     -> Digit
+Identifier -> Char
+If         -> if
+While      -> while
+And        -> and
+Or         -> or
+Compare     -> eq | != | < | > | <= | >=
+Indent     -> {
+Dedent     -> }
+NewLine    -> nl
+AddSubOpp  -> + | -
+MulDivOpp  -> * | /
+Digit      -> 1 | true | false
+Char       -> a|f
+Assign     -> =
+StartDel   -> (
+EndDel     -> )
+SepOp      -> ,
