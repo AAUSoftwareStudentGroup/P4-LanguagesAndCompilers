@@ -4,3 +4,4 @@ all "words" not defined here are considered constants/terminals if not defined l
 Parenthesis defines a group. Modifies behaviour of or. ex: (a | b) | (c)
 EPSILON is written all caps
 Spaces required between each word. a|b is not allowed. Must be a | b.
+Empty groups are not allowed. Ex: ( )

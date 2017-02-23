@@ -1,28 +1,21 @@
 Prog -> Expression
 // This is a comment
+Expression -> Identifier ExpressionP | Number OperationP | Declaration
 Declaration -> Type Identifier ExpressionP
-Expression -> Identifier ExpressionP
-            | Number OperationP
-            | Declaration
-ExpressionP -> EQ Expression
-             | OperationP
-             | ArgumentList
-ArgumentList -> ( ArgumentListP
-ArgumentListP -> ValList )
-                 | )
+ExpressionP -> EQ Expression | OperationP | ArgumentList
+ArgumentList -> ArgumentListP
+ArgumentListP -> ValList
 ValList -> Val ValListP
 ValListP -> , ValList | EPSILON
 Operation  -> Val OperationP
-OperationP -> Operator Operation
-      | EPSILON
-Val -> Identifier
-     | Number
+OperationP -> Operator Operation | EPSILON
+Val -> Identifier | Number
 Number     -> Digit
 Identifier -> Char
 Indent     -> >
 Dedent     -> <
 Type       -> int
-Operator  -> + | - | * | /
+Operator   -> + | - | * | /
 Digit      -> 1
 Char       -> a | f
 EQ         -> =
