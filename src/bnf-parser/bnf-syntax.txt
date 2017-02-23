@@ -1,26 +1,6 @@
-This is derived from https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form
-
-BNF-syntax:
-
-Arrow or equals sign is "::=" without qoutes
-
-example:
-	<ex1mple> ::= <ex2mple> <ex3mple>
-
-Comments are not allowed yet
-
-There should be at least 1 space between each "word"/"command".
-	"<name>|<name2>" is not correct, but "<name> | <name2> is
-
-A newline marks a new "command". If this is not desired, use \ as the last character in the line
-
-Or: "|"
-
-Text inserts are denoted using " if more than 1 character and ' if only 1.
-No escape characters. If a " is needed, use '"' and vice versa
-
-A tokens name is defined using <name>. < and > will not be included in the datastructure.
-
-Everything is case-sensitive
-
-Groups are defined with '(' and ')'
+-> is equal (::=)
+all "words" not defined here are considered constants/terminals if not defined later in .bnf
+| is or
+Parenthesis defines a group. Modifies behaviour of or. ex: (a | b) | (c)
+EPSILON is written all caps
+Spaces required between each word. a|b is not allowed. Must be a | b.

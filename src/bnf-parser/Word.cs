@@ -11,6 +11,7 @@ namespace bnf_parser
             Or, // |
             GroupStart, // (
             GroupEnd, // )
+            Epsilon, // EPSILON constant
             Ignore, // Other stuff to ignore, like \ and comments
             Equals // ::=
             };

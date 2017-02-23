@@ -27,30 +27,35 @@ namespace bnf_parser
                 for (word = 0; word < inputFileContentWords[line].Length; word++)
                 {
                     Word.Type type = DetectWordType(line, word, inputFileContentWords);
+                    if(type == Word.Type.Ignore)
+                        break; // Don't read the rest of this line
                     Console.WriteLine("Line: {0}, Word: {1}: {2} Type {3}", line+1, word+1, inputFileContentWords[line][word], type);
                 }
             }
         }
         public static Word.Type DetectWordType(int line, int word, String[][] inputFile) {
-            // Check if this is the first word on a line and the last word on the last line wasn't \
-            if(word == 0 && (line == 0 || inputFile[line-1][inputFile[line-1].Length-1] != @"\"))
+            if(word >= inputFile[line].Length) {
+                word = 0;
+                line++;
+                if(line >= inputFile.Length)
+                    return Word.Type.Ignore; // End of file
+            }
+            if(inputFile[line][word] == "EPSILON")
+                return Word.Type.Epsilon;
+            else if(DetectWordType(line, word+1, inputFile) == Word.Type.Equals)
                 return Word.Type.NameSet;
-            else if(inputFile[line][word].StartsWith(@"<")) // This is a name we expect to read
-                return Word.Type.NameRead;
-            else if(inputFile[line][word].StartsWith("\"") || inputFile[line][word].StartsWith("'")) // This is a constant string
-                return Word.Type.String;
             else if(inputFile[line][word] == "|")
                 return Word.Type.Or;
             else if(inputFile[line][word] == "(")
                 return Word.Type.GroupStart;
             else if(inputFile[line][word] == ")")
                 return Word.Type.GroupEnd;
-            else if(inputFile[line][word] == "::=")
+            else if(inputFile[line][word] == "->")
                 return Word.Type.Equals;
-            else if(inputFile[line][word] == "\\")
+            else if(inputFile[line][word] == "//")
                 return Word.Type.Ignore;
             else
-                throw new SyntaxErrorException(line+1, word+1, inputFile[line][word]);
+                return Word.Type.NameRead;
         }
     }
 }
