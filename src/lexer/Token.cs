@@ -1,14 +1,14 @@
 using System;
 
-namespace P4.Lexer
+namespace P4.Data
 {
     public class Token 
     {
-        public String Type;
+        public String Name;
         public String Value;
         
         public override String ToString() {
-            return $"({this.Type}: '{this.Value}')";
+            return $"({this.Name}: '{this.Value}')";
         }
     }
 }

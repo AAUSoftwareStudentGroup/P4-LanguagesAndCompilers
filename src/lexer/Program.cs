@@ -17,7 +17,7 @@ namespace P4.Lexer
                     List<Token> tokens = l.Analyse(File.ReadAllText(arg));
                     foreach( Token t in tokens)
                     {
-                        Console.WriteLine($"({t.Type}: {t.Value})");
+                        Console.WriteLine($"({t.Name}: {t.Value})");
                     }
                 }
             }

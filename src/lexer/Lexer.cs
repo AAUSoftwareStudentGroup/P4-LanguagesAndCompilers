@@ -48,7 +48,7 @@ namespace P4.Lexer
                         if(indentSize > indentationLevel.Peek())
                         {
                             token = new Token {
-                                Type = "Indent",
+                                Name = "Indent",
                                 Value = match.Value
                             };
                             tokens.Add(token);
@@ -58,7 +58,7 @@ namespace P4.Lexer
                         {
                             indentationLevel.Pop();
                             token = new Token {
-                                Type = "Dedent",
+                                Name = "Dedent",
                                 Value = match.Value
                             };
                             tokens.Add(token);
@@ -74,7 +74,7 @@ namespace P4.Lexer
                     {
                         currentIndex += match.Value.Length;
                         token = new Token {
-                            Type = rule.Name,
+                            Name = rule.Name,
                             Value = match.Value
                         };
                         if(!rule.Ignore) {
