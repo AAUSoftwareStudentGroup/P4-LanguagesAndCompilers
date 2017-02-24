@@ -4,11 +4,11 @@ namespace P4.Data
 {
     public class Token 
     {
-        public String Name;
-        public String Value;
+        public String name;
+        public String value;
         
         public override String ToString() {
-            return $"({this.Name}: '{this.Value}')";
+            return $"({this.name}: '{this.value}')";
         }
     }
 }

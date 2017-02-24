@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using P4.Data;
 
-namespace P4.Lexer
+namespace P4.LexicalAnalysis
 {
     public class Lexer
     {
-        private List<TokenRule> rules;
+        private List<LexerRule> rules;
 
-        public Lexer(string configPath = "Token.cfg.json")
+        public Lexer(string configPath = "Tokens.cfg.json")
         {
             string TokenCfg = System.IO.File.ReadAllText(configPath);
-            rules = JsonConvert.DeserializeObject<List<TokenRule>>(TokenCfg);
-            foreach (TokenRule r in rules) 
+            rules = JsonConvert.DeserializeObject<List<LexerRule>>(TokenCfg);
+            foreach (LexerRule r in rules) 
             {
                 var options = RegexOptions.None;
                 if (r.SingleLine) options |= RegexOptions.Singleline;
@@ -22,9 +23,8 @@ namespace P4.Lexer
             }
         }
 
-        public List<Token> Analyse(String source)
+        public IEnumerable<Token> Analyse(String source)
         {
-            List<Token> tokens = new List<Token>();
             Token token = null;
             Match match = null;
             int currentIndex = 0;
@@ -36,6 +36,7 @@ namespace P4.Lexer
 
             while(currentIndex < source.Length) 
             {
+                token = null;
                 // Generate indentation to
                 match = BeforeIndent.Match(source, currentIndex);
                 if(match.Success && match.Index == currentIndex)
@@ -48,37 +49,37 @@ namespace P4.Lexer
                         if(indentSize > indentationLevel.Peek())
                         {
                             token = new Token {
-                                Name = "Indent",
-                                Value = match.Value
+                                name = "Indent",
+                                value = match.Value
                             };
-                            tokens.Add(token);
                             indentationLevel.Push(indentSize);
+                            yield return token;
                         }
                         while(indentSize < indentationLevel.Peek())
                         {
                             indentationLevel.Pop();
                             token = new Token {
-                                Name = "Dedent",
-                                Value = match.Value
+                                name = "Dedent",
+                                value = match.Value
                             };
-                            tokens.Add(token);
+                            yield return token;
                         }
                     }
                     continue;
                 }
 
-                foreach (TokenRule rule in rules)
+                foreach (LexerRule rule in rules)
                 {
                     match = rule.Pattern.Match(source, currentIndex);
                     if(match.Success && match.Index == currentIndex)
                     {
                         currentIndex += match.Value.Length;
                         token = new Token {
-                            Name = rule.Name,
-                            Value = match.Value
+                            name = rule.Name,
+                            value = match.Value
                         };
                         if(!rule.Ignore) {
-                            tokens.Add(token);
+                            yield return token;
                         }
                         break;
                     }
@@ -90,7 +91,6 @@ namespace P4.Lexer
                     break;
                 }
             }
-            return tokens;
         }
     }
 }

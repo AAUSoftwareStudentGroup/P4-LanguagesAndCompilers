@@ -1,41 +1,20 @@
-using System;
 using System.Linq;
 using System.Collections.Generic;
 
-public class AST 
-{
-    public string name;
-    public List<AST> children;
-    public AST parent;
-
-    public AST(string name, AST parent) 
-    {
-        this.parent = parent;
-        this.name = name;
-        this.children = new List<AST>();
-    }
-
-    // return the new child
-    public AST AddChild(string name)
-    {
-        AST child = new AST(name, this);
-        this.children.Add(child);
-        return child;
-    }
-}
-
 namespace P4.Data
 {
-    class BNF 
+    public class BNF 
     {
         public List<Production> productions;
         public List<Symbol> terminals;
         public List<List<Expansion>> expansionTable;
         public Production rootProduction;
 
-        public BNF() {
-            productions = new List<Production>();
-            terminals = new List<Symbol>();
+        public BNF(Production rootProduction, List<Production> productions, List<Symbol> terminals) {
+            this.rootProduction = rootProduction;
+            this.productions = productions;
+            this.terminals = terminals;
+            BuildExpansionTable();
         }
 
         private void BuildExpansionTable()
@@ -59,15 +38,12 @@ namespace P4.Data
                 foreach(Expansion e in p.expansions)
                 {
                     /* foreach terminal in predict of e */
+                    foreach(Symbol s in p.PredictSet(e, this))
+                    {
                         /* expansionRow[terminal] = e */
-                }
-
-                for(int j = 0; j < terminals.Count; j++)
-                {
-                    Symbol t = terminals[j];
-                    Expansion e = null;
-
-                    expansionRow.Add(e);
+                        int terminalIndex = terminals.IndexOf(s);
+                        expansionRow[terminalIndex] = e;
+                    }
                 }
             }
         }
@@ -78,6 +54,10 @@ namespace P4.Data
             bool valid = false;
             Stack<Symbol> parseStack = new Stack<Symbol>();
             IEnumerator<Token> tokenStream = tokenList.GetEnumerator();
+            // start enumerator by moving to first element in list
+            if(tokenStream.Current == null)
+                tokenStream.MoveNext();
+            parseStack.Push(new Symbol(){name = "EOF"});
             parseStack.Push(rootProduction);
             while(!valid)
             {
@@ -102,21 +82,43 @@ namespace P4.Data
                     else
                     {
                         // ERROR: Token '{tokenStream.Current.value}' does not match the expected token '{FIRST(parseStack.Peek())}' 
+                        System.Console.WriteLine($"ERROR: Token '{tokenStream.Current.value}' does not match the expected token 'FIRST({parseStack.Peek().name})' ");
+                        System.Console.WriteLine("ParseStack:");
+                        while(parseStack.Count > 0)
+                        {
+                            System.Console.Write(parseStack.Pop().name+" ");
+                        }
+                        System.Console.WriteLine();
+                        break;
                     }
                 }
                 else
                 {
                     int terminalIndex = terminals.IndexOf(terminals.FirstOrDefault((t) => t.name == tokenStream.Current.name));
                     int ProductionIndex = productions.IndexOf(parseStack.Peek() as Production);
+                    if(terminalIndex == -1)
+                    {
+                        System.Console.WriteLine($"ERROR: Token '{tokenStream.Current.value}' of type '{tokenStream.Current.name}', does not exsist in the BNF");
+                        break;
+                    }
                     Expansion e = expansionTable[ProductionIndex][terminalIndex];
                     if(e == null)
                     {
                         // ERROR: Token not in first set, expected FIRST(parseStack.Peek())
+                        System.Console.WriteLine($"ERROR: Token '{tokenStream.Current.name}' not in first set, expected 'FIRST({parseStack.Peek().name})'");
+                        System.Console.WriteLine("ParseStack:");
+                        while(parseStack.Count > 0)
+                        {
+                            System.Console.Write(parseStack.Pop().name+" ");
+                        }
+                        System.Console.WriteLine();
+                        break;
                     }
                     else 
                     {
+                        syntaxTree = syntaxTree.AddChild(parseStack.Peek().name);
                         parseStack.Pop();
-                        for(int i = e.symbols.Count-1; i >= 0; i++)
+                        for(int i = e.symbols.Count-1; i >= 0; i--)
                         {
                             parseStack.Push(e.symbols[i]);
                         }
@@ -124,7 +126,8 @@ namespace P4.Data
                 }
             }
 
-
+            while(syntaxTree.parent != null)
+                syntaxTree = syntaxTree.parent;
             return syntaxTree;
         }
 

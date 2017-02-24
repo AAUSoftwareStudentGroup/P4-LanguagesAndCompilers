@@ -1,14 +1,13 @@
-using System;
-
-namespace bnf_parser
+namespace P4.BNFParsing
 {
-    class Word
+    public class Word
     {
         public enum Type {
             NameRead, // Name, but not on left side of Equals. Expecting to read the name from earlier definition
             NameSet, // Name, as above, but on the left side on an Equals. Expecting to set the name.
-            Or, // |Epsilon, // EPSILON constant
+            Or, // |
             Ignore, // Stuff to ignore, like comments
+            Epsilon,
             Equals // ::=
             };
             public Type type;

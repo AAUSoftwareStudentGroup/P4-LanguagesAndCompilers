@@ -1,0 +1,107 @@
+Statements  -> Statement StatementsP
+StatementsP -> NewLine Statement StatementsP
+              | EPSILON
+
+Statement -> Declaration
+          |  Assignment
+          |  IfStatement
+          |  WhileStatement
+          |  Class
+
+Class -> class Identifier TypedParameters ClassBlock
+
+ClassBlock -> NewLine Indent ClassStatements Dedent
+
+ClassStatements  -> ClassStatement SimpleStatementsP            
+ClassStatementsP -> NewLine ClassStatement ClassStatementsP
+              | EPSILON
+
+ClassStatement -> Declaration
+               |  Assignment
+               |  IfStatement
+               |  WhileStatement
+               |  EPSILON
+
+Declaration -> Type Identifier Definition
+
+Assignment -> Identifier Assign Expression
+
+IfStatement -> If Condition SimpleBlock
+
+WhileStatement -> While Condition SimpleBlock
+
+Condition -> StartDel Expression EndDel
+
+Definition -> TypedParameters SimpleBlock
+           |  Assign Expression
+
+SimpleBlock -> NewLine Indent SimpleStatements Dedent
+
+TypedParameters -> StartDel Type Identifier TypedParametersP
+TypedParametersP -> SepOp Type Identifier TypedParametersP
+               | EndDel
+
+Type -> SimpleType TypeParameters
+     |  StartDel Type EndDel TypeParameters
+
+TypeParameters -> StartDel Type TypeParametersP EndDel
+               | EPSILON
+TypeParametersP -> SepOp Type TypeParametersP
+               | EPSILON
+
+SimpleStatements  -> SimpleStatement SimpleStatementsP            
+SimpleStatementsP -> NewLine SimpleStatement SimpleStatementsP
+              | EPSILON
+
+SimpleStatement -> SimpleDeclaration
+                 |  Assignment
+                 |  IfStatement
+                 |  WhileStatement
+                 |  EPSILON
+
+SimpleDeclaration -> Type Identifier Assign Expression
+Expression    -> CompareOperation
+CompareOperation  -> OrOperation CompareOperationP
+CompareOperationP -> Compare OrOperation CompareOperationP
+              | EPSILON
+
+
+
+OrOperation  -> AndOperation OrOperationP
+OrOperationP -> Or AndOperation OrOperationP
+              | EPSILON
+
+AndOperation  -> AddOperation AndOperationP
+AndOperationP -> And AddOperation AndOperationP
+              | EPSILON
+
+AddOperation  -> MultOperation AddOperationP
+AddOperationP -> AddSubOpp MultOperation AddOperationP
+              | EPSILON
+
+MultOperation -> DelOperation MultOperationP
+MultOperationP -> MulDivOpp DelOperation MultOperationP
+               | EPSILON
+
+DelOperation -> Del
+             |  FunctionCall
+             |  Number
+
+Del          -> StartDel Expression EndDel
+
+FunctionCall -> Identifier Parameters
+
+TypedParameters -> StartDel Type Identifier TypedParametersP
+           |  EPSILON
+
+TypedParametersP -> SepOp Type Identifier TypedParametersP
+               | EndDel
+
+Parameters -> StartDel Expression ParametersP
+           |  EPSILON
+
+ParametersP -> SepOp Expression ParametersP
+               | EndDel
+
+Val -> Identifier
+     | Number

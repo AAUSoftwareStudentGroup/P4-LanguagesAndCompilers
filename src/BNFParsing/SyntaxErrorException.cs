@@ -1,8 +1,8 @@
 using System;
 
-namespace bnf_parser
+namespace P4.BNFParsing
 {
-    class SyntaxErrorException : Exception 
+    public class SyntaxErrorException : Exception 
     {
         public int line;
         public int word;
