@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using P4.Data;
 
-namespace P4.Lexer
+namespace P4.LexicalAnalysis
 {
     public class Lexer
     {
-        private List<TokenRule> rules;
+        private List<LexerRule> rules;
 
-        public Lexer(string configPath = "Token.cfg.json")
+        public Lexer(string configPath = "Tokens.cfg.json")
         {
             string TokenCfg = System.IO.File.ReadAllText(configPath);
-            rules = JsonConvert.DeserializeObject<List<TokenRule>>(TokenCfg);
-            foreach (TokenRule r in rules) 
+            rules = JsonConvert.DeserializeObject<List<LexerRule>>(TokenCfg);
+            foreach (LexerRule r in rules) 
             {
                 var options = RegexOptions.None;
                 if (r.SingleLine) options |= RegexOptions.Singleline;
@@ -35,6 +36,7 @@ namespace P4.Lexer
 
             while(currentIndex < source.Length) 
             {
+                token = null;
                 // Generate indentation to
                 match = BeforeIndent.Match(source, currentIndex);
                 if(match.Success && match.Index == currentIndex)
@@ -47,8 +49,8 @@ namespace P4.Lexer
                         if(indentSize > indentationLevel.Peek())
                         {
                             token = new Token {
-                                Type = "Indent",
-                                Value = match.Value
+                                name = "Indent",
+                                value = match.Value
                             };
                             indentationLevel.Push(indentSize);
                             yield return token;
@@ -57,8 +59,8 @@ namespace P4.Lexer
                         {
                             indentationLevel.Pop();
                             token = new Token {
-                                Type = "Dedent",
-                                Value = match.Value
+                                name = "Dedent",
+                                value = match.Value
                             };
                             yield return token;
                         }
@@ -66,15 +68,15 @@ namespace P4.Lexer
                     continue;
                 }
 
-                foreach (TokenRule rule in rules)
+                foreach (LexerRule rule in rules)
                 {
                     match = rule.Pattern.Match(source, currentIndex);
                     if(match.Success && match.Index == currentIndex)
                     {
                         currentIndex += match.Value.Length;
                         token = new Token {
-                            Type = rule.Name,
-                            Value = match.Value
+                            name = rule.Name,
+                            value = match.Value
                         };
                         if(!rule.Ignore) {
                             yield return token;
@@ -89,7 +91,6 @@ namespace P4.Lexer
                     break;
                 }
             }
-            yield break;
         }
     }
 }

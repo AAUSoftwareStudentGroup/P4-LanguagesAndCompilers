@@ -11,7 +11,10 @@
   
   
   <ItemGroup>
-    <None Include="Token.cfg.json">
+    <None Include="Tokens.cfg.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Grammar.bnf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -21,4 +24,5 @@
   <Target Name="CopyFilesToOutputDirectory">
     <Copy SourceFiles="@(None)" DestinationFolder="$(OutDir)" />
   </Target>
+
 </Project>

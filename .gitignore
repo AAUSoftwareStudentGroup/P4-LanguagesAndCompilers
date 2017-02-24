@@ -3,6 +3,8 @@
 project.lock.json
 .vscode
 .DS_Store
+*.user
+*.userprefs
 
 [Dd]ebug/
 [Dd]ebugPublic/

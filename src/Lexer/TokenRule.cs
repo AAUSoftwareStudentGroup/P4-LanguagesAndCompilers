@@ -1,8 +1,8 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace P4.Lexer {
-    public class TokenRule
+namespace P4.LexicalAnalysis {
+    public class LexerRule
     {
         public String Name;
         public Regex Pattern;
