@@ -1,8 +1,8 @@
 using System;
 
-namespace P4.BNF.Parser
+namespace P4.BNF.Components
 {
-    class Symbol
+    public class Symbol
     {
         public string name;
         public Symbol() {

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace P4.BNF.Parser
+namespace P4.BNF.Components
 {
-    class Production : Symbol
+    public class Production : Symbol
     {
         public List<Expansion> expansions;
         public Production() {

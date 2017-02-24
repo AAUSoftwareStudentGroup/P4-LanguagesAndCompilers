@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using P4.BNF.Components;
 
 namespace P4.BNF.Parser
 {
     class BNF_Parser
     {
         private List<Word> _bnf;
-        public void Parse(string inputFilePath)
+        public List<Production> ParseFile(string inputFilePath)
         {
         	// String is now filled with contents of file
         	string inputFileContent = System.IO.File.ReadAllText(inputFilePath);
@@ -38,11 +39,7 @@ namespace P4.BNF.Parser
                     Console.WriteLine("Line: {0}, Word: {1}: {2} Type {3}", line+1, word+1, inputFileContentWords[line][word], detectedWord.type);
                 }
             }
-            bool syntaxIsValid = CheckBNFSyntax(_bnf);
-            if(syntaxIsValid)
-                Console.WriteLine("CheckBNFSyntax passed");
-            else
-                Console.WriteLine("Syntax did not pass");
+            return ParseBNF(_bnf);
         }
         public static Word.Type DetectWordType(int line, int word, String[][] inputFile) {
             if(word >= inputFile[line].Length) {
@@ -64,35 +61,47 @@ namespace P4.BNF.Parser
             else
                 return Word.Type.NameRead;
         }
-        public static bool CheckBNFSyntax(List<Word> BNF) {
+        public static List<Production> ParseBNF(List<Word> BNF) {
             List<Production> productions = new List<Production>();
-            token.Add(new Nonterminal(BNF[0].type, BNF[0].word)); // First type must be nonterminal, add it to the list
-            Token currentNonterminal = token[0];
-            Stack<Token> groupParent = new Stack<Token>(); // Stack, to enable nested groups
-
-            // We run through all words to see which are nonterminals and which are not.
-            List<Word> nonterminals = new List<Word>();
+            // We run through all words to see which are Productions and which are not.
             foreach (Word word in BNF)
             {
-                if(word.type == Word.Type.NameSet)
-                    nonterminals.Add(word);
+                if(word.type == Word.Type.NameSet) {
+                    Production production = new Production();
+                    production.name = word.word;
+                    production.expansions.Add(new Expansion());
+                    productions.Add(production);
+                }
             }
-
-            Token newToken = null;
-            Token oldToken = null;
-            for(int tokenIndex = 1; tokenIndex < BNF.Count; tokenIndex++) {
-                switch(BNF[tokenIndex].type) {
+            Production currentProduction = productions[0];
+            for(int wordIndex = 1; wordIndex < BNF.Count; wordIndex++) {
+                switch(BNF[wordIndex].type) {
                     case Word.Type.NameSet:
-                        // See if symbol exists, change symbol to production
-                        // If symbol doesnt exists, create new production
+                        // Find already defined production and use that.
+                        Production production = productions.Find(x => x.name == BNF[wordIndex].word);
                         // Set production as currentProduction
+                        currentProduction = production;
                     break;
                     case Word.Type.NameRead:
                         // See if production exists, use that
+                        Symbol symbol = productions.Find(x => x.name == BNF[wordIndex].word);
                         // If no production, create symbol
+                        if(symbol == null) {
+                            symbol = new Symbol();
+                            symbol.name = BNF[wordIndex].word;
+                        }
+                        // Add to current productions last expansions list of symbols
+                        currentProduction.expansions[currentProduction.expansions.Count-1].symbols.Add(symbol);
                     break;
                     case Word.Type.Epsilon:
                         // Add production
+                        Symbol epsilon = new Symbol();
+                        epsilon.name = BNF[wordIndex].word;
+                        currentProduction.expansions[currentProduction.expansions.Count-1].symbols.Add(epsilon);
+                    break;
+                    case Word.Type.Or:
+                        currentProduction.expansions.Add(new Expansion());
+                        // Add new expansion
                     break;
                     case Word.Type.Equals:
                     case Word.Type.Ignore:
@@ -103,21 +112,7 @@ namespace P4.BNF.Parser
                         throw new ArgumentException("Switch case didn't recognize Word type");
                 }
             }
-            List<Token> ReachedNonterminals = new List<Token>();
-            bool valid = token[0].syntaxIsValid(ReachedNonterminals);
-            if(ReachedNonterminals.Count != nonterminals.Count) {
-                Console.WriteLine("WARNING: Following non-terminals un-reachable from {0}:", token[0].word);
-                foreach (Token t in ReachedNonterminals)
-                {
-                    nonterminals.Remove(nonterminals.Find(x => x.word == t.word));
-                }
-                foreach (Word word in nonterminals)
-                {
-                    Console.Write("{0}, ", word.word);
-                }
-                Console.WriteLine();
-            }
-            return valid;
+            return productions;
         }
     }
 }

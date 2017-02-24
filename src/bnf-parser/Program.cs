@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace bnf_parser
+namespace P4.BNF
 {
     class Program
     {
         static void Main(string[] args)
         {
-            BNF_Parser parser = new BNF_Parser();
-            parser.Parse(args[0]); // first program argument is filename to read
+            Parser.BNF_Parser parser = new Parser.BNF_Parser();
+            List<BNF.Components.Production> parsedFile = parser.ParseFile(args[0]); // first program argument is filename to read
+            Console.WriteLine("Program finished");
         }
     }
 }
