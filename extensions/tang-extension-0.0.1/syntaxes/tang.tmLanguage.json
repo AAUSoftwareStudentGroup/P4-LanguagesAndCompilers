@@ -1,0 +1,36 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Tang",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.tang",
+				"match": "\\b(if|while|for|return)\\b"
+			},
+			{
+				"name": "support.type.tang",
+				"match": "\\b(nothing|int8|int16|int32|decimal|char|string|class)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.tang",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.tang",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.tang"
+}
