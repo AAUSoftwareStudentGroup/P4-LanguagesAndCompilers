@@ -1,5 +1,5 @@
 Statements  -> Statement StatementsP
-StatementsP -> NewLine Statement
+StatementsP -> NewLine Statement StatementsP
               | EPSILON
 
 Statement -> Declaration
