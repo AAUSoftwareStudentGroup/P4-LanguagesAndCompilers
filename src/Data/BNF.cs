@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace P4.Data
 {
@@ -150,6 +151,31 @@ namespace P4.Data
                 syntaxTree = syntaxTree.parent;
             return syntaxTree;
         }
+
+		public bool IsLL1()
+		{
+			foreach (Production A in this.productions.Skip(3))
+			{
+				HashSet<Symbol> predictSet = new HashSet<Symbol>();
+				foreach (var expansion in A.expansions)
+				{
+					var s = A.PredictSet(expansion, this);
+					var intersection = s.Intersect(predictSet).ToList();
+					if (intersection.Count != 0)
+					{
+						A.PredictSet(expansion, this);
+						A.FollowSet(this);
+						return false;
+					}
+					predictSet.UnionWith(s);
+					Console.WriteLine("S count: " + s.Count);
+					Console.WriteLine("Predict count: " + predictSet.Count);
+
+				}
+				predictSet = null;
+			}
+			return true;
+		}
 
     }
 }

@@ -12,18 +12,15 @@ namespace P4.Data
 
         public override bool DerivesEmpty()
         {
-            if(this.derivesEmpty != null)
-                return this.derivesEmpty.Value;
-
-            this.derivesEmpty = false;
             foreach(Expansion e in expansions)
             {
                 foreach(Symbol s in e.symbols)
                 {
-                    if(s.DerivesEmpty()){
-                        this.derivesEmpty = true;
-                        return true;
-                    }
+					if (s.IsTerminal() && s.DerivesEmpty())
+					{
+						return true;
+					}
+
                 }
             }
             return false;
@@ -51,7 +48,7 @@ namespace P4.Data
                             {
                                 Expansion tail = e.Tail(i);
                                 followSet.UnionWith(tail.FirstSet());
-                                if(tail.DerivesEmpty())
+								if(tail.allDerriveEmpty())
                                 {
                                     followSet.UnionWith(p.FollowSet(bnf));
                                 }
@@ -69,10 +66,9 @@ namespace P4.Data
 
         public override HashSet<Symbol> FirstSet()
         {
-            if(firstSet != null)
-            {
-                return firstSet;
-            }
+          //  if(firstSet != null)
+          //     return firstSet;
+           // }
 
             firstSet = new HashSet<Symbol>();
         
@@ -99,7 +95,7 @@ namespace P4.Data
             HashSet<Symbol> set = e.FirstSet();
             if(this.DerivesEmpty())
             {
-                set.UnionWith(this.FollowSet(bnf));
+                set.IntersectWith(this.FollowSet(bnf));
             }
             
             return set;

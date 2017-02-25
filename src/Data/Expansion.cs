@@ -15,11 +15,6 @@ namespace P4.Data
 
         public HashSet<Symbol> FirstSet()
         {
-            if(firstSet != null)
-            {
-                return firstSet;
-            }
-
             firstSet = new HashSet<Symbol>();
             foreach(Symbol s in this.symbols)
             {
@@ -32,28 +27,37 @@ namespace P4.Data
             return firstSet;
         }
 
+		public bool allDerriveEmpty()
+		{
+			bool allDerriveEmpty = true;
+			foreach (var s in symbols)
+			{
+				if (s.DerivesEmpty() == false || s.IsTerminal())  
+				{
+					allDerriveEmpty = false;
+					break;
+				}
+			}
+			return allDerriveEmpty;
+		}
+
         public bool DerivesEmpty()
         {
-            bool allDeriveEmpty = true;
             foreach(Symbol s in this.symbols)
             {
-                if(s.DerivesEmpty() == false)
+				if(s.DerivesEmpty() == true && s.IsTerminal())
                 {
-                    allDeriveEmpty = false;
-                    break;
+					return true;
                 }
             }
-            return allDeriveEmpty;
+			return false;
         }
 
         public Expansion Tail(int index)
         {
             // return everything after the index'th symbol as a new Expansion
             Expansion tail = new Expansion();
-            for(;index < symbols.Count-1; index++)
-            {
                 tail.symbols.Add(this.symbols[index+1]);
-            }
             return tail;
         }
     }

@@ -4,13 +4,17 @@ using System;
 
 using P4.LexicalAnalysis;
 using P4.Data;
+using System.Linq;
 
 namespace P4
 {
     public class Start {
         public static void Main(string[] args)
         {
-            BNF bnf = BNFParser.Parse(); 
+            BNF bnf = BNFParser.Parse();
+			var flag = bnf.IsLL1();
+			Console.WriteLine("flag: " + flag);
+			Console.ReadKey();
             Lexer l = new Lexer();
             AST ast;
             /*
@@ -37,10 +41,13 @@ namespace P4
                     
                     ast = bnf.ParseTokenStream(tokens);
                     Console.WriteLine(ast);
+					Console.ReadKey();
                     // Console.WriteLine(ast.PrintPretty());
                 }
             }
         }
+
     }
+
 }
     

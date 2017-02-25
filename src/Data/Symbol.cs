@@ -9,7 +9,6 @@ namespace P4.Data
 
         protected HashSet<Symbol> firstSet = null;
         protected HashSet<Symbol> followSet = null;
-        protected bool? derivesEmpty = null;
 
         public Symbol() {
             this.name = "";
@@ -22,18 +21,15 @@ namespace P4.Data
 
         public virtual HashSet<Symbol> FirstSet()
         {
-            if(firstSet != null)
-            {
-                return firstSet;
-            }
+          //  if(firstSet != null)
+          //  {
+         //       return firstSet;
+          //  }
 
             firstSet = new HashSet<Symbol>();
             if(this.IsTerminal())
             {
-                if(this.name != "EPSILON" && this.name != "EOF")
-                {
-                    firstSet.Add(this);
-                }
+            	firstSet.Add(this);
             }
             else
             {
@@ -45,19 +41,20 @@ namespace P4.Data
 
         public virtual bool DerivesEmpty()
         {
-            if(this.derivesEmpty != null)
-                return this.derivesEmpty.Value;
 
-            if(this.IsTerminal())
+            if(this.IsTerminal() && this.name == "EPSILON" || this.name == "EOF")
             {
-                this.derivesEmpty = (this.name == "EPSILON" || this.name == "EOF");
+				return true;
             }
             else
             {
-                Production p = this as Production;
-                this.derivesEmpty = p.DerivesEmpty();
+				return false;
             }
-            return this.derivesEmpty.Value;
         }
+
+		public override string ToString()
+		{
+			return name.ToString();
+		}
     }
 }
