@@ -37,6 +37,7 @@ namespace P4
                     
                     ast = bnf.ParseTokenStream(tokens);
                     Console.WriteLine(ast);
+                    // Console.WriteLine(ast.PrintPretty());
                 }
             }
         }

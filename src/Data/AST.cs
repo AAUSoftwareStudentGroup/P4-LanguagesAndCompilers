@@ -25,6 +25,11 @@ namespace P4.Data
 
         public override string ToString()
         {
+            return this.PrintPretty();
+        }
+
+        public string ToNewickString()
+        {
             string tree = "";
             if(this.children.Count > 0)
             {
@@ -38,6 +43,27 @@ namespace P4.Data
                 tree += ";";
             }
             return tree;
+        }
+        
+        public string PrintPretty(string indent = "", bool last = true)
+        {
+            string s = indent;
+            if (last)
+            {
+                s += "\\-";
+                indent += "  ";
+            }
+            else
+            {
+                s += "|-";
+                indent += "| ";
+            }
+            s += this.name+"\r\n";
+
+            for (int i = 0; i < children.Count; i++)
+                s += children[i].PrintPretty(indent, i == children.Count - 1);
+            
+            return s;
         }
     }
 }

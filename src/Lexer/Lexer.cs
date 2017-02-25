@@ -46,6 +46,12 @@ namespace P4.LexicalAnalysis
                     if(match.Success && match.Index == currentIndex) {
                         int indentSize = match.Value.Length;
                         currentIndex += indentSize;
+                        
+                        token = new Token {
+                            name = "NewLine",
+                            value = match.Value
+                        };
+                        yield return token;
                         if(indentSize > indentationLevel.Peek())
                         {
                             token = new Token {
@@ -60,6 +66,12 @@ namespace P4.LexicalAnalysis
                             indentationLevel.Pop();
                             token = new Token {
                                 name = "Dedent",
+                                value = match.Value
+                            };
+                            yield return token;
+
+                            token = new Token {
+                                name = "NewLine",
                                 value = match.Value
                             };
                             yield return token;

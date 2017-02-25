@@ -50,12 +50,15 @@ namespace P4.Data
                             if(i < e.symbols.Count-1)
                             {
                                 Expansion tail = e.Tail(i);
-                                // remove epsilon and if it did contain epsilon ...
                                 followSet.UnionWith(tail.FirstSet());
                                 if(tail.DerivesEmpty())
                                 {
                                     followSet.UnionWith(p.FollowSet(bnf));
                                 }
+                            }
+                            else
+                            {
+                                followSet.UnionWith(p.FollowSet(bnf));
                             }
                         }
                     }

@@ -54,6 +54,9 @@ namespace P4.Data
             bool valid = false;
             Stack<Symbol> parseStack = new Stack<Symbol>();
             IEnumerator<Token> tokenStream = tokenList.GetEnumerator();
+            // Define end of branch symbol
+            Symbol eob = new Symbol() {name = "EOB"};
+
             // start enumerator by moving to first element in list
             if(tokenStream.Current == null)
                 tokenStream.MoveNext();
@@ -66,23 +69,30 @@ namespace P4.Data
                     if(parseStack.Peek().name == "EPSILON")
                     {
                         syntaxTree.AddChild(parseStack.Peek().name);
+                        // syntaxTree = syntaxTree.parent;
+                        parseStack.Pop();
+                    }
+                    else if(parseStack.Peek() == eob)
+                    {
+                        syntaxTree = syntaxTree.parent;
                         parseStack.Pop();
                     }
                     else if(parseStack.Peek().name == tokenStream.Current.name) {
-                        syntaxTree = syntaxTree.AddChild(tokenStream.Current.name);
+                        syntaxTree = syntaxTree.AddChild(parseStack.Pop().name);
                         syntaxTree.AddChild(tokenStream.Current.value);
                         syntaxTree = syntaxTree.parent;
-                        tokenStream.MoveNext();
-                        // If parse stack is empty
-                        if( parseStack.Pop().name == "EOF")
+                        if(tokenStream.MoveNext() == false)
                         {
-                            valid = true;
+                            System.Console.WriteLine("ERROR: No more tokens in input stream");
+                            break;
                         }
+                        // If parse stack is empty
                     }
                     else
                     {
                         // ERROR: Token '{tokenStream.Current.value}' does not match the expected token '{FIRST(parseStack.Peek())}' 
-                        System.Console.WriteLine($"ERROR: Token '{tokenStream.Current.value}' does not match the expected token 'FIRST({parseStack.Peek().name})' ");
+                        System.Console.WriteLine($"ERROR: Token '{tokenStream.Current.value}' of type '{tokenStream.Current.name}', does not match the expected symbol '{parseStack.Peek().name}' ");
+                        syntaxTree.AddChild("ERROR!");
                         System.Console.WriteLine("ParseStack:");
                         while(parseStack.Count > 0)
                         {
@@ -105,7 +115,8 @@ namespace P4.Data
                     if(e == null)
                     {
                         // ERROR: Token not in first set, expected FIRST(parseStack.Peek())
-                        System.Console.WriteLine($"ERROR: Token '{tokenStream.Current.name}' not in first set, expected 'FIRST({parseStack.Peek().name})'");
+                        System.Console.WriteLine($"ERROR: Token '{tokenStream.Current.value}' of type '{tokenStream.Current.name}', not in predict set of '({parseStack.Peek().name})'");
+                        syntaxTree.AddChild("ERROR!");
                         System.Console.WriteLine("ParseStack:");
                         while(parseStack.Count > 0)
                         {
@@ -118,11 +129,20 @@ namespace P4.Data
                     {
                         syntaxTree = syntaxTree.AddChild(parseStack.Peek().name);
                         parseStack.Pop();
+                        
+                        // END OF BRANCH
+                        parseStack.Push(eob);
+                        
                         for(int i = e.symbols.Count-1; i >= 0; i--)
                         {
                             parseStack.Push(e.symbols[i]);
                         }
                     }
+                }
+                
+                if( parseStack.Peek().name == "EOF")
+                {
+                    valid = true;
                 }
             }
 

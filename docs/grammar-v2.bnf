@@ -93,12 +93,6 @@ Del          -> StartDel Expression EndDel
 
 FunctionCall -> Identifier Parameters
 
-TypedParameters -> StartDel Type Identifier TypedParametersP
-           |  EPSILON
-
-TypedParametersP -> SepOp Type Identifier TypedParametersP
-               | EndDel
-
 Parameters -> StartDel Expression ParametersP
            |  EPSILON
 

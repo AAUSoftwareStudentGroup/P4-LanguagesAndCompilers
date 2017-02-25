@@ -7,6 +7,7 @@ Statement -> Declaration
           |  IfStatement
           |  WhileStatement
           |  Class
+          |  NewLine
 
 Class -> class Identifier TypedParameters ClassBlock
 
@@ -90,12 +91,6 @@ DelOperation -> Del
 Del          -> StartDel Expression EndDel
 
 FunctionCall -> Identifier Parameters
-
-TypedParameters -> StartDel Type Identifier TypedParametersP
-           |  EPSILON
-
-TypedParametersP -> SepOp Type Identifier TypedParametersP
-               | EndDel
 
 Parameters -> StartDel Expression ParametersP
            |  EPSILON
