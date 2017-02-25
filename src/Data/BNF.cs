@@ -168,8 +168,6 @@ namespace P4.Data
 						return false;
 					}
 					predictSet.UnionWith(s);
-					Console.WriteLine("S count: " + s.Count);
-					Console.WriteLine("Predict count: " + predictSet.Count);
 
 				}
 				predictSet = null;

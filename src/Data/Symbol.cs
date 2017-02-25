@@ -21,11 +21,6 @@ namespace P4.Data
 
         public virtual HashSet<Symbol> FirstSet()
         {
-          //  if(firstSet != null)
-          //  {
-         //       return firstSet;
-          //  }
-
             firstSet = new HashSet<Symbol>();
             if(this.IsTerminal())
             {

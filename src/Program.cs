@@ -17,14 +17,7 @@ namespace P4
 			Console.ReadKey();
             Lexer l = new Lexer();
             AST ast;
-            /*
-            // List all terminals
-            foreach(Symbol s in bnf.terminals)
-            {
-                Console.WriteLine(s.name);
-            }
-            return;
-             */
+
             foreach (string arg in args)
             {
                 if(File.Exists(arg)) {

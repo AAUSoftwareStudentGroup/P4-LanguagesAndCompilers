@@ -66,10 +66,6 @@ namespace P4.Data
 
         public override HashSet<Symbol> FirstSet()
         {
-          //  if(firstSet != null)
-          //     return firstSet;
-           // }
-
             firstSet = new HashSet<Symbol>();
         
             foreach(Expansion e in expansions)
