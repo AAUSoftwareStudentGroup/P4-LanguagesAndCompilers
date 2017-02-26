@@ -1,41 +1,40 @@
 using System.Collections.Generic;
 using System;
 
-namespace P4.Data
+namespace Compiler.Data
 {
     public class Expansion
     {
-        public List<Symbol> symbols;
-        protected HashSet<Symbol> firstSet = null;
-
+        HashSet<Symbol> _firstSet = null;
         public Expansion() {
-            symbols = new List<Symbol>();
+            Symbols = new List<Symbol>();
         }
 
+        public List<Symbol> Symbols { get; set; }
 
         public HashSet<Symbol> FirstSet()
         {
-            if(firstSet != null)
+            if (_firstSet != null)
             {
-                return firstSet;
+                return _firstSet;
             }
 
-            firstSet = new HashSet<Symbol>();
-            foreach(Symbol s in this.symbols)
+            _firstSet = new HashSet<Symbol>();
+            foreach (Symbol s in Symbols)
             {
-                firstSet.UnionWith(s.FirstSet());
-                if(s.DerivesEmpty() == false)
+                _firstSet.UnionWith(s.FirstSet());
+                if (s.DerivesEmpty() == false)
                 {
                     break;
                 }
             }
-            return firstSet;
+            return _firstSet;
         }
 
         public bool DerivesEmpty()
         {
             bool allDeriveEmpty = true;
-            foreach(Symbol s in this.symbols)
+            foreach(Symbol s in Symbols)
             {
                 if(s.DerivesEmpty() == false)
                 {
@@ -50,9 +49,9 @@ namespace P4.Data
         {
             // return everything after the index'th symbol as a new Expansion
             Expansion tail = new Expansion();
-            for(;index < symbols.Count-1; index++)
+            for(;index < Symbols.Count-1; index++)
             {
-                tail.symbols.Add(this.symbols[index+1]);
+                tail.Symbols.Add(Symbols[index+1]);
             }
             return tail;
         }

@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using P4.Data;
-using P4.BNFParsing;
+using Compiler.Data;
+using Compiler.Parsing.BnfParsing;
 
-namespace P4
+namespace Compiler
 {
-    public class BNFParser
+    public class BnfParser
     {
-        public static BNF Parse(string grammarFilePath = "Grammar.bnf")
+        public static Bnf Parse(string grammarFilePath = "Grammar.bnf")
         {
             List<Word> words = ParseFile(grammarFilePath);
             return ParseWords(words);
@@ -36,86 +36,92 @@ namespace P4
             {
                 for (word = 0; word < inputFileContentWords[line].Length; word++)
                 {
-                    detectedWord = new Word();
-                    detectedWord.type = DetectWordType(line, word, inputFileContentWords);
-                    detectedWord.word = inputFileContentWords[line][word];
-                    if(detectedWord.type == Word.Type.Ignore)
+                    detectedWord = new Word()
+                    {
+                        Type = DetectWordType(line, word, inputFileContentWords),
+                        Content = inputFileContentWords[line][word]
+                    };
+                    if (detectedWord.Type == WordType.Ignore)
                         break; // Don't read the rest of this line
                     _bnf.Add(detectedWord); // Add type to list
-                    // Console.WriteLine("Line: {0}, Word: {1}: {2} Type {3}", line+1, word+1, inputFileContentWords[line][word], detectedWord.type);
+                    // Console.WriteLine("Line: {0}, Word: {1}: {2} Type {3}", line+1, word+1, inputFileContentWords[line][word], detectedWordType);
                 }
             }
             return _bnf;
         }
 
-        private static Word.Type DetectWordType(int line, int word, String[][] inputFile) {
+        private static WordType DetectWordType(int line, int word, String[][] inputFile) {
             if(word >= inputFile[line].Length) {
                 word = 0;
                 line++;
                 if(line >= inputFile.Length)
-                    return Word.Type.Ignore; // End of file
+                    return WordType.Ignore; // End of file
             }
             if(inputFile[line][word] == "EPSILON")
-                return Word.Type.Epsilon;
-            else if(DetectWordType(line, word+1, inputFile) == Word.Type.Equals)
-                return Word.Type.NameSet;
+                return WordType.Epsilon;
+            else if(DetectWordType(line, word+1, inputFile) == WordType.Equals)
+                return WordType.NameSet;
             else if(inputFile[line][word] == "|")
-                return Word.Type.Or;
+                return WordType.Or;
             else if(inputFile[line][word] == "->")
-                return Word.Type.Equals;
+                return WordType.Equals;
             else if(inputFile[line][word] == "//")
-                return Word.Type.Ignore;
+                return WordType.Ignore;
             else
-                return Word.Type.NameRead;
+                return WordType.NameRead;
         }
 
-        private static BNF ParseWords(List<Word> BNF) {
+        private static Bnf ParseWords(List<Word> BNF) {
             List<Production> productions = new List<Production>();
             List<Symbol> terminals = new List<Symbol>();
             // We run through all words to see which are Productions and which are not.
             foreach (Word word in BNF)
             {
-                if(word.type == Word.Type.NameSet) {
-                    Production production = new Production();
-                    production.name = word.word;
-                    production.expansions.Add(new Expansion());
+                if(word.Type == WordType.NameSet) {
+                    Production production = new Production()
+                    {
+                        Name = word.Content
+                    };
+                    production.Expansions.Add(new Expansion());
                     productions.Add(production);
                 }
             }
             Production currentProduction = productions[0];
             for(int wordIndex = 1; wordIndex < BNF.Count; wordIndex++) {
-                switch(BNF[wordIndex].type) {
-                    case Word.Type.NameSet:
+                switch(BNF[wordIndex].Type) {
+                    case WordType.NameSet:
                         // Find already defined production and use that.
-                        Production production = productions.Find(x => x.name == BNF[wordIndex].word);
+                        Production production = productions.Find(x => x.Name == BNF[wordIndex].Content);
                         // Set production as currentProduction
                         currentProduction = production;
                     break;
-                    case Word.Type.NameRead:
-                    case Word.Type.Epsilon:
+                    case WordType.NameRead:
+                    case WordType.Epsilon:
                         // See if production exists, use that
-                        Symbol symbol = productions.Find(x => x.name == BNF[wordIndex].word);
+                        Symbol symbol = productions.Find(x => x.Name == BNF[wordIndex].Content);
                         // If no production
                         if(symbol == null)
                         {
-                            symbol = terminals.Find(t => t.name == BNF[wordIndex].word);
+                            symbol = terminals.Find(t => t.Name == BNF[wordIndex].Content);
                         }
                         // if no production or terminal create symbol
                         if(symbol == null) 
                         {
-                            symbol = new Symbol();
-                            symbol.name = BNF[wordIndex].word;
+                            symbol = new Symbol()
+                            {
+                                Name = BNF[wordIndex].Content
+                            };
                             terminals.Add(symbol);
                         }
                         // Add to current productions last expansions list of symbols
-                        currentProduction.expansions[currentProduction.expansions.Count-1].symbols.Add(symbol);
+                        currentProduction.Expansions[currentProduction.Expansions.Count-1].Symbols.Add(symbol);
                     break;
-                    case Word.Type.Or:
-                        currentProduction.expansions.Add(new Expansion());
+                    case WordType.Or:
+                        currentProduction.Expansions.Add(new Expansion());
                         // Add new expansion
                     break;
-                    case Word.Type.Equals:
-                    case Word.Type.Ignore:
+                    case WordType.Equals:
+                    case WordType.Ignore:
                         // Do nothing. These are not important now
                     break;
                     default:
@@ -124,7 +130,7 @@ namespace P4
                 }
             }
 
-            BNF bnf = new BNF(productions[0], productions, terminals);
+            Bnf bnf = new Bnf(productions[0], productions, terminals);
             return bnf;
         }
     }

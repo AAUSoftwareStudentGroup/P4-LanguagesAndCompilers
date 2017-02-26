@@ -1,44 +1,44 @@
 using System.Collections.Generic;
 
-namespace P4.Data
+namespace Compiler.Data
 {
-    public class AST 
+    public class Tree<T> 
     {
-        public string name;
-        public List<AST> children;
-        public AST parent;
-
-        public AST(string name, AST parent = null) 
+        public Tree(T node, Tree<T> parent = null) 
         {
-            this.parent = parent;
-            this.name = name;
-            this.children = new List<AST>();
+            Parent = parent;
+            Node = node;
+            Children = new List<Tree<T>>();
         }
 
+        public T Node { get; set; }
+        public List<Tree<T>> Children { get; set; }
+        public Tree<T> Parent { get; set; }
+
         // return the new child
-        public AST AddChild(string name)
+        public Tree<T> AddChild(T node)
         {
-            AST child = new AST(name, this);
-            this.children.Add(child);
+            Tree<T> child = new Tree<T>(node, this);
+            Children.Add(child);
             return child;
         }
 
         public override string ToString()
         {
-            return this.PrintPretty();
+            return PrintPretty();
         }
 
         public string ToNewickString()
         {
             string tree = "";
-            if(this.children.Count > 0)
+            if(Children.Count > 0)
             {
                 tree += "(";
-                tree += string.Join(",", children);
+                tree += string.Join(",", Children);
                 tree += ")";
             }
-            tree += $"{this.name}";
-            if(parent == null)
+            tree += $"{Node}";
+            if(Parent == null)
             {
                 tree += ";";
             }
@@ -58,10 +58,10 @@ namespace P4.Data
                 s += "|-";
                 indent += "| ";
             }
-            s += this.name+"\r\n";
+            s += Node+"\r\n";
 
-            for (int i = 0; i < children.Count; i++)
-                s += children[i].PrintPretty(indent, i == children.Count - 1);
+            for (int i = 0; i < Children.Count; i++)
+                s += Children[i].PrintPretty(indent, i == Children.Count - 1);
             
             return s;
         }

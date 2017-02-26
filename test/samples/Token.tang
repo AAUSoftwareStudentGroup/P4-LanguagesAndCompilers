@@ -1,0 +1,5 @@
+class Token 
+    string Name;
+    string Value;
+    string ToString()
+        return $"({Name}: '{Value}')";

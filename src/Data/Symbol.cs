@@ -1,19 +1,19 @@
 using System.Collections.Generic;
 using System;
 
-namespace P4.Data
+namespace Compiler.Data
 {
     public class Symbol
     {
-        public string name;
-
-        protected HashSet<Symbol> firstSet = null;
-        protected HashSet<Symbol> followSet = null;
-        protected bool? derivesEmpty = null;
+        protected HashSet<Symbol> _firstSet = null;
+        protected HashSet<Symbol> _followSet = null;
+        protected bool? _derivesEmpty = null;
 
         public Symbol() {
-            this.name = "";
+            Name = "";
         }
+
+        public string Name { get; set; }
 
         public bool IsTerminal() 
         {
@@ -22,42 +22,42 @@ namespace P4.Data
 
         public virtual HashSet<Symbol> FirstSet()
         {
-            if(firstSet != null)
+            if (_firstSet != null)
             {
-                return firstSet;
+                return _firstSet;
             }
 
-            firstSet = new HashSet<Symbol>();
-            if(this.IsTerminal())
+            _firstSet = new HashSet<Symbol>();
+            if (IsTerminal())
             {
-                if(this.name != "EPSILON" && this.name != "EOF")
+                if (Name != "EPSILON" && Name != "EOF")
                 {
-                    firstSet.Add(this);
+                    _firstSet.Add(this);
                 }
             }
             else
             {
                 Production p = this as Production;
-                firstSet = p.FirstSet();
+                _firstSet = p.FirstSet();
             }
-            return firstSet;
+            return _firstSet;
         }
 
         public virtual bool DerivesEmpty()
         {
-            if(this.derivesEmpty != null)
-                return this.derivesEmpty.Value;
+            if (_derivesEmpty != null)
+                return _derivesEmpty.Value;
 
-            if(this.IsTerminal())
+            if (IsTerminal())
             {
-                this.derivesEmpty = (this.name == "EPSILON" || this.name == "EOF");
+                _derivesEmpty = (Name == "EPSILON" || Name == "EOF");
             }
             else
             {
                 Production p = this as Production;
-                this.derivesEmpty = p.DerivesEmpty();
+                _derivesEmpty = p.DerivesEmpty();
             }
-            return this.derivesEmpty.Value;
+            return _derivesEmpty.Value;
         }
     }
 }

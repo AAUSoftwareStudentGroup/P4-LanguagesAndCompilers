@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System;
+using Compiler.LexicalAnalasis;
+using Compiler.Data;
 
-using P4.LexicalAnalysis;
-using P4.Data;
-
-namespace P4
+namespace Compiler
 {
-    public class Start {
+    public class Program
+    {
         public static void Main(string[] args)
         {
-            BNF bnf = BNFParser.Parse(); 
+            Bnf bnf = BnfParser.Parse();
             Lexer l = new Lexer();
-            AST ast;
+            Tree<string> ast;
             /*
             // List all terminals
             foreach(Symbol s in bnf.terminals)
@@ -23,18 +23,19 @@ namespace P4
              */
             foreach (string arg in args)
             {
-                if(File.Exists(arg)) {
+                if (File.Exists(arg))
+                {
                     // read File
                     String source = arg;
                     IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(arg));
-                    
+
                     // List all token in source file
-                    foreach(Token t in tokens)
+                    foreach (Token t in tokens)
                     {
-                        System.Console.WriteLine(t);
+                        Console.WriteLine(t);
                     }
                     // return;
-                    
+
                     ast = bnf.ParseTokenStream(tokens);
                     Console.WriteLine(ast);
                     // Console.WriteLine(ast.PrintPretty());
@@ -43,4 +44,3 @@ namespace P4
         }
     }
 }
-    
