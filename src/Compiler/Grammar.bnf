@@ -83,8 +83,6 @@ CompareOperation  -> OrOperation CompareOperationP
 CompareOperationP -> Compare OrOperation CompareOperationP
               | EPSILON
 
-
-
 OrOperation  -> AndOperation OrOperationP
 OrOperationP -> Or AndOperation OrOperationP
               | EPSILON
