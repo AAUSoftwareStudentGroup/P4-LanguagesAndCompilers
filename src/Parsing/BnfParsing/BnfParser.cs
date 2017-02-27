@@ -44,7 +44,7 @@ namespace Compiler
                     if (detectedWord.Type == Word.WordType.Ignore)
                         break; // Don't read the rest of this line
                     _bnf.Add(detectedWord); // Add type to list
-                    // Console.WriteLine("Line: {0}, Word: {1}: {2} Type {3}", line+1, word+1, inputFileContentWords[line][word], detectedWord.type);
+                    // Console.WriteLine("Line: {0}, Word: {1}: {2} Type {3}", line+1, word+1, inputFileContentWords[line][word], detectedWordType);
                 }
             }
             return _bnf;

@@ -5,14 +5,14 @@ namespace Compiler.Data
 {
     public class Symbol
     {
-        public string Name { get; set; }
-
         protected HashSet<Symbol> _firstSet = null;
         protected HashSet<Symbol> _followSet = null;
 
         public Symbol() {
             Name = "";
         }
+
+        public string Name { get; set; }
 
         public bool IsTerminal() 
         {
@@ -36,8 +36,7 @@ namespace Compiler.Data
 
         public virtual bool DerivesEmpty()
         {
-
-            if(IsTerminal() && Name == "EPSILON" || Name == "EOF")
+            if(IsTerminal() && (Name == "EPSILON" || Name == "EOF"))
             {
 				return true;
             }

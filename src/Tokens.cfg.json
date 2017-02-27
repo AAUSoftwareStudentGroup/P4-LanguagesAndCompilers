@@ -51,8 +51,12 @@
         "PatternString": "or"
     },
     {
-        "Name": "class",
+        "Name": "ClassWord",
         "PatternString": "class"
+    },
+    {
+        "Name": "Return",
+        "PatternString": "return"
     },
     {
         "Name": "SimpleType",
@@ -89,7 +93,7 @@
     {
         "Name": "Identifier",
         "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
-    },
+    }
     /*
 -Number     -> Digit
 -Digit      -> 1 | true | false

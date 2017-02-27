@@ -3,29 +3,37 @@ StatementsP -> NewLine Statement StatementsP
               | EPSILON
 
 Statement -> Declaration
-          |  Assignment
+          |  IdentifierStatement
           |  IfStatement
           |  WhileStatement
           |  Class
           |  NewLine
 
-Class -> class Identifier TypedParameters ClassBlock
+Class -> ClassWord Identifier TypedParameters ClassBlock
 
-ClassBlock -> NewLine Indent ClassStatements Dedent
+ClassBlock -> Indent ClassStatements Dedent
 
 ClassStatements  -> ClassStatement SimpleStatementsP            
+                 |  EPSILON
 ClassStatementsP -> NewLine ClassStatement ClassStatementsP
               | EPSILON
 
 ClassStatement -> Declaration
-               |  Assignment
+               |  IdentifierStatement
                |  IfStatement
                |  WhileStatement
-               |  EPSILON
+               |  NewLine
 
 Declaration -> Type Identifier Definition
 
-Assignment -> Identifier Assign Expression
+IdentifierStatement -> Identifier IdentifierOperation
+
+IdentifierOperation -> Assignment
+                    |  Call
+
+Assignment -> Assign Expression
+
+Call -> Parameters
 
 IfStatement -> If Condition SimpleBlock
 
@@ -33,20 +41,26 @@ WhileStatement -> While Condition SimpleBlock
 
 Condition -> StartDel Expression EndDel
 
-Definition -> TypedParameters SimpleBlock
-           |  Assign Expression
+Definition -> FunctionDefinition
+           |  Assignment
 
-SimpleBlock -> NewLine Indent SimpleStatements Dedent
+FunctionDefinition -> TypedParameters SimpleBlock
 
-TypedParameters -> StartDel Type Identifier TypedParametersP
+SimpleBlock -> Indent SimpleStatements Dedent
+
+TypedParameters -> StartDel TypedParametersF
+TypedParametersF -> Type Identifier TypedParametersP
+                |   EndDel
 TypedParametersP -> SepOp Type Identifier TypedParametersP
                | EndDel
 
 Type -> SimpleType TypeParameters
      |  StartDel Type EndDel TypeParameters
 
-TypeParameters -> StartDel Type TypeParametersP EndDel
+TypeParameters -> StartDel TypeParametersF
                | EPSILON
+TypeParametersF -> Type TypeParametersP EndDel
+               | EndDel
 TypeParametersP -> SepOp Type TypeParametersP
                | EPSILON
 
@@ -55,10 +69,13 @@ SimpleStatementsP -> NewLine SimpleStatement SimpleStatementsP
               | EPSILON
 
 SimpleStatement -> SimpleDeclaration
-                 |  Assignment
+                 |  IdentifierStatement
                  |  IfStatement
                  |  WhileStatement
+                 |  ReturnStatement
                  |  EPSILON
+
+ReturnStatement -> Return Expression
 
 SimpleDeclaration -> Type Identifier Assign Expression
 Expression    -> CompareOperation
@@ -85,16 +102,17 @@ MultOperationP -> MulDivOpp DelOperation MultOperationP
                | EPSILON
 
 DelOperation -> Del
-             |  FunctionCall
+             |  Identifier FunctionParameters
              |  Number
 
 Del          -> StartDel Expression EndDel
 
-FunctionCall -> Identifier Parameters
+FunctionParameters -> Parameters
+                   | EPSILON
 
-Parameters -> StartDel Expression ParametersP
-           |  EPSILON
-
+Parameters -> StartDel ParametersF
+ParametersF -> Expression ParametersP
+            |  EndDel
 ParametersP -> SepOp Expression ParametersP
                | EndDel
 

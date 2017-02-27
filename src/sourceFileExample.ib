@@ -1,9 +1,0 @@
-nothing setup(int8 foo)
-  int8 a = pinMode(LED_BUILTIN, OUTPUT)
-
-nothing loop(uint32 bar)
-  int8 b = digitalWrite(LED_BUILTIN, HIGH)
-  // delay(1000)
-  int8 c = digitalWrite(LED_BUILTIN, LOW)
-  // delay(1000)
-  a = b + c

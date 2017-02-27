@@ -65,7 +65,6 @@ namespace Compiler.LexicalAnalysis
                             };
                             yield return token;
                         }
-
                         while(indentSize < indentationLevel.Peek())
                         {
                             indentationLevel.Pop();

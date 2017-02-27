@@ -5,10 +5,10 @@ namespace Compiler.Data
 {
     public class Production : Symbol
     {
-        public List<Expansion> Expansions { get; set; }
         public Production() {
             Expansions = new List<Expansion>();
         }
+        public List<Expansion> Expansions { get; set; }
 
         public override bool DerivesEmpty()
         {
@@ -20,7 +20,6 @@ namespace Compiler.Data
 					{
 						return true;
 					}
-
                 }
             }
             return false;
@@ -91,7 +90,7 @@ namespace Compiler.Data
             HashSet<Symbol> set = e.FirstSet();
             if(DerivesEmpty())
             {
-                set.IntersectWith(FollowSet(bnf));
+                set.UnionWith(FollowSet(bnf));
             }
             
             return set;

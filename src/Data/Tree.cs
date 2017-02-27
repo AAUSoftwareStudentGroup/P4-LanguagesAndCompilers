@@ -4,16 +4,16 @@ namespace Compiler.Data
 {
     public class Tree<NodeType>
     {
-        public NodeType Name { get; set; }
-        public List<Tree<NodeType>> Children { get; set; }
-        public Tree<NodeType> Parent { get; set; }
-
         public Tree(NodeType name, Tree<NodeType> parent = null) 
         {
             Parent = parent;
-            Name = name;
+            Node = name;
             Children = new List<Tree<NodeType>>();
         }
+
+        public NodeType Node { get; set; }
+        public List<Tree<NodeType>> Children { get; set; }
+        public Tree<NodeType> Parent { get; set; }
 
         // return the new child
         public Tree<NodeType> AddChild(NodeType name)
@@ -37,7 +37,7 @@ namespace Compiler.Data
                 tree += string.Join(",", Children);
                 tree += ")";
             }
-            tree += $"{Name}";
+            tree += $"{Node}";
             if(Parent == null)
             {
                 tree += ";";
@@ -58,7 +58,7 @@ namespace Compiler.Data
                 s += "|-";
                 indent += "| ";
             }
-            s += Name+"\r\n";
+            s += Node+"\r\n";
 
             for (int i = 0; i < Children.Count; i++)
                 s += Children[i].PrintPretty(indent, i == Children.Count - 1);

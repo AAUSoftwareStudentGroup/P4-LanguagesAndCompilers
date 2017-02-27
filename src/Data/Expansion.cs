@@ -5,13 +5,13 @@ namespace Compiler.Data
 {
     public class Expansion
     {
-        public List<Symbol> Symbols { get; set; }
         protected HashSet<Symbol> _firstSet = null;
 
         public Expansion() {
             Symbols = new List<Symbol>();
         }
 
+        public List<Symbol> Symbols { get; set; }
 
         public HashSet<Symbol> FirstSet()
         {
@@ -57,7 +57,7 @@ namespace Compiler.Data
         {
             // return everything after the index'th symbol as a new Expansion
             Expansion tail = new Expansion();
-                tail.Symbols.Add(Symbols[index+1]);
+            tail.Symbols.Add(Symbols[index+1]);
             return tail;
         }
     }
