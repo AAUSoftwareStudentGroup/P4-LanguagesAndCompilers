@@ -152,11 +152,13 @@ namespace Compiler.Data
             return syntaxTree;
         }
 
+		// If condition 1 and 2 is true then the bnf is ll1
         public bool IsLL1()
         {
             return Ll1Condition1() && Ll1Condition2();
         }
 
+		// Checks if the Firstset of a production only contains distincs elements 
         public bool Ll1Condition1()
         {
             foreach (Production p in Productions)
@@ -174,6 +176,7 @@ namespace Compiler.Data
             return true;
         }
 
+		// Checks if the set of first and followset of a production only contains distinct elements
         public bool Ll1Condition2()
         {
             foreach (var p in Productions)

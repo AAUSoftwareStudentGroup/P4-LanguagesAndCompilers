@@ -27,20 +27,6 @@ namespace Compiler.Data
             return _firstSet;
         }
 
-		public bool AllDerriveEmpty()
-		{
-			bool allDerriveEmpty = true;
-			foreach (var s in Symbols)
-			{
-				if (s.DerivesEmpty() == false || s.IsTerminal())  
-				{
-					allDerriveEmpty = false;
-					break;
-				}
-			}
-			return allDerriveEmpty;
-		}
-
         public bool DerivesEmpty()
         {
             foreach(Symbol s in Symbols)
