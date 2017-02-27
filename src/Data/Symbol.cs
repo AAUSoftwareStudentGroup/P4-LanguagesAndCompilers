@@ -3,7 +3,7 @@ using System;
 
 namespace Compiler.Data
 {
-    public class Symbol
+    public class Symbol // TODO: This should really be called Terminal. Someone with visual studio should rename this
     {
         protected HashSet<Symbol> _firstSet = null;
         protected HashSet<Symbol> _followSet = null;

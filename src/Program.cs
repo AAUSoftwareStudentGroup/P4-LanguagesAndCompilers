@@ -3,7 +3,8 @@ using System.IO;
 using System;
 using Compiler.Data;
 using Compiler.LexicalAnalysis;
-using System.Linq;
+using Compiler.Parsing.BnfParsing;
+
 namespace Compiler
 {
     public class Program
