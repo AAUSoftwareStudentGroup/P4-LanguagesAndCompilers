@@ -1,2 +1,6 @@
-int8 sum(int8 a, int8 b)
-  a = a + b
+int8 sum(int8 a, int8() b)
+  a = a + b()
+
+int8(int8, int8()) operation = sum
+
+int16 result = operation(2, 4)
