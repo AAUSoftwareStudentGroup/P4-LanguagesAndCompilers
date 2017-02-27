@@ -57,7 +57,10 @@ namespace Compiler.Data
         {
             // return everything after the index'th symbol as a new Expansion
             Expansion tail = new Expansion();
-            tail.Symbols.Add(Symbols[index+1]);
+            for (; index < Symbols.Count - 1; index++)
+            {
+                tail.Symbols.Add(this.Symbols[index + 1]);
+            }
             return tail;
         }
     }

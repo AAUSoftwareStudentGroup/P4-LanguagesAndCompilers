@@ -33,33 +33,76 @@ namespace Compiler.Data
             }
 
             _followSet = new HashSet<Symbol>();
-            // foreach occurence of `this` in any expansion in BNF
-            foreach(Production p in bnf.Productions)
+
+            foreach (var production in bnf.Productions)
             {
-                foreach(Expansion e in p.Expansions)
+                foreach (var expansion in production.Expansions)
                 {
-                    for(int i = 0; i < e.Symbols.Count; i++)
+                    for (int i = 0; i < expansion.Symbols.Count; i++)
                     {
-                        Symbol s = e.Symbols[i];
-                        if(s == this)
+                        Symbol b = expansion.Symbols[i];
+                        if(b == this)
                         {
-                            if(i < e.Symbols.Count-1)
+                            if(i < expansion.Symbols.Count - 1)
                             {
-                                Expansion tail = e.Tail(i);
-                                _followSet.UnionWith(tail.FirstSet());
-								if(tail.AllDerriveEmpty())
+                                var tailFirstSet = expansion.Symbols[i + 1].FirstSet();
+
+                                bool tailFirstSetContainsEpsilon = false;
+
+                                foreach (var symbol in tailFirstSet)
                                 {
-                                    _followSet.UnionWith(p.FollowSet(bnf));
+                                    if (symbol.Name == "EPSILON")
+                                    {
+                                        tailFirstSetContainsEpsilon = true;
+                                        break;
+                                    }
+                                }
+
+                                tailFirstSet.RemoveWhere(s => s.Name == "EPSILON");
+                                
+                                _followSet.UnionWith(tailFirstSet);
+                                if (tailFirstSetContainsEpsilon)
+                                {
+                                    _followSet.UnionWith(production.FollowSet(bnf));
                                 }
                             }
                             else
                             {
-                                _followSet.UnionWith(p.FollowSet(bnf));
+                                _followSet.UnionWith(production.FollowSet(bnf));
                             }
                         }
                     }
                 }
             }
+
+        //    _followSet = new HashSet<Symbol>();
+        //    // foreach occurence of `this` in any expansion in BNF
+        //    foreach(Production p in bnf.Productions)
+        //    {
+        //        foreach(Expansion e in p.Expansions)
+        //        {
+        //            for(int i = 0; i < e.Symbols.Count; i++)
+        //            {
+        //                Symbol s = e.Symbols[i];
+        //                if(s == this)
+        //                {
+        //                    if(i < e.Symbols.Count-1)
+        //                    {
+        //                        Expansion tail = e.Tail(i);
+        //                        _followSet.UnionWith(tail.FirstSet());
+								//if(tail.AllDerriveEmpty())
+        //                        {
+        //                            _followSet.UnionWith(p.FollowSet(bnf));
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        _followSet.UnionWith(p.FollowSet(bnf));
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
             return _followSet;
         }
 

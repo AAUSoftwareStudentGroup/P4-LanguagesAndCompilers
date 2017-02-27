@@ -152,28 +152,40 @@ namespace Compiler.Data
             return syntaxTree;
         }
 
-		public bool IsLL1()
-		{
-			foreach (Production A in Productions.Skip(3))
-			{
-				HashSet<Symbol> predictSet = new HashSet<Symbol>();
-				foreach (var expansion in A.Expansions)
-				{
-					var s = A.PredictSet(expansion, this);
-					var intersection = s.Intersect(predictSet).ToList();
-					if (intersection.Count != 0)
-					{
-						A.PredictSet(expansion, this);
-						A.FollowSet(this);
-						return false;
-					}
-					predictSet.UnionWith(s);
+        public bool IsLL1()
+        {
+            return Ll1Condition1() && Ll1Condition2();
+        }
 
-				}
-				predictSet = null;
-			}
-			return true;
-		}
+        public bool Ll1Condition1()
+        {
+            foreach (Production p in Productions)
+            {
+                HashSet<Symbol> union = new HashSet<Symbol>();
+                foreach (var e in p.Expansions)
+                {
+                    if (union.Intersect(e.FirstSet()).Count() > 0)
+                    {
+                        return false;
+                    }
+                    union.UnionWith(e.FirstSet());
+                }
+            }
+            return true;
+        }
+
+        public bool Ll1Condition2()
+        {
+            foreach (var p in Productions)
+            {
+                if (p.DerivesEmpty() && p.FirstSet().Intersect(p.FollowSet(this)).Count() > 0)
+                {
+
+                    return false;
+                }
+            }
+            return true;
+        }
 
     }
 }

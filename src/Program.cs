@@ -11,10 +11,17 @@ namespace Compiler
         public static void Main(string[] args)
         {
             Bnf bnf = BnfParser.Parse();
+            foreach (var p in bnf.Productions)
+            {
+                Console.WriteLine($"First({p.Name}): {String.Join(", ", p.FirstSet().Select(t => t.Name))}");
+                Console.WriteLine($"Follow({p.Name}): {String.Join(", ", p.FollowSet(bnf).Select(t => t.Name))}");
+                Console.WriteLine();
+            }
 			var flag = bnf.IsLL1();
 			Console.WriteLine("flag: " + flag);
             Lexer l = new Lexer();
             Tree<string> ast;
+            args = new string[] { "sourceFileExample.tang" };
             foreach (string arg in args)
             {
                 if (File.Exists(arg))
