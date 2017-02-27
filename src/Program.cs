@@ -20,10 +20,12 @@ namespace Compiler
                 Console.WriteLine();
             }
 			var flag = bnf.IsLL1();
-			Console.WriteLine("flag: " + flag);
+			Console.WriteLine("Is LL(1): " + flag);
+            
             Lexer l = new Lexer();
             Tree<string> ast;
-            args = new string[] { "sourceFileExample.tang" };
+            if(args.Length == 0)
+                args = new string[] { "sourceFileExample.tang" };
             foreach (string arg in args)
             {
                 if (File.Exists(arg))
