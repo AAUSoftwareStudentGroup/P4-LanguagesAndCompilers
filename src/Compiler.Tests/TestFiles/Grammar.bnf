@@ -1,0 +1,118 @@
+Statements  -> Statement StatementsP
+StatementsP -> NewLine Statement StatementsP
+              | EPSILON
+
+Statement -> Declaration
+          |  IdentifierStatement
+          |  IfStatement
+          |  WhileStatement
+          |  Class
+          |  NewLine
+
+Class -> ClassWord Identifier TypedParameters ClassBlock
+
+ClassBlock -> Indent ClassStatements Dedent
+
+ClassStatements  -> ClassStatement SimpleStatementsP            
+                 |  EPSILON
+ClassStatementsP -> NewLine ClassStatement ClassStatementsP
+              | EPSILON
+
+ClassStatement -> Declaration
+               |  IdentifierStatement
+               |  IfStatement
+               |  WhileStatement
+               |  NewLine
+
+Declaration -> Type Identifier Definition
+
+IdentifierStatement -> Identifier IdentifierOperation
+
+IdentifierOperation -> Assignment
+                    |  Call
+
+Assignment -> Assign Expression
+
+Call -> Parameters
+
+IfStatement -> If Condition SimpleBlock
+
+WhileStatement -> While Condition SimpleBlock
+
+Condition -> StartDel Expression EndDel
+
+Definition -> FunctionDefinition
+           |  Assignment
+
+FunctionDefinition -> TypedParameters SimpleBlock
+
+SimpleBlock -> Indent SimpleStatements Dedent
+
+TypedParameters -> StartDel TypedParametersF
+TypedParametersF -> Type Identifier TypedParametersP
+                |   EndDel
+TypedParametersP -> SepOp Type Identifier TypedParametersP
+               | EndDel
+
+Type -> SimpleType TypeParameters
+     |  StartDel Type EndDel TypeParameters
+
+TypeParameters -> StartDel TypeParametersF
+               | EPSILON
+TypeParametersF -> Type TypeParametersP EndDel
+               | EndDel
+TypeParametersP -> SepOp Type TypeParametersP
+               | EPSILON
+
+SimpleStatements  -> SimpleStatement SimpleStatementsP            
+SimpleStatementsP -> NewLine SimpleStatement SimpleStatementsP
+              | EPSILON
+
+SimpleStatement -> SimpleDeclaration
+                 |  IdentifierStatement
+                 |  IfStatement
+                 |  WhileStatement
+                 |  ReturnStatement
+                 |  EPSILON
+
+ReturnStatement -> Return Expression
+
+SimpleDeclaration -> Type Identifier Assign Expression
+Expression    -> CompareOperation
+CompareOperation  -> OrOperation CompareOperationP
+CompareOperationP -> Compare OrOperation CompareOperationP
+              | EPSILON
+
+OrOperation  -> AndOperation OrOperationP
+OrOperationP -> Or AndOperation OrOperationP
+              | EPSILON
+
+AndOperation  -> AddOperation AndOperationP
+AndOperationP -> And AddOperation AndOperationP
+              | EPSILON
+
+AddOperation  -> MultOperation AddOperationP
+AddOperationP -> AddSubOpp MultOperation AddOperationP
+              | EPSILON
+
+MultOperation -> DelOperation MultOperationP
+MultOperationP -> MulDivOpp DelOperation MultOperationP
+               | EPSILON
+
+DelOperation -> Del
+             |  Identifier FunctionParameters
+             |  Number
+
+Del          -> StartDel Expression EndDel
+
+FunctionParameters -> Parameters
+                   | EPSILON
+
+Parameters -> StartDel ParametersF
+ParametersF -> Expression ParametersP
+            |  EndDel
+ParametersP -> SepOp Expression ParametersP
+               | EndDel
+
+Val -> Identifier
+     | Number
