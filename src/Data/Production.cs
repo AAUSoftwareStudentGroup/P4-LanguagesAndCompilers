@@ -1,20 +1,20 @@
 using System.Collections.Generic;
 using System;
 
-namespace P4.Data
+namespace Compiler.Data
 {
     public class Production : Symbol
     {
-        public List<Expansion> expansions;
+        public List<Expansion> Expansions { get; set; }
         public Production() {
-            expansions = new List<Expansion>();
+            Expansions = new List<Expansion>();
         }
 
         public override bool DerivesEmpty()
         {
-            foreach(Expansion e in expansions)
+            foreach(Expansion e in Expansions)
             {
-                foreach(Symbol s in e.symbols)
+                foreach(Symbol s in e.Symbols)
                 {
 					if (s.IsTerminal() && s.DerivesEmpty())
 					{
@@ -26,53 +26,53 @@ namespace P4.Data
             return false;
         }
 
-        public HashSet<Symbol> FollowSet(BNF bnf)
+        public HashSet<Symbol> FollowSet(Bnf bnf)
         {
-            if(this.followSet != null)
+            if(_followSet != null)
             {
-                return this.followSet;
+                return _followSet;
             }
 
-            this.followSet = new HashSet<Symbol>();
+            _followSet = new HashSet<Symbol>();
             // foreach occurence of `this` in any expansion in BNF
-            foreach(Production p in bnf.productions)
+            foreach(Production p in bnf.Productions)
             {
-                foreach(Expansion e in p.expansions)
+                foreach(Expansion e in p.Expansions)
                 {
-                    for(int i = 0; i < e.symbols.Count; i++)
+                    for(int i = 0; i < e.Symbols.Count; i++)
                     {
-                        Symbol s = e.symbols[i];
+                        Symbol s = e.Symbols[i];
                         if(s == this)
                         {
-                            if(i < e.symbols.Count-1)
+                            if(i < e.Symbols.Count-1)
                             {
                                 Expansion tail = e.Tail(i);
-                                followSet.UnionWith(tail.FirstSet());
-								if(tail.allDerriveEmpty())
+                                _followSet.UnionWith(tail.FirstSet());
+								if(tail.AllDerriveEmpty())
                                 {
-                                    followSet.UnionWith(p.FollowSet(bnf));
+                                    _followSet.UnionWith(p.FollowSet(bnf));
                                 }
                             }
                             else
                             {
-                                followSet.UnionWith(p.FollowSet(bnf));
+                                _followSet.UnionWith(p.FollowSet(bnf));
                             }
                         }
                     }
                 }
             }
-            return followSet;
+            return _followSet;
         }
 
         public override HashSet<Symbol> FirstSet()
         {
-            firstSet = new HashSet<Symbol>();
+            _firstSet = new HashSet<Symbol>();
         
-            foreach(Expansion e in expansions)
+            foreach(Expansion e in Expansions)
             {
-                foreach(Symbol s in e.symbols)
+                foreach(Symbol s in e.Symbols)
                 {
-                    firstSet.UnionWith(s.FirstSet());
+                    _firstSet.UnionWith(s.FirstSet());
                     if(s.DerivesEmpty() == false)
                     {
                         break;
@@ -80,18 +80,18 @@ namespace P4.Data
                 }
             }
 
-            return firstSet;
+            return _firstSet;
         }
 
-        public HashSet<Symbol> PredictSet(Expansion e, BNF bnf)
+        public HashSet<Symbol> PredictSet(Expansion e, Bnf bnf)
         {
-            if(expansions.Contains(e) == false)
+            if(Expansions.Contains(e) == false)
                 throw new Exception("Expansion not in production");
             
             HashSet<Symbol> set = e.FirstSet();
-            if(this.DerivesEmpty())
+            if(DerivesEmpty())
             {
-                set.IntersectWith(this.FollowSet(bnf));
+                set.IntersectWith(FollowSet(bnf));
             }
             
             return set;

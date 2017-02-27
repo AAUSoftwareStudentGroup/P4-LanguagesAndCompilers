@@ -1,14 +1,14 @@
 using System;
 
-namespace P4.Data
+namespace Compiler.Data
 {
     public class Token 
     {
-        public String name;
-        public String value;
-        
+        public String Name { get; set; }
+        public String Value { get; set; }
+
         public override String ToString() {
-            return $"({this.name}: '{this.value}')";
+            return $"({Name}: '{Value}')";
         }
     }
 }

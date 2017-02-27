@@ -1,17 +1,17 @@
 using System;
 
-namespace P4.BNFParsing
+namespace Compiler.Parsing.BnfParsing
 {
     public class SyntaxErrorException : Exception 
     {
-        public int line;
-        public int word;
-        public string wrongWord;
+        public int Line { get; }
+        public int Word { get; }
+        public string WrongWord { get; }
         public SyntaxErrorException(int line, int word, string wrongWord) : base("Syntax error on line " + line + " word " + word + " at word: " + wrongWord)
         {
-            this.line = line;
-            this.word = word;
-            this.wrongWord = wrongWord;
+            Line = line;
+            Word = word;
+            WrongWord = wrongWord;
         }
     }
 }

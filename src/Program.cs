@@ -2,21 +2,21 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 
-using P4.LexicalAnalysis;
-using P4.Data;
+using Compiler.LexicalAnalysis;
+using Compiler.Data;
 using System.Linq;
 
-namespace P4
+namespace Compiler
 {
     public class Start {
         public static void Main(string[] args)
         {
-            BNF bnf = BNFParser.Parse();
+            Bnf bnf = BnfParser.Parse();
 			var flag = bnf.IsLL1();
 			Console.WriteLine("flag: " + flag);
 			Console.ReadKey();
             Lexer l = new Lexer();
-            AST ast;
+            Tree<string> ast;
 
             foreach (string arg in args)
             {

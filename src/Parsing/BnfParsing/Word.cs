@@ -1,21 +1,24 @@
-namespace P4.BNFParsing
+namespace Compiler.Parsing.BnfParsing
 {
     public class Word
     {
-        public enum Type {
+        public enum WordType
+        {
             NameRead, // Name, but not on left side of Equals. Expecting to read the name from earlier definition
             NameSet, // Name, as above, but on the left side on an Equals. Expecting to set the name.
             Or, // |
             Ignore, // Stuff to ignore, like comments
             Epsilon,
             Equals // ::=
-            };
-            public Type type;
-            public string word;
+        };
 
-            public Word() {
-                type = Type.Ignore;
-                word = "";
-            }
+        public WordType Type { get; set; }
+        public string Content { get; set; }
+
+        public Word()
+        {
+            Type = WordType.Ignore;
+            Content = "";
+        }
     }
 }

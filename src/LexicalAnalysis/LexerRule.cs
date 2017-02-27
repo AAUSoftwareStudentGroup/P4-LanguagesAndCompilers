@@ -1,7 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace P4.LexicalAnalysis {
+namespace Compiler.LexicalAnalysis {
     public class LexerRule
     {
         public String Name;

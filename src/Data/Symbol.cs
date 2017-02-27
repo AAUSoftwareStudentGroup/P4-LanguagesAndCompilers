@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using System;
 
-namespace P4.Data
+namespace Compiler.Data
 {
     public class Symbol
     {
-        public string name;
+        public string Name { get; set; }
 
-        protected HashSet<Symbol> firstSet = null;
-        protected HashSet<Symbol> followSet = null;
+        protected HashSet<Symbol> _firstSet = null;
+        protected HashSet<Symbol> _followSet = null;
 
         public Symbol() {
-            this.name = "";
+            Name = "";
         }
 
         public bool IsTerminal() 
@@ -21,23 +21,23 @@ namespace P4.Data
 
         public virtual HashSet<Symbol> FirstSet()
         {
-            firstSet = new HashSet<Symbol>();
-            if(this.IsTerminal())
+            _firstSet = new HashSet<Symbol>();
+            if(IsTerminal())
             {
-            	firstSet.Add(this);
+            	_firstSet.Add(this);
             }
             else
             {
                 Production p = this as Production;
-                firstSet = p.FirstSet();
+                _firstSet = p.FirstSet();
             }
-            return firstSet;
+            return _firstSet;
         }
 
         public virtual bool DerivesEmpty()
         {
 
-            if(this.IsTerminal() && this.name == "EPSILON" || this.name == "EOF")
+            if(IsTerminal() && Name == "EPSILON" || Name == "EOF")
             {
 				return true;
             }
@@ -49,7 +49,7 @@ namespace P4.Data
 
 		public override string ToString()
 		{
-			return name.ToString();
+			return Name.ToString();
 		}
     }
 }
