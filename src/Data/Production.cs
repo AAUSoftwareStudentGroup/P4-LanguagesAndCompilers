@@ -33,7 +33,6 @@ namespace Compiler.Data
             }
 
             _followSet = new HashSet<Symbol>();
-
             foreach (var production in bnf.Productions)
             {
                 foreach (var expansion in production.Expansions)
