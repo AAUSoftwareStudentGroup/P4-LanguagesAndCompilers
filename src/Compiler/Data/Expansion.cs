@@ -15,6 +15,10 @@ namespace Compiler.Data
 
         public HashSet<Symbol> FirstSet()
         {
+			if (_firstSet != null)
+			{
+				return _firstSet;
+			}
             _firstSet = new HashSet<Symbol>();
             foreach(Symbol s in Symbols)
             {

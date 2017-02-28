@@ -21,6 +21,10 @@ namespace Compiler.Data
 
         public virtual HashSet<Symbol> FirstSet()
         {
+			if (_firstSet != null)
+			{
+				return _firstSet;
+			}
             _firstSet = new HashSet<Symbol>();
             if(IsTerminal())
             {

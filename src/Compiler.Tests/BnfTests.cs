@@ -1,6 +1,7 @@
 ﻿using Compiler.Data;
 using Compiler.Parsing.BnfParsing;
 using System.Collections.Generic;
+using System;
 using Xunit;
 using System.Linq;
 
@@ -68,6 +69,7 @@ namespace Compiler.Tests
             Symbol b = bnf.Terminals.FirstOrDefault(s => s.Name == "b");
             Symbol d = bnf.Terminals.FirstOrDefault(s => s.Name == "d");
             List<Symbol> expected = new List<Symbol>() { a, b, d };
+
             Assert.Equal(expected.Count, S.FirstSet().Intersect(expected).Count());
         }
 

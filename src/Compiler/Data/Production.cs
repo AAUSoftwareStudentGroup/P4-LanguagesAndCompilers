@@ -74,34 +74,6 @@ namespace Compiler.Data
                 }
             }
 
-        //    _followSet = new HashSet<Symbol>();
-        //    // foreach occurence of `this` in any expansion in BNF
-        //    foreach(Production p in bnf.Productions)
-        //    {
-        //        foreach(Expansion e in p.Expansions)
-        //        {
-        //            for(int i = 0; i < e.Symbols.Count; i++)
-        //            {
-        //                Symbol s = e.Symbols[i];
-        //                if(s == this)
-        //                {
-        //                    if(i < e.Symbols.Count-1)
-        //                    {
-        //                        Expansion tail = e.Tail(i);
-        //                        _followSet.UnionWith(tail.FirstSet());
-								//if(tail.AllDerriveEmpty())
-        //                        {
-        //                            _followSet.UnionWith(p.FollowSet(bnf));
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        _followSet.UnionWith(p.FollowSet(bnf));
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
             return _followSet;
         }
 
