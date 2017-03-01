@@ -19,8 +19,14 @@ namespace Compiler
                 Console.WriteLine($"Follow({p.Name}): {String.Join(", ", p.FollowSet(bnf).Select(t => t.Name))}");
                 Console.WriteLine();
             }
-			var flag = bnf.IsLL1();
-			Console.WriteLine("Is LL(1): " + flag);
+            string error;
+			if(bnf.IsLL1(out error)) {
+    			Console.WriteLine("Grammar is LL(1)");
+            }
+            else {
+                System.Console.WriteLine("Grammar is NOT LL(1)");
+                System.Console.WriteLine(error);
+            }
             
             Lexer l = new Lexer();
             Tree<string> ast;
