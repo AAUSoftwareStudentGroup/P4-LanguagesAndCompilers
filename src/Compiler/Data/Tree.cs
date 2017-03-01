@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Compiler.Data
 {
@@ -34,10 +35,13 @@ namespace Compiler.Data
             if(Children.Count > 0)
             {
                 tree += "(";
-                tree += string.Join(",", Children);
+                tree += string.Join(",", (Children.Select(t => t.ToNewickString())));
                 tree += ")";
+                tree += $"{Node}";
             }
-            tree += $"{Node}";
+            else {
+                tree += $"\"{Node}\"";
+            }
             if(Parent == null)
             {
                 tree += ";";
