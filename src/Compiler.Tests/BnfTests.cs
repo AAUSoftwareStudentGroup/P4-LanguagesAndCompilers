@@ -95,16 +95,13 @@ namespace Compiler.Tests
             }
 
             Assert.Equal(expected.Count, S.FirstSet().Intersect(expected).Count());
-        }
 
-        [Fact]
-        public void FirstSet2()
-        {
+            //New test with new bnf
             Bnf bnf2 = TestLL1Bnf2();
             Production S2 = bnf2.Productions.FirstOrDefault(p => p.Name == "S");
-            Symbol b = bnf2.Terminals.FirstOrDefault(s => s.Name == "b");
+            Symbol b2 = bnf2.Terminals.FirstOrDefault(s => s.Name == "b");
 
-            List<Symbol> expected2 = new List<Symbol>() { b };
+            List<Symbol> expected2 = new List<Symbol>() { b2 };
 
             Assert.Equal(expected2.Count, S2.FirstSet().Intersect(expected2).Count());
         }

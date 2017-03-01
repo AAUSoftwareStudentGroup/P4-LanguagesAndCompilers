@@ -3,7 +3,7 @@ using System;
 
 namespace Compiler.Data
 {
-    public class Symbol // TODO: This should really be called Terminal. Someone with visual studio should rename this
+    public class Symbol
     {
         protected HashSet<Symbol> _firstSet = null;
         protected HashSet<Symbol> _followSet = null;
@@ -18,6 +18,11 @@ namespace Compiler.Data
         public override bool Equals(object obj)
         {
             return (obj is Symbol) && (obj as Symbol).Name == this.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
 
         public bool IsTerminal() 
