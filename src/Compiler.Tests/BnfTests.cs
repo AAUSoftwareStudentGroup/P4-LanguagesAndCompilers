@@ -75,7 +75,8 @@ namespace Compiler.Tests
         {
             Bnf bnf = TestLL1Bnf();
 
-            Assert.True(bnf.IsLL1());
+            string error;
+            Assert.True(bnf.IsLL1(out error));
         }
 
         [Fact]
