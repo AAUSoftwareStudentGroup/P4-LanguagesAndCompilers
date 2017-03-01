@@ -107,6 +107,21 @@ namespace Compiler.LexicalAnalysis
                     throw new Exception("Error before: ..."+source.Substring(currentIndex, 10));
                 }
             }
+            while(indentationLevel.Peek() > 0)
+            {
+                indentationLevel.Pop();
+                token = new Token {
+                    Name = "Dedent",
+                    Value = match.Value
+                };
+                yield return token;
+
+                token = new Token {
+                    Name = "NewLine",
+                    Value = match.Value
+                };
+                yield return token;
+            }
             yield return new Token {Name = "EOF", Value = "$"};
         }
     }
