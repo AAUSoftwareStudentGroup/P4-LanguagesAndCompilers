@@ -44,6 +44,24 @@ namespace Compiler.Tests
             return new Bnf(S, productions, new List<Symbol>() { a, b, d, e });
         }
 
+        Bnf TestLL1Bnf2()
+        {
+            Symbol a = TestSymbol("a");
+            Symbol b = TestSymbol("b");
+            Symbol d = TestSymbol("d");
+            Symbol e = TestSymbol("EPSILON");
+
+            Production D = TestProduction("D", TestExpansion(d),
+                                               TestExpansion(e));
+            Production B = TestProduction("B", TestExpansion(b));
+            Production A = TestProduction("A", TestExpansion(B, D));
+            Production S = TestProduction("S", TestExpansion(A, a));
+
+            List<Production> productions = new List<Production>() { D, B, A, S };
+
+            return new Bnf(S, productions, new List<Symbol>() { a, b, d, e });
+        }
+
         [Fact]
         public void Constructor()
         {
@@ -70,7 +88,24 @@ namespace Compiler.Tests
             Symbol d = bnf.Terminals.FirstOrDefault(s => s.Name == "d");
             List<Symbol> expected = new List<Symbol>() { a, b, d };
 
+            foreach (var item in S.FirstSet())
+            {
+                System.Diagnostics.Debug.WriteLine("expected" + " " + item);
+            }
+
             Assert.Equal(expected.Count, S.FirstSet().Intersect(expected).Count());
+        }
+
+        [Fact]
+        public void FirstSet2()
+        {
+            Bnf bnf2 = TestLL1Bnf2();
+            Production S2 = bnf2.Productions.FirstOrDefault(p => p.Name == "S");
+            Symbol b = bnf2.Terminals.FirstOrDefault(s => s.Name == "b");
+
+            List<Symbol> expected2 = new List<Symbol>() { b };
+
+            Assert.Equal(expected2.Count, S2.FirstSet().Intersect(expected2).Count());
         }
 
         [Fact]

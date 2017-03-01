@@ -12,16 +12,18 @@ namespace Compiler.Data
 
         public override bool DerivesEmpty()
         {
+            if (_derivesEmpty != null)
+                return _derivesEmpty.Value;
+
             foreach(Expansion e in Expansions)
             {
-                foreach(Symbol s in e.Symbols)
+                if (e.DerivesEmpty())
                 {
-					if (s.IsTerminal() && s.DerivesEmpty())
-					{
-						return true;
-					}
+                    _derivesEmpty = true;
+                    return true;
                 }
             }
+            _derivesEmpty = false;
             return false;
         }
 
@@ -40,7 +42,7 @@ namespace Compiler.Data
                     for (int i = 0; i < expansion.Symbols.Count; i++)
                     {
                         Symbol b = expansion.Symbols[i];
-                        if(b == this)
+                        if(b.Equals(this))
                         {
                             if(i < expansion.Symbols.Count - 1)
                             {
@@ -79,20 +81,14 @@ namespace Compiler.Data
 
         public override HashSet<Symbol> FirstSet()
         {
-            _firstSet = new HashSet<Symbol>();
-        
-            foreach(Expansion e in Expansions)
-            {
-                foreach(Symbol s in e.Symbols)
-                {
-                    _firstSet.UnionWith(s.FirstSet());
-                    if(s.DerivesEmpty() == false)
-                    {
-                        break;
-                    }
-                }
-            }
+            if (_firstSet != null)
+                return _firstSet;
 
+            _firstSet = new HashSet<Symbol>();
+            foreach (Expansion e in Expansions)
+            {
+                _firstSet.UnionWith(e.FirstSet());
+            }
             return _firstSet;
         }
 

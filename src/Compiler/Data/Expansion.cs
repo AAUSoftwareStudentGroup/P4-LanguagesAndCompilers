@@ -5,8 +5,6 @@ namespace Compiler.Data
 {
     public class Expansion
     {
-        protected HashSet<Symbol> _firstSet = null;
-
         public Expansion() {
             Symbols = new List<Symbol>();
         }
@@ -15,32 +13,32 @@ namespace Compiler.Data
 
         public HashSet<Symbol> FirstSet()
         {
-			if (_firstSet != null)
-			{
-				return _firstSet;
-			}
-            _firstSet = new HashSet<Symbol>();
+            HashSet<Symbol> firstSet = new HashSet<Symbol>();
+            bool allDeriveEmpty = true;
             foreach(Symbol s in Symbols)
             {
-                _firstSet.UnionWith(s.FirstSet());
+                firstSet.UnionWith(s.FirstSet());
                 if(s.DerivesEmpty() == false)
                 {
+                    allDeriveEmpty = false;
                     break;
                 }
             }
-            return _firstSet;
+            if(allDeriveEmpty)
+                firstSet.Add(new Symbol() { Name = "EPSILON" });
+            return firstSet;
         }
 
         public bool DerivesEmpty()
         {
             foreach(Symbol s in Symbols)
             {
-				if(s.DerivesEmpty() == true && s.IsTerminal())
+				if(s.DerivesEmpty() == false)
                 {
-					return true;
+					return false;
                 }
             }
-			return false;
+			return true;
         }
 
         public Expansion Tail(int index)

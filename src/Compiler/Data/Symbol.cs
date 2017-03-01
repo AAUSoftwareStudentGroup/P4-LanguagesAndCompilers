@@ -7,12 +7,18 @@ namespace Compiler.Data
     {
         protected HashSet<Symbol> _firstSet = null;
         protected HashSet<Symbol> _followSet = null;
+        protected bool? _derivesEmpty = null;
 
         public Symbol() {
             Name = "";
         }
 
         public string Name { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return (obj is Symbol) && (obj as Symbol).Name == this.Name;
+        }
 
         public bool IsTerminal() 
         {
@@ -44,10 +50,7 @@ namespace Compiler.Data
             {
 				return true;
             }
-            else
-            {
-				return false;
-            }
+            return false;
         }
 
 		public override string ToString()

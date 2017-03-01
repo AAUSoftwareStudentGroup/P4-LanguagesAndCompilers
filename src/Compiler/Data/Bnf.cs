@@ -73,7 +73,7 @@ namespace Compiler.Data
                         // syntaxTree = syntaxTree.parent;
                         parseStack.Pop();
                     }
-                    else if(parseStack.Peek() == eob)
+                    else if(parseStack.Peek().Equals(eob))
                     {
                         syntaxTree = syntaxTree.Parent;
                         parseStack.Pop();
