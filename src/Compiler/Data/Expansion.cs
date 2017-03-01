@@ -24,8 +24,8 @@ namespace Compiler.Data
                     break;
                 }
             }
-            if(allDeriveEmpty)
-                firstSet.Add(new Symbol() { Name = "EPSILON" });
+            if(!allDeriveEmpty)
+                firstSet.RemoveWhere(s => s.Name == "EPSILON");
             return firstSet;
         }
 

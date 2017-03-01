@@ -46,7 +46,8 @@ namespace Compiler.Data
                         {
                             if(i < expansion.Symbols.Count - 1)
                             {
-                                var tailFirstSet = expansion.Symbols[i + 1].FirstSet();
+                                Expansion tail = expansion.Tail(i);
+                                var tailFirstSet = tail.FirstSet();
 
                                 bool tailFirstSetContainsEpsilon = false;
 
