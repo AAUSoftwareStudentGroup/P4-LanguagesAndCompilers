@@ -104,9 +104,10 @@ namespace Compiler.LexicalAnalysis
                 if(token == null)
                 {
                     Console.WriteLine("Error before: ..."+source.Substring(currentIndex, 10));
-                    break;
+                    throw new Exception("Error before: ..."+source.Substring(currentIndex, 10));
                 }
             }
+            yield return new Token {Name = "EOF", Value = "$"};
         }
     }
 }

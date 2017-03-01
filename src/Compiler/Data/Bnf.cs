@@ -61,7 +61,7 @@ namespace Compiler.Data
             // start enumerator by moving to first element in list
             if(tokenStream.Current == null)
                 tokenStream.MoveNext();
-            parseStack.Push(new Symbol(){Name = "EOF"});
+            // parseStack.Push(new Symbol(){Name = "EOF"});
             parseStack.Push(RootProduction);
             while(!valid)
             {
@@ -85,6 +85,12 @@ namespace Compiler.Data
                         if(tokenStream.MoveNext() == false)
                         {
                             System.Console.WriteLine("ERROR: No more tokens in input stream");
+                            System.Console.WriteLine("ParseStack:");
+                            while(parseStack.Count > 0)
+                            {
+                                System.Console.Write(parseStack.Pop().Name+" ");
+                            }
+                            System.Console.WriteLine();
                             break;
                         }
                         // If parse stack is empty
@@ -147,20 +153,26 @@ namespace Compiler.Data
                 }
             }
 
+            if(!valid) {
+                throw new Exception("Failed to validate syntax");
+            }
+
             while(syntaxTree.Parent != null)
                 syntaxTree = syntaxTree.Parent;
+
             return syntaxTree;
         }
 
 		// If condition 1 and 2 is true then the bnf is ll1
-        public bool IsLL1()
+        public bool IsLL1(out string failureReason)
         {
-            return Ll1Condition1() && Ll1Condition2();
+            return Ll1Condition1(out failureReason) && Ll1Condition2(out failureReason);
         }
 
 		// Checks if the Firstset of a production only contains distincs elements 
-        public bool Ll1Condition1()
+        public bool Ll1Condition1(out string failureReason)
         {
+            failureReason = "";
             foreach (Production p in Productions)
             {
                 HashSet<Symbol> union = new HashSet<Symbol>();
@@ -168,6 +180,11 @@ namespace Compiler.Data
                 {
                     if (union.Intersect(e.FirstSet()).Count() > 0)
                     {
+                        failureReason += $"Failed first condition\n";
+                        failureReason += $"FirstSets of {p.Name} -> \n";
+                        foreach(Expansion ex in p.Expansions) {
+                            failureReason += $"First({ex}) = {{{string.Join(", ", ex.FirstSet())}}}\n";
+                        }
                         return false;
                     }
                     union.UnionWith(e.FirstSet());
@@ -177,13 +194,16 @@ namespace Compiler.Data
         }
 
 		// Checks if the set of first and followset of a production only contains distinct elements
-        public bool Ll1Condition2()
+        public bool Ll1Condition2(out string failureReason)
         {
+            failureReason = "";
             foreach (var p in Productions)
             {
                 if (p.DerivesEmpty() && p.FirstSet().Intersect(p.FollowSet(this)).Count() > 0)
                 {
-
+                    failureReason += $"Failed second condition\n";
+                    failureReason += $"First({p.Name})  = {{{string.Join(", ", p.FirstSet())}}}\n";
+                    failureReason += $"Follow({p.Name}) = {{{string.Join(", ", p.FollowSet(this))}}}\n";
                     return false;
                 }
             }

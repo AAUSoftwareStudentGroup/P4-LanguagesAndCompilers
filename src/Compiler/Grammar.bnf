@@ -1,4 +1,4 @@
-Statements  -> Statement StatementsP
+Statements  -> Statement StatementsP EOF
 StatementsP -> NewLine Statement StatementsP
               | EPSILON
 
