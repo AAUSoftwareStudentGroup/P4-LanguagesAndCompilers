@@ -49,9 +49,9 @@ namespace Compiler.Data
             }
         }
 
-        public Tree<string> ParseTokenStream(IEnumerable<Token> tokenList)
+        public Tree<AST_Node> ParseTokenStream(IEnumerable<Token> tokenList)
         {
-            Tree<string> syntaxTree = new Tree<string>("Root", null);
+            Tree<AST_Node> syntaxTree = new Tree<AST_Node>(new AST_Node("Root", false), null);
             bool valid = false;
             Stack<Symbol> parseStack = new Stack<Symbol>();
             IEnumerator<Token> tokenStream = tokenList.GetEnumerator();
@@ -69,9 +69,7 @@ namespace Compiler.Data
                 {
                     if(parseStack.Peek().Name == "EPSILON")
                     {
-                        syntaxTree.AddChild(parseStack.Peek().Name);
-                        // syntaxTree = syntaxTree.parent;
-                        parseStack.Pop();
+                        syntaxTree.AddChild(new AST_Node(parseStack.Pop()));
                     }
                     else if(parseStack.Peek().Equals(eob))
                     {
@@ -79,8 +77,9 @@ namespace Compiler.Data
                         parseStack.Pop();
                     }
                     else if(parseStack.Peek().Name == tokenStream.Current.Name) {
-                        syntaxTree = syntaxTree.AddChild(parseStack.Pop().Name);
-                        syntaxTree.AddChild(tokenStream.Current.Value);
+                        syntaxTree = syntaxTree.AddChild(new AST_Node(parseStack.Pop()));
+                        // *Strongly assumes this is a terminal*
+                        syntaxTree.AddChild(new AST_Node(tokenStream.Current.Value, true));
                         syntaxTree = syntaxTree.Parent;
                         if(tokenStream.MoveNext() == false)
                         {
@@ -98,18 +97,11 @@ namespace Compiler.Data
                     else
                     {
                         // ERROR: Token '{tokenStream.Current.value}' does not match the expected token '{FIRST(parseStack.Peek())}' 
-                        System.Console.WriteLine($"ERROR: Token '{tokenStream.Current.Value}' of type '{tokenStream.Current.Name}', does not match the expected symbol '{parseStack.Peek().Name}' ");
-                        syntaxTree.AddChild("ERROR!");
-                        System.Console.WriteLine("ParseStack:");
-                        while(parseStack.Count > 0)
-                        {
-                            System.Console.Write(parseStack.Pop().Name+" ");
-                        }
-                        System.Console.WriteLine();
+                        ParseTokenStreamError(syntaxTree, parseStack, $"ERROR: Token '{tokenStream.Current.Value}' of type '{tokenStream.Current.Name}', does not match the expected symbol '{parseStack.Peek().Name}' ");
                         break;
                     }
                 }
-                else
+                else // Is NOT terminal
                 {
                     int terminalIndex = Terminals.IndexOf(Terminals.FirstOrDefault((t) => t.Name == tokenStream.Current.Name));
                     int ProductionIndex = Productions.IndexOf(parseStack.Peek() as Production);
@@ -122,20 +114,12 @@ namespace Compiler.Data
                     if(e == null)
                     {
                         // ERROR: Token not in first set, expected FIRST(parseStack.Peek())
-                        System.Console.WriteLine($"ERROR: Token '{tokenStream.Current.Value}' of type '{tokenStream.Current.Name}', not in predict set of '({parseStack.Peek().Name})'");
-                        syntaxTree.AddChild("ERROR!");
-                        System.Console.WriteLine("ParseStack:");
-                        while(parseStack.Count > 0)
-                        {
-                            System.Console.Write(parseStack.Pop().Name+" ");
-                        }
-                        System.Console.WriteLine();
+                        ParseTokenStreamError(syntaxTree, parseStack, $"ERROR: Token '{tokenStream.Current.Value}' of type '{tokenStream.Current.Name}', not in predict set of '({parseStack.Peek().Name})'");
                         break;
                     }
                     else 
                     {
-                        syntaxTree = syntaxTree.AddChild(parseStack.Peek().Name);
-                        parseStack.Pop();
+                        syntaxTree = syntaxTree.AddChild(new AST_Node(parseStack.Pop()));
                         
                         // END OF BRANCH
                         parseStack.Push(eob);
@@ -161,6 +145,17 @@ namespace Compiler.Data
                 syntaxTree = syntaxTree.Parent;
 
             return syntaxTree;
+        }
+
+        private void ParseTokenStreamError(Tree<AST_Node> syntaxTree, Stack<Symbol> parseStack, string message) {
+            System.Console.WriteLine(message);
+            syntaxTree.AddChild(new AST_Node("ERROR!", true));
+            System.Console.WriteLine("ParseStack:");
+            while(parseStack.Count > 0)
+            {
+                System.Console.Write(parseStack.Pop().Name+" ");
+            }
+            System.Console.WriteLine();
         }
 
 		// If condition 1 and 2 is true then the bnf is ll1
