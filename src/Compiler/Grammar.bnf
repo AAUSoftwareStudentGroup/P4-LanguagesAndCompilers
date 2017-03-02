@@ -55,7 +55,9 @@ TypedParametersP -> SepOp Type Identifier TypedParametersP
                | EndDel
 
 Type -> SimpleType TypeParameters
-     |  StartDel Type EndDel TypeParameters
+     |  FunctionPointer
+
+FunctionPointer -> StartDel Type EndDel TypeParameters
 
 TypeParameters -> StartDel TypeParametersF
                | EPSILON
