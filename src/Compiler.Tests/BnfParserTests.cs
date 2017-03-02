@@ -1,6 +1,5 @@
 using Compiler.Data;
 using Compiler.Parsing.BnfParsing;
-using System;
 using Xunit;
 
 namespace Compiler.Tests

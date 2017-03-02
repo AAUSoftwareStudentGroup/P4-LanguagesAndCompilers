@@ -69,5 +69,10 @@ namespace Compiler.Data
             
             return s;
         }
+
+        public void Accept( Visitor<NodeType> v) 
+        {
+            v.Visit( this );
+        }
     }
 }
