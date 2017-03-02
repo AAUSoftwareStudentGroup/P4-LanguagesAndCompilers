@@ -48,22 +48,20 @@ FunctionDefinition -> TypedParameters SimpleBlock
 
 SimpleBlock -> Indent SimpleStatements Dedent
 
-TypedParameters -> StartDel TypedParametersF
-TypedParametersF -> Type Identifier TypedParametersP
+TypedParameters -> StartDel TypedParametersP
+TypedParametersP -> Type Identifier TypedParametersPP
                 |   EndDel
-TypedParametersP -> SepOp Type Identifier TypedParametersP
+TypedParametersPP -> SepOp Type Identifier TypedParametersPP
                | EndDel
 
 Type -> SimpleType TypeParameters
-     |  FunctionPointer
+     |  StartDel Type EndDel TypeParameters
 
-FunctionPointer -> StartDel Type EndDel TypeParameters
-
-TypeParameters -> StartDel TypeParametersF
+TypeParameters -> StartDel TypeParametersP
                | EPSILON
-TypeParametersF -> Type TypeParametersP EndDel
+TypeParametersP -> Type TypeParametersPP EndDel
                | EndDel
-TypeParametersP -> SepOp Type TypeParametersP
+TypeParametersPP -> SepOp Type TypeParametersPP
                | EPSILON
 
 SimpleStatements  -> SimpleStatement SimpleStatementsP            
@@ -110,10 +108,10 @@ Del          -> StartDel Expression EndDel
 FunctionParameters -> Parameters
                    | EPSILON
 
-Parameters -> StartDel ParametersF
-ParametersF -> Expression ParametersP
+Parameters -> StartDel ParametersP
+ParametersP -> Expression ParametersPP
             |  EndDel
-ParametersP -> SepOp Expression ParametersP
+ParametersPP -> SepOp Expression ParametersPP
                | EndDel
 
 Val -> Identifier
