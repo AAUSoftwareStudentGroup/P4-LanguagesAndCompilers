@@ -49,9 +49,9 @@ namespace Compiler.Data
             }
         }
 
-        public Tree<AST_Node> ParseTokenStream(IEnumerable<Token> tokenList)
+        public Tree ParseTokenStream(IEnumerable<Token> tokenList)
         {
-            Tree<AST_Node> syntaxTree = new Tree<AST_Node>(new AST_Node("Root", false), null);
+            Tree syntaxTree = new Tree(new AST_Node("Root", false), null);
             bool valid = false;
             Stack<Symbol> parseStack = new Stack<Symbol>();
             IEnumerator<Token> tokenStream = tokenList.GetEnumerator();
@@ -147,7 +147,7 @@ namespace Compiler.Data
             return syntaxTree;
         }
 
-        private void ParseTokenStreamError(Tree<AST_Node> syntaxTree, Stack<Symbol> parseStack, string message) {
+        private void ParseTokenStreamError(Tree syntaxTree, Stack<Symbol> parseStack, string message) {
             System.Console.WriteLine(message);
             syntaxTree.AddChild(new AST_Node("ERROR!", true));
             System.Console.WriteLine("ParseStack:");

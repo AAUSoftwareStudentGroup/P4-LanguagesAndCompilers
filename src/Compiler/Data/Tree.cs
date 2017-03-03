@@ -3,23 +3,23 @@ using System.Linq;
 
 namespace Compiler.Data
 {
-    public class Tree<NodeType>
+    public class Tree
     {
-        public Tree(NodeType name, Tree<NodeType> parent = null) 
+        public Tree(AST_Node name, Tree parent = null) 
         {
             Parent = parent;
             Node = name;
-            Children = new List<Tree<NodeType>>();
+            Children = new List<Tree>();
         }
 
-        public NodeType Node { get; set; }
-        public List<Tree<NodeType>> Children { get; set; }
-        public Tree<NodeType> Parent { get; set; }
+        public AST_Node Node { get; set; }
+        public List<Tree> Children { get; set; }
+        public Tree Parent { get; set; }
 
         // return the new child
-        public Tree<NodeType> AddChild(NodeType name)
+        public Tree AddChild(AST_Node name)
         {
-            Tree<NodeType> child = new Tree<NodeType>(name, this);
+            Tree child = new Tree(name, this);
             Children.Add(child);
             return child;
         }
@@ -70,7 +70,7 @@ namespace Compiler.Data
             return s;
         }
 
-        public void Accept( Visitor<NodeType> v) 
+        public void Accept( Visitor v) 
         {
             v.Visit( this );
         }

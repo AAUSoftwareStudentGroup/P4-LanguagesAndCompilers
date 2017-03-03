@@ -29,7 +29,7 @@ namespace Compiler
             }
             
             Lexer l = new Lexer();
-            Tree<AST_Node> ast = null;
+            Tree ast = null;
             if(args.Length == 0)
                 args = new string[] { "sourceFileExample.tang" };
             foreach (string arg in args)
@@ -56,7 +56,7 @@ namespace Compiler
             if(ast != null)
             {
                 System.Console.WriteLine("Cleaning up the mess");
-                Visitor<AST_Node> v = new Visitor<AST_Node>();
+                Visitor v = new Visitor();
                 ast.Accept(v);
                 System.Console.WriteLine(ast);
             }
