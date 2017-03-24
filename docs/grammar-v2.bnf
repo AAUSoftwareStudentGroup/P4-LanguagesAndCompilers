@@ -47,7 +47,13 @@ Assignment -> assign Expression
 
 Call -> Parameters
 
-IfStatement -> if Condition SimpleBlock
+IfStatement -> if Condition SimpleBlock ElseStatement
+
+ElseStatement -> else ElseBlock
+              |  EPSILON
+              
+ElseBlock -> IfStatement
+          |  indent SimpleBlock dedent
 
 WhileStatement -> while Condition SimpleBlock
 
