@@ -134,13 +134,11 @@ PrimaryOperation -> startDel Expression endDel
                  |  strLiteral
                  |  charLiteral
 
-RSelectorOperation -> Call RReturnValueOperation
+RSelectorOperation -> Call RSelectorOperation
                    |  ClassAccessor RSelectorOperation
                    |  ElementSelector RSelectorOperation
                    |  BitSelector
-
-RReturnValueOperation -> EPSILON
-                      |  RSelectorOperation
+                   |  EPSILON
 
 Parameters  -> startDel ParametersF endDel
 ParametersF -> Expression ParametersP
