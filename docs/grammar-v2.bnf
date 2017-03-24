@@ -67,11 +67,11 @@ FunctionDefinition -> TypedParameters SimpleBlock
 
 SimpleBlock -> indent SimpleStatements dedent
 
-TypedParameters  -> startDel TypedParametersF
+TypedParameters  -> startDel TypedParametersF endDel
 TypedParametersF -> Type identifier TypedParametersP
-                 |   endDel
+                 |  EPSILON
 TypedParametersP -> sep Type identifier TypedParametersP
-                 | endDel
+                 | EPSILON
 
 Type -> simpleType TypeParameters
      |  startDel Type endDel startDel TypeParametersF endDel
