@@ -96,7 +96,10 @@ SimpleStatement -> SimpleDeclaration
 
 ReturnStatement -> return Expression
 
-SimpleDeclaration -> Type identifier assign Expression
+SimpleDeclaration -> Type identifier SimpleDefinition
+
+SimpleDefinition -> assign Expression
+                 |  EPSILON
 
 Expression -> OrOperation
 
