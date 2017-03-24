@@ -1,142 +1,140 @@
-Statements  -> Statement StatementsP
-StatementsP -> NewLine Statement StatementsP
-              | EPSILON
+Program -> Statements
 
+Statements  -> Statement StatementsP
+StatementsP -> newline Statement StatementsP
+            | EPSILON
 Statement -> Declaration
           |  IdentifierStatement
           |  IfStatement
           |  WhileStatement
           |  Class
-          |  NewLine
+          |  newLine
 
-Class -> ClassWord Identifier TypedParameters ClassBlock
+Class -> class identifier TypedParameters ClassBlock
 
-ClassBlock -> Indent ClassStatements Dedent
+ClassBlock -> indent ClassStatements dedent
 
-ClassStatements  -> ClassStatement SimpleStatementsP            
+ClassStatements  -> ClassStatement ClassStatementsP            
                  |  EPSILON
-ClassStatementsP -> NewLine ClassStatement ClassStatementsP
-              | EPSILON
+ClassStatementsP -> newline ClassStatement ClassStatementsP
+                 | EPSILON
 
 ClassStatement -> Declaration
-               |  IdentifierStatement
-               |  IfStatement
-               |  WhileStatement
-               |  NewLine
+               |  newLine
 
-Declaration -> Type Identifier Definition
+Declaration -> Type identifier Definition
 
-IdentifierStatement -> Identifier IdentifierOperation
+IdentifierStatement -> identifier LIdentifierOperation
 
-IdentifierOperation -> Assignment
-                    |  Call
+LIdentifierOperation -> Assignment
+                     |  LSelectorOperation
 
-Assignment -> Assign Expression
+LSelectorOperation -> Call LReturnValueOperation
+                   |  ClassAccessor LIdentifierOperation
+                   |  ElementSelector LIdentifierOperation
+                   |  BitSelector Assignment
+
+LReturnValueOperation -> EPSILON
+                     |  LSelectorOperation
+
+ElementSelector -> startBracket Expression endBracket
+
+BitSelector -> startCurly Expression endCurly
+                    
+ClassAccessor -> dot identifier
+
+Assignment -> assign Expression
 
 Call -> Parameters
 
-IfStatement -> If Condition SimpleBlock
+IfStatement -> if Condition SimpleBlock
 
-WhileStatement -> While Condition SimpleBlock
+WhileStatement -> while Condition SimpleBlock
 
-Condition -> StartDel Expression EndDel
+Condition -> startDel Expression endDel
 
 Definition -> FunctionDefinition
            |  Assignment
+           |  EPSILON
 
 FunctionDefinition -> TypedParameters SimpleBlock
 
-SimpleBlock -> Indent SimpleStatements Dedent
+SimpleBlock -> indent SimpleStatements dedent
 
-TypedParameters -> StartDel TypedParametersF
-TypedParametersF -> Type Identifier TypedParametersP
-                |   EndDel
-TypedParametersP -> SepOp Type Identifier TypedParametersP
-               | EndDel
+TypedParameters  -> startDel TypedParametersF
+TypedParametersF -> Type identifier TypedParametersP
+                 |   endDel
+TypedParametersP -> sep Type identifier TypedParametersP
+                 | endDel
 
-Type -> SimpleType TypeParameters
-     |  StartDel Type EndDel TypeParameters
+Type -> simpleType TypeParameters
+     |  startDel Type endDel startDel TypeParametersF endDel
 
-TypeParameters -> StartDel TypeParametersF
-               | EPSILON
-TypeParametersF -> Type TypeParametersP EndDel
-               | EndDel
-TypeParametersP -> SepOp Type TypeParametersP
-               | EPSILON
+TypeParameters  -> startDel TypeParametersF endDel
+                | EPSILON
+TypeParametersF -> Type TypeParametersP 
+                | EPSILON
+TypeParametersP -> sep Type TypeParametersP
+                | EPSILON
 
 SimpleStatements  -> SimpleStatement SimpleStatementsP            
-SimpleStatementsP -> NewLine SimpleStatement SimpleStatementsP
-              | EPSILON
+SimpleStatementsP -> newLine SimpleStatement SimpleStatementsP
+                  | EPSILON
 
 SimpleStatement -> SimpleDeclaration
-                 |  Assignment
-                 |  IfStatement
-                 |  WhileStatement
-                 |  ReturnStatement
-                 |  EPSILON
+                |  Assignment
+                |  IfStatement
+                |  WhileStatement
+                |  ReturnStatement
+                |  EPSILON
 
-ReturnStatement -> Return Expression
+ReturnStatement -> return Expression
 
-SimpleDeclaration -> Type Identifier Assign Expression
-Expression    -> CompareOperation
-CompareOperation  -> OrOperation CompareOperationP
-CompareOperationP -> Compare OrOperation CompareOperationP
-              | EPSILON
+SimpleDeclaration -> Type identifier assign Expression
 
-
+Expression -> OrOperation
 
 OrOperation  -> AndOperation OrOperationP
-OrOperationP -> Or AndOperation OrOperationP
+OrOperationP -> or AndOperation OrOperationP
+             | EPSILON
+
+AndOperation  -> EqualityOperation AndOperationP
+AndOperationP -> and EqualityOperation AndOperationP
               | EPSILON
 
-AndOperation  -> AddOperation AndOperationP
-AndOperationP -> And AddOperation AndOperationP
-              | EPSILON
-
-AddOperation  -> MultOperation AddOperationP
-AddOperationP -> AddSubOpp MultOperation AddOperationP
-              | EPSILON
-
-MultOperation -> DelOperation MultOperationP
-MultOperationP -> MulDivOpp DelOperation MultOperationP
-               | EPSILON
-
-DelOperation -> Del
-             |  Identifier FunctionParameters
-             |  Number
-
-Del          -> StartDel Expression EndDel
-
-FunctionParameters -> Parameters
+EqualityOperation  -> RelationalOperation EqualityOperationP
+EqualityOperationP -> equality RelationalOperation EqualityOperationP
                    | EPSILON
+   
+RelationalOperation  -> AddSubOperation RelationalOperationP
+RelationalOperationP -> relational AddSubOperation RelationalOperationP
+                     | EPSILON
 
-Parameters -> StartDel ParametersF
+AddSubOperation  -> MultDivOperation AddSubOperationP
+AddSubOperationP -> addSub MultDivOperation AddSubOperationP
+                 | EPSILON
+
+MultDivOperation  -> PrimaryOperation MultDivOperationP
+MultDivOperationP -> multDiv PrimaryOperation MultDivOperationP
+                  | EPSILON
+
+PrimaryOperation -> startDel Expression endDel
+                 |  identifier RSelectorOperation
+                 |  intLiteral
+                 |  boolLiteral
+                 |  strLiteral
+                 |  charLiteral
+
+RSelectorOperation -> Call RReturnValueOperation
+                   |  ClassAccessor RSelectorOperation
+                   |  ElementSelector RSelectorOperation
+                   |  BitSelector
+
+RReturnValueOperation -> EPSILON
+                      |  RSelectorOperation
+
+Parameters  -> startDel ParametersF endDel
 ParametersF -> Expression ParametersP
-            |  EndDel
-ParametersP -> SepOp Expression ParametersP
-               | EndDel
-
-Val -> Identifier
-     | Number
-
-Number     -> Digit
-Identifier -> Char
-If         -> if
-While      -> while
-And        -> and
-Or         -> or
-Compare     -> eq | != | < | > | <= | >=
-Indent     -> {
-Dedent     -> }
-NewLine    -> nl
-AddSubOpp  -> + | -
-SimpleType -> int | nothing
-MulDivOpp  -> * | /
-Digit      -> 1 | true | false
-Char       -> a|f
-Assign     -> =
-StartDel   -> (
-EndDel     -> )
-SepOp      -> ,
-ClassWord  -> class
-Return     -> return
+            |  EPSILON
+ParametersP -> sep Expression ParametersP
+            | EPSILON
