@@ -2,11 +2,13 @@ Program -> Statements
 
 Statements  -> Statement StatementsP
 StatementsP -> newline Statement StatementsP
-            | EPSILON
+            |  EPSILON
+
 Statement -> Declaration
           |  IdentifierStatement
           |  IfStatement
           |  WhileStatement
+          |  ForStatement
           |  Class
           |  newLine
 
@@ -17,7 +19,7 @@ ClassBlock -> indent ClassStatements dedent
 ClassStatements  -> ClassStatement ClassStatementsP            
                  |  EPSILON
 ClassStatementsP -> newline ClassStatement ClassStatementsP
-                 | EPSILON
+                 |  EPSILON
 
 ClassStatement -> Declaration
                |  newLine
@@ -35,7 +37,7 @@ LSelectorOperation -> Call LReturnValueOperation
                    |  BitSelector Assignment
 
 LReturnValueOperation -> EPSILON
-                     |  LSelectorOperation
+                      |  LSelectorOperation
 
 ElementSelector -> startBracket Expression endBracket
 
@@ -53,9 +55,11 @@ ElseStatement -> else ElseBlock
               |  EPSILON
               
 ElseBlock -> IfStatement
-          |  indent SimpleBlock dedent
+          |  SimpleBlock
 
 WhileStatement -> while Condition SimpleBlock
+
+ForStatement -> for startDel simpleType identifier from Expression to Expression endDel SimpleBlock
 
 Condition -> startDel Expression endDel
 
@@ -71,21 +75,24 @@ TypedParameters  -> startDel TypedParametersF endDel
 TypedParametersF -> Type identifier TypedParametersP
                  |  EPSILON
 TypedParametersP -> sep Type identifier TypedParametersP
-                 | EPSILON
+                 |  EPSILON
 
-Type -> simpleType TypeParameters
+Type -> simpleType TypeParameters startBracket ArraySize endBracket
      |  startDel Type endDel startDel TypeParametersF endDel
 
+ArraySize -> Expression
+          |  EPSILON
+
 TypeParameters  -> startDel TypeParametersF endDel
-                | EPSILON
+                |  EPSILON
 TypeParametersF -> Type TypeParametersP 
-                | EPSILON
+                |  EPSILON
 TypeParametersP -> sep Type TypeParametersP
-                | EPSILON
+                |  EPSILON
 
 SimpleStatements  -> SimpleStatement SimpleStatementsP            
 SimpleStatementsP -> newLine SimpleStatement SimpleStatementsP
-                  | EPSILON
+                  |  EPSILON
 
 SimpleStatement -> SimpleDeclaration
                 |  Assignment
@@ -105,27 +112,27 @@ Expression -> OrOperation
 
 OrOperation  -> AndOperation OrOperationP
 OrOperationP -> or AndOperation OrOperationP
-             | EPSILON
+             |  EPSILON
 
 AndOperation  -> EqualityOperation AndOperationP
 AndOperationP -> and EqualityOperation AndOperationP
-              | EPSILON
+              |  EPSILON
 
 EqualityOperation  -> RelationalOperation EqualityOperationP
 EqualityOperationP -> equality RelationalOperation EqualityOperationP
-                   | EPSILON
+                   |  EPSILON
    
 RelationalOperation  -> AddSubOperation RelationalOperationP
 RelationalOperationP -> relational AddSubOperation RelationalOperationP
-                     | EPSILON
+                     |  EPSILON
 
 AddSubOperation  -> MultDivOperation AddSubOperationP
 AddSubOperationP -> addSub MultDivOperation AddSubOperationP
-                 | EPSILON
+                 |  EPSILON
 
 MultDivOperation  -> PrimaryOperation MultDivOperationP
 MultDivOperationP -> multDiv PrimaryOperation MultDivOperationP
-                  | EPSILON
+                  |  EPSILON
 
 PrimaryOperation -> startDel Expression endDel
                  |  identifier RSelectorOperation
@@ -133,6 +140,16 @@ PrimaryOperation -> startDel Expression endDel
                  |  boolLiteral
                  |  strLiteral
                  |  charLiteral
+                 |  Array OptionalElementSelector
+
+Array  -> startBracket ArrayF endBracket
+ArrayF -> Expression ArrayP
+              |  EPSILON
+ArrayP -> sep Expression ArrayP
+              |  EPSILON
+
+OptionalElementSelector -> ElementSelector RSelectorOperation
+                        |  EPSILON
 
 RSelectorOperation -> Call RSelectorOperation
                    |  ClassAccessor RSelectorOperation
@@ -144,4 +161,4 @@ Parameters  -> startDel ParametersF endDel
 ParametersF -> Expression ParametersP
             |  EPSILON
 ParametersP -> sep Expression ParametersP
-            | EPSILON
+            |  EPSILON
