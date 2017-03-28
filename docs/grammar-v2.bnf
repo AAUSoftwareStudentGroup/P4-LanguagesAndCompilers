@@ -12,7 +12,7 @@ Statement -> Declaration
           |  Class
           |  newLine
 
-Class -> class identifier TypedParameters ClassBlock
+Class -> class identifier ClassBlock
 
 ClassBlock -> indent ClassStatements dedent
 
