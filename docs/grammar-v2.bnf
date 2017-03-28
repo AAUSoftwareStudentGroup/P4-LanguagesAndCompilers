@@ -1,4 +1,10 @@
-Program -> Statements
+Program -> Imports newLine Statements
+
+Imports  -> Import ImportsP
+ImportsP -> newline Import ImportsP
+         |  EPSILON
+
+Import -> import identifier
 
 Statements  -> Statement StatementsP
 StatementsP -> newline Statement StatementsP
@@ -10,7 +16,7 @@ Statement -> Declaration
           |  WhileStatement
           |  ForStatement
           |  Class
-          |  newLine
+          |  EPSILON
 
 Class -> class identifier ClassBlock
 
@@ -144,9 +150,9 @@ PrimaryOperation -> startDel Expression endDel
 
 Array  -> startBracket ArrayF endBracket
 ArrayF -> Expression ArrayP
-              |  EPSILON
+       |  EPSILON
 ArrayP -> sep Expression ArrayP
-              |  EPSILON
+       |  EPSILON
 
 OptionalElementSelector -> ElementSelector RSelectorOperation
                         |  EPSILON
