@@ -1,0 +1,13 @@
+class Pin
+    register8 ddr
+    register8 port
+    uint8 bitIndex
+    nothing init(register8 ledDdr, register8 ledPort, uint8 ledBitIndex, bool output)
+        ddr = ledDdr
+        port = ledPort
+        bitIndex = ledBitIndex
+        ddr{bitIndex} = true
+    nothing on()
+        port{bitIndex} = true
+    nothing off()
+        port{bitIndex} = false

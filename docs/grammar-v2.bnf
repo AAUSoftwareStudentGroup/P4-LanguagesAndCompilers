@@ -1,10 +1,11 @@
-Program -> Imports newLine Statements
+Program -> Imports newLine Statements eof
 
 Imports  -> Import ImportsP
 ImportsP -> newline Import ImportsP
          |  EPSILON
 
 Import -> import identifier
+       |  EPSILON
 
 Statements  -> Statement StatementsP
 StatementsP -> newline Statement StatementsP
@@ -144,9 +145,13 @@ PrimaryOperation -> startDel Expression endDel
                  |  identifier RSelectorOperation
                  |  intLiteral
                  |  boolLiteral
-                 |  strLiteral
-                 |  charLiteral
+                 |  Register OptionalBitSelector
                  |  Array OptionalElementSelector
+                 
+Register -> register startDel Expression endDel
+
+OptionalBitSelector -> BitSelector
+                    |  EPSILON
 
 Array  -> startBracket ArrayF endBracket
 ArrayF -> Expression ArrayP

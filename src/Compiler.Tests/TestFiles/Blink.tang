@@ -1,0 +1,10 @@
+import Delay
+import IO
+
+int8 pin = 5
+
+while(true)
+    portb{pin} = true
+    delay(1000)
+    portb{pin} = false
+    delay(1000)
