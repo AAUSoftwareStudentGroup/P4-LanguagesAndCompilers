@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace Compiler.Data
 {
     public class Visitor
@@ -6,7 +8,7 @@ namespace Compiler.Data
         {
             // Nothing
         }
-        public void NameEpsilon(Tree ast) 
+        public void NameEPSILON(Tree ast) 
         {
             RemoveSelfFromParent(ast);
         }
@@ -183,10 +185,8 @@ namespace Compiler.Data
                 RemoveSelfFromParent(ast);
             }  
         }
-        public void Visit(Tree ast)
-        {
-            VisitChildren(ast);
-            // Remove recursive names
+
+        public bool GeneralCleanUp(Tree ast){
             if( ast.Parent != null && 
               (ast.Node.name == ast.Parent.Node.name + "P" ||
                ast.Node.name == ast.Parent.Node.name))
@@ -194,39 +194,28 @@ namespace Compiler.Data
                 // Put child onto parent and remove self
                 ast.Parent.Children.InsertRange(ast.Parent.Children.IndexOf(ast), ast.Children);
                 RemoveSelfFromParent(ast);
-                return;
+                return false;
             }
+            // Empty productions must be sacrificed
             if(!ast.Node.isTerminal && ast.Children.Count == 0) {
                 RemoveSelfFromParent(ast);
-                return;
+                return false;
             }
-            switch(ast.Node.name) {
-                case "Root": NameRoot(ast); break;
-                case "EPSILON": NameEpsilon(ast); break;
-                case "Statement": NameStatement(ast); break;
-                case "SimpleStatement": NameSimpleStatement(ast); break;
-                case "SimpleStatements": NameSimpleStatements(ast); break;
-                case "NewLine": NameNewLine(ast); break;
-                case "CompareOperation": NameCompareOperation(ast); break;
-                case "OrOperation": NameOrOperation(ast); break;
-                case "AndOperation": NameAndOperation(ast); break;
-                case "AddOperation": NameAddOperation(ast); break;
-                case "MultOperation": NameMultOperation(ast); break;
-                case "DelOperation": NameDelOperation(ast); break;
-                case "SimpleBlock": NameSimpleBlock(ast); break;
-                case "TypedParameters": NameTypedParameters(ast); break;
-                case "FunctionParameters": NameFunctionParameters(ast); break;
-                case "Expression": NameExpression(ast); break;
-                case "SepOp": NameSepOp(ast); break;
-                case "Assign": NameAssign(ast); break;
-                case "Type": NameType(ast); break;
-                case "TypeParameters": NameTypeParameters(ast); break;
-                case "FunctionDefinition": NameFunctionDefinition(ast); break;
-                case "AddSubOpp": NameAddSubOpp(ast); break;
-                case "Declaration": NameDeclaration(ast); break;
-                case "IdentifierStatement": NameIdentifierStatement(ast); break;
-                
+            return true;
+        }
+        public void Visit(Tree ast)
+        {
+            //Visit bottom-up
+            VisitChildren(ast);
+            // Remove recursive names and empty productions
+            if(!GeneralCleanUp(ast)) return;
+
+            //Get the method information using the method info class
+            MethodInfo mi = this.GetType().GetMethod("Name" + ast.Node.name);
+            if(mi != null) {
+                mi.Invoke(this, new object[]{ast});
             }
+
         }
         private void VisitChildren(Tree ast) {
             for(int i = ast.Children.Count-1; i >= 0; i--) {
