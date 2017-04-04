@@ -186,7 +186,7 @@ namespace Compiler.Data
             }  
         }
 
-        public void GeneralCleanUp(Tree ast){
+        public bool GeneralCleanUp(Tree ast){
             if( ast.Parent != null && 
               (ast.Node.name == ast.Parent.Node.name + "P" ||
                ast.Node.name == ast.Parent.Node.name))
@@ -194,18 +194,21 @@ namespace Compiler.Data
                 // Put child onto parent and remove self
                 ast.Parent.Children.InsertRange(ast.Parent.Children.IndexOf(ast), ast.Children);
                 RemoveSelfFromParent(ast);
-                return;
+                return false;
             }
+            // Empty productions must be sacrificed
             if(!ast.Node.isTerminal && ast.Children.Count == 0) {
                 RemoveSelfFromParent(ast);
-                return;
+                return false;
             }
+            return true;
         }
         public void Visit(Tree ast)
         {
+            //Visit bottom-up
             VisitChildren(ast);
             // Remove recursive names and empty productions
-            GeneralCleanUp(ast);
+            if(!GeneralCleanUp(ast)) return;
 
             //Get the method information using the method info class
             MethodInfo mi = this.GetType().GetMethod("Name" + ast.Node.name);
