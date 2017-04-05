@@ -12,6 +12,7 @@ namespace Compiler
     {
         public static void Main(string[] args)
         {
+            Console.ReadLine();
             Bnf bnf = BnfParser.Parse();
             foreach (var p in bnf.Productions)
             {
@@ -29,7 +30,7 @@ namespace Compiler
             }
             
             Lexer l = new Lexer();
-            Tree ast = null;
+            Data.AST.Root ast = null;
             if(args.Length == 0)
                 args = new string[] { "sourceFileExample.tang" };
             foreach (string arg in args)
