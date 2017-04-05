@@ -151,7 +151,7 @@ namespace Compiler.Data.AST
                 s += "|-";
                 indent += "| ";
             }
-            s += this+"\r\n";
+            s += name+"\r\n";
 
             for (int i = 0; i < Children.Count; i++)
                 s += Children[i].PrintPretty(indent, i == Children.Count - 1);

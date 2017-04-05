@@ -409,10 +409,7 @@ namespace Compiler.Data
             if(!GeneralCleanUp(ast)) return;
 
             //Get the method information using the method info class
-            MethodInfo mi = this.GetType().GetMethod("Name" + ast.name);
-            if(mi != null) {
-                mi.Invoke(this, new object[]{ast});
-            }
+            ast.Accept(this);
         }
         private void VisitChildren(AST.Node ast) {
             for(int i = ast.Children.Count-1; i >= 0; i--) {

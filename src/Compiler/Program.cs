@@ -12,7 +12,6 @@ namespace Compiler
     {
         public static void Main(string[] args)
         {
-            Console.ReadLine();
             Bnf bnf = BnfParser.Parse();
             foreach (var p in bnf.Productions)
             {
@@ -20,6 +19,7 @@ namespace Compiler
                 Console.WriteLine($"Follow({p.Name}): {String.Join(", ", p.FollowSet(bnf).Select(t => t.Name))}");
                 Console.WriteLine();
             }
+
             string error;
 			if(bnf.IsLL1(out error)) {
     			Console.WriteLine("Grammar is LL(1)");

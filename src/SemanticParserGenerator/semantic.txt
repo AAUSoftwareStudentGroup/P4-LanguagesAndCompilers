@@ -1,0 +1,15 @@
+$ S $      & $ \rightarrow $ & $ S_1\ \texttt{nl}\ S_2 \mid s \mid D_C \mid D_P $ \\
+$ s $      & $ \rightarrow $ & $ \texttt{nl} \mid e \mid s_1\ \texttt{nl}\ s_2 \mid D_V \mid D_O \mid lv=e \mid lv\{i\}=b $ \\
+           & $ \mid        $ & $ \texttt{return}\ e \mid s_{if} \mid \texttt{while}(b)\ \texttt{indent}\ s\ \texttt{dedent} \mid \texttt{for}(\texttt{int}\ x\ \texttt{from}\ i_1\ \texttt{to}\ i_2)\ \texttt{indent}\ s\ \texttt{dedent} $ \\
+$ s_C $    & $ \rightarrow $ & $ s_C\ \texttt{nl}\ s_C \mid D_V \mid D_O \mid D_P $ \\
+$ s_{if} $ & $ \rightarrow $ & $ \texttt{if}(b)\ \texttt{indent}\ s\ \texttt{dedent} \mid \texttt{if}(b)\ \texttt{indent}\ s\ \texttt{dedent}\ \texttt{else}\ s_{if} $ \\
+           & $ \mid        $ & $ \texttt{if}(b)\ \texttt{indent}\ s_1\ \texttt{dedent}\ \texttt{else}\ \texttt{indent}\ s_2\ \texttt{dedent} $ \\
+$ lv $     & $ \rightarrow $ & $ x \mid o \mid lv_1.lv_2 \mid lv_1[i] $ \\
+$ e $      & $ \rightarrow $ & $ lv \mid i \mid b \mid (e_1) \mid p(e_1,\ e_2,\ \ldots\ , e_k) $ \\
+$ i $      & $ \rightarrow $ & $ n \mid e \mid i_1 + i_2 \mid i_1 - i_2 \mid i_1 * i_2 \mid i_1 / i_2 \mid i_1\ \texttt{\%}\ i_2 \mid i_1 \char`\^ i_2 $ \\
+$ b $      & $ \rightarrow $ & $ \texttt{true} \mid \texttt{false} \mid e \mid i_1 == i_2 \mid i_1 < i_2 \mid i_1 > i_2 \mid i_1 \leq i_2 \mid i_1 \geq i_2 \mid \texttt{!}b_1 \mid lv\{i\} $ \\
+           & $ \mid        $ & $ b_1\ \texttt{and}\ b_2 \mid b_1\ \texttt{or}\ b_2 $ \\
+$ D_P $    & $ \rightarrow $ & $ T_r\ p(T_1\ x_1,\ T_2\ x_2,\ \ldots\ ,T_k\ x_k)\ \texttt{indent}\ s\ \texttt{dedent} $ \\
+$ D_V $    & $ \rightarrow $ & $ T\ x \mid T\ x\ = e \mid T[]\ x = [e_1,\ e_2,\ \ldots\ , e_k] \mid T[i]\ x = [e_1,\ e_2,\ \ldots\ , e_k] \mid T[i]\ x$ \\
+$ D_O $    & $ \rightarrow $ & $ C\ o \mid C\ o[i] $ \\
+$ D_C $    & $ \rightarrow $ & $ \texttt{class}\ C\ \texttt{indent}\ s_C\ \texttt{dedent} $ \\
