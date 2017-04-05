@@ -16,8 +16,11 @@ Statement -> Declaration
           |  IfStatement
           |  WhileStatement
           |  ForStatement
+          |  Interrupt
           |  Class
           |  EPSILON
+
+Interrupt -> interrupt startDel Expression endDel SimpleBlock
 
 Class -> class identifier ClassBlock
 
@@ -84,8 +87,11 @@ TypedParametersF -> Type identifier TypedParametersP
 TypedParametersP -> sep Type identifier TypedParametersP
                  |  EPSILON
 
-Type -> simpleType TypeParameters startBracket ArraySize endBracket
-     |  startDel Type endDel startDel TypeParametersF endDel
+Type -> simpleType TypeParameters ArrayType
+     |  startDel Type endDel startDel TypeParametersF endDel ArrayType
+
+ArrayType -> startBracket ArraySize endBracket
+          |  EPSILON
 
 ArraySize -> Expression
           |  EPSILON
