@@ -49,9 +49,10 @@ namespace Compiler.Data
             }
         }
 
-        public Tree ParseTokenStream(IEnumerable<Token> tokenList)
+        public AST.Root ParseTokenStream(IEnumerable<Token> tokenList)
         {
-            Tree syntaxTree = new Tree(new AST_Node("Root", false), null);
+            AST.Node syntaxTree = new AST.Root("Root", false, null);
+            System.Console.WriteLine(syntaxTree.name);
             bool valid = false;
             Stack<Symbol> parseStack = new Stack<Symbol>();
             IEnumerator<Token> tokenStream = tokenList.GetEnumerator();
@@ -69,7 +70,7 @@ namespace Compiler.Data
                 {
                     if(parseStack.Peek().Name == "EPSILON")
                     {
-                        syntaxTree.AddChild(new AST_Node(parseStack.Pop()));
+                        syntaxTree.AddChild(new AST.EPSILON(parseStack.Pop(), syntaxTree));
                     }
                     else if(parseStack.Peek().Equals(eob))
                     {
@@ -77,10 +78,10 @@ namespace Compiler.Data
                         parseStack.Pop();
                     }
                     else if(parseStack.Peek().Name == tokenStream.Current.Name) {
-                        syntaxTree = syntaxTree.AddChild(new AST_Node(parseStack.Pop()));
-                        // *Strongly assumes this is a terminal*
-                        syntaxTree.AddChild(new AST_Node(tokenStream.Current.Value, true));
-                        syntaxTree = syntaxTree.Parent;
+                        syntaxTree = syntaxTree.AddChild(parseStack.Pop()); // What's this?
+                        
+                        syntaxTree.name = tokenStream.Current.Value; // What's this?
+                        syntaxTree = syntaxTree.Parent; // There's color everywhere
                         if(tokenStream.MoveNext() == false)
                         {
                             System.Console.WriteLine("ERROR: No more tokens in input stream");
@@ -119,7 +120,7 @@ namespace Compiler.Data
                     }
                     else 
                     {
-                        syntaxTree = syntaxTree.AddChild(new AST_Node(parseStack.Pop()));
+                        syntaxTree = syntaxTree.AddChild(parseStack.Pop());
                         
                         // END OF BRANCH
                         parseStack.Push(eob);
@@ -144,12 +145,12 @@ namespace Compiler.Data
             while(syntaxTree.Parent != null)
                 syntaxTree = syntaxTree.Parent;
 
-            return syntaxTree;
+            return syntaxTree as AST.Root;
         }
 
-        private void ParseTokenStreamError(Tree syntaxTree, Stack<Symbol> parseStack, string message) {
+        private void ParseTokenStreamError(AST.Node syntaxTree, Stack<Symbol> parseStack, string message) {
             System.Console.WriteLine(message);
-            syntaxTree.AddChild(new AST_Node("ERROR!", true));
+            syntaxTree.AddChild(new AST.NODEERROR("ERROR!", true, syntaxTree));
             System.Console.WriteLine("ParseStack:");
             while(parseStack.Count > 0)
             {

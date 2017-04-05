@@ -56,7 +56,6 @@ TypedParametersPP -> SepOp Type Identifier TypedParametersPP
 
 Type -> SimpleType TypeParameters
      |  StartDel Type EndDel TypeParameters
-
 TypeParameters -> StartDel TypeParametersP
                | EPSILON
 TypeParametersP -> Type TypeParametersPP EndDel

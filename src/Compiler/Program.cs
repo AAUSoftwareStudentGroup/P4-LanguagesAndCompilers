@@ -19,6 +19,7 @@ namespace Compiler
                 Console.WriteLine($"Follow({p.Name}): {String.Join(", ", p.FollowSet(bnf).Select(t => t.Name))}");
                 Console.WriteLine();
             }
+
             string error;
 			if(bnf.IsLL1(out error)) {
     			Console.WriteLine("Grammar is LL(1)");
@@ -29,7 +30,7 @@ namespace Compiler
             }
             
             Lexer l = new Lexer();
-            Tree ast = null;
+            Data.AST.Root ast = null;
             if(args.Length == 0)
                 args = new string[] { "sourceFileExample.tang" };
             foreach (string arg in args)
