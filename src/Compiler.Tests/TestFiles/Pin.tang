@@ -1,13 +1,14 @@
-class Pin
+class DigitalPin
     register8 ddr
     register8 port
-    uint8 bitIndex
-    nothing init(register8 ledDdr, register8 ledPort, uint8 ledBitIndex, bool output)
-        ddr = ledDdr
-        port = ledPort
-        bitIndex = ledBitIndex
-        ddr{bitIndex} = true
-    nothing on()
-        port{bitIndex} = true
-    nothing off()
-        port{bitIndex} = false
+    register8 pin
+    uint8 index
+    nothing init(register8 ddrReg, register8 portReg, register8 pinReg, uint8 regIndex)
+        ddr = ddrReg
+        port = portReg
+        pin = pinReg
+        bitIndex = regIndex
+    nothing digitalWrite(bool value)
+        port{bitIndex} = value
+    bool digitalRead()
+        return pin{bitIndex}
