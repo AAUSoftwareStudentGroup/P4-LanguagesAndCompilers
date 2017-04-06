@@ -1,0 +1,60 @@
+S	->  S nl S 
+		| s 
+		| D_C 
+		| D_P
+s	->  nl 
+		| e 
+		| s nl s 
+		| D_V 
+		| D_O 
+		| lv=e 
+		| lv{i=b 
+		| return e 
+		| s_if 
+		| while(b) indent s dedent 
+		| for(int x from i to i) indent s dedent
+_sC	->  _sC nl _sC 
+		| D_V 
+		| D_O 
+		| D_P
+s_if ->  if(b) indent s dedent 
+		| if(b) indent s dedent else s_if
+		|if(b) indent s dedent else indent s dedent
+lv	->  x 
+		| o 
+		| lv.lv 
+		| lv[i]
+e	->  lv 
+		| i 
+		| b 
+		| (e) 
+		| p(e, e, ... , e_k)
+i	->  n 
+		| e 
+		| i + i 
+		| i - i 
+		| i * i 
+		| i / i 
+		| i % i 
+		| i char`^ i
+b	->  true 
+		| false 
+		| e 
+		| i == i 
+		| i < i 
+		| i > i 
+		| i < i 
+		| i geq i 
+		| !b 
+		| lv{i}
+		| b and b 
+		| b or b
+D_P	->  T_r p(T_1 x_1, T_2 x_2, ... ,T_k x_k) indent s dedent
+D_V	->  T x 
+		| T x = e 
+		| T[] x = [e_1, e_2, ... , e_k] 
+		| T[i] x = [e_1, e_2, ... , e_k] 
+		| T[i] 
+D_O	->  C o 
+		| C o[i]
+D_C	->  class C indent _sC dedent
