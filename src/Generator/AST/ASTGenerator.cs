@@ -8,7 +8,8 @@ namespace Generator.AST
     {
         public void Generate(string formationRulesFile, string targetDirectory, string targetNamespace) 
         {
-            Dictionary<string, List<List<string>>> bnf = BNFParser.Parse(formationRulesFile);
+            IBNFParser bnfParser = new BNFParser();
+            Dictionary<string, List<List<string>>> bnf = bnfParser.Parse(formationRulesFile);
         }
     }
 }
