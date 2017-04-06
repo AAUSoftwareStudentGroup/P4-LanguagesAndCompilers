@@ -12,11 +12,15 @@ namespace Compiler.LexicalAnalysis
 
         public Lexer(string configPath = "Tokens.cfg.json")
         {
+            //Read json file with regular expressions
             string TokenCfg = System.IO.File.ReadAllText(configPath);
+            //Convert to a list of LexerRules
             _rules = JsonConvert.DeserializeObject<List<LexerRule>>(TokenCfg);
             foreach (LexerRule r in _rules) 
             {
+                //Initialise options to be nothing
                 var options = RegexOptions.None;
+                //If the rule can cover multiple lines (e.g. block comments) activate single line: this ignores newline
                 if (r.SingleLine) options |= RegexOptions.Singleline;
                 
                 r.Pattern = new Regex(r.PatternString, options);
@@ -84,11 +88,9 @@ namespace Compiler.LexicalAnalysis
                     continue;
                 }
 
-                foreach (LexerRule rule in _rules)
-                {
+                foreach (LexerRule rule in _rules){
                     match = rule.Pattern.Match(source, currentIndex);
-                    if(match.Success && match.Index == currentIndex)
-                    {
+                    if(match.Success && match.Index == currentIndex){
                         currentIndex += match.Value.Length;
                         token = new Token {
                             Name = rule.Name,
