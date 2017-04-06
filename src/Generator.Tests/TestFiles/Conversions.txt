@@ -1,0 +1,28 @@
+﻿Expression -> AddSubOperation
+
+AddSubOperation  -> MultDivOperation AddSubOperationP
+AddSubOperationP -> addSub MultDivOperation AddSubOperationP
+                 |  EPSILON
+
+MultDivOperation  -> PrimaryOperation:primary MultDivOperationP
+MultDivOperationP -> multDiv PrimaryOperation MultDivOperationP
+                  |  EPSILON
+
+
+MultDivOperation[PrimaryOperation:first MultDivOperationP[multDiv[*] PrimaryOperation:second MultDivOperationP[EPSILON]] -> e[first * second]
+MultDivOperation[
+	PrimaryOperation:first 
+	MultDivOperationP[
+		multDiv[*]
+		PrimaryOperation:second 
+		MultDivOperationP[
+			multDiv[*] PrimaryOperation:third MultDivOperationP
+		]
+	]
+] -,.> e[e[first * second] * third]
+
+
+MultDivOperationP[EPSILON] -> []
+
+PrimaryOperation[startDel Expression:expr endDel] -> e [( expr )]
+PrimaryOperation[intLiteral:l] -> l
