@@ -9,10 +9,10 @@ namespace Generator.Parser
 {
     public class ParserGenerator : IParserGenerator
     {
-        IBNFParser _bnfParser;
+        BNFParser _bnfParser;
         IClassGenerator _classGenerator;
 
-        ParserGenerator(IBNFParser bnfParser, IClassGenerator classGenerator)
+        ParserGenerator(BNFParser bnfParser, IClassGenerator classGenerator)
         {
             _bnfParser = bnfParser;
             _classGenerator = classGenerator;
@@ -20,8 +20,8 @@ namespace Generator.Parser
 
         public void Generate(string inputBNFGrammarFile, string targetDirectory, string targetNamespace) 
         {
-            var bnf = _bnfParser.ParseBNF(inputBNFGrammarFile);
-            Generate(bnf, targetDirectory, targetNamespace);
+            //var bnf = _bnfParser.ParseBNF(inputBNFGrammarFile);
+            //Generate(bnf, targetDirectory, targetNamespace);
         }
 
         public void Generate(Dictionary<string, string[][]> bnf, string targetDirectory, string targetNamespace)
