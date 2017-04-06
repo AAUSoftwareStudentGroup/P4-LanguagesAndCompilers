@@ -4,6 +4,6 @@ namespace Generator.Shared
 {
     public interface ISharedGenerator
     {
-        BNF LoadBNF(string inputBNFGrammarFile);
+        void LoadBNF(string inputBNFGrammarFile);
     }
 }
