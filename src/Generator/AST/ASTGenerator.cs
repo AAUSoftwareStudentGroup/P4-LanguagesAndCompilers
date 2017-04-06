@@ -10,7 +10,7 @@ namespace Generator.AST
     {
         public void Generate(string formationRulesFile, string targetDirectory, string targetNamespace) 
         {
-            Dictionary<string, List<List<string>>> bnf = BNFParser.Parse(formationRulesFile);
+            Dictionary<string, List<List<string>>> bnf = new BNFParser().Parse(formationRulesFile);
         }
 
         public void Generate(Dictionary<string, string[][]> bnf, string targetDirectory, string targetNamespace)

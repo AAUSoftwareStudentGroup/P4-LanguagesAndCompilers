@@ -14,7 +14,7 @@ namespace Generator
             IASTGenerator astGenerator;
             ILexerGenerator lexerGenerator;
             IParserGenerator parserGenerator;
-            Dictionary<string, List<List<string>>> RawBNF = BNFParser.Parse("BNFGrammar.bnf");
+            Dictionary<string, List<List<string>>> RawBNF = new BNFParser().Parse("BNFGrammar.bnf");
         }
     }
 }
