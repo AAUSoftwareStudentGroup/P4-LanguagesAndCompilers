@@ -61,7 +61,7 @@ namespace Generator
 
             node.Accept(printer);
 
-            Console.ReadKey();
+            Console.Read();
         }
     }
 }

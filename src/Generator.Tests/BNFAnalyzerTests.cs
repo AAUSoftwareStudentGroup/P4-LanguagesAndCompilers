@@ -81,13 +81,13 @@ namespace Generator.Tests
             string[] expectedB0 = new string[] { "b" };
             Assert.AreEqual(expectedB0.Length, predictSets[("B", 0)].Intersect(expectedB0).Count());
 
-            string[] expectedB1 = new string[] { "EPSILON", "d", "a" };
+            string[] expectedB1 = new string[] { "d", "a" };
             Assert.AreEqual(expectedB1.Length, predictSets[("B", 1)].Intersect(expectedB1).Count());
 
             string[] expectedD0 = new string[] { "d" };
             Assert.AreEqual(expectedD0.Length, predictSets[("D", 0)].Intersect(expectedD0).Count());
 
-            string[] expectedD1 = new string[] { "EPSILON", "a" };
+            string[] expectedD1 = new string[] { "a" };
             Assert.AreEqual(expectedD1.Length, predictSets[("D", 1)].Intersect(expectedD1).Count());
         }
 
