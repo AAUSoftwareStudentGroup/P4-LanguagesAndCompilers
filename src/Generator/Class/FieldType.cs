@@ -4,9 +4,15 @@ using System.Text;
 
 namespace Generator.Class
 {
-    class FieldType
+    public class FieldType
     {
-        public string AccessModifier { get; set; }
+        public FieldType(string modifiers, string type, string identifier)
+        {
+            Modifiers = modifiers;
+            Type = type;
+            Identifier = identifier;
+        }
+        public string Modifiers { get; set; }
         public string Type { get; set; }
         public string Identifier { get; set; }
         public string Expression { get; set; }

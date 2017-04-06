@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Collections.Generic;
-using Generator.BNF;
+using Generator.Grammar;
 
 namespace Generator.AST
 {
