@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Generator.Grammar
 {
-    public class BNF : Dictionary<string, string[][]>
+    public class BNF : Dictionary<string, List<List<string>>>
     {
     }
 }

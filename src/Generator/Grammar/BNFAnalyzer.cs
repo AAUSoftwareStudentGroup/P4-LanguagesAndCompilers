@@ -54,11 +54,11 @@ namespace Generator.Grammar
                 else
                 {
                     HashSet<string> set = new HashSet<string>();
-                    string[][] expansions = bnf[symbol];
-                    for (int index = 0; index < expansions.Length; index++)
+                    var expansions = bnf[symbol];
+                    for (int index = 0; index < expansions.Count; index++)
                     {
                         var expansionSet = GetExpansionFirstSet(symbol, index, bnf, firstSets);
-                        if (expansions[index].Length == 1 && expansions[index][0] == _emptySymbol)
+                        if (expansions[index].Count == 1 && expansions[index][0] == _emptySymbol)
                         {
                             set.Add(_emptySymbol);
                         }
@@ -98,7 +98,7 @@ namespace Generator.Grammar
             }
         }
 
-        public HashSet<string> GetSymbolsFirstSet(string[] symbols, BNF bnf, FirstSetTable firstSets)
+        public HashSet<string> GetSymbolsFirstSet(List<string> symbols, BNF bnf, FirstSetTable firstSets)
         {
             var expansionSet = new HashSet<string>();
 
@@ -133,6 +133,11 @@ namespace Generator.Grammar
             FollowSetTable followSets = new FollowSetTable();
             foreach (var production in bnf)
             {
+                followSets.Add(production.Key, null);
+            }
+
+            foreach (var production in bnf)
+            {
                 GetProductionFollowSet(production.Key, bnf, followSets, firstSets);
             }
             return followSets;
@@ -140,57 +145,56 @@ namespace Generator.Grammar
 
         HashSet<string> GetProductionFollowSet(string symbol, BNF bnf, FollowSetTable followSets, FirstSetTable firstSets)
         {
-            if (followSets.ContainsKey(symbol))
+            if (followSets[symbol] != null)
             {
                 return followSets[symbol];
             }
 
-            HashSet<string> followSet = new HashSet<string>();
+            followSets[symbol] = new HashSet<string>();
 
             foreach (var production in bnf)
             {
                 foreach (var expansion in production.Value)
                 {
-                    for (int i = 0; i < expansion.Length; i++)
+                    for (int i = 0; i < expansion.Count; i++)
                     {
-                        string expansionSymbol = expansion[i];
-                        if (expansionSymbol == symbol)
+                        string b = expansion[i];
+                        if (b == symbol)
                         {
-                            if (i < expansion.Length - 1)
+                            if (i < expansion.Count - 1)
                             {
-                                var tailFirstSet = new HashSet<string>(GetSymbolsFirstSet(expansion.Skip(i + 1).ToArray(), bnf, firstSets));
+                                var tail = expansion.Skip(i+1);
+                                var tailFirstSet = new HashSet<string>(GetSymbolsFirstSet(tail.ToList(), bnf, firstSets));
 
                                 bool tailFirstSetContainsEpsilon = false;
 
                                 foreach (var s in tailFirstSet)
                                 {
-                                    if (s == _emptySymbol)
+                                    if (s == "EPSILON")
                                     {
                                         tailFirstSetContainsEpsilon = true;
                                         break;
                                     }
                                 }
 
-                                tailFirstSet.RemoveWhere(s => s == _emptySymbol);
+                                tailFirstSet.RemoveWhere(s => s == "EPSILON");
 
-                                followSet.UnionWith(tailFirstSet);
+                                followSets[symbol].UnionWith(tailFirstSet);
                                 if (tailFirstSetContainsEpsilon)
                                 {
-                                    followSet.UnionWith(GetProductionFollowSet(production.Key, bnf, followSets, firstSets));
+                                    followSets[symbol].UnionWith(GetProductionFollowSet(production.Key, bnf, followSets, firstSets));
                                 }
                             }
                             else
                             {
-                                followSet.UnionWith(GetProductionFollowSet(production.Key, bnf, followSets, firstSets));
+                                followSets[symbol].UnionWith(GetProductionFollowSet(production.Key, bnf, followSets, firstSets));
                             }
                         }
                     }
                 }
             }
 
-            followSets.Add(symbol, followSet);
-
-            return followSet;
+            return followSets[symbol];
         }
 
         public PredictSetTable GetPredictSets(BNF bnf, FirstSetTable firstSets, FollowSetTable followSets)
@@ -199,7 +203,7 @@ namespace Generator.Grammar
 
             foreach (var production in bnf)
             {
-                for (int expansionIndex = 0; expansionIndex < production.Value.Length; expansionIndex++)
+                for (int expansionIndex = 0; expansionIndex < production.Value.Count; expansionIndex++)
                 {
                     HashSet<string> predictSet = new HashSet<string>(firstSets.ExpansionSets[(production.Key, expansionIndex)]);
                     if(predictSet.Contains(_emptySymbol))
@@ -226,7 +230,7 @@ namespace Generator.Grammar
             foreach (var production in bnf)
             {
                 HashSet<string> union = new HashSet<string>();
-                for (int expansionIndex = 0; expansionIndex < production.Value.Length; expansionIndex++)
+                for (int expansionIndex = 0; expansionIndex < production.Value.Count; expansionIndex++)
                 {
                     var expansionFirstSet = firstSets.ExpansionSets[(production.Key, expansionIndex)];
                     if (union.Intersect(expansionFirstSet).Count() > 0)

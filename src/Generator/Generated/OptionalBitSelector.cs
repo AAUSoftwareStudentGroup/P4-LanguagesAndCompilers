@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Generator.Generated
 {
-	public class D : Node
+	public class OptionalBitSelector : Node
 	{
 		public override void Accept(Visitor visitor)
 		{

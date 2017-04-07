@@ -1,117 +1,181 @@
-Statements  -> Statement StatementsP EOF
-StatementsP -> NewLine Statement StatementsP
-              | EPSILON
+Program -> Imports newLine Statements eof
+
+Imports  -> Import ImportsP
+ImportsP -> newline Import ImportsP
+         |  EPSILON
+
+Import -> import identifier
+       |  EPSILON
+
+Statements  -> Statement StatementsP
+StatementsP -> newline Statement StatementsP
+            |  EPSILON
 
 Statement -> Declaration
           |  IdentifierStatement
           |  IfStatement
           |  WhileStatement
+          |  ForStatement
+          |  Interrupt
           |  Class
-          |  NewLine
+          |  EPSILON
 
-Class -> ClassWord Identifier TypedParameters ClassBlock
+Interrupt -> interrupt startDel Expression endDel SimpleBlock
 
-ClassBlock -> Indent ClassStatements Dedent
+Class -> class identifier ClassBlock
 
-ClassStatements  -> ClassStatement SimpleStatementsP            
+ClassBlock -> indent ClassStatements dedent
+
+ClassStatements  -> ClassStatement ClassStatementsP            
                  |  EPSILON
-ClassStatementsP -> NewLine ClassStatement ClassStatementsP
-              | EPSILON
+ClassStatementsP -> newline ClassStatement ClassStatementsP
+                 |  EPSILON
 
 ClassStatement -> Declaration
-               |  IdentifierStatement
-               |  IfStatement
-               |  WhileStatement
-               |  NewLine
+               |  newLine
 
-Declaration -> Type Identifier Definition
+Declaration -> Type identifier Definition
 
-IdentifierStatement -> Identifier IdentifierOperation
+IdentifierStatement -> identifier LIdentifierOperation
 
-IdentifierOperation -> Assignment
-                    |  Call
+LIdentifierOperation -> Assignment
+                     |  LSelectorOperation
 
-Assignment -> Assign Expression
+LSelectorOperation -> Call LReturnValueOperation
+                   |  ClassAccessor LIdentifierOperation
+                   |  ElementSelector LIdentifierOperation
+                   |  BitSelector Assignment
+
+LReturnValueOperation -> EPSILON
+                      |  LSelectorOperation
+
+ElementSelector -> startBracket Expression endBracket
+
+BitSelector -> startCurly Expression endCurly
+                    
+ClassAccessor -> dot identifier
+
+Assignment -> assign Expression
 
 Call -> Parameters
 
-IfStatement -> If Condition SimpleBlock
+IfStatement -> if Condition SimpleBlock ElseStatement
 
-WhileStatement -> While Condition SimpleBlock
+ElseStatement -> else ElseBlock
+              |  EPSILON
+              
+ElseBlock -> IfStatement
+          |  SimpleBlock
 
-Condition -> StartDel Expression EndDel
+WhileStatement -> while Condition SimpleBlock
+
+ForStatement -> for startDel simpleType identifier from Expression to Expression endDel SimpleBlock
+
+Condition -> startDel Expression endDel
 
 Definition -> FunctionDefinition
            |  Assignment
+           |  EPSILON
 
 FunctionDefinition -> TypedParameters SimpleBlock
 
-SimpleBlock -> Indent SimpleStatements Dedent
+SimpleBlock -> indent SimpleStatements dedent
 
-TypedParameters -> StartDel TypedParametersP
-TypedParametersP -> Type Identifier TypedParametersPP
-                |   EndDel
-TypedParametersPP -> SepOp Type Identifier TypedParametersPP
-               | EndDel
-
-Type -> SimpleType TypeParameters
-     |  StartDel Type EndDel TypeParameters
-TypeParameters -> StartDel TypeParametersP
-               | EPSILON
-TypeParametersP -> Type TypeParametersPP EndDel
-               | EndDel
-TypeParametersPP -> SepOp Type TypeParametersPP
-               | EPSILON
-
-SimpleStatements  -> SimpleStatement SimpleStatementsP            
-SimpleStatementsP -> NewLine SimpleStatement SimpleStatementsP
-              | EPSILON
-
-SimpleStatement -> SimpleDeclaration
-                 |  IdentifierStatement
-                 |  IfStatement
-                 |  WhileStatement
-                 |  ReturnStatement
+TypedParameters  -> startDel TypedParametersF endDel
+TypedParametersF -> Type identifier TypedParametersP
+                 |  EPSILON
+TypedParametersP -> sep Type identifier TypedParametersP
                  |  EPSILON
 
-ReturnStatement -> Return Expression
+Type -> simpleType TypeParameters ArrayType
+     |  startDel Type endDel startDel TypeParametersF endDel ArrayType
 
-SimpleDeclaration -> Type Identifier Assign Expression
-Expression    -> CompareOperation
-CompareOperation  -> OrOperation CompareOperationP
-CompareOperationP -> Compare OrOperation CompareOperationP
-              | EPSILON
+ArrayType -> startBracket ArraySize endBracket
+          |  EPSILON
+
+ArraySize -> Expression
+          |  EPSILON
+
+TypeParameters  -> startDel TypeParametersF endDel
+                |  EPSILON
+TypeParametersF -> Type TypeParametersP 
+                |  EPSILON
+TypeParametersP -> sep Type TypeParametersP
+                |  EPSILON
+
+SimpleStatements  -> SimpleStatement SimpleStatementsP            
+SimpleStatementsP -> newLine SimpleStatement SimpleStatementsP
+                  |  EPSILON
+
+SimpleStatement -> SimpleDeclaration
+                |  Assignment
+                |  IfStatement
+                |  WhileStatement
+                |  ReturnStatement
+                |  EPSILON
+
+ReturnStatement -> return Expression
+
+SimpleDeclaration -> Type identifier SimpleDefinition
+
+SimpleDefinition -> assign Expression
+                 |  EPSILON
+
+Expression -> OrOperation
 
 OrOperation  -> AndOperation OrOperationP
-OrOperationP -> Or AndOperation OrOperationP
-              | EPSILON
+OrOperationP -> or AndOperation OrOperationP
+             |  EPSILON
 
-AndOperation  -> AddOperation AndOperationP
-AndOperationP -> And AddOperation AndOperationP
-              | EPSILON
+AndOperation  -> EqualityOperation AndOperationP
+AndOperationP -> and EqualityOperation AndOperationP
+              |  EPSILON
 
-AddOperation  -> MultOperation AddOperationP
-AddOperationP -> AddSubOpp MultOperation AddOperationP
-              | EPSILON
+EqualityOperation  -> RelationalOperation EqualityOperationP
+EqualityOperationP -> equality RelationalOperation EqualityOperationP
+                   |  EPSILON
+   
+RelationalOperation  -> AddSubOperation RelationalOperationP
+RelationalOperationP -> relational AddSubOperation RelationalOperationP
+                     |  EPSILON
 
-MultOperation -> DelOperation MultOperationP
-MultOperationP -> MulDivOpp DelOperation MultOperationP
-               | EPSILON
+AddSubOperation  -> MultDivOperation AddSubOperationP
+AddSubOperationP -> addSub MultDivOperation AddSubOperationP
+                 |  EPSILON
 
-DelOperation -> Del
-             |  Identifier FunctionParameters
-             |  Number
+MultDivOperation  -> PrimaryOperation MultDivOperationP
+MultDivOperationP -> multDiv PrimaryOperation MultDivOperationP
+                  |  EPSILON
 
-Del          -> StartDel Expression EndDel
+PrimaryOperation -> startDel Expression endDel
+                 |  identifier RSelectorOperation
+                 |  intLiteral
+                 |  boolLiteral
+                 |  Register OptionalBitSelector
+                 |  Array OptionalElementSelector
+                 
+Register -> register startDel Expression endDel
 
-FunctionParameters -> Parameters
-                   | EPSILON
+OptionalBitSelector -> BitSelector
+                    |  EPSILON
 
-Parameters -> StartDel ParametersP
-ParametersP -> Expression ParametersPP
-            |  EndDel
-ParametersPP -> SepOp Expression ParametersPP
-               | EndDel
+Array  -> startBracket ArrayF endBracket
+ArrayF -> Expression ArrayP
+       |  EPSILON
+ArrayP -> sep Expression ArrayP
+       |  EPSILON
 
-Val -> Identifier
-     | Number
+OptionalElementSelector -> ElementSelector RSelectorOperation
+                        |  EPSILON
+
+RSelectorOperation -> Call RSelectorOperation
+                   |  ClassAccessor RSelectorOperation
+                   |  ElementSelector RSelectorOperation
+                   |  BitSelector
+                   |  EPSILON
+
+Parameters  -> startDel ParametersF endDel
+ParametersF -> Expression ParametersP
+            |  EPSILON
+ParametersP -> sep Expression ParametersP
+            |  EPSILON

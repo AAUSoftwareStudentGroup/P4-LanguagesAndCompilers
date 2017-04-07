@@ -13,12 +13,12 @@ namespace Generator.Tests
     {
         BNF ll1Grammar => new BNF()
         {
-            { "S", new string[][] { new string[] { "A", "a" } } },
-            { "A", new string[][] { new string[] { "B", "D" } } },
-            { "B", new string[][] { new string[] { "b" },
-                                    new string[] { "EPSILON" } } },
-            { "D", new string[][] { new string[] { "d" },
-                                    new string[] { "EPSILON" } } }
+            { "S", new List<List<string>>(){ new List<string>(){ "A", "a" } } },
+            { "A", new List<List<string>>(){ new List<string>(){ "B", "D" } } },
+            { "B", new List<List<string>>(){ new List<string>(){ "b" },
+                                                new List<string>(){ "EPSILON" } } },
+            { "D", new List<List<string>>(){ new List<string>(){ "d" },
+                                                new List<string>(){ "EPSILON" } } }
         };
     }
 }

@@ -10,24 +10,24 @@ namespace Generator.Tests
     [TestClass]
     public class BNFAnalyzerTests
     {
-        BNF ll1Grammar => new BNF()
+        BNFParser parser = new BNFParser();
+
+        BNF LL1Grammar => new BNF()
         {
-            { "S", new string[][] { new string[] { "A", "a" } } },
-            { "A", new string[][] { new string[] { "B", "D" } } },
-            { "B", new string[][] { new string[] { "b" },
-                                    new string[] { "EPSILON" } } },
-            { "D", new string[][] { new string[] { "d" },
-                                    new string[] { "EPSILON" } } }
+            { "S", new List<List<string>>(){ new List<string>(){ "A", "a" } } },
+            { "A", new List<List<string>>(){ new List<string>(){ "B", "D" } } },
+            { "B", new List<List<string>>(){ new List<string>(){ "b" },
+                                                new List<string>(){ "EPSILON" } } },
+            { "D", new List<List<string>>(){ new List<string>(){ "d" },
+                                                new List<string>(){ "EPSILON" } } }
         };
-
-
 
         [TestMethod]
         public void BNFAnalyzerGetFirstSets()
         {
             IBNFAnalyzer bnfAnalyzer = new BNFAnalyzer();
 
-            var firstSets = bnfAnalyzer.GetFirstSets(ll1Grammar);
+            var firstSets = bnfAnalyzer.GetFirstSets(LL1Grammar);
 
             string[] expectedS0 = new string[] { "a", "b", "d" };
             Assert.AreEqual(expectedS0.Length, firstSets.ExpansionSets[("S", 0)].Intersect(expectedS0).Count());
@@ -53,7 +53,7 @@ namespace Generator.Tests
         {
             IBNFAnalyzer bnfAnalyzer = new BNFAnalyzer();
 
-            var followSets = bnfAnalyzer.GetFollowSets(ll1Grammar, bnfAnalyzer.GetFirstSets(ll1Grammar));
+            var followSets = bnfAnalyzer.GetFollowSets(LL1Grammar, bnfAnalyzer.GetFirstSets(LL1Grammar));
 
             string[] expectedA = new string[] { "a" };
             Assert.AreEqual(expectedA.Length, followSets["A"].Intersect(expectedA).Count());
@@ -70,7 +70,7 @@ namespace Generator.Tests
         {
             IBNFAnalyzer bnfAnalyzer = new BNFAnalyzer();
 
-            var predictSets = bnfAnalyzer.GetPredictSets(ll1Grammar, bnfAnalyzer.GetFirstSets(ll1Grammar), bnfAnalyzer.GetFollowSets(ll1Grammar, bnfAnalyzer.GetFirstSets(ll1Grammar)));
+            var predictSets = bnfAnalyzer.GetPredictSets(LL1Grammar, bnfAnalyzer.GetFirstSets(LL1Grammar), bnfAnalyzer.GetFollowSets(LL1Grammar, bnfAnalyzer.GetFirstSets(LL1Grammar)));
 
             string[] expectedS0 = new string[] { "a", "b", "d" };
             Assert.AreEqual(expectedS0.Length, predictSets[("S", 0)].Intersect(expectedS0).Count());
@@ -96,7 +96,7 @@ namespace Generator.Tests
         {
             IBNFAnalyzer bnfAnalyzer = new BNFAnalyzer();
 
-            var isLL1 = bnfAnalyzer.IsLL1(ll1Grammar, bnfAnalyzer.GetFirstSets(ll1Grammar), bnfAnalyzer.GetFollowSets(ll1Grammar, bnfAnalyzer.GetFirstSets(ll1Grammar)));
+            var isLL1 = bnfAnalyzer.IsLL1(LL1Grammar, bnfAnalyzer.GetFirstSets(LL1Grammar), bnfAnalyzer.GetFollowSets(LL1Grammar, bnfAnalyzer.GetFirstSets(LL1Grammar)));
 
             Assert.AreEqual(true, isLL1);
         }

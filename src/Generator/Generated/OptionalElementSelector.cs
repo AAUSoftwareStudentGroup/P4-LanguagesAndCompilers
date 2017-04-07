@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Generator.Generated
 {
-	public class S : Node
+	public class OptionalElementSelector : Node
 	{
 		public override void Accept(Visitor visitor)
 		{

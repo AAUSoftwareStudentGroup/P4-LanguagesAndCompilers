@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System;
 using Generator.Class;
 using System.IO;
-using Generator.Generated;
+//using Generator.Generated;
 
 namespace Generator
 {
@@ -16,15 +16,19 @@ namespace Generator
         {
             IBNFAnalyzer bnfAnalyzer = new BNFAnalyzer();
 
+            IBNFParser bnfParser = new BNFParser();
+
             BNF bnf = new BNF()
             {
-                { "S", new string[][]{ new string[] { "A", "a" } } },
-                { "A", new string[][]{ new string[] { "B", "D" } } },
-                { "B", new string[][]{ new string[] { "b" },
-                                       new string[] { "EPSILON" } } },
-                { "D", new string[][]{ new string[] { "d" },
-                                       new string[] { "EPSILON" } } }
+                { "S", new List<List<string>>(){ new List<string>(){ "A", "a" } } },
+                { "A", new List<List<string>>(){ new List<string>(){ "B", "D" } } },
+                { "B", new List<List<string>>(){ new List<string>(){ "b" },
+                                                 new List<string>(){ "EPSILON" } } },
+                { "D", new List<List<string>>(){ new List<string>(){ "d" },
+                                                 new List<string>(){ "EPSILON" } } }
             };
+
+            bnf = bnfParser.Parse("BNFGrammar.bnf");
 
             var grammarInfo = bnfAnalyzer.Analyze(bnf);
 
@@ -44,22 +48,22 @@ namespace Generator
                 classGenerator.Generate(c, $"Generated/{c.Identifier}.cs");
             }
 
-            Parser parser = new Parser();
+            //Parser parser = new Parser();
 
-            var tokens = new List<Token>
-            {
-                new Token() { Name = "b" },
-                new Token() { Name = "d" },
-                new Token() { Name = "a" },
-            }.GetEnumerator();
+            //var tokens = new List<Token>
+            //{
+            //    new Token() { Name = "b" },
+            //    new Token() { Name = "d" },
+            //    new Token() { Name = "a" },
+            //}.GetEnumerator();
 
-            tokens.MoveNext();
+            //tokens.MoveNext();
 
-            Node node = parser.ParseS(tokens);
+            //Node node = parser.ParseS(tokens);
 
-            PrintVisitor printer = new PrintVisitor();
+            //PrintVisitor printer = new PrintVisitor();
 
-            node.Accept(printer);
+            //node.Accept(printer);
 
             Console.Read();
         }

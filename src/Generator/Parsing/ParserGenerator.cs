@@ -78,7 +78,7 @@ namespace Generator.Parsing
                 methodStatements.Add("switch(tokens.Current.Name)");
                 methodStatements.Add("{");
 
-                for(int expansionIndex = 0; expansionIndex < production.Value.Length; expansionIndex++)
+                for(int expansionIndex = 0; expansionIndex < production.Value.Count; expansionIndex++)
                 {
                     foreach (var predictSymbol in grammerInfo.PredictsSets[(production.Key, expansionIndex)])
                     {
