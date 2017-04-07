@@ -45,7 +45,7 @@ namespace Generator
 
             foreach (var c in classes)
             {
-                classGenerator.Generate(c, $"Generated/{c.Identifier}.cs");
+                classGenerator.Generate(c, $"Generated/{c.Identifier.Split('<')[0]}.cs");
             }
 
             Parser parser = new Parser();
@@ -56,6 +56,17 @@ namespace Generator
                 new Token() { Name = "identifier" },
                 new Token() { Name = "assign" },
                 new Token() { Name = "intLiteral" },
+                new Token() { Name = "addSub" },
+                new Token() { Name = "intLiteral" },
+                new Token() { Name = "newline" },
+                new Token() { Name = "simpleType" },
+                new Token() { Name = "identifier" },
+                new Token() { Name = "assign" },
+                new Token() { Name = "intLiteral" },
+                new Token() { Name = "addSub" },
+                new Token() { Name = "intLiteral" },
+                new Token() { Name = "multDiv" },
+                new Token() { Name = "intLiteral" },
                 new Token() { Name = "eof" }
             }.GetEnumerator();
 
@@ -63,9 +74,11 @@ namespace Generator
 
             Node node = parser.ParseProgram(tokens);
 
+            BuildASTVisitor astBuilder = new BuildASTVisitor();
+
             PrintVisitor printer = new PrintVisitor();
 
-            node.Accept(printer);
+            Console.WriteLine(node.Accept(astBuilder).Accept(printer));
 
             Console.Read();
         }

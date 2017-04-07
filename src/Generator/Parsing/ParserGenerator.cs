@@ -77,7 +77,7 @@ namespace Generator.Parsing
 
                 List<string> methodStatements = new List<string>();
 
-                methodStatements.Add($"{production.Key} node = new {production.Key}(){{ Children = new List<Node>() }};");
+                methodStatements.Add($"{production.Key} node = new {production.Key}(){{ Name = \"{production.Key}\", Children = new List<Node>() }};");
 
                 methodStatements.Add("switch(tokens.Current.Name)");
                 methodStatements.Add("{");
@@ -124,53 +124,98 @@ namespace Generator.Parsing
         {
             List<ClassType> classes = new List<ClassType>();
 
-            ClassType nodeClass = new ClassType(targetNamespace, "public abstract", "Node",  null)
+            ClassType nodeClass = CreateNodeClass(targetNamespace);
+            MethodType acceptMethod = CreateAcceptMethod();
+            ClassType tokenClass = CreateTokenClass(targetNamespace);
+            ClassType visitorClass = new ClassType(targetNamespace, "public abstract", "Visitor<T>", null);
+            List<MethodType> visitMethods = new List<MethodType>();
+
+            foreach (var production in bnf)
+            {
+                MethodType visitMethod = CreateVisitMethod(production);
+                visitMethods.Add(visitMethod);
+
+                ClassType classType = CreateParseTreeClass(targetNamespace, production);
+                classes.Add(classType);
+            }
+
+            MethodType visitTokenMethod = CreateVisitTokenMethod();
+            MethodType visitNodeMethod = CreateVisitNodeMethod();
+
+            visitMethods.Add(visitTokenMethod);
+            visitMethods.Add(visitNodeMethod);
+
+            visitorClass.Methods = visitMethods.ToArray();
+
+            classes.Add(visitorClass);
+            classes.Add(nodeClass);
+            classes.Add(tokenClass);
+
+            return classes.ToArray();
+        }
+
+        private static MethodType CreateVisitNodeMethod()
+        {
+            return new MethodType("public abstract", "T", "Visit")
+            {
+                Parameters = new ParameterType[]
+                {
+                    new ParameterType("Node", "node")
+                }
+            };
+        }
+
+        private static MethodType CreateVisitTokenMethod()
+        {
+            return new MethodType("public virtual", "T", "Visit")
+            {
+                Parameters = new ParameterType[]
+                {
+                    new ParameterType("Token", "node")
+                },
+                Body = new string[]
+                {
+                    "return Visit((Node)node);"
+                }
+            };
+        }
+
+        private static ClassType CreateParseTreeClass(string targetNamespace, KeyValuePair<string, List<List<string>>> production)
+        {
+            return new ClassType(targetNamespace, "public", production.Key, "Node")
             {
                 Usings = new string[]
                 {
                     "using System.Collections.Generic;"
                 },
-                Fields = new FieldType[]
-                {
-                    new FieldType("public", "List<Node>", "Children")
-                    {
-                        Expression = "= new List<Node>();"
-                    }
-                },
                 Methods = new MethodType[]
                 {
-                    new MethodType("public abstract", "void", "Accept")
-                    {
-                        Parameters = new ParameterType[]
-                        {
-                            new ParameterType("Visitor", "visitor")
-                        }
-                    }
+                    CreateAcceptMethod()
                 }
             };
+        }
 
-            classes.Add(nodeClass);
-
-            MethodType acceptMethod = new MethodType("public override", "void", "Accept")
+        private static MethodType CreateVisitMethod(KeyValuePair<string, List<List<string>>> production)
+        {
+            return new MethodType("public virtual", "T", "Visit")
             {
                 Parameters = new ParameterType[]
                 {
-                    new ParameterType("Visitor", "visitor")
+                    new ParameterType(production.Key, "node")
                 },
                 Body = new string[]
                 {
-                    "visitor.Visit(this);"
+                    "return Visit((Node)node);"
                 }
             };
+        }
 
-            ClassType tokenClass = new ClassType(targetNamespace, "public", "Token", "Node")
+        private static ClassType CreateTokenClass(string targetNamespace)
+        {
+            return new ClassType(targetNamespace, "public", "Token", "Node")
             {
                 Fields = new FieldType[]
                 {
-                    new FieldType("public", "string", "Name")
-                    {
-                        Expression = "{ get; set; }"
-                    },
                     new FieldType("public", "string", "Value")
                     {
                         Expression = "{ get; set; }"
@@ -186,85 +231,56 @@ namespace Generator.Parsing
                 },
                 Methods = new MethodType[]
                 {
-                    acceptMethod
+                    CreateAcceptMethod()
                 }
             };
-
-            classes.Add(tokenClass);
-
-            ClassType visitorClass = new ClassType(targetNamespace, "public abstract", "Visitor", null);
-
-            List<MethodType> visitMethods = new List<MethodType>();
-
-            foreach (var production in bnf)
-            {
-                MethodType visitMethod = new MethodType("public virtual", "void", "Visit")
-                {
-                    Parameters = new ParameterType[]
-                    {
-                        new ParameterType(production.Key, "node")
-                    },
-                    Body = new string[]
-                    {
-                        "Visit((Node)node);"
-                    }
-                };
-
-                visitMethods.Add(visitMethod);
-
-                ClassType classType = new ClassType(targetNamespace, "public", production.Key, "Node")
-                {
-                    Usings = new string[]
-                    {
-                        "using System.Collections.Generic;"
-                    },
-                    Methods = new MethodType[]
-                    {
-                        acceptMethod
-                    }
-                };
-
-                classes.Add(classType);
-            }
-
-            MethodType visitTokenMethod = new MethodType("public virtual", "void", "Visit")
-            {
-                Parameters = new ParameterType[]
-                {
-                    new ParameterType("Token", "node")
-                },
-                Body = new string[]
-                {
-                    "Visit((Node)node);"
-                }
-            };
-
-            visitMethods.Add(visitTokenMethod);
-
-            MethodType visitNodeMethod = new MethodType("public virtual", "void", "Visit")
-            {
-                Parameters = new ParameterType[]
-                {
-                    new ParameterType("Node", "node")
-                },
-                Body = new string[]
-                {
-                    "foreach (Node child in node.Children)",
-                    "{",
-                        "\tchild.Accept(this);",
-                    "}"
-                }
-            };
-
-            visitMethods.Add(visitNodeMethod);
-
-            visitorClass.Methods = visitMethods.ToArray();
-
-            classes.Add(visitorClass);
-
-            return classes.ToArray();
         }
 
+        private static MethodType CreateAcceptMethod()
+        {
+            return new MethodType("public override", "T", "Accept<T>")
+            {
+                Parameters = new ParameterType[]
+                {
+                    new ParameterType("Visitor<T>", "visitor")
+                },
+                Body = new string[]
+                {
+                    "return visitor.Visit(this);"
+                }
+            };
+        }
 
+        private static ClassType CreateNodeClass(string targetNamespace)
+        {
+            return new ClassType(targetNamespace, "public abstract", "Node", null)
+            {
+                Usings = new string[]
+                {
+                    "using System.Collections.Generic;"
+                },
+                Fields = new FieldType[]
+                {
+                    new FieldType("public", "string", "Name")
+                    {
+                        Expression = "= null;"
+                    },
+                    new FieldType("public", "List<Node>", "Children")
+                    {
+                        Expression = "= new List<Node>();"
+                    }
+                },
+                Methods = new MethodType[]
+                {
+                    new MethodType("public abstract", "T", "Accept<T>")
+                    {
+                        Parameters = new ParameterType[]
+                        {
+                            new ParameterType("Visitor<T>", "visitor")
+                        }
+                    }
+                }
+            };
+        }
     }
 }

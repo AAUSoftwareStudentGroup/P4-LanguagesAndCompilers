@@ -25,7 +25,7 @@ namespace Generator.Generated
 
 		public Program ParseProgram(IEnumerator<Token> tokens)
 		{
-			Program node = new Program(){ Children = new List<Node>() };
+			Program node = new Program(){ Name = "Program", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -48,7 +48,7 @@ namespace Generator.Generated
 
 		public Statements ParseStatements(IEnumerator<Token> tokens)
 		{
-			Statements node = new Statements(){ Children = new List<Node>() };
+			Statements node = new Statements(){ Name = "Statements", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -71,7 +71,7 @@ namespace Generator.Generated
 
 		public StatementsP ParseStatementsP(IEnumerator<Token> tokens)
 		{
-			StatementsP node = new StatementsP(){ Children = new List<Node>() };
+			StatementsP node = new StatementsP(){ Name = "StatementsP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "newline":
@@ -89,7 +89,7 @@ namespace Generator.Generated
 
 		public Statement ParseStatement(IEnumerator<Token> tokens)
 		{
-			Statement node = new Statement(){ Children = new List<Node>() };
+			Statement node = new Statement(){ Name = "Statement", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -125,7 +125,7 @@ namespace Generator.Generated
 
 		public Interrupt ParseInterrupt(IEnumerator<Token> tokens)
 		{
-			Interrupt node = new Interrupt(){ Children = new List<Node>() };
+			Interrupt node = new Interrupt(){ Name = "Interrupt", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "interrupt":
@@ -142,7 +142,7 @@ namespace Generator.Generated
 
 		public Class ParseClass(IEnumerator<Token> tokens)
 		{
-			Class node = new Class(){ Children = new List<Node>() };
+			Class node = new Class(){ Name = "Class", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "class":
@@ -157,7 +157,7 @@ namespace Generator.Generated
 
 		public ClassBlock ParseClassBlock(IEnumerator<Token> tokens)
 		{
-			ClassBlock node = new ClassBlock(){ Children = new List<Node>() };
+			ClassBlock node = new ClassBlock(){ Name = "ClassBlock", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "indent":
@@ -172,7 +172,7 @@ namespace Generator.Generated
 
 		public ClassStatements ParseClassStatements(IEnumerator<Token> tokens)
 		{
-			ClassStatements node = new ClassStatements(){ Children = new List<Node>() };
+			ClassStatements node = new ClassStatements(){ Name = "ClassStatements", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -191,7 +191,7 @@ namespace Generator.Generated
 
 		public ClassStatementsP ParseClassStatementsP(IEnumerator<Token> tokens)
 		{
-			ClassStatementsP node = new ClassStatementsP(){ Children = new List<Node>() };
+			ClassStatementsP node = new ClassStatementsP(){ Name = "ClassStatementsP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "newline":
@@ -209,7 +209,7 @@ namespace Generator.Generated
 
 		public ClassStatement ParseClassStatement(IEnumerator<Token> tokens)
 		{
-			ClassStatement node = new ClassStatement(){ Children = new List<Node>() };
+			ClassStatement node = new ClassStatement(){ Name = "ClassStatement", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -226,7 +226,7 @@ namespace Generator.Generated
 
 		public Declaration ParseDeclaration(IEnumerator<Token> tokens)
 		{
-			Declaration node = new Declaration(){ Children = new List<Node>() };
+			Declaration node = new Declaration(){ Name = "Declaration", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -242,7 +242,7 @@ namespace Generator.Generated
 
 		public IdentifierStatement ParseIdentifierStatement(IEnumerator<Token> tokens)
 		{
-			IdentifierStatement node = new IdentifierStatement(){ Children = new List<Node>() };
+			IdentifierStatement node = new IdentifierStatement(){ Name = "IdentifierStatement", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "identifier":
@@ -256,7 +256,7 @@ namespace Generator.Generated
 
 		public LIdentifierOperation ParseLIdentifierOperation(IEnumerator<Token> tokens)
 		{
-			LIdentifierOperation node = new LIdentifierOperation(){ Children = new List<Node>() };
+			LIdentifierOperation node = new LIdentifierOperation(){ Name = "LIdentifierOperation", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "assign":
@@ -275,7 +275,7 @@ namespace Generator.Generated
 
 		public LSelectorOperation ParseLSelectorOperation(IEnumerator<Token> tokens)
 		{
-			LSelectorOperation node = new LSelectorOperation(){ Children = new List<Node>() };
+			LSelectorOperation node = new LSelectorOperation(){ Name = "LSelectorOperation", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -301,7 +301,7 @@ namespace Generator.Generated
 
 		public LReturnValueOperation ParseLReturnValueOperation(IEnumerator<Token> tokens)
 		{
-			LReturnValueOperation node = new LReturnValueOperation(){ Children = new List<Node>() };
+			LReturnValueOperation node = new LReturnValueOperation(){ Name = "LReturnValueOperation", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "newline":
@@ -321,7 +321,7 @@ namespace Generator.Generated
 
 		public ElementSelector ParseElementSelector(IEnumerator<Token> tokens)
 		{
-			ElementSelector node = new ElementSelector(){ Children = new List<Node>() };
+			ElementSelector node = new ElementSelector(){ Name = "ElementSelector", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startBracket":
@@ -336,7 +336,7 @@ namespace Generator.Generated
 
 		public BitSelector ParseBitSelector(IEnumerator<Token> tokens)
 		{
-			BitSelector node = new BitSelector(){ Children = new List<Node>() };
+			BitSelector node = new BitSelector(){ Name = "BitSelector", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startCurly":
@@ -351,7 +351,7 @@ namespace Generator.Generated
 
 		public ClassAccessor ParseClassAccessor(IEnumerator<Token> tokens)
 		{
-			ClassAccessor node = new ClassAccessor(){ Children = new List<Node>() };
+			ClassAccessor node = new ClassAccessor(){ Name = "ClassAccessor", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "dot":
@@ -365,7 +365,7 @@ namespace Generator.Generated
 
 		public Assignment ParseAssignment(IEnumerator<Token> tokens)
 		{
-			Assignment node = new Assignment(){ Children = new List<Node>() };
+			Assignment node = new Assignment(){ Name = "Assignment", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "assign":
@@ -379,7 +379,7 @@ namespace Generator.Generated
 
 		public Call ParseCall(IEnumerator<Token> tokens)
 		{
-			Call node = new Call(){ Children = new List<Node>() };
+			Call node = new Call(){ Name = "Call", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -392,7 +392,7 @@ namespace Generator.Generated
 
 		public IfStatement ParseIfStatement(IEnumerator<Token> tokens)
 		{
-			IfStatement node = new IfStatement(){ Children = new List<Node>() };
+			IfStatement node = new IfStatement(){ Name = "IfStatement", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "if":
@@ -408,7 +408,7 @@ namespace Generator.Generated
 
 		public ElseStatement ParseElseStatement(IEnumerator<Token> tokens)
 		{
-			ElseStatement node = new ElseStatement(){ Children = new List<Node>() };
+			ElseStatement node = new ElseStatement(){ Name = "ElseStatement", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "else":
@@ -426,7 +426,7 @@ namespace Generator.Generated
 
 		public ElseBlock ParseElseBlock(IEnumerator<Token> tokens)
 		{
-			ElseBlock node = new ElseBlock(){ Children = new List<Node>() };
+			ElseBlock node = new ElseBlock(){ Name = "ElseBlock", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "if":
@@ -442,7 +442,7 @@ namespace Generator.Generated
 
 		public WhileStatement ParseWhileStatement(IEnumerator<Token> tokens)
 		{
-			WhileStatement node = new WhileStatement(){ Children = new List<Node>() };
+			WhileStatement node = new WhileStatement(){ Name = "WhileStatement", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "while":
@@ -457,7 +457,7 @@ namespace Generator.Generated
 
 		public ForStatement ParseForStatement(IEnumerator<Token> tokens)
 		{
-			ForStatement node = new ForStatement(){ Children = new List<Node>() };
+			ForStatement node = new ForStatement(){ Name = "ForStatement", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "for":
@@ -479,7 +479,7 @@ namespace Generator.Generated
 
 		public Condition ParseCondition(IEnumerator<Token> tokens)
 		{
-			Condition node = new Condition(){ Children = new List<Node>() };
+			Condition node = new Condition(){ Name = "Condition", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -494,7 +494,7 @@ namespace Generator.Generated
 
 		public Definition ParseDefinition(IEnumerator<Token> tokens)
 		{
-			Definition node = new Definition(){ Children = new List<Node>() };
+			Definition node = new Definition(){ Name = "Definition", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -515,7 +515,7 @@ namespace Generator.Generated
 
 		public FunctionDefinition ParseFunctionDefinition(IEnumerator<Token> tokens)
 		{
-			FunctionDefinition node = new FunctionDefinition(){ Children = new List<Node>() };
+			FunctionDefinition node = new FunctionDefinition(){ Name = "FunctionDefinition", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -529,7 +529,7 @@ namespace Generator.Generated
 
 		public SimpleBlock ParseSimpleBlock(IEnumerator<Token> tokens)
 		{
-			SimpleBlock node = new SimpleBlock(){ Children = new List<Node>() };
+			SimpleBlock node = new SimpleBlock(){ Name = "SimpleBlock", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "indent":
@@ -544,7 +544,7 @@ namespace Generator.Generated
 
 		public TypedParameters ParseTypedParameters(IEnumerator<Token> tokens)
 		{
-			TypedParameters node = new TypedParameters(){ Children = new List<Node>() };
+			TypedParameters node = new TypedParameters(){ Name = "TypedParameters", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -559,7 +559,7 @@ namespace Generator.Generated
 
 		public TypedParametersF ParseTypedParametersF(IEnumerator<Token> tokens)
 		{
-			TypedParametersF node = new TypedParametersF(){ Children = new List<Node>() };
+			TypedParametersF node = new TypedParametersF(){ Name = "TypedParametersF", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -578,7 +578,7 @@ namespace Generator.Generated
 
 		public TypedParametersP ParseTypedParametersP(IEnumerator<Token> tokens)
 		{
-			TypedParametersP node = new TypedParametersP(){ Children = new List<Node>() };
+			TypedParametersP node = new TypedParametersP(){ Name = "TypedParametersP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "sep":
@@ -597,7 +597,7 @@ namespace Generator.Generated
 
 		public Type ParseType(IEnumerator<Token> tokens)
 		{
-			Type node = new Type(){ Children = new List<Node>() };
+			Type node = new Type(){ Name = "Type", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -621,7 +621,7 @@ namespace Generator.Generated
 
 		public ArrayType ParseArrayType(IEnumerator<Token> tokens)
 		{
-			ArrayType node = new ArrayType(){ Children = new List<Node>() };
+			ArrayType node = new ArrayType(){ Name = "ArrayType", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startBracket":
@@ -641,7 +641,7 @@ namespace Generator.Generated
 
 		public ArraySize ParseArraySize(IEnumerator<Token> tokens)
 		{
-			ArraySize node = new ArraySize(){ Children = new List<Node>() };
+			ArraySize node = new ArraySize(){ Name = "ArraySize", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -662,7 +662,7 @@ namespace Generator.Generated
 
 		public TypeParameters ParseTypeParameters(IEnumerator<Token> tokens)
 		{
-			TypeParameters node = new TypeParameters(){ Children = new List<Node>() };
+			TypeParameters node = new TypeParameters(){ Name = "TypeParameters", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -683,7 +683,7 @@ namespace Generator.Generated
 
 		public TypeParametersF ParseTypeParametersF(IEnumerator<Token> tokens)
 		{
-			TypeParametersF node = new TypeParametersF(){ Children = new List<Node>() };
+			TypeParametersF node = new TypeParametersF(){ Name = "TypeParametersF", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -701,7 +701,7 @@ namespace Generator.Generated
 
 		public TypeParametersP ParseTypeParametersP(IEnumerator<Token> tokens)
 		{
-			TypeParametersP node = new TypeParametersP(){ Children = new List<Node>() };
+			TypeParametersP node = new TypeParametersP(){ Name = "TypeParametersP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "sep":
@@ -719,7 +719,7 @@ namespace Generator.Generated
 
 		public SimpleStatements ParseSimpleStatements(IEnumerator<Token> tokens)
 		{
-			SimpleStatements node = new SimpleStatements(){ Children = new List<Node>() };
+			SimpleStatements node = new SimpleStatements(){ Name = "SimpleStatements", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -740,7 +740,7 @@ namespace Generator.Generated
 
 		public SimpleStatementsP ParseSimpleStatementsP(IEnumerator<Token> tokens)
 		{
-			SimpleStatementsP node = new SimpleStatementsP(){ Children = new List<Node>() };
+			SimpleStatementsP node = new SimpleStatementsP(){ Name = "SimpleStatementsP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "newline":
@@ -758,7 +758,7 @@ namespace Generator.Generated
 
 		public SimpleStatement ParseSimpleStatement(IEnumerator<Token> tokens)
 		{
-			SimpleStatement node = new SimpleStatement(){ Children = new List<Node>() };
+			SimpleStatement node = new SimpleStatement(){ Name = "SimpleStatement", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -788,7 +788,7 @@ namespace Generator.Generated
 
 		public ReturnStatement ParseReturnStatement(IEnumerator<Token> tokens)
 		{
-			ReturnStatement node = new ReturnStatement(){ Children = new List<Node>() };
+			ReturnStatement node = new ReturnStatement(){ Name = "ReturnStatement", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "return":
@@ -802,7 +802,7 @@ namespace Generator.Generated
 
 		public SimpleDeclaration ParseSimpleDeclaration(IEnumerator<Token> tokens)
 		{
-			SimpleDeclaration node = new SimpleDeclaration(){ Children = new List<Node>() };
+			SimpleDeclaration node = new SimpleDeclaration(){ Name = "SimpleDeclaration", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "simpleType":
@@ -818,7 +818,7 @@ namespace Generator.Generated
 
 		public SimpleDefinition ParseSimpleDefinition(IEnumerator<Token> tokens)
 		{
-			SimpleDefinition node = new SimpleDefinition(){ Children = new List<Node>() };
+			SimpleDefinition node = new SimpleDefinition(){ Name = "SimpleDefinition", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "assign":
@@ -836,7 +836,7 @@ namespace Generator.Generated
 
 		public Expression ParseExpression(IEnumerator<Token> tokens)
 		{
-			Expression node = new Expression(){ Children = new List<Node>() };
+			Expression node = new Expression(){ Name = "Expression", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -854,7 +854,7 @@ namespace Generator.Generated
 
 		public OrOperation ParseOrOperation(IEnumerator<Token> tokens)
 		{
-			OrOperation node = new OrOperation(){ Children = new List<Node>() };
+			OrOperation node = new OrOperation(){ Name = "OrOperation", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -873,7 +873,7 @@ namespace Generator.Generated
 
 		public OrOperationP ParseOrOperationP(IEnumerator<Token> tokens)
 		{
-			OrOperationP node = new OrOperationP(){ Children = new List<Node>() };
+			OrOperationP node = new OrOperationP(){ Name = "OrOperationP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "or":
@@ -898,7 +898,7 @@ namespace Generator.Generated
 
 		public AndOperation ParseAndOperation(IEnumerator<Token> tokens)
 		{
-			AndOperation node = new AndOperation(){ Children = new List<Node>() };
+			AndOperation node = new AndOperation(){ Name = "AndOperation", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -917,7 +917,7 @@ namespace Generator.Generated
 
 		public AndOperationP ParseAndOperationP(IEnumerator<Token> tokens)
 		{
-			AndOperationP node = new AndOperationP(){ Children = new List<Node>() };
+			AndOperationP node = new AndOperationP(){ Name = "AndOperationP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "and":
@@ -943,7 +943,7 @@ namespace Generator.Generated
 
 		public EqualityOperation ParseEqualityOperation(IEnumerator<Token> tokens)
 		{
-			EqualityOperation node = new EqualityOperation(){ Children = new List<Node>() };
+			EqualityOperation node = new EqualityOperation(){ Name = "EqualityOperation", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -962,7 +962,7 @@ namespace Generator.Generated
 
 		public EqualityOperationP ParseEqualityOperationP(IEnumerator<Token> tokens)
 		{
-			EqualityOperationP node = new EqualityOperationP(){ Children = new List<Node>() };
+			EqualityOperationP node = new EqualityOperationP(){ Name = "EqualityOperationP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "equality":
@@ -989,7 +989,7 @@ namespace Generator.Generated
 
 		public RelationalOperation ParseRelationalOperation(IEnumerator<Token> tokens)
 		{
-			RelationalOperation node = new RelationalOperation(){ Children = new List<Node>() };
+			RelationalOperation node = new RelationalOperation(){ Name = "RelationalOperation", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -1008,7 +1008,7 @@ namespace Generator.Generated
 
 		public RelationalOperationP ParseRelationalOperationP(IEnumerator<Token> tokens)
 		{
-			RelationalOperationP node = new RelationalOperationP(){ Children = new List<Node>() };
+			RelationalOperationP node = new RelationalOperationP(){ Name = "RelationalOperationP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "relational":
@@ -1036,7 +1036,7 @@ namespace Generator.Generated
 
 		public AddSubOperation ParseAddSubOperation(IEnumerator<Token> tokens)
 		{
-			AddSubOperation node = new AddSubOperation(){ Children = new List<Node>() };
+			AddSubOperation node = new AddSubOperation(){ Name = "AddSubOperation", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -1055,7 +1055,7 @@ namespace Generator.Generated
 
 		public AddSubOperationP ParseAddSubOperationP(IEnumerator<Token> tokens)
 		{
-			AddSubOperationP node = new AddSubOperationP(){ Children = new List<Node>() };
+			AddSubOperationP node = new AddSubOperationP(){ Name = "AddSubOperationP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "addSub":
@@ -1084,7 +1084,7 @@ namespace Generator.Generated
 
 		public MultDivOperation ParseMultDivOperation(IEnumerator<Token> tokens)
 		{
-			MultDivOperation node = new MultDivOperation(){ Children = new List<Node>() };
+			MultDivOperation node = new MultDivOperation(){ Name = "MultDivOperation", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -1103,7 +1103,7 @@ namespace Generator.Generated
 
 		public MultDivOperationP ParseMultDivOperationP(IEnumerator<Token> tokens)
 		{
-			MultDivOperationP node = new MultDivOperationP(){ Children = new List<Node>() };
+			MultDivOperationP node = new MultDivOperationP(){ Name = "MultDivOperationP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "multDiv":
@@ -1133,7 +1133,7 @@ namespace Generator.Generated
 
 		public PrimaryOperation ParsePrimaryOperation(IEnumerator<Token> tokens)
 		{
-			PrimaryOperation node = new PrimaryOperation(){ Children = new List<Node>() };
+			PrimaryOperation node = new PrimaryOperation(){ Name = "PrimaryOperation", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -1166,7 +1166,7 @@ namespace Generator.Generated
 
 		public Register ParseRegister(IEnumerator<Token> tokens)
 		{
-			Register node = new Register(){ Children = new List<Node>() };
+			Register node = new Register(){ Name = "Register", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "register":
@@ -1182,7 +1182,7 @@ namespace Generator.Generated
 
 		public OptionalBitSelector ParseOptionalBitSelector(IEnumerator<Token> tokens)
 		{
-			OptionalBitSelector node = new OptionalBitSelector(){ Children = new List<Node>() };
+			OptionalBitSelector node = new OptionalBitSelector(){ Name = "OptionalBitSelector", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startCurly":
@@ -1211,7 +1211,7 @@ namespace Generator.Generated
 
 		public Array ParseArray(IEnumerator<Token> tokens)
 		{
-			Array node = new Array(){ Children = new List<Node>() };
+			Array node = new Array(){ Name = "Array", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startBracket":
@@ -1226,7 +1226,7 @@ namespace Generator.Generated
 
 		public ArrayF ParseArrayF(IEnumerator<Token> tokens)
 		{
-			ArrayF node = new ArrayF(){ Children = new List<Node>() };
+			ArrayF node = new ArrayF(){ Name = "ArrayF", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -1248,7 +1248,7 @@ namespace Generator.Generated
 
 		public ArrayP ParseArrayP(IEnumerator<Token> tokens)
 		{
-			ArrayP node = new ArrayP(){ Children = new List<Node>() };
+			ArrayP node = new ArrayP(){ Name = "ArrayP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "sep":
@@ -1266,7 +1266,7 @@ namespace Generator.Generated
 
 		public OptionalElementSelector ParseOptionalElementSelector(IEnumerator<Token> tokens)
 		{
-			OptionalElementSelector node = new OptionalElementSelector(){ Children = new List<Node>() };
+			OptionalElementSelector node = new OptionalElementSelector(){ Name = "OptionalElementSelector", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startBracket":
@@ -1296,7 +1296,7 @@ namespace Generator.Generated
 
 		public RSelectorOperation ParseRSelectorOperation(IEnumerator<Token> tokens)
 		{
-			RSelectorOperation node = new RSelectorOperation(){ Children = new List<Node>() };
+			RSelectorOperation node = new RSelectorOperation(){ Name = "RSelectorOperation", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -1337,7 +1337,7 @@ namespace Generator.Generated
 
 		public Parameters ParseParameters(IEnumerator<Token> tokens)
 		{
-			Parameters node = new Parameters(){ Children = new List<Node>() };
+			Parameters node = new Parameters(){ Name = "Parameters", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -1352,7 +1352,7 @@ namespace Generator.Generated
 
 		public ParametersF ParseParametersF(IEnumerator<Token> tokens)
 		{
-			ParametersF node = new ParametersF(){ Children = new List<Node>() };
+			ParametersF node = new ParametersF(){ Name = "ParametersF", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
@@ -1374,7 +1374,7 @@ namespace Generator.Generated
 
 		public ParametersP ParseParametersP(IEnumerator<Token> tokens)
 		{
-			ParametersP node = new ParametersP(){ Children = new List<Node>() };
+			ParametersP node = new ParametersP(){ Name = "ParametersP", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "sep":

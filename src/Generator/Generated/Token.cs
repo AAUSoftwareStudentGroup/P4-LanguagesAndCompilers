@@ -2,13 +2,12 @@ namespace Generator.Generated
 {
 	public class Token : Node
 	{
-		public string Name { get; set; }
 		public string Value { get; set; }
 		public int Line { get; set; }
 		public int Column { get; set; }
-		public override void Accept(Visitor visitor)
+		public override T Accept<T>(Visitor<T> visitor)
 		{
-			visitor.Visit(this);
+			return visitor.Visit(this);
 		}
 	}
 }

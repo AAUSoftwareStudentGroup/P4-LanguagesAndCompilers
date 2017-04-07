@@ -5,23 +5,19 @@ using System.Linq;
 
 namespace Generator
 {
-    public class PrintVisitor : Visitor
+    public class PrintVisitor : Visitor<string>
     {
         int _level;
-        public override void Visit(Node node)
+        public override string Visit(Node node)
         {
-            System.Console.WriteLine(string.Join("", Enumerable.Repeat(" ", _level)) + node.GetType().Name);
+            string str = string.Join("", Enumerable.Repeat(" ", _level)) + node.Name + "\n";
             _level++;
             foreach (Node child in node.Children)
             {
-                child.Accept(this);
+                str += child.Accept(this);
             }
             _level--;
-        }
-
-        public override void Visit(Token node)
-        {
-            System.Console.WriteLine(string.Join("", Enumerable.Repeat(" ", _level)) + node.Name);
+            return str;
         }
     }
 }

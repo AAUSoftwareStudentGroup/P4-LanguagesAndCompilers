@@ -4,9 +4,9 @@ namespace Generator.Generated
 {
 	public class Assignment : Node
 	{
-		public override void Accept(Visitor visitor)
+		public override T Accept<T>(Visitor<T> visitor)
 		{
-			visitor.Visit(this);
+			return visitor.Visit(this);
 		}
 	}
 }
