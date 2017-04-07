@@ -1,11 +1,4 @@
-Program -> Imports newLine Statements eof
-
-Imports  -> Import ImportsP
-ImportsP -> newline Import ImportsP
-         |  EPSILON
-
-Import -> import identifier
-       |  EPSILON
+Program -> Statements eof
 
 Statements  -> Statement StatementsP
 StatementsP -> newline Statement StatementsP
@@ -32,7 +25,7 @@ ClassStatementsP -> newline ClassStatement ClassStatementsP
                  |  EPSILON
 
 ClassStatement -> Declaration
-               |  newLine
+               |  newline
 
 Declaration -> Type identifier Definition
 
@@ -104,7 +97,7 @@ TypeParametersP -> sep Type TypeParametersP
                 |  EPSILON
 
 SimpleStatements  -> SimpleStatement SimpleStatementsP            
-SimpleStatementsP -> newLine SimpleStatement SimpleStatementsP
+SimpleStatementsP -> newline SimpleStatement SimpleStatementsP
                   |  EPSILON
 
 SimpleStatement -> SimpleDeclaration

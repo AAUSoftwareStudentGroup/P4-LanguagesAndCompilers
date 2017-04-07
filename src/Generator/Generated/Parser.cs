@@ -7,6 +7,10 @@ namespace Generator.Generated
 	{
 		public Token ParseTerminal(IEnumerator<Token> tokens, string expected)
 		{
+			if(expected == "EPSILON")
+			{
+				return new Token() { Name = "EPSILON" };
+			}
 			Token token = tokens.Current;
 			if(token.Name == expected)
 			{
@@ -24,65 +28,18 @@ namespace Generator.Generated
 			Program node = new Program(){ Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
-				case "import":
+				case "simpleType":
+				case "startDel":
+				case "identifier":
+				case "if":
+				case "while":
+				case "for":
+				case "interrupt":
+				case "class":
 				case "newline":
-				case "newLine":
-					node.Children.Add(ParseImports(tokens));
-					node.Children.Add(ParseTerminal(tokens, "newLine"));
+				case "eof":
 					node.Children.Add(ParseStatements(tokens));
 					node.Children.Add(ParseTerminal(tokens, "eof"));
-					return node;
-				default:
-					throw new Exception();
-			}
-		}
-
-		public Imports ParseImports(IEnumerator<Token> tokens)
-		{
-			Imports node = new Imports(){ Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "import":
-				case "newline":
-				case "newLine":
-					node.Children.Add(ParseImport(tokens));
-					node.Children.Add(ParseImportsP(tokens));
-					return node;
-				default:
-					throw new Exception();
-			}
-		}
-
-		public ImportsP ParseImportsP(IEnumerator<Token> tokens)
-		{
-			ImportsP node = new ImportsP(){ Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "newline":
-					node.Children.Add(ParseTerminal(tokens, "newline"));
-					node.Children.Add(ParseImport(tokens));
-					node.Children.Add(ParseImportsP(tokens));
-					return node;
-				case "newLine":
-					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
-					return node;
-				default:
-					throw new Exception();
-			}
-		}
-
-		public Import ParseImport(IEnumerator<Token> tokens)
-		{
-			Import node = new Import(){ Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "import":
-					node.Children.Add(ParseTerminal(tokens, "import"));
-					node.Children.Add(ParseTerminal(tokens, "identifier"));
-					return node;
-				case "newline":
-				case "newLine":
-					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
 					return node;
 				default:
 					throw new Exception();
@@ -220,7 +177,7 @@ namespace Generator.Generated
 			{
 				case "simpleType":
 				case "startDel":
-				case "newLine":
+				case "newline":
 					node.Children.Add(ParseClassStatement(tokens));
 					node.Children.Add(ParseClassStatementsP(tokens));
 					return node;
@@ -259,8 +216,8 @@ namespace Generator.Generated
 				case "startDel":
 					node.Children.Add(ParseDeclaration(tokens));
 					return node;
-				case "newLine":
-					node.Children.Add(ParseTerminal(tokens, "newLine"));
+				case "newline":
+					node.Children.Add(ParseTerminal(tokens, "newline"));
 					return node;
 				default:
 					throw new Exception();
@@ -771,7 +728,7 @@ namespace Generator.Generated
 				case "if":
 				case "while":
 				case "return":
-				case "newLine":
+				case "newline":
 				case "dedent":
 					node.Children.Add(ParseSimpleStatement(tokens));
 					node.Children.Add(ParseSimpleStatementsP(tokens));
@@ -786,8 +743,8 @@ namespace Generator.Generated
 			SimpleStatementsP node = new SimpleStatementsP(){ Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
-				case "newLine":
-					node.Children.Add(ParseTerminal(tokens, "newLine"));
+				case "newline":
+					node.Children.Add(ParseTerminal(tokens, "newline"));
 					node.Children.Add(ParseSimpleStatement(tokens));
 					node.Children.Add(ParseSimpleStatementsP(tokens));
 					return node;
@@ -820,7 +777,7 @@ namespace Generator.Generated
 				case "return":
 					node.Children.Add(ParseReturnStatement(tokens));
 					return node;
-				case "newLine":
+				case "newline":
 				case "dedent":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
 					return node;
@@ -868,7 +825,7 @@ namespace Generator.Generated
 					node.Children.Add(ParseTerminal(tokens, "assign"));
 					node.Children.Add(ParseExpression(tokens));
 					return node;
-				case "newLine":
+				case "newline":
 				case "dedent":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
 					return node;
@@ -930,7 +887,6 @@ namespace Generator.Generated
 				case "newline":
 				case "eof":
 				case "dedent":
-				case "newLine":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -976,7 +932,6 @@ namespace Generator.Generated
 				case "newline":
 				case "eof":
 				case "dedent":
-				case "newLine":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -1023,7 +978,6 @@ namespace Generator.Generated
 				case "newline":
 				case "eof":
 				case "dedent":
-				case "newLine":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -1071,7 +1025,6 @@ namespace Generator.Generated
 				case "newline":
 				case "eof":
 				case "dedent":
-				case "newLine":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -1120,7 +1073,6 @@ namespace Generator.Generated
 				case "newline":
 				case "eof":
 				case "dedent":
-				case "newLine":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -1170,7 +1122,6 @@ namespace Generator.Generated
 				case "newline":
 				case "eof":
 				case "dedent":
-				case "newLine":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -1249,7 +1200,6 @@ namespace Generator.Generated
 				case "newline":
 				case "eof":
 				case "dedent":
-				case "newLine":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -1335,7 +1285,6 @@ namespace Generator.Generated
 				case "newline":
 				case "eof":
 				case "dedent":
-				case "newLine":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -1377,7 +1326,6 @@ namespace Generator.Generated
 				case "newline":
 				case "eof":
 				case "dedent":
-				case "newLine":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));

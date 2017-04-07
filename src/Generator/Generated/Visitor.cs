@@ -2,77 +2,357 @@ namespace Generator.Generated
 {
 	public abstract class Visitor 
 	{
-		public abstract void Visit(Program node);
-		public abstract void Visit(Imports node);
-		public abstract void Visit(ImportsP node);
-		public abstract void Visit(Import node);
-		public abstract void Visit(Statements node);
-		public abstract void Visit(StatementsP node);
-		public abstract void Visit(Statement node);
-		public abstract void Visit(Interrupt node);
-		public abstract void Visit(Class node);
-		public abstract void Visit(ClassBlock node);
-		public abstract void Visit(ClassStatements node);
-		public abstract void Visit(ClassStatementsP node);
-		public abstract void Visit(ClassStatement node);
-		public abstract void Visit(Declaration node);
-		public abstract void Visit(IdentifierStatement node);
-		public abstract void Visit(LIdentifierOperation node);
-		public abstract void Visit(LSelectorOperation node);
-		public abstract void Visit(LReturnValueOperation node);
-		public abstract void Visit(ElementSelector node);
-		public abstract void Visit(BitSelector node);
-		public abstract void Visit(ClassAccessor node);
-		public abstract void Visit(Assignment node);
-		public abstract void Visit(Call node);
-		public abstract void Visit(IfStatement node);
-		public abstract void Visit(ElseStatement node);
-		public abstract void Visit(ElseBlock node);
-		public abstract void Visit(WhileStatement node);
-		public abstract void Visit(ForStatement node);
-		public abstract void Visit(Condition node);
-		public abstract void Visit(Definition node);
-		public abstract void Visit(FunctionDefinition node);
-		public abstract void Visit(SimpleBlock node);
-		public abstract void Visit(TypedParameters node);
-		public abstract void Visit(TypedParametersF node);
-		public abstract void Visit(TypedParametersP node);
-		public abstract void Visit(Type node);
-		public abstract void Visit(ArrayType node);
-		public abstract void Visit(ArraySize node);
-		public abstract void Visit(TypeParameters node);
-		public abstract void Visit(TypeParametersF node);
-		public abstract void Visit(TypeParametersP node);
-		public abstract void Visit(SimpleStatements node);
-		public abstract void Visit(SimpleStatementsP node);
-		public abstract void Visit(SimpleStatement node);
-		public abstract void Visit(ReturnStatement node);
-		public abstract void Visit(SimpleDeclaration node);
-		public abstract void Visit(SimpleDefinition node);
-		public abstract void Visit(Expression node);
-		public abstract void Visit(OrOperation node);
-		public abstract void Visit(OrOperationP node);
-		public abstract void Visit(AndOperation node);
-		public abstract void Visit(AndOperationP node);
-		public abstract void Visit(EqualityOperation node);
-		public abstract void Visit(EqualityOperationP node);
-		public abstract void Visit(RelationalOperation node);
-		public abstract void Visit(RelationalOperationP node);
-		public abstract void Visit(AddSubOperation node);
-		public abstract void Visit(AddSubOperationP node);
-		public abstract void Visit(MultDivOperation node);
-		public abstract void Visit(MultDivOperationP node);
-		public abstract void Visit(PrimaryOperation node);
-		public abstract void Visit(Register node);
-		public abstract void Visit(OptionalBitSelector node);
-		public abstract void Visit(Array node);
-		public abstract void Visit(ArrayF node);
-		public abstract void Visit(ArrayP node);
-		public abstract void Visit(OptionalElementSelector node);
-		public abstract void Visit(RSelectorOperation node);
-		public abstract void Visit(Parameters node);
-		public abstract void Visit(ParametersF node);
-		public abstract void Visit(ParametersP node);
-		public abstract void Visit(Token node);
+		public virtual void Visit(Program node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Statements node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(StatementsP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Statement node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Interrupt node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Class node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ClassBlock node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ClassStatements node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ClassStatementsP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ClassStatement node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Declaration node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(IdentifierStatement node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(LIdentifierOperation node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(LSelectorOperation node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(LReturnValueOperation node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ElementSelector node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(BitSelector node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ClassAccessor node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Assignment node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Call node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(IfStatement node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ElseStatement node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ElseBlock node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(WhileStatement node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ForStatement node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Condition node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Definition node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(FunctionDefinition node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(SimpleBlock node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(TypedParameters node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(TypedParametersF node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(TypedParametersP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Type node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ArrayType node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ArraySize node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(TypeParameters node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(TypeParametersF node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(TypeParametersP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(SimpleStatements node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(SimpleStatementsP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(SimpleStatement node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ReturnStatement node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(SimpleDeclaration node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(SimpleDefinition node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Expression node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(OrOperation node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(OrOperationP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(AndOperation node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(AndOperationP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(EqualityOperation node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(EqualityOperationP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(RelationalOperation node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(RelationalOperationP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(AddSubOperation node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(AddSubOperationP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(MultDivOperation node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(MultDivOperationP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(PrimaryOperation node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Register node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(OptionalBitSelector node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Array node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ArrayF node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ArrayP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(OptionalElementSelector node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(RSelectorOperation node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Parameters node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ParametersF node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(ParametersP node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Token node)
+		{
+			Visit((Node)node);
+		}
+
+		public virtual void Visit(Node node)
+		{
+			foreach (Node child in node.Children)
+			{
+				child.Accept(this);
+			}
+		}
 	}
 }

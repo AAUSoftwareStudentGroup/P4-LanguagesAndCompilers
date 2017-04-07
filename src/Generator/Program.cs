@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System;
 using Generator.Class;
 using System.IO;
-//using Generator.Generated;
+using Generator.Generated;
 
 namespace Generator
 {
@@ -48,22 +48,24 @@ namespace Generator
                 classGenerator.Generate(c, $"Generated/{c.Identifier}.cs");
             }
 
-            //Parser parser = new Parser();
+            Parser parser = new Parser();
 
-            //var tokens = new List<Token>
-            //{
-            //    new Token() { Name = "b" },
-            //    new Token() { Name = "d" },
-            //    new Token() { Name = "a" },
-            //}.GetEnumerator();
+            var tokens = new List<Token>
+            {
+                new Token() { Name = "simpleType" },
+                new Token() { Name = "identifier" },
+                new Token() { Name = "assign" },
+                new Token() { Name = "intLiteral" },
+                new Token() { Name = "eof" }
+            }.GetEnumerator();
 
-            //tokens.MoveNext();
+            tokens.MoveNext();
 
-            //Node node = parser.ParseS(tokens);
+            Node node = parser.ParseProgram(tokens);
 
-            //PrintVisitor printer = new PrintVisitor();
+            PrintVisitor printer = new PrintVisitor();
 
-            //node.Accept(printer);
+            node.Accept(printer);
 
             Console.Read();
         }

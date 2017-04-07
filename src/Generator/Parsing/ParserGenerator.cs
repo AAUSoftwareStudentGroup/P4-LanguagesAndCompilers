@@ -46,6 +46,10 @@ namespace Generator.Parsing
                 },
                 Body = new string[]
                 {
+                    "if(expected == \"EPSILON\")",
+                    "{",
+                    "\treturn new Token() { Name = \"EPSILON\" };",
+                    "}",
                     "Token token = tokens.Current;",
                     "if(token.Name == expected)",
                     "{",
@@ -194,11 +198,15 @@ namespace Generator.Parsing
 
             foreach (var production in bnf)
             {
-                MethodType visitMethod = new MethodType("public abstract", "void", "Visit")
+                MethodType visitMethod = new MethodType("public virtual", "void", "Visit")
                 {
                     Parameters = new ParameterType[]
                     {
                         new ParameterType(production.Key, "node")
+                    },
+                    Body = new string[]
+                    {
+                        "Visit((Node)node);"
                     }
                 };
 
@@ -219,15 +227,36 @@ namespace Generator.Parsing
                 classes.Add(classType);
             }
 
-            MethodType visitTokenMethod = new MethodType("public abstract", "void", "Visit")
+            MethodType visitTokenMethod = new MethodType("public virtual", "void", "Visit")
             {
                 Parameters = new ParameterType[]
                 {
                     new ParameterType("Token", "node")
+                },
+                Body = new string[]
+                {
+                    "Visit((Node)node);"
                 }
             };
 
             visitMethods.Add(visitTokenMethod);
+
+            MethodType visitNodeMethod = new MethodType("public virtual", "void", "Visit")
+            {
+                Parameters = new ParameterType[]
+                {
+                    new ParameterType("Node", "node")
+                },
+                Body = new string[]
+                {
+                    "foreach (Node child in node.Children)",
+                    "{",
+                        "\tchild.Accept(this);",
+                    "}"
+                }
+            };
+
+            visitMethods.Add(visitNodeMethod);
 
             visitorClass.Methods = visitMethods.ToArray();
 
