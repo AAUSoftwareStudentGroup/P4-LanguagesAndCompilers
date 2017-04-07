@@ -11,10 +11,11 @@ namespace Generator
     {
         static void Main(string[] args)
         {
-            IASTGenerator astGenerator;
+            IASTGenerator astGenerator = new ASTGenerator();
             ILexerGenerator lexerGenerator;
             IParserGenerator parserGenerator;
-            Dictionary<string, List<List<string>>> RawBNF = BNFParser.Parse("BNFGrammar.bnf");
+            Dictionary<string, List<List<string>>> RawBNF = new BNFParser().Parse("BNFGrammar.bnf");
+            astGenerator.Generate("Semantic.bnf", "somedir", "somenamespace");
         }
     }
 }

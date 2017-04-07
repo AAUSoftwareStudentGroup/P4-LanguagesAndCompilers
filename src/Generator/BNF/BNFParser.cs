@@ -5,7 +5,7 @@ namespace Generator.BNF {
     public class BNFParser : IBNFParser{
         public Dictionary<string, List<List<string>>> Parse(string bnfGrammarFile) {
             Dictionary<string, List<List<string>>> BNF = new Dictionary<string, List<List<string>>>();
-            Queue<string> bnfFile = new Queue<string>(System.IO.File.ReadAllText(bnfGrammarFile).Split(new[]{' ', '\n'}, StringSplitOptions.RemoveEmptyEntries));
+            Queue<string> bnfFile = new Queue<string>(System.IO.File.ReadAllText(bnfGrammarFile).Split(new[]{' ', '\n', '\t'}, StringSplitOptions.RemoveEmptyEntries));
             string word, production = "ERROR";
             int expansionIndex = 0;
             while(bnfFile.Count > 0) {
