@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System;
 
-namespace Generator.BNF {
+namespace Generator.Grammar {
     public class BNFParser : IBNFParser{
         public Dictionary<string, List<List<string>>> Parse(string bnfGrammarFile) {
             Dictionary<string, List<List<string>>> BNF = new Dictionary<string, List<List<string>>>();
