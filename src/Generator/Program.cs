@@ -1,12 +1,9 @@
-﻿using Generator.AST;
-using Generator.Lexer;
-using Generator.Parsing;
+﻿using Generator.Parsing;
 using Generator.Grammar;
 using System.Collections.Generic;
 using System;
 using Generator.Class;
 using System.IO;
-using Generator.Generated;
 
 namespace Generator
 {
@@ -34,53 +31,23 @@ namespace Generator
 
             IParserGenerator generator = new ParserGenerator(bnfAnalyzer);
 
-            ClassType classType = generator.GenerateParserClass(bnf, "Generator.Generated");
-            ClassType[] classes = generator.GenerateParseTreeClasses(bnf, "Generator.Generated");
+            Directory.CreateDirectory("../Compiler/Parsing/Generated");
+            Directory.CreateDirectory("../Compiler/Data/Generated");
+
+            ClassType[] parserClasses = generator.GenerateParserClasses(bnf, "Compiler.Data.Generated", "Compiler.Parsing.Generated");
+            ClassType[] parseTreeClasses = generator.GenerateParseTreeClasses(bnf, "Compiler.Parsing.Generated", "Compiler.Data.Generated");
 
             IClassGenerator classGenerator = new ClassGenerator();
 
-            Directory.CreateDirectory("Generated");
-
-            classGenerator.Generate(classType, $"Generated/{classType.Identifier}.cs");
-
-            foreach (var c in classes)
+            foreach (var c in parserClasses)
             {
-                classGenerator.Generate(c, $"Generated/{c.Identifier.Split('<')[0]}.cs");
+                classGenerator.Generate(c, $"../Compiler/Parsing/Generated/{c.Identifier.Split('<')[0]}.cs");
             }
 
-            Parser parser = new Parser();
-
-            var tokens = new List<Token>
+            foreach (var c in parseTreeClasses)
             {
-                new Token() { Name = "simpleType" },
-                new Token() { Name = "identifier" },
-                new Token() { Name = "assign" },
-                new Token() { Name = "intLiteral" },
-                new Token() { Name = "addSub" },
-                new Token() { Name = "intLiteral" },
-                new Token() { Name = "newline" },
-                new Token() { Name = "simpleType" },
-                new Token() { Name = "identifier" },
-                new Token() { Name = "assign" },
-                new Token() { Name = "intLiteral" },
-                new Token() { Name = "addSub" },
-                new Token() { Name = "intLiteral" },
-                new Token() { Name = "multDiv" },
-                new Token() { Name = "intLiteral" },
-                new Token() { Name = "eof" }
-            }.GetEnumerator();
-
-            tokens.MoveNext();
-
-            Node node = parser.ParseProgram(tokens);
-
-            BuildASTVisitor astBuilder = new BuildASTVisitor();
-
-            PrintVisitor printer = new PrintVisitor();
-
-            Console.WriteLine(node.Accept(astBuilder).Accept(printer));
-
-            Console.Read();
+                classGenerator.Generate(c, $"../Compiler/Data/Generated/{c.Identifier.Split('<')[0]}.cs");
+            }
         }
     }
 }

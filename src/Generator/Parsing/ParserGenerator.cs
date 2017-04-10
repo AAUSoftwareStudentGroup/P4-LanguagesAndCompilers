@@ -22,8 +22,10 @@ namespace Generator.Parsing
             return !bnf.ContainsKey(symbol);
         }
 
-        public ClassType GenerateParserClass(BNF bnf, string targetNamespace)
+        public ClassType[] GenerateParserClasses(BNF bnf, string dataNameSpace, string targetNamespace)
         {
+            List<ClassType> classes = new List<ClassType>();
+
             GrammarInfo grammerInfo = _bnfAnalyzer.Analyze(bnf);
 
             ClassType parserClass = new ClassType(targetNamespace, "public", "Parser", null)
@@ -31,7 +33,10 @@ namespace Generator.Parsing
                 Usings = new string[]
                 {
                     "using System;",
-                    "using System.Collections.Generic;"
+                    "using System.Collections.Generic;",
+                    $"using {dataNameSpace};",
+                    $"using Compiler.Data;",
+                    $"using Compiler.Parsing;"
                 }
             };
 
@@ -67,7 +72,7 @@ namespace Generator.Parsing
 
             foreach (var production in bnf)
             {
-                MethodType parseMethod = new MethodType("public", production.Key, $"Parse{production.Key}")
+                MethodType parseMethod = new MethodType("public", $"{production.Key}Node", $"Parse{production.Key}Node")
                 {
                     Parameters = new ParameterType[]
                     {
@@ -77,7 +82,7 @@ namespace Generator.Parsing
 
                 List<string> methodStatements = new List<string>();
 
-                methodStatements.Add($"{production.Key} node = new {production.Key}(){{ Name = \"{production.Key}\", Children = new List<Node>() }};");
+                methodStatements.Add($"{production.Key}Node node = new {production.Key}Node(){{ Name = \"{production.Key}\", Children = new List<Node>() }};");
 
                 methodStatements.Add("switch(tokens.Current.Name)");
                 methodStatements.Add("{");
@@ -97,7 +102,7 @@ namespace Generator.Parsing
                         }
                         else
                         {
-                            methodStatements.Add($"\t\tnode.Children.Add(Parse{expansionSymbol}(tokens));");
+                            methodStatements.Add($"\t\tnode.Children.Add(Parse{expansionSymbol}Node(tokens));");
                         }
                     }
 
@@ -117,76 +122,56 @@ namespace Generator.Parsing
 
             parserClass.Methods = parseMethods.ToArray();
 
-            return parserClass;
-        }
+            ClassType visitorClass = new ClassType(targetNamespace, "public abstract partial", "Visitor<T>", null)
+            {
+                Usings = new string[]
+                {
+                    $"using {dataNameSpace};",
+                    $"using Compiler.Data;",
+                    $"using Compiler.Parsing;"
+                }
+            };
 
-        public ClassType[] GenerateParseTreeClasses(BNF bnf, string targetNamespace)
-        {
-            List<ClassType> classes = new List<ClassType>();
-
-            ClassType nodeClass = CreateNodeClass(targetNamespace);
-            MethodType acceptMethod = CreateAcceptMethod();
-            ClassType tokenClass = CreateTokenClass(targetNamespace);
-            ClassType visitorClass = new ClassType(targetNamespace, "public abstract", "Visitor<T>", null);
             List<MethodType> visitMethods = new List<MethodType>();
 
             foreach (var production in bnf)
             {
                 MethodType visitMethod = CreateVisitMethod(production);
                 visitMethods.Add(visitMethod);
-
-                ClassType classType = CreateParseTreeClass(targetNamespace, production);
-                classes.Add(classType);
             }
-
-            MethodType visitTokenMethod = CreateVisitTokenMethod();
-            MethodType visitNodeMethod = CreateVisitNodeMethod();
-
-            visitMethods.Add(visitTokenMethod);
-            visitMethods.Add(visitNodeMethod);
 
             visitorClass.Methods = visitMethods.ToArray();
 
+            classes.Add(parserClass);
+
             classes.Add(visitorClass);
-            classes.Add(nodeClass);
-            classes.Add(tokenClass);
 
             return classes.ToArray();
         }
 
-        private static MethodType CreateVisitNodeMethod()
+        public ClassType[] GenerateParseTreeClasses(BNF bnf, string parserNameSpace, string targetNamespace)
         {
-            return new MethodType("public abstract", "T", "Visit")
+            List<ClassType> classes = new List<ClassType>();
+
+            foreach (var production in bnf)
             {
-                Parameters = new ParameterType[]
-                {
-                    new ParameterType("Node", "node")
-                }
-            };
+                ClassType classType = CreateParseTreeClass(parserNameSpace, targetNamespace, production);
+                classes.Add(classType);
+            }
+
+            return classes.ToArray();
         }
 
-        private static MethodType CreateVisitTokenMethod()
+        private static ClassType CreateParseTreeClass(string parserNameSpace, string targetNamespace, KeyValuePair<string, List<List<string>>> production)
         {
-            return new MethodType("public virtual", "T", "Visit")
-            {
-                Parameters = new ParameterType[]
-                {
-                    new ParameterType("Token", "node")
-                },
-                Body = new string[]
-                {
-                    "return Visit((Node)node);"
-                }
-            };
-        }
-
-        private static ClassType CreateParseTreeClass(string targetNamespace, KeyValuePair<string, List<List<string>>> production)
-        {
-            return new ClassType(targetNamespace, "public", production.Key, "Node")
+            return new ClassType(targetNamespace, "public", $"{production.Key}Node", "Node")
             {
                 Usings = new string[]
                 {
-                    "using System.Collections.Generic;"
+                    "using System.Collections.Generic;",
+                    $"using {parserNameSpace};",
+                    $"using Compiler.Data;",
+                    $"using Compiler.Parsing;"
                 },
                 Methods = new MethodType[]
                 {
@@ -201,37 +186,11 @@ namespace Generator.Parsing
             {
                 Parameters = new ParameterType[]
                 {
-                    new ParameterType(production.Key, "node")
+                    new ParameterType($"{production.Key}Node", "node")
                 },
                 Body = new string[]
                 {
                     "return Visit((Node)node);"
-                }
-            };
-        }
-
-        private static ClassType CreateTokenClass(string targetNamespace)
-        {
-            return new ClassType(targetNamespace, "public", "Token", "Node")
-            {
-                Fields = new FieldType[]
-                {
-                    new FieldType("public", "string", "Value")
-                    {
-                        Expression = "{ get; set; }"
-                    },
-                    new FieldType("public", "int", "Line")
-                    {
-                        Expression = "{ get; set; }"
-                    },
-                    new FieldType("public", "int", "Column")
-                    {
-                        Expression = "{ get; set; }"
-                    }
-                },
-                Methods = new MethodType[]
-                {
-                    CreateAcceptMethod()
                 }
             };
         }
@@ -247,38 +206,6 @@ namespace Generator.Parsing
                 Body = new string[]
                 {
                     "return visitor.Visit(this);"
-                }
-            };
-        }
-
-        private static ClassType CreateNodeClass(string targetNamespace)
-        {
-            return new ClassType(targetNamespace, "public abstract", "Node", null)
-            {
-                Usings = new string[]
-                {
-                    "using System.Collections.Generic;"
-                },
-                Fields = new FieldType[]
-                {
-                    new FieldType("public", "string", "Name")
-                    {
-                        Expression = "= null;"
-                    },
-                    new FieldType("public", "List<Node>", "Children")
-                    {
-                        Expression = "= new List<Node>();"
-                    }
-                },
-                Methods = new MethodType[]
-                {
-                    new MethodType("public abstract", "T", "Accept<T>")
-                    {
-                        Parameters = new ParameterType[]
-                        {
-                            new ParameterType("Visitor<T>", "visitor")
-                        }
-                    }
                 }
             };
         }
