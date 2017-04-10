@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace Generator
 {
-    class BuildASTVisitor : Visitor<Node>
+    class BuildASTVisitor : Visitor<ASTNode>
     {
-        public override Node Visit(Node node)
+        public override ASTNode Visit(Node node)
         {
             ASTNode ast = new ASTNode() { Name = node.Name };
             foreach (var child in node.Children)
