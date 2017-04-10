@@ -61,7 +61,7 @@ namespace Generator.Parsing
                     "}",
                     "else",
                     "{",
-                        "\tthrow new Exception();",
+                        "\tthrow new UnexpectedTokenException(token);",
                     "}"
                 }
             };
@@ -109,7 +109,7 @@ namespace Generator.Parsing
                 }
 
                 methodStatements.Add($"\tdefault:");
-                methodStatements.Add($"\t\tthrow new Exception();");
+                methodStatements.Add($"\t\tthrow new UnexpectedTokenException(tokens.Current);");
 
                 methodStatements.Add("}");
 
