@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using Compiler.Parsing.Generated;
-using Compiler.Data;
 using Compiler.Parsing;
 
-namespace Compiler.Data.Generated
+namespace Compiler.Data
 {
 	public class OptionalElementSelectorNode : Node
 	{

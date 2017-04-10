@@ -34,9 +34,7 @@ namespace Generator.Parsing
                 {
                     "using System;",
                     "using System.Collections.Generic;",
-                    $"using {dataNameSpace};",
-                    $"using Compiler.Data;",
-                    $"using Compiler.Parsing;"
+                    $"using {dataNameSpace};"
                 }
             };
 
@@ -126,9 +124,7 @@ namespace Generator.Parsing
             {
                 Usings = new string[]
                 {
-                    $"using {dataNameSpace};",
-                    $"using Compiler.Data;",
-                    $"using Compiler.Parsing;"
+                    $"using {dataNameSpace};"
                 }
             };
 
@@ -169,9 +165,7 @@ namespace Generator.Parsing
                 Usings = new string[]
                 {
                     "using System.Collections.Generic;",
-                    $"using {parserNameSpace};",
-                    $"using Compiler.Data;",
-                    $"using Compiler.Parsing;"
+                    $"using {parserNameSpace};"
                 },
                 Methods = new MethodType[]
                 {

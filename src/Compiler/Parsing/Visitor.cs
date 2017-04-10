@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Compiler.Parsing.Generated
+namespace Compiler.Parsing
 {
     public abstract partial class Visitor<T>
 	{

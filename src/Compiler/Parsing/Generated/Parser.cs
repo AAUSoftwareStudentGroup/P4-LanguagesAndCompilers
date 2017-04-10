@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Compiler.Data.Generated;
 using Compiler.Data;
-using Compiler.Parsing;
 
-namespace Compiler.Parsing.Generated
+namespace Compiler.Parsing
 {
 	public class Parser 
 	{

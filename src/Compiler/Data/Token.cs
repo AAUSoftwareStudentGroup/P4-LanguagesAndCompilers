@@ -1,5 +1,4 @@
-using Compiler.Parsing.Generated;
-
+using Compiler.Parsing;
 namespace Compiler.Data
 {
 	public class Token : Node

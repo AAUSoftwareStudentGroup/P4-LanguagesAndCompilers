@@ -1,5 +1,4 @@
 using Compiler.Parsing;
-using Compiler.Parsing.Generated;
 using System.Collections.Generic;
 
 namespace Compiler.Data

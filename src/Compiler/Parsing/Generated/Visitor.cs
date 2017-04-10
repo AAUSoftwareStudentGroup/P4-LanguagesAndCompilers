@@ -1,8 +1,6 @@
-using Compiler.Data.Generated;
 using Compiler.Data;
-using Compiler.Parsing;
 
-namespace Compiler.Parsing.Generated
+namespace Compiler.Parsing
 {
 	public abstract partial class Visitor<T> 
 	{

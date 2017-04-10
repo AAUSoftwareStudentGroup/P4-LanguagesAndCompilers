@@ -34,8 +34,8 @@ namespace Generator
             Directory.CreateDirectory("../Compiler/Parsing/Generated");
             Directory.CreateDirectory("../Compiler/Data/Generated");
 
-            ClassType[] parserClasses = generator.GenerateParserClasses(bnf, "Compiler.Data.Generated", "Compiler.Parsing.Generated");
-            ClassType[] parseTreeClasses = generator.GenerateParseTreeClasses(bnf, "Compiler.Parsing.Generated", "Compiler.Data.Generated");
+            ClassType[] parserClasses = generator.GenerateParserClasses(bnf, "Compiler.Data", "Compiler.Parsing");
+            ClassType[] parseTreeClasses = generator.GenerateParseTreeClasses(bnf, "Compiler.Parsing", "Compiler.Data");
 
             IClassGenerator classGenerator = new ClassGenerator();
 
