@@ -22,10 +22,8 @@ namespace Generator.Parsing
             return !bnf.ContainsKey(symbol);
         }
 
-        public ClassType[] GenerateParserClasses(BNF bnf, string dataNameSpace, string targetNamespace)
+        public ClassType GenerateParserClass(BNF bnf, string dataNameSpace, string targetNamespace)
         {
-            List<ClassType> classes = new List<ClassType>();
-
             GrammarInfo grammerInfo = _bnfAnalyzer.Analyze(bnf);
 
             ClassType parserClass = new ClassType(targetNamespace, "public", "Parser", null)
@@ -120,7 +118,12 @@ namespace Generator.Parsing
 
             parserClass.Methods = parseMethods.ToArray();
 
-            ClassType visitorClass = new ClassType(targetNamespace, "public abstract partial", "Visitor<T>", null)
+            return parserClass;
+        }
+
+        public ClassType GenerateVisitorClass(BNF bnf, string dataNameSpace, string visitorNameSpace)
+        {
+            ClassType visitorClass = new ClassType(visitorNameSpace, "public abstract partial", "Visitor<T>", null)
             {
                 Usings = new string[]
                 {
@@ -138,20 +141,16 @@ namespace Generator.Parsing
 
             visitorClass.Methods = visitMethods.ToArray();
 
-            classes.Add(parserClass);
-
-            classes.Add(visitorClass);
-
-            return classes.ToArray();
+            return visitorClass;
         }
 
-        public ClassType[] GenerateParseTreeClasses(BNF bnf, string parserNameSpace, string targetNamespace)
+        public ClassType[] GenerateParseTreeClasses(BNF bnf, string dataNameSpace, string parserNameSpace)
         {
             List<ClassType> classes = new List<ClassType>();
 
             foreach (var production in bnf)
             {
-                ClassType classType = CreateParseTreeClass(parserNameSpace, targetNamespace, production);
+                ClassType classType = CreateParseTreeClass(parserNameSpace, dataNameSpace, production);
                 classes.Add(classType);
             }
 
