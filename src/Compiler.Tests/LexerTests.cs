@@ -9,13 +9,14 @@ using System.Linq;
 using System.Diagnostics;
 
 namespace Compiler.Tests
-{                       // For future reference http://xunit.github.io/docs/comparisons.html
+{
     [TestClass]
     public class LexerTests
     {
-        
+        // For future reference http://xunit.github.io/docs/comparisons.html
         [TestMethod]
         // Test if each token generated from a test file generates tokens with correct names
+
         public void TestForCorrectTokenGeneration()
         {
             // Initialise Lexer
@@ -47,8 +48,8 @@ namespace Compiler.Tests
             // Read from another file, tokens should be SimpleType Identifier Assign Number eof (int16 a = 1)
             IEnumerable<Token> tokens = le.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\testSourceFile.tang"));
 
-            // Assign should be at line 0 and column 8 since there are 8 symbols until '=' is hit
-            Assert.AreEqual(tokens.ElementAt(2).Line, 0);
+            // Assign should be at row 0 and column 8 since there are 8 symbols until '=' is hit
+            Assert.AreEqual(tokens.ElementAt(2).Row, 0);
             Assert.AreEqual(tokens.ElementAt(2).Column, 8);
 
         }
