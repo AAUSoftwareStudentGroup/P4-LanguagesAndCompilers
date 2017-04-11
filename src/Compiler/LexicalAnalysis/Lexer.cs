@@ -62,7 +62,7 @@ namespace Compiler.LexicalAnalysis
                             token = new Token {
                                 Name = "Indent",
                                 Value = match.Value,
-                                Line = row,
+                                Row = row,
                                 Column = column
                             };
                             column += token.Value.Length;
@@ -75,7 +75,7 @@ namespace Compiler.LexicalAnalysis
                             {
                                 Name = "NewLine",
                                 Value = match.Value,
-                                Line = row,
+                                Row = row,
                                 Column = column
                             };
                             row++;
@@ -88,7 +88,7 @@ namespace Compiler.LexicalAnalysis
                             token = new Token {
                                 Name = "Dedent",
                                 Value = match.Value,
-                                Line = row,
+                                Row = row,
                                 Column = column
                             };
                             column += token.Value.Length;
@@ -97,7 +97,7 @@ namespace Compiler.LexicalAnalysis
                             token = new Token {
                                 Name = "NewLine",
                                 Value = match.Value,
-                                Line = row,
+                                Row = row,
                                 Column = column
                             };
                             row++;
@@ -115,7 +115,7 @@ namespace Compiler.LexicalAnalysis
                         token = new Token {
                             Name = rule.Name,
                             Value = match.Value,
-                            Line = row,
+                            Row = row,
                             Column = column
                         };
                         column += token.Value.Length;
@@ -138,7 +138,7 @@ namespace Compiler.LexicalAnalysis
                 token = new Token {
                     Name = "Dedent",
                     Value = match.Value,
-                    Line = row,
+                    Row = row,
                     Column = column
                 };
                 column += token.Value.Length;
@@ -147,14 +147,14 @@ namespace Compiler.LexicalAnalysis
                 token = new Token {
                     Name = "NewLine",
                     Value = match.Value,
-                    Line = row,
+                    Row = row,
                     Column = column
                 };
                 row++;
                 column = 0;
                 yield return token;
             }
-            yield return new Token {Name = "eof", Value = "", Line = row, Column = column};
+            yield return new Token {Name = "eof", Value = "", Row = row, Column = column};
         }
     }
 }

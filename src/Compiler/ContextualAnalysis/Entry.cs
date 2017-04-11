@@ -32,11 +32,11 @@ namespace Compiler.ContextualAnalysis
 			set;
 		}
 
-		public Type Type
-		{
-			get;
-			set;
-		}
+		//public Data.Type Type
+		//{
+		//	get;
+		//	set;
+		//}
 
         public override int GetHashCode()
         {
