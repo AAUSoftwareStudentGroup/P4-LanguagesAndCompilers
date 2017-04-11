@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Compiler.Data.AST;
+using System.Linq;
+using Compiler.Data;
 
 namespace Compiler.ContextualAnalysis
 {
@@ -12,7 +13,6 @@ namespace Compiler.ContextualAnalysis
         Stack<Dictionary<string, Entry>> tableList = new Stack<Dictionary<string, Entry>>();
 
         private static int _nestingLevel;
-        //List<Dictionary<string, Entry>> tableList = new List<Dictionary<string, Entry>>();
 
         public SymbolTable()
         {
@@ -33,13 +33,10 @@ namespace Compiler.ContextualAnalysis
 
         public void CloseScope() {
             var hashTable = getCurrentScope();
-			foreach (var item in hashTable)
-            {
-                if (item.Value.LevelNumber == _nestingLevel)
-                {
-					hashTable.Remove(item.Key);
-                }
-            }
+
+            // Remove all items in the hashtable which levelNumber equals the nestingLevel
+            hashTable.Except(hashTable.Where(e => e.Value.LevelNumber == _nestingLevel));
+
 			if (hashTable.Count == 0)
             {
                 tableList.Pop();
@@ -47,6 +44,7 @@ namespace Compiler.ContextualAnalysis
             }
         }
 
+        //TODO might need to have a reference to duplicated identifiers in other tables. If so, then add an ekstra property to the entry class
         public void Enter(string id, Node node) {
             // 
             if (node == null)

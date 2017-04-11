@@ -25,9 +25,9 @@ namespace Generator
                                                  new List<string>(){ "EPSILON" } } }
             };
 
-            bnf = bnfParser.Parse("BNFGrammar.bnf");
+            bnf = bnfParser.Parse("Semantic.bnf");
 
-            var grammarInfo = bnfAnalyzer.Analyze(bnf);
+            // var grammarInfo = bnfAnalyzer.Analyze(bnf);
 
             IParserGenerator generator = new ParserGenerator(bnfAnalyzer);
 
@@ -35,13 +35,13 @@ namespace Generator
             Directory.CreateDirectory("../Compiler/Data/Generated");
             Directory.CreateDirectory("../Compiler/Visitors/Generated");
 
-            ClassType parserClass = generator.GenerateParserClass(bnf, "Compiler.Data", "Compiler.Parsing");
+            // ClassType parserClass = generator.GenerateParserClass(bnf, "Compiler.Data", "Compiler.Parsing");
             ClassType[] parseTreeClasses = generator.GenerateParseTreeClasses(bnf, "Compiler.Data", "Compiler.Visitors");
             ClassType visitorClass = generator.GenerateVisitorClass(bnf, "Compiler.Data", "Compiler.Visitors");
 
             IClassGenerator classGenerator = new ClassGenerator();
 
-            classGenerator.Generate(parserClass, $"../Compiler/Parsing/Generated/{parserClass.Identifier.Split('<')[0]}.cs");
+            // classGenerator.Generate(parserClass, $"../Compiler/Parsing/Generated/{parserClass.Identifier.Split('<')[0]}.cs");
 
             classGenerator.Generate(visitorClass, $"../Compiler/Visitors/Generated/{visitorClass.Identifier.Split('<')[0]}.cs");
 

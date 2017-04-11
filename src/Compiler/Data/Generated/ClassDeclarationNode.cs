@@ -3,7 +3,7 @@ using Compiler.Visitors;
 
 namespace Compiler.Data
 {
-	public class WhileStatementNode : Node
+	public class ClassDeclarationNode : Node
 	{
 		public override T Accept<T>(Visitor<T> visitor)
 		{

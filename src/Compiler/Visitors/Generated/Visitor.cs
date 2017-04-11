@@ -4,97 +4,22 @@ namespace Compiler.Visitors
 {
 	public abstract partial class Visitor<T> 
 	{
-		public virtual T Visit(ProgramNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(StatementsNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(StatementsPNode node)
-		{
-			return Visit((Node)node);
-		}
-
 		public virtual T Visit(StatementNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(InterruptNode node)
+		public virtual T Visit(CompoundStatementNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ClassNode node)
+		public virtual T Visit(ScopedLevelStatementNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ClassBlockNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ClassStatementsNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ClassStatementsPNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ClassStatementNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(DeclarationNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(AssignmentStatementNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(AssignmentStatementPNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(LValueNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(LSelectorNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(IfStatementNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ElseStatementNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ElseBlockNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(WhileStatementNode node)
+		public virtual T Visit(NewlineNode node)
 		{
 			return Visit((Node)node);
 		}
@@ -104,97 +29,52 @@ namespace Compiler.Visitors
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ConditionNode node)
+		public virtual T Visit(WhileStatementNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(DefinitionNode node)
+		public virtual T Visit(AssignmentNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(FunctionDefinitionNode node)
+		public virtual T Visit(SingleBitAssignmentNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(SimpleBlockNode node)
+		public virtual T Visit(CompoundScopedLevelStatementNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(TypedParametersNode node)
+		public virtual T Visit(ClassStatementNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(TypedParametersFNode node)
+		public virtual T Visit(IfStatementChainsNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(TypedParametersPNode node)
+		public virtual T Visit(LeftValueNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(TypeNode node)
+		public virtual T Visit(ObjectNamesNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ArrayTypeNode node)
+		public virtual T Visit(ElementAccessorNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ArraySizeNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(TypeParametersNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(TypeParametersFNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(TypeParametersPNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(SimpleStatementsNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(SimpleStatementsPNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(SimpleStatementNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ReturnStatementNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(SimpleDeclarationNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(SimpleDefinitionNode node)
+		public virtual T Visit(ArraylvAccessorNode node)
 		{
 			return Visit((Node)node);
 		}
@@ -204,112 +84,157 @@ namespace Compiler.Visitors
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(OrOperationNode node)
+		public virtual T Visit(ProcedecureCallNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(OrOperationPNode node)
+		public virtual T Visit(ParenthesisExpressionNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(AndOperationNode node)
+		public virtual T Visit(returnExpressionNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(AndOperationPNode node)
+		public virtual T Visit(IntegerExpressionNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(EqualityOperationNode node)
+		public virtual T Visit(AddOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(EqualityOperationPNode node)
+		public virtual T Visit(SubOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(RelationalOperationNode node)
+		public virtual T Visit(MulOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(RelationalOperationPNode node)
+		public virtual T Visit(DivOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(AddSubOperationNode node)
+		public virtual T Visit(ModOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(AddSubOperationPNode node)
+		public virtual T Visit(PowOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(MultDivOperationNode node)
+		public virtual T Visit(BooleanExpressionNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(MultDivOperationPNode node)
+		public virtual T Visit(EqOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(PrimaryOperationNode node)
+		public virtual T Visit(LessThanOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(RSelectorNode node)
+		public virtual T Visit(GreaterThanOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(RValueNode node)
+		public virtual T Visit(LessThanOrEqOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(RegisterNode node)
+		public virtual T Visit(GreaterThanOrEqOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ArrayNode node)
+		public virtual T Visit(NotOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ArrayFNode node)
+		public virtual T Visit(SingleBitAccessorNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ArrayPNode node)
+		public virtual T Visit(AndOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ParametersNode node)
+		public virtual T Visit(OrOpNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ParametersFNode node)
+		public virtual T Visit(ProcedureDeclarationNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ParametersPNode node)
+		public virtual T Visit(VariableDeclarationNode node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(identifierDclNode node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(identifierDclAssignNode node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(identifierArrayDcl1Node node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(identifierArrayDcl2Node node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(ArrayAccessorNode node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(ObjectDelacartionNode node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(SingleObjectDeclarationNode node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(ArrayObjectDeclartionNode node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(ClassDeclarationNode node)
 		{
 			return Visit((Node)node);
 		}

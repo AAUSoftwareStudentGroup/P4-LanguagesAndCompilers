@@ -1,11 +1,11 @@
-using Compiler.Data.AST;
+using Compiler.Data;
 
 namespace Compiler.ContextualAnalysis
 {
 	public class Entry
 	{
         private int _level;
-		public Entry(string id, Node node, int level)
+        public Entry(string id, Node node, int level)
         {
             this.Id = id;
 			this.Node = node;
@@ -32,7 +32,7 @@ namespace Compiler.ContextualAnalysis
 			set;
 		}
 
-		public Data.AST.Type Type
+		public Type Type
 		{
 			get;
 			set;
