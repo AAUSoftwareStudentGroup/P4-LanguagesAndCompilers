@@ -32,6 +32,7 @@ namespace Compiler.Parsing
 				case "simpleType":
 				case "startDel":
 				case "identifier":
+				case "register":
 				case "if":
 				case "while":
 				case "for":
@@ -55,6 +56,7 @@ namespace Compiler.Parsing
 				case "simpleType":
 				case "startDel":
 				case "identifier":
+				case "register":
 				case "if":
 				case "while":
 				case "for":
@@ -98,7 +100,8 @@ namespace Compiler.Parsing
 					node.Children.Add(ParseDeclarationNode(tokens));
 					return node;
 				case "identifier":
-					node.Children.Add(ParseIdentifierStatementNode(tokens));
+				case "register":
+					node.Children.Add(ParseAssignmentStatementNode(tokens));
 					return node;
 				case "if":
 					node.Children.Add(ParseIfStatementNode(tokens));
@@ -241,106 +244,51 @@ namespace Compiler.Parsing
 			}
 		}
 
-		public IdentifierStatementNode ParseIdentifierStatementNode(IEnumerator<Token> tokens)
+		public AssignmentStatementNode ParseAssignmentStatementNode(IEnumerator<Token> tokens)
 		{
-			IdentifierStatementNode node = new IdentifierStatementNode(){ Name = "IdentifierStatement", Children = new List<Node>() };
+			AssignmentStatementNode node = new AssignmentStatementNode(){ Name = "AssignmentStatement", Children = new List<Node>() };
+			switch(tokens.Current.Name)
+			{
+				case "identifier":
+				case "register":
+					node.Children.Add(ParseLValueNode(tokens));
+					node.Children.Add(ParseAssignmentStatementPNode(tokens));
+					return node;
+				default:
+					throw new UnexpectedTokenException(tokens.Current);
+			}
+		}
+
+		public AssignmentStatementPNode ParseAssignmentStatementPNode(IEnumerator<Token> tokens)
+		{
+			AssignmentStatementPNode node = new AssignmentStatementPNode(){ Name = "AssignmentStatementP", Children = new List<Node>() };
+			switch(tokens.Current.Name)
+			{
+				case "assign":
+					node.Children.Add(ParseTerminal(tokens, "assign"));
+					node.Children.Add(ParseExpressionNode(tokens));
+					return node;
+				case "newline":
+				case "eof":
+				case "dedent":
+					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
+					return node;
+				default:
+					throw new UnexpectedTokenException(tokens.Current);
+			}
+		}
+
+		public LValueNode ParseLValueNode(IEnumerator<Token> tokens)
+		{
+			LValueNode node = new LValueNode(){ Name = "LValue", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "identifier":
 					node.Children.Add(ParseTerminal(tokens, "identifier"));
-					node.Children.Add(ParseLIdentifierOperationNode(tokens));
+					node.Children.Add(ParseLSelectorNode(tokens));
 					return node;
-				default:
-					throw new UnexpectedTokenException(tokens.Current);
-			}
-		}
-
-		public LIdentifierOperationNode ParseLIdentifierOperationNode(IEnumerator<Token> tokens)
-		{
-			LIdentifierOperationNode node = new LIdentifierOperationNode(){ Name = "LIdentifierOperation", Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "assign":
-					node.Children.Add(ParseAssignmentNode(tokens));
-					return node;
-				case "startDel":
-				case "dot":
-				case "startBracket":
-				case "startCurly":
-					node.Children.Add(ParseLSelectorOperationNode(tokens));
-					return node;
-				default:
-					throw new UnexpectedTokenException(tokens.Current);
-			}
-		}
-
-		public LSelectorOperationNode ParseLSelectorOperationNode(IEnumerator<Token> tokens)
-		{
-			LSelectorOperationNode node = new LSelectorOperationNode(){ Name = "LSelectorOperation", Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "startDel":
-					node.Children.Add(ParseCallNode(tokens));
-					node.Children.Add(ParseLReturnValueOperationNode(tokens));
-					return node;
-				case "dot":
-					node.Children.Add(ParseClassAccessorNode(tokens));
-					node.Children.Add(ParseLIdentifierOperationNode(tokens));
-					return node;
-				case "startBracket":
-					node.Children.Add(ParseElementSelectorNode(tokens));
-					node.Children.Add(ParseLIdentifierOperationNode(tokens));
-					return node;
-				case "startCurly":
-					node.Children.Add(ParseBitSelectorNode(tokens));
-					node.Children.Add(ParseAssignmentNode(tokens));
-					return node;
-				default:
-					throw new UnexpectedTokenException(tokens.Current);
-			}
-		}
-
-		public LReturnValueOperationNode ParseLReturnValueOperationNode(IEnumerator<Token> tokens)
-		{
-			LReturnValueOperationNode node = new LReturnValueOperationNode(){ Name = "LReturnValueOperation", Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "newline":
-				case "eof":
-					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
-					return node;
-				case "startDel":
-				case "dot":
-				case "startBracket":
-				case "startCurly":
-					node.Children.Add(ParseLSelectorOperationNode(tokens));
-					return node;
-				default:
-					throw new UnexpectedTokenException(tokens.Current);
-			}
-		}
-
-		public ElementSelectorNode ParseElementSelectorNode(IEnumerator<Token> tokens)
-		{
-			ElementSelectorNode node = new ElementSelectorNode(){ Name = "ElementSelector", Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "startBracket":
-					node.Children.Add(ParseTerminal(tokens, "startBracket"));
-					node.Children.Add(ParseExpressionNode(tokens));
-					node.Children.Add(ParseTerminal(tokens, "endBracket"));
-					return node;
-				default:
-					throw new UnexpectedTokenException(tokens.Current);
-			}
-		}
-
-		public BitSelectorNode ParseBitSelectorNode(IEnumerator<Token> tokens)
-		{
-			BitSelectorNode node = new BitSelectorNode(){ Name = "BitSelector", Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "startCurly":
+				case "register":
+					node.Children.Add(ParseRegisterNode(tokens));
 					node.Children.Add(ParseTerminal(tokens, "startCurly"));
 					node.Children.Add(ParseExpressionNode(tokens));
 					node.Children.Add(ParseTerminal(tokens, "endCurly"));
@@ -350,41 +298,36 @@ namespace Compiler.Parsing
 			}
 		}
 
-		public ClassAccessorNode ParseClassAccessorNode(IEnumerator<Token> tokens)
+		public LSelectorNode ParseLSelectorNode(IEnumerator<Token> tokens)
 		{
-			ClassAccessorNode node = new ClassAccessorNode(){ Name = "ClassAccessor", Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "dot":
-					node.Children.Add(ParseTerminal(tokens, "dot"));
-					node.Children.Add(ParseTerminal(tokens, "identifier"));
-					return node;
-				default:
-					throw new UnexpectedTokenException(tokens.Current);
-			}
-		}
-
-		public AssignmentNode ParseAssignmentNode(IEnumerator<Token> tokens)
-		{
-			AssignmentNode node = new AssignmentNode(){ Name = "Assignment", Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "assign":
-					node.Children.Add(ParseTerminal(tokens, "assign"));
-					node.Children.Add(ParseExpressionNode(tokens));
-					return node;
-				default:
-					throw new UnexpectedTokenException(tokens.Current);
-			}
-		}
-
-		public CallNode ParseCallNode(IEnumerator<Token> tokens)
-		{
-			CallNode node = new CallNode(){ Name = "Call", Children = new List<Node>() };
+			LSelectorNode node = new LSelectorNode(){ Name = "LSelector", Children = new List<Node>() };
 			switch(tokens.Current.Name)
 			{
 				case "startDel":
 					node.Children.Add(ParseParametersNode(tokens));
+					node.Children.Add(ParseLSelectorNode(tokens));
+					return node;
+				case "startBracket":
+					node.Children.Add(ParseTerminal(tokens, "startBracket"));
+					node.Children.Add(ParseExpressionNode(tokens));
+					node.Children.Add(ParseTerminal(tokens, "endBracket"));
+					node.Children.Add(ParseLSelectorNode(tokens));
+					return node;
+				case "startCurly":
+					node.Children.Add(ParseTerminal(tokens, "startCurly"));
+					node.Children.Add(ParseExpressionNode(tokens));
+					node.Children.Add(ParseTerminal(tokens, "endCurly"));
+					return node;
+				case "dot":
+					node.Children.Add(ParseTerminal(tokens, "dot"));
+					node.Children.Add(ParseTerminal(tokens, "identifier"));
+					node.Children.Add(ParseLSelectorNode(tokens));
+					return node;
+				case "assign":
+				case "newline":
+				case "eof":
+				case "dedent":
+					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
 					return node;
 				default:
 					throw new UnexpectedTokenException(tokens.Current);
@@ -501,8 +444,8 @@ namespace Compiler.Parsing
 				case "startDel":
 					node.Children.Add(ParseFunctionDefinitionNode(tokens));
 					return node;
-				case "assign":
-					node.Children.Add(ParseAssignmentNode(tokens));
+				case "Assignment":
+					node.Children.Add(ParseTerminal(tokens, "Assignment"));
 					return node;
 				case "newline":
 				case "eof":
@@ -647,10 +590,10 @@ namespace Compiler.Parsing
 			{
 				case "startDel":
 				case "identifier":
-				case "intLiteral":
-				case "boolLiteral":
 				case "register":
 				case "startBracket":
+				case "intLiteral":
+				case "boolLiteral":
 					node.Children.Add(ParseExpressionNode(tokens));
 					return node;
 				case "endBracket":
@@ -725,7 +668,8 @@ namespace Compiler.Parsing
 			{
 				case "simpleType":
 				case "startDel":
-				case "assign":
+				case "identifier":
+				case "register":
 				case "if":
 				case "while":
 				case "return":
@@ -766,8 +710,9 @@ namespace Compiler.Parsing
 				case "startDel":
 					node.Children.Add(ParseSimpleDeclarationNode(tokens));
 					return node;
-				case "assign":
-					node.Children.Add(ParseAssignmentNode(tokens));
+				case "identifier":
+				case "register":
+					node.Children.Add(ParseAssignmentStatementNode(tokens));
 					return node;
 				case "if":
 					node.Children.Add(ParseIfStatementNode(tokens));
@@ -842,10 +787,10 @@ namespace Compiler.Parsing
 			{
 				case "startDel":
 				case "identifier":
-				case "intLiteral":
-				case "boolLiteral":
 				case "register":
 				case "startBracket":
+				case "intLiteral":
+				case "boolLiteral":
 					node.Children.Add(ParseOrOperationNode(tokens));
 					return node;
 				default:
@@ -860,10 +805,10 @@ namespace Compiler.Parsing
 			{
 				case "startDel":
 				case "identifier":
-				case "intLiteral":
-				case "boolLiteral":
 				case "register":
 				case "startBracket":
+				case "intLiteral":
+				case "boolLiteral":
 					node.Children.Add(ParseAndOperationNode(tokens));
 					node.Children.Add(ParseOrOperationPNode(tokens));
 					return node;
@@ -883,11 +828,11 @@ namespace Compiler.Parsing
 					node.Children.Add(ParseOrOperationPNode(tokens));
 					return node;
 				case "endDel":
-				case "endBracket":
-				case "endCurly":
 				case "newline":
 				case "eof":
 				case "dedent":
+				case "endCurly":
+				case "endBracket":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -904,10 +849,10 @@ namespace Compiler.Parsing
 			{
 				case "startDel":
 				case "identifier":
-				case "intLiteral":
-				case "boolLiteral":
 				case "register":
 				case "startBracket":
+				case "intLiteral":
+				case "boolLiteral":
 					node.Children.Add(ParseEqualityOperationNode(tokens));
 					node.Children.Add(ParseAndOperationPNode(tokens));
 					return node;
@@ -928,11 +873,11 @@ namespace Compiler.Parsing
 					return node;
 				case "or":
 				case "endDel":
-				case "endBracket":
-				case "endCurly":
 				case "newline":
 				case "eof":
 				case "dedent":
+				case "endCurly":
+				case "endBracket":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -949,10 +894,10 @@ namespace Compiler.Parsing
 			{
 				case "startDel":
 				case "identifier":
-				case "intLiteral":
-				case "boolLiteral":
 				case "register":
 				case "startBracket":
+				case "intLiteral":
+				case "boolLiteral":
 					node.Children.Add(ParseRelationalOperationNode(tokens));
 					node.Children.Add(ParseEqualityOperationPNode(tokens));
 					return node;
@@ -974,11 +919,11 @@ namespace Compiler.Parsing
 				case "and":
 				case "or":
 				case "endDel":
-				case "endBracket":
-				case "endCurly":
 				case "newline":
 				case "eof":
 				case "dedent":
+				case "endCurly":
+				case "endBracket":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -995,10 +940,10 @@ namespace Compiler.Parsing
 			{
 				case "startDel":
 				case "identifier":
-				case "intLiteral":
-				case "boolLiteral":
 				case "register":
 				case "startBracket":
+				case "intLiteral":
+				case "boolLiteral":
 					node.Children.Add(ParseAddSubOperationNode(tokens));
 					node.Children.Add(ParseRelationalOperationPNode(tokens));
 					return node;
@@ -1021,11 +966,11 @@ namespace Compiler.Parsing
 				case "and":
 				case "or":
 				case "endDel":
-				case "endBracket":
-				case "endCurly":
 				case "newline":
 				case "eof":
 				case "dedent":
+				case "endCurly":
+				case "endBracket":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -1042,10 +987,10 @@ namespace Compiler.Parsing
 			{
 				case "startDel":
 				case "identifier":
-				case "intLiteral":
-				case "boolLiteral":
 				case "register":
 				case "startBracket":
+				case "intLiteral":
+				case "boolLiteral":
 					node.Children.Add(ParseMultDivOperationNode(tokens));
 					node.Children.Add(ParseAddSubOperationPNode(tokens));
 					return node;
@@ -1069,11 +1014,11 @@ namespace Compiler.Parsing
 				case "and":
 				case "or":
 				case "endDel":
-				case "endBracket":
-				case "endCurly":
 				case "newline":
 				case "eof":
 				case "dedent":
+				case "endCurly":
+				case "endBracket":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -1090,10 +1035,10 @@ namespace Compiler.Parsing
 			{
 				case "startDel":
 				case "identifier":
-				case "intLiteral":
-				case "boolLiteral":
 				case "register":
 				case "startBracket":
+				case "intLiteral":
+				case "boolLiteral":
 					node.Children.Add(ParsePrimaryOperationNode(tokens));
 					node.Children.Add(ParseMultDivOperationPNode(tokens));
 					return node;
@@ -1118,11 +1063,11 @@ namespace Compiler.Parsing
 				case "and":
 				case "or":
 				case "endDel":
-				case "endBracket":
-				case "endCurly":
 				case "newline":
 				case "eof":
 				case "dedent":
+				case "endCurly":
+				case "endBracket":
 				case "to":
 				case "sep":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
@@ -1143,8 +1088,9 @@ namespace Compiler.Parsing
 					node.Children.Add(ParseTerminal(tokens, "endDel"));
 					return node;
 				case "identifier":
-					node.Children.Add(ParseTerminal(tokens, "identifier"));
-					node.Children.Add(ParseRSelectorOperationNode(tokens));
+				case "register":
+				case "startBracket":
+					node.Children.Add(ParseRValueNode(tokens));
 					return node;
 				case "intLiteral":
 					node.Children.Add(ParseTerminal(tokens, "intLiteral"));
@@ -1152,13 +1098,78 @@ namespace Compiler.Parsing
 				case "boolLiteral":
 					node.Children.Add(ParseTerminal(tokens, "boolLiteral"));
 					return node;
+				default:
+					throw new UnexpectedTokenException(tokens.Current);
+			}
+		}
+
+		public RSelectorNode ParseRSelectorNode(IEnumerator<Token> tokens)
+		{
+			RSelectorNode node = new RSelectorNode(){ Name = "RSelector", Children = new List<Node>() };
+			switch(tokens.Current.Name)
+			{
+				case "startDel":
+					node.Children.Add(ParseParametersNode(tokens));
+					node.Children.Add(ParseRSelectorNode(tokens));
+					return node;
+				case "startBracket":
+					node.Children.Add(ParseTerminal(tokens, "startBracket"));
+					node.Children.Add(ParseExpressionNode(tokens));
+					node.Children.Add(ParseTerminal(tokens, "endBracket"));
+					node.Children.Add(ParseRSelectorNode(tokens));
+					return node;
+				case "dot":
+					node.Children.Add(ParseTerminal(tokens, "dot"));
+					node.Children.Add(ParseTerminal(tokens, "identifier"));
+					node.Children.Add(ParseRSelectorNode(tokens));
+					return node;
+				case "startCurly":
+					node.Children.Add(ParseTerminal(tokens, "startCurly"));
+					node.Children.Add(ParseExpressionNode(tokens));
+					node.Children.Add(ParseTerminal(tokens, "endCurly"));
+					return node;
+				case "multDiv":
+				case "addSub":
+				case "relational":
+				case "equality":
+				case "and":
+				case "or":
+				case "endDel":
+				case "newline":
+				case "eof":
+				case "dedent":
+				case "endCurly":
+				case "endBracket":
+				case "to":
+				case "sep":
+					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
+					return node;
+				default:
+					throw new UnexpectedTokenException(tokens.Current);
+			}
+		}
+
+		public RValueNode ParseRValueNode(IEnumerator<Token> tokens)
+		{
+			RValueNode node = new RValueNode(){ Name = "RValue", Children = new List<Node>() };
+			switch(tokens.Current.Name)
+			{
+				case "identifier":
+					node.Children.Add(ParseTerminal(tokens, "identifier"));
+					node.Children.Add(ParseRSelectorNode(tokens));
+					return node;
 				case "register":
 					node.Children.Add(ParseRegisterNode(tokens));
-					node.Children.Add(ParseOptionalBitSelectorNode(tokens));
+					node.Children.Add(ParseTerminal(tokens, "startCurly"));
+					node.Children.Add(ParseExpressionNode(tokens));
+					node.Children.Add(ParseTerminal(tokens, "endCurly"));
 					return node;
 				case "startBracket":
 					node.Children.Add(ParseArrayNode(tokens));
-					node.Children.Add(ParseOptionalElementSelectorNode(tokens));
+					node.Children.Add(ParseTerminal(tokens, "startBracket"));
+					node.Children.Add(ParseExpressionNode(tokens));
+					node.Children.Add(ParseTerminal(tokens, "endBracket"));
+					node.Children.Add(ParseRSelectorNode(tokens));
 					return node;
 				default:
 					throw new UnexpectedTokenException(tokens.Current);
@@ -1175,35 +1186,6 @@ namespace Compiler.Parsing
 					node.Children.Add(ParseTerminal(tokens, "startDel"));
 					node.Children.Add(ParseExpressionNode(tokens));
 					node.Children.Add(ParseTerminal(tokens, "endDel"));
-					return node;
-				default:
-					throw new UnexpectedTokenException(tokens.Current);
-			}
-		}
-
-		public OptionalBitSelectorNode ParseOptionalBitSelectorNode(IEnumerator<Token> tokens)
-		{
-			OptionalBitSelectorNode node = new OptionalBitSelectorNode(){ Name = "OptionalBitSelector", Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "startCurly":
-					node.Children.Add(ParseBitSelectorNode(tokens));
-					return node;
-				case "multDiv":
-				case "addSub":
-				case "relational":
-				case "equality":
-				case "and":
-				case "or":
-				case "endDel":
-				case "endBracket":
-				case "endCurly":
-				case "newline":
-				case "eof":
-				case "dedent":
-				case "to":
-				case "sep":
-					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
 					return node;
 				default:
 					throw new UnexpectedTokenException(tokens.Current);
@@ -1232,10 +1214,10 @@ namespace Compiler.Parsing
 			{
 				case "startDel":
 				case "identifier":
-				case "intLiteral":
-				case "boolLiteral":
 				case "register":
 				case "startBracket":
+				case "intLiteral":
+				case "boolLiteral":
 					node.Children.Add(ParseExpressionNode(tokens));
 					node.Children.Add(ParseArrayPNode(tokens));
 					return node;
@@ -1265,77 +1247,6 @@ namespace Compiler.Parsing
 			}
 		}
 
-		public OptionalElementSelectorNode ParseOptionalElementSelectorNode(IEnumerator<Token> tokens)
-		{
-			OptionalElementSelectorNode node = new OptionalElementSelectorNode(){ Name = "OptionalElementSelector", Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "startBracket":
-					node.Children.Add(ParseElementSelectorNode(tokens));
-					node.Children.Add(ParseRSelectorOperationNode(tokens));
-					return node;
-				case "multDiv":
-				case "addSub":
-				case "relational":
-				case "equality":
-				case "and":
-				case "or":
-				case "endDel":
-				case "endBracket":
-				case "endCurly":
-				case "newline":
-				case "eof":
-				case "dedent":
-				case "to":
-				case "sep":
-					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
-					return node;
-				default:
-					throw new UnexpectedTokenException(tokens.Current);
-			}
-		}
-
-		public RSelectorOperationNode ParseRSelectorOperationNode(IEnumerator<Token> tokens)
-		{
-			RSelectorOperationNode node = new RSelectorOperationNode(){ Name = "RSelectorOperation", Children = new List<Node>() };
-			switch(tokens.Current.Name)
-			{
-				case "startDel":
-					node.Children.Add(ParseCallNode(tokens));
-					node.Children.Add(ParseRSelectorOperationNode(tokens));
-					return node;
-				case "dot":
-					node.Children.Add(ParseClassAccessorNode(tokens));
-					node.Children.Add(ParseRSelectorOperationNode(tokens));
-					return node;
-				case "startBracket":
-					node.Children.Add(ParseElementSelectorNode(tokens));
-					node.Children.Add(ParseRSelectorOperationNode(tokens));
-					return node;
-				case "startCurly":
-					node.Children.Add(ParseBitSelectorNode(tokens));
-					return node;
-				case "multDiv":
-				case "addSub":
-				case "relational":
-				case "equality":
-				case "and":
-				case "or":
-				case "endDel":
-				case "endBracket":
-				case "endCurly":
-				case "newline":
-				case "eof":
-				case "dedent":
-				case "to":
-				case "sep":
-					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
-					return node;
-				default:
-					throw new UnexpectedTokenException(tokens.Current);
-			}
-		}
-
 		public ParametersNode ParseParametersNode(IEnumerator<Token> tokens)
 		{
 			ParametersNode node = new ParametersNode(){ Name = "Parameters", Children = new List<Node>() };
@@ -1358,10 +1269,10 @@ namespace Compiler.Parsing
 			{
 				case "startDel":
 				case "identifier":
-				case "intLiteral":
-				case "boolLiteral":
 				case "register":
 				case "startBracket":
+				case "intLiteral":
+				case "boolLiteral":
 					node.Children.Add(ParseExpressionNode(tokens));
 					node.Children.Add(ParseParametersPNode(tokens));
 					return node;

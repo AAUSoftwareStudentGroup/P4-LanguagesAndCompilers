@@ -14,6 +14,5 @@ namespace Compiler.Parsing
         }
 
         public Token Token { get; set; }
-
     }
 }

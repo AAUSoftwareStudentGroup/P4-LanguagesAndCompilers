@@ -22,17 +22,17 @@ namespace Generator.Parsing
             return !bnf.ContainsKey(symbol);
         }
 
-        public ClassType GenerateParserClass(BNF bnf, string dataNameSpace, string targetNamespace)
+        public ClassType GenerateParserClass(BNF bnf, string dataNamespace, string parserNamespace)
         {
             GrammarInfo grammerInfo = _bnfAnalyzer.Analyze(bnf);
 
-            ClassType parserClass = new ClassType(targetNamespace, "public", "Parser", null)
+            ClassType parserClass = new ClassType(parserNamespace, "public", "Parser", null)
             {
                 Usings = new string[]
                 {
                     "using System;",
                     "using System.Collections.Generic;",
-                    $"using {dataNameSpace};"
+                    $"using {dataNamespace};"
                 }
             };
 
@@ -121,13 +121,13 @@ namespace Generator.Parsing
             return parserClass;
         }
 
-        public ClassType GenerateVisitorClass(BNF bnf, string dataNameSpace, string visitorNameSpace)
+        public ClassType GenerateVisitorClass(BNF bnf, string dataNamespace, string visitorNamespace)
         {
-            ClassType visitorClass = new ClassType(visitorNameSpace, "public abstract partial", "Visitor<T>", null)
+            ClassType visitorClass = new ClassType(visitorNamespace, "public abstract partial", "Visitor<T>", null)
             {
                 Usings = new string[]
                 {
-                    $"using {dataNameSpace};"
+                    $"using {dataNamespace};"
                 }
             };
 
@@ -144,27 +144,27 @@ namespace Generator.Parsing
             return visitorClass;
         }
 
-        public ClassType[] GenerateParseTreeClasses(BNF bnf, string dataNameSpace, string parserNameSpace)
+        public ClassType[] GenerateParseTreeClasses(BNF bnf, string dataNamespace, string visitorNamespace)
         {
             List<ClassType> classes = new List<ClassType>();
 
             foreach (var production in bnf)
             {
-                ClassType classType = CreateParseTreeClass(parserNameSpace, dataNameSpace, production);
+                ClassType classType = CreateParseTreeClass(visitorNamespace, dataNamespace, production);
                 classes.Add(classType);
             }
 
             return classes.ToArray();
         }
 
-        private static ClassType CreateParseTreeClass(string parserNameSpace, string targetNamespace, KeyValuePair<string, List<List<string>>> production)
+        private static ClassType CreateParseTreeClass(string parserNamespace, string targetNamespace, KeyValuePair<string, List<List<string>>> production)
         {
             return new ClassType(targetNamespace, "public", $"{production.Key}Node", "Node")
             {
                 Usings = new string[]
                 {
                     "using System.Collections.Generic;",
-                    $"using {parserNameSpace};"
+                    $"using {parserNamespace};"
                 },
                 Methods = new MethodType[]
                 {

@@ -1,6 +1,6 @@
 using Compiler.Data;
 
-namespace Compiler.Parsing
+namespace Compiler.Visitors
 {
 	public abstract partial class Visitor<T> 
 	{
@@ -59,47 +59,22 @@ namespace Compiler.Parsing
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(IdentifierStatementNode node)
+		public virtual T Visit(AssignmentStatementNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(LIdentifierOperationNode node)
+		public virtual T Visit(AssignmentStatementPNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(LSelectorOperationNode node)
+		public virtual T Visit(LValueNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(LReturnValueOperationNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ElementSelectorNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(BitSelectorNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ClassAccessorNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(AssignmentNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(CallNode node)
+		public virtual T Visit(LSelectorNode node)
 		{
 			return Visit((Node)node);
 		}
@@ -294,12 +269,17 @@ namespace Compiler.Parsing
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(RegisterNode node)
+		public virtual T Visit(RSelectorNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(OptionalBitSelectorNode node)
+		public virtual T Visit(RValueNode node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(RegisterNode node)
 		{
 			return Visit((Node)node);
 		}
@@ -315,16 +295,6 @@ namespace Compiler.Parsing
 		}
 
 		public virtual T Visit(ArrayPNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(OptionalElementSelectorNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(RSelectorOperationNode node)
 		{
 			return Visit((Node)node);
 		}

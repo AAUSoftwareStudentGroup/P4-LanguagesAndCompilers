@@ -33,16 +33,17 @@ namespace Generator
 
             Directory.CreateDirectory("../Compiler/Parsing/Generated");
             Directory.CreateDirectory("../Compiler/Data/Generated");
+            Directory.CreateDirectory("../Compiler/Visitors/Generated");
 
             ClassType parserClass = generator.GenerateParserClass(bnf, "Compiler.Data", "Compiler.Parsing");
-            ClassType visitorClass = generator.GenerateVisitorClass(bnf, "Compiler.Data", "Compiler.Parsing");
-            ClassType[] parseTreeClasses = generator.GenerateParseTreeClasses(bnf, "Compiler.Data", "Compiler.Parsing");
+            ClassType[] parseTreeClasses = generator.GenerateParseTreeClasses(bnf, "Compiler.Data", "Compiler.Visitors");
+            ClassType visitorClass = generator.GenerateVisitorClass(bnf, "Compiler.Data", "Compiler.Visitors");
 
             IClassGenerator classGenerator = new ClassGenerator();
 
             classGenerator.Generate(parserClass, $"../Compiler/Parsing/Generated/{parserClass.Identifier.Split('<')[0]}.cs");
 
-            classGenerator.Generate(visitorClass, $"../Compiler/Parsing/Generated/{visitorClass.Identifier.Split('<')[0]}.cs");
+            classGenerator.Generate(visitorClass, $"../Compiler/Visitors/Generated/{visitorClass.Identifier.Split('<')[0]}.cs");
 
             foreach (var c in parseTreeClasses)
             {

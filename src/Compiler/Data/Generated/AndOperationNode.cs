@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Compiler.Parsing;
+using Compiler.Visitors;
 
 namespace Compiler.Data
 {

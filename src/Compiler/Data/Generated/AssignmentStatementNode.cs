@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Compiler.Parsing;
+using Compiler.Visitors;
 
 namespace Compiler.Data
 {
-	public class BitSelectorNode : Node
+	public class AssignmentStatementNode : Node
 	{
 		public override T Accept<T>(Visitor<T> visitor)
 		{

@@ -1,4 +1,5 @@
-using Compiler.Parsing;
+using Compiler.Visitors;
+
 namespace Compiler.Data
 {
 	public class Token : Node

@@ -7,8 +7,8 @@ namespace Generator.Parsing
 {
     public interface IParserGenerator
     {
-        ClassType[] GenerateParseTreeClasses(BNF bnf, string dataNameSpace, string visitorNameSpace);
-        ClassType GenerateParserClass(BNF bnf, string dataNameSpace, string parserNamespace);
-        ClassType GenerateVisitorClass(BNF bnf, string dataNameSpace, string visitorNamespace);
+        ClassType[] GenerateParseTreeClasses(BNF bnf, string dataNamespace, string visitorNamespace);
+        ClassType GenerateParserClass(BNF bnf, string dataNamespace, string parserNamespace);
+        ClassType GenerateVisitorClass(BNF bnf, string dataNamespace, string visitorNamespace);
     }
 }

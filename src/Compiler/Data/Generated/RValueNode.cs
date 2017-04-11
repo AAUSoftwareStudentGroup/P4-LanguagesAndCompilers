@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Compiler.Parsing;
+using Compiler.Visitors;
 
 namespace Compiler.Data
 {
-	public class RSelectorOperationNode : Node
+	public class RValueNode : Node
 	{
 		public override T Accept<T>(Visitor<T> visitor)
 		{
