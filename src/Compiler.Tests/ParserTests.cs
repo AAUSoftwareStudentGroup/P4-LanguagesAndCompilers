@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Compiler.Visitors;
 
 namespace Compiler.Tests
 {
@@ -17,24 +18,43 @@ namespace Compiler.Tests
 
             string[] tokens = { "simpleType", "identifier", "assign", "intLiteral", "eof" };
 
-            //foreach (string s in tokens)
-            //{
-            //    tokenList.Add(new Token { Name = s, Value = s });
-            //}
+            var list = tokens.Select(t => new Token() { Name = t });
 
-            var tokenlist = tokens.Select(t => new Token() { Name = t }).GetEnumerator();
+            int i = 0;
+            foreach(Token t in list)
+            {
+                Assert.AreEqual(t.Name, tokens[i]);
+                i++;
+            }
 
+            var tokenlist = list.GetEnumerator();
             Parser parser = new Parser();
             tokenlist.MoveNext();
 
+            PrintVisitor visitor = new PrintVisitor();
+
             try
             {
-                parser.ParseProgramNode(tokenlist);
+                Node n = parser.ParseProgramNode(tokenlist);
+
+                string parserS = n.Accept(visitor);
+                System.Diagnostics.Debug.WriteLine(parserS);
+
+                string inputS = "";
+                foreach (string str in tokens)
+                {
+                    inputS += str + " ";
+                }
+
+                Assert.AreEqual(parserS, inputS);
+
             }
             catch (Exception e)
             {
                 Assert.Fail("Expected no exception, but got: " + e.Message);
             }
+
+            
         }
     }
 }
