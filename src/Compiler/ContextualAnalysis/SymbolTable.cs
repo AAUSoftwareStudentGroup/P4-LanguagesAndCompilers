@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Compiler.Data.AST;
+using Compiler.Data;
 
 namespace Compiler.ContextualAnalysis
 {

@@ -1,4 +1,4 @@
-using Compiler.Data.AST;
+using Compiler.Data;
 
 namespace Compiler.ContextualAnalysis
 {
@@ -32,11 +32,11 @@ namespace Compiler.ContextualAnalysis
 			set;
 		}
 
-		public Data.AST.Type Type
-		{
-			get;
-			set;
-		}
+		//public Data.Type Type
+		//{
+		//	get;
+		//	set;
+		//}
 
         public override int GetHashCode()
         {
