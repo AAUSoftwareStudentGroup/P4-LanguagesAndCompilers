@@ -444,13 +444,11 @@ namespace Compiler.Parsing
 				case "startDel":
 					node.Children.Add(ParseFunctionDefinitionNode(tokens));
 					return node;
-				case "Assignment":
-					node.Children.Add(ParseTerminal(tokens, "Assignment"));
-					return node;
+				case "assign":
 				case "newline":
 				case "eof":
 				case "dedent":
-					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
+					node.Children.Add(ParseSimpleDefinitionNode(tokens));
 					return node;
 				default:
 					throw new UnexpectedTokenException(tokens.Current);
@@ -772,6 +770,7 @@ namespace Compiler.Parsing
 					node.Children.Add(ParseExpressionNode(tokens));
 					return node;
 				case "newline":
+				case "eof":
 				case "dedent":
 					node.Children.Add(ParseTerminal(tokens, "EPSILON"));
 					return node;
