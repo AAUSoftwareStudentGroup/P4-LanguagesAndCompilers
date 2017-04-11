@@ -1,0 +1,118 @@
+[
+    {
+        "Name": "LineComment",
+        "PatternString": "//.*",
+        "Ignore": true
+    },
+    {
+        "Name": "BlockComment",
+        "PatternString": "/\\*.*\\*/",
+        "SingleLine": true,
+        "Ignore": true
+    },
+    {
+        "Name": "Whitespace",
+        "PatternString": "[\\t ]+",
+        "Ignore": true
+    },
+    {
+        "Name": "NewLine",
+        "PatternString": "\\r?\\n[\\r\\n\\t ]+",
+        "SingleLine": true
+    },
+    {
+        "Name": "Number",
+        "PatternString": "([+-]?(0|([1-9][0-9]*))|true|false)"
+    },
+    /*
+    {
+        "Name": "Decimal",
+        "PatternString": "[+-]?(0|([1-9][0-9]*))\\.[0-9]+"
+    },
+    */
+    {
+        "Name": "If",
+        "PatternString": "if"
+    },
+    {
+        "Name": "For",
+        "PatternString": "for"
+    },
+    {
+        "Name": "While",
+        "PatternString": "while"
+    },
+    {
+        "Name": "And",
+        "PatternString": "and"
+    },
+    {
+        "Name": "Or",
+        "PatternString": "or"
+    },
+    {
+        "Name": "ClassWord",
+        "PatternString": "class"
+    },
+    {
+        "Name": "Return",
+        "PatternString": "return"
+    },
+    {
+        "Name": "SimpleType",
+        "PatternString": "(u?int(8|16|32)|nothing|decimal)"
+    },
+    {
+        "Name": "Compare",
+        "PatternString": "(==)|(!=)|(<=)|(>=)|<|>"
+    },
+    {
+        "Name": "Assign",
+        "PatternString": "="
+    },
+    {
+        "Name": "AddSubOpp",
+        "PatternString": "[\\+\\-]"
+    },
+    {
+        "Name": "MulDivOpp",
+        "PatternString": "[\\*\\/]"
+    },
+    {
+        "Name": "StartDel",
+        "PatternString": "\\("
+    },
+    {
+        "Name": "EndDel",
+        "PatternString": "\\)"
+    },
+    {
+        "Name": "SepOp",
+        "PatternString": ","
+    },
+    {
+        "Name": "Identifier",
+        "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
+    }
+    /*
+-Number     -> Digit
+-Digit      -> 1 | true | false
+-If         -> if
+-While      -> while
+-And        -> and
+-Or         -> or
+-Compare    -> eq | != | < | > | <= | >=
+-Identifier -> Char
+-Char       -> a|f
+-Indent     -> {
+-Dedent     -> }
+-NewLine    -> nl
+-AddSubOpp  -> + | -
+-MulDivOpp  -> * | /
+-Assign     -> =
+SimpleType -> int | nothing
+-StartDel   -> (
+-EndDel     -> )
+-SepOp      -> ,
+    */
+]

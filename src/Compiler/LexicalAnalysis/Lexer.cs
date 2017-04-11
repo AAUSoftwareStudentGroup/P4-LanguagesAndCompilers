@@ -10,7 +10,7 @@ namespace Compiler.LexicalAnalysis
     {
         List<LexerRule> _rules;
 
-        public Lexer(string configPath = "Tokens.cfg.json")
+        public Lexer(string configPath)
         {
             //Read json file with regular expressions
             string TokenCfg = System.IO.File.ReadAllText(configPath);
@@ -35,7 +35,7 @@ namespace Compiler.LexicalAnalysis
 
             //Variables to keep track of where we are in the file
             //line = amount of newlines since beginning of file, column = amount of characters since last newline
-            //lines and columns are 0-indexed
+            //lines and columns are 0-indexed and count spaces
             int row = 0;
             int column = 0;
 

@@ -6,62 +6,51 @@ using System.IO;
 using Compiler.Data;
 using Compiler.LexicalAnalysis;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Compiler.Tests
 {                       // For future reference http://xunit.github.io/docs/comparisons.html
     [TestClass]
     public class LexerTests
     {
-        // Perhaps have input file here
-        // Run Lexer will result in a list of lexer rules
-        // Lexer.Analyse(string source) will produce the tokens, we need the source though
-
-        // String source = arg;
-        // IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(arg));
-
-        //         Lexer l = new Lexer();
-        //         if(args.Length == 0)
-        //             args = new string[] { "sourceFileExample.tang" };
-        //         foreach (string arg in args)
-        //         {
-        //             if (File.Exists(arg))
-        //             {
-        //                 // read File
-        //                 String source = arg;
-        //                 IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(arg));
-
-
-
-
-
-
-
+        
         [TestMethod]
+        // Test if each token generated from a test file generates tokens with correct names
         public void TestForCorrectTokenGeneration()
         {
-            // For some input file, check if it produces the correct tokens by accessing the enumerator (maybe assert in foreach?)
+            // Initialise Lexer
+            Lexer l = new Lexer(AppContext.BaseDirectory + "\\TestFiles\\Tokens.cfg.json");
 
-            Lexer l = new Lexer();
+            // Read from another file, tokens should be SimpleType Identifier Assign Number eof (int16 a = 1)
+            IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\testSourceFile.tang"));
 
-            IEnumerable<Token> tokens = l.Analyse(File.ReadAllText("TestFiles/sourceFileExample.tang"));
+            // Assert that there are five tokens
+            Assert.AreEqual(tokens.Count(), 5);
 
-            //List all token in source file
-            foreach (Token t in tokens)
-            {
-                Console.WriteLine(t);
-            }
-
-
-
+            //Test if each token is correctly generated
+            Assert.AreEqual(tokens.ElementAt(0).Name, "SimpleType");
+            Assert.AreEqual(tokens.ElementAt(1).Name, "Identifier");
+            Assert.AreEqual(tokens.ElementAt(2).Name, "Assign");
+            Assert.AreEqual(tokens.ElementAt(3).Name, "Number");
+            Assert.AreEqual(tokens.ElementAt(4).Name, "eof");
+            Assert.AreNotEqual(tokens.ElementAt(4).Name, "eoF");
         }
 
 
         [TestMethod]
+        // Test if attributes are given correctly, e.g. singleline and row/column
         public void TestForCorrectTokenAttributes()
         {
-            // Test if attributes are given correctly, e.g. singleline and row/column
-            // Access the attributes of specific generated tokens and assert that they are correct
-            Assert.AreEqual(2, 2);
+            // Initialise Lexer
+            Lexer le = new Lexer(AppContext.BaseDirectory + "\\TestFiles\\Tokens.cfg.json");
+
+            // Read from another file, tokens should be SimpleType Identifier Assign Number eof (int16 a = 1)
+            IEnumerable<Token> tokens = le.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\testSourceFile.tang"));
+
+            // Assign should be at line 0 and column 8 since there are 8 symbols until '=' is hit
+            Assert.AreEqual(tokens.ElementAt(2).Line, 0);
+            Assert.AreEqual(tokens.ElementAt(2).Column, 8);
+
         }
     }
 }

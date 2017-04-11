@@ -1,28 +1,45 @@
 [
     {
-        "Name": "LineComment",
+        "Name": "lineComment",
         "PatternString": "//.*",
         "Ignore": true
     },
     {
-        "Name": "BlockComment",
+        "Name": "blockComment",
         "PatternString": "/\\*.*\\*/",
         "SingleLine": true,
         "Ignore": true
     },
     {
-        "Name": "Whitespace",
+        "Name": "whitespace",
         "PatternString": "[\\t ]+",
         "Ignore": true
     },
     {
-        "Name": "NewLine",
+        "Name": "import",
+        "PatternString": "import",
+        "Ignore": false
+    },
+    {
+        "Name": "newline",
         "PatternString": "\\r?\\n[\\r\\n\\t ]+",
         "SingleLine": true
     },
     {
-        "Name": "Number",
-        "PatternString": "([+-]?(0|([1-9][0-9]*))|true|false)"
+        "Name": "intLiteral",
+        "PatternString": "([+-]?(0|([1-9][0-9]*))"
+    },
+    {
+        "Name": "boolLiteral",
+        "PatternString": "(true)|(false)"
+    },
+    {
+        "Name": "strLiteral",
+        "PatternString": "\"((\\\\\\\\)|(\\\\n)|(\\\\r)|(\\\\')|(\\\\\")|!|[#-&]|[\\(-\\[]|[\\]-~])*\""
+    },
+    {
+        "Name": "charLiteral",
+        "PatternString": "'((\\\\\\\\)|(\\\\n)|(\\\\r)|(\\\\')|(\\\\\")|!|[#-&]|[\\(-\\[]|[\\]-~])'"
     },
     /*
     {
@@ -31,68 +48,104 @@
     },
     */
     {
-        "Name": "If",
+        "Name": "if",
         "PatternString": "if"
     },
     {
-        "Name": "For",
+        "Name": "else",
+        "PatternString": "else"
+    },
+    {
+        "Name": "for",
         "PatternString": "for"
     },
     {
-        "Name": "While",
+        "Name": "while",
         "PatternString": "while"
     },
     {
-        "Name": "And",
+        "Name": "and",
         "PatternString": "and"
     },
     {
-        "Name": "Or",
+        "Name": "or",
         "PatternString": "or"
     },
     {
-        "Name": "ClassWord",
+        "Name": "class",
         "PatternString": "class"
     },
     {
-        "Name": "Return",
+        "Name": "return",
         "PatternString": "return"
     },
     {
-        "Name": "SimpleType",
-        "PatternString": "(u?int(8|16|32)|nothing|decimal)"
+        "Name": "simpleType",
+        "PatternString": "(u?int(8|16|32)|nothing|register)"
     },
     {
-        "Name": "Compare",
-        "PatternString": "(==)|(!=)|(<=)|(>=)|<|>"
+        "Name": "equality",
+        "PatternString": "(==)|(!=)"
     },
     {
-        "Name": "Assign",
+        "Name": "relational",
+        "PatternString": "(<=)|(>=)|<|>"
+    },
+    {
+        "Name": "assign",
         "PatternString": "="
     },
     {
-        "Name": "AddSubOpp",
+        "Name": "addSub",
         "PatternString": "[\\+\\-]"
     },
     {
-        "Name": "MulDivOpp",
-        "PatternString": "[\\*\\/]"
+        "Name": "multDiv",
+        "PatternString": "[\\*/]"
     },
     {
-        "Name": "StartDel",
+        "Name": "startDel",
         "PatternString": "\\("
     },
     {
-        "Name": "EndDel",
+        "Name": "endDel",
         "PatternString": "\\)"
     },
     {
-        "Name": "SepOp",
+        "Name": "sep",
         "PatternString": ","
     },
     {
-        "Name": "Identifier",
+        "Name": "identifier",
         "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
+    },
+    {
+        "Name": "startBracket",
+        "PatternString": "\\["
+    },
+    {
+        "Name": "endBracket",
+        "PatternString": "\\]"
+    },
+    {
+        "Name": "startCurly",
+        "PatternString": "\\{"
+    },
+    {
+        "Name": "endCurly",
+        "PatternString": "\\}"
+    },
+    {
+        "Name": "dot",
+        "PatternString": "\\."
+    },
+    {
+        "Name": "from",
+        "PatternString": "from"
+    },
+    {
+        "Name": "to",
+        "PatternString": "to"
     }
     /*
 -Number     -> Digit

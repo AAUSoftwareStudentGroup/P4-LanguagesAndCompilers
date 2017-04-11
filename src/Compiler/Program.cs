@@ -28,7 +28,7 @@ namespace Compiler
    //             System.Console.WriteLine(error);
    //         }
             
-   //         Lexer l = new Lexer();
+   //         Lexer l = new Lexer(); //Skal have en parameter!!
    //         Data.AST.Root ast = null;
    //         if(args.Length == 0)
    //             args = new string[] { "sourceFileExample.tang" };
