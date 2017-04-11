@@ -57,8 +57,7 @@ ForStatement -> for startDel simpleType identifier from Expression to Expression
 Condition -> startDel Expression endDel
 
 Definition -> FunctionDefinition
-           |  Assignment
-           |  EPSILON
+           |  SimpleDefinition
 
 FunctionDefinition -> TypedParameters SimpleBlock
 
