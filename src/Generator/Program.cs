@@ -1,12 +1,9 @@
-﻿using Generator.AST;
-using Generator.Lexer;
-using Generator.Parsing;
+﻿using Generator.Parsing;
 using Generator.Grammar;
 using System.Collections.Generic;
 using System;
 using Generator.Class;
 using System.IO;
-using Generator.Generated;
 
 namespace Generator
 {
@@ -34,53 +31,24 @@ namespace Generator
 
             IParserGenerator generator = new ParserGenerator(bnfAnalyzer);
 
-            ClassType classType = generator.GenerateParserClass(bnf, "Generator.Generated");
-            ClassType[] classes = generator.GenerateParseTreeClasses(bnf, "Generator.Generated");
+            Directory.CreateDirectory("../Compiler/Parsing/Generated");
+            Directory.CreateDirectory("../Compiler/Data/Generated");
+            Directory.CreateDirectory("../Compiler/Visitors/Generated");
+
+            ClassType parserClass = generator.GenerateParserClass(bnf, "Compiler.Data", "Compiler.Parsing");
+            ClassType[] parseTreeClasses = generator.GenerateParseTreeClasses(bnf, "Compiler.Data", "Compiler.Visitors");
+            ClassType visitorClass = generator.GenerateVisitorClass(bnf, "Compiler.Data", "Compiler.Visitors");
 
             IClassGenerator classGenerator = new ClassGenerator();
 
-            Directory.CreateDirectory("Generated");
+            classGenerator.Generate(parserClass, $"../Compiler/Parsing/Generated/{parserClass.Identifier.Split('<')[0]}.cs");
 
-            classGenerator.Generate(classType, $"Generated/{classType.Identifier}.cs");
+            classGenerator.Generate(visitorClass, $"../Compiler/Visitors/Generated/{visitorClass.Identifier.Split('<')[0]}.cs");
 
-            foreach (var c in classes)
+            foreach (var c in parseTreeClasses)
             {
-                classGenerator.Generate(c, $"Generated/{c.Identifier.Split('<')[0]}.cs");
+                classGenerator.Generate(c, $"../Compiler/Data/Generated/{c.Identifier.Split('<')[0]}.cs");
             }
-
-            Parser parser = new Parser();
-
-            var tokens = new List<Token>
-            {
-                new Token() { Name = "simpleType" },
-                new Token() { Name = "identifier" },
-                new Token() { Name = "assign" },
-                new Token() { Name = "intLiteral" },
-                new Token() { Name = "addSub" },
-                new Token() { Name = "intLiteral" },
-                new Token() { Name = "newline" },
-                new Token() { Name = "simpleType" },
-                new Token() { Name = "identifier" },
-                new Token() { Name = "assign" },
-                new Token() { Name = "intLiteral" },
-                new Token() { Name = "addSub" },
-                new Token() { Name = "intLiteral" },
-                new Token() { Name = "multDiv" },
-                new Token() { Name = "intLiteral" },
-                new Token() { Name = "eof" }
-            }.GetEnumerator();
-
-            tokens.MoveNext();
-
-            Node node = parser.ParseProgram(tokens);
-
-            BuildASTVisitor astBuilder = new BuildASTVisitor();
-
-            PrintVisitor printer = new PrintVisitor();
-
-            Console.WriteLine(node.Accept(astBuilder).Accept(printer));
-
-            Console.Read();
         }
     }
 }

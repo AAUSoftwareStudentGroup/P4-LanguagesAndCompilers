@@ -33,6 +33,12 @@ namespace Compiler.LexicalAnalysis
             Match match = null;
             int currentIndex = 0;
 
+            //Variables to keep track of where we are in the file
+            //line = amount of newlines since beginning of file, column = amount of characters since last newline
+            //lines and columns are 0-indexed
+            int row = 0;
+            int column = 0;
+
             Regex BeforeIndent = new Regex(@"[\\t ]*[\n\r]+", RegexOptions.Singleline);
             Regex Indentation = new Regex(@" *");
             Stack<int> indentationLevel = new Stack<int>();
@@ -55,8 +61,11 @@ namespace Compiler.LexicalAnalysis
                         {
                             token = new Token {
                                 Name = "Indent",
-                                Value = match.Value
+                                Value = match.Value,
+                                Line = row,
+                                Column = column
                             };
+                            column += token.Value.Length;
                             indentationLevel.Push(indentSize);
                             yield return token;
                         }
@@ -65,8 +74,12 @@ namespace Compiler.LexicalAnalysis
                             token = new Token
                             {
                                 Name = "NewLine",
-                                Value = match.Value
+                                Value = match.Value,
+                                Line = row,
+                                Column = column
                             };
+                            row++;
+                            column = 0;
                             yield return token;
                         }
                         while(indentSize < indentationLevel.Peek())
@@ -74,14 +87,21 @@ namespace Compiler.LexicalAnalysis
                             indentationLevel.Pop();
                             token = new Token {
                                 Name = "Dedent",
-                                Value = match.Value
+                                Value = match.Value,
+                                Line = row,
+                                Column = column
                             };
+                            column += token.Value.Length;
                             yield return token;
 
                             token = new Token {
                                 Name = "NewLine",
-                                Value = match.Value
+                                Value = match.Value,
+                                Line = row,
+                                Column = column
                             };
+                            row++;
+                            column = 0;
                             yield return token;
                         }
                     }
@@ -94,9 +114,12 @@ namespace Compiler.LexicalAnalysis
                         currentIndex += match.Value.Length;
                         token = new Token {
                             Name = rule.Name,
-                            Value = match.Value
+                            Value = match.Value,
+                            Line = row,
+                            Column = column
                         };
-                        if(!rule.Ignore) {
+                        column += token.Value.Length;
+                        if (!rule.Ignore) {
                             yield return token;
                         }
                         break;
@@ -114,17 +137,24 @@ namespace Compiler.LexicalAnalysis
                 indentationLevel.Pop();
                 token = new Token {
                     Name = "Dedent",
-                    Value = match.Value
+                    Value = match.Value,
+                    Line = row,
+                    Column = column
                 };
+                column += token.Value.Length;
                 yield return token;
 
                 token = new Token {
                     Name = "NewLine",
-                    Value = match.Value
+                    Value = match.Value,
+                    Line = row,
+                    Column = column
                 };
+                row++;
+                column = 0;
                 yield return token;
             }
-            yield return new Token {Name = "EOF", Value = "$"};
+            yield return new Token {Name = "eof", Value = "", Line = row, Column = column};
         }
     }
 }
