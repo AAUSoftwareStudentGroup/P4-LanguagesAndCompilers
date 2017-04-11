@@ -13,7 +13,7 @@ namespace Generator.Class
             File.WriteAllLines(outputFilePath, GetClassTextLines(classType));
         }
 
-        IEnumerable<string> GetClassTextLines(ClassType classType)
+        public IEnumerable<string> GetClassTextLines(ClassType classType)
         {
             foreach (var usingElement in classType.Usings)
             {
@@ -27,7 +27,7 @@ namespace Generator.Class
 
             yield return $"namespace {classType.NameSpace}";
             yield return "{";
-            yield return $"\t{classType.Modifiers} class {classType.Identifier} { (classType.BaseClass == null ? "" : $": {classType.BaseClass}") }";
+            yield return $"\t{classType.ClassModifiers} class {classType.Identifier} { (classType.BaseClass == null ? "" : $": {classType.BaseClass}") }";
             yield return "\t{";
 
             foreach (var field in classType.Fields)

@@ -10,7 +10,8 @@ namespace Generator.Tests
     [TestClass]
     public class BNFAnalyzerTests
     {
-        BNFParser parser = new BNFParser();
+        IBNFParser parser = new BNFParser();
+        IBNFAnalyzer bnfAnalyzer = new BNFAnalyzer();
 
         BNF LL1Grammar => new BNF()
         {
@@ -22,11 +23,13 @@ namespace Generator.Tests
                                                 new List<string>(){ "EPSILON" } } }
         };
 
+        [TestInitialize]
+        public void BNFAnalyzerSetup() {
+        }
+
         [TestMethod]
         public void BNFAnalyzerGetFirstSets()
         {
-            IBNFAnalyzer bnfAnalyzer = new BNFAnalyzer();
-
             var firstSets = bnfAnalyzer.GetFirstSets(LL1Grammar);
 
             string[] expectedS0 = new string[] { "a", "b", "d" };
@@ -51,8 +54,6 @@ namespace Generator.Tests
         [TestMethod]
         public void BNFAnalyzerGetFollowSets()
         {
-            IBNFAnalyzer bnfAnalyzer = new BNFAnalyzer();
-
             var followSets = bnfAnalyzer.GetFollowSets(LL1Grammar, bnfAnalyzer.GetFirstSets(LL1Grammar));
 
             string[] expectedA = new string[] { "a" };
@@ -68,8 +69,6 @@ namespace Generator.Tests
         [TestMethod]
         public void BNFAnalyzerGetPredictSets()
         {
-            IBNFAnalyzer bnfAnalyzer = new BNFAnalyzer();
-
             var predictSets = bnfAnalyzer.GetPredictSets(LL1Grammar, bnfAnalyzer.GetFirstSets(LL1Grammar), bnfAnalyzer.GetFollowSets(LL1Grammar, bnfAnalyzer.GetFirstSets(LL1Grammar)));
 
             string[] expectedS0 = new string[] { "a", "b", "d" };
@@ -100,9 +99,5 @@ namespace Generator.Tests
 
             Assert.AreEqual(true, isLL1);
         }
-
-        
-
-
     }
 }

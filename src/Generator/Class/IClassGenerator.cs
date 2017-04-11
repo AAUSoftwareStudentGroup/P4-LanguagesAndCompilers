@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Generator.Class
 {
-    interface IClassGenerator
+    public interface IClassGenerator
     {
         void Generate(ClassType classType, string outputFilePath);
     }
