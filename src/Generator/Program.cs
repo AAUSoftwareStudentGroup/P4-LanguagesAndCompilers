@@ -15,39 +15,84 @@ namespace Generator
 
             IBNFParser bnfParser = new BNFParser();
 
-            BNF bnf = new BNF()
-            {
-                { "S", new List<List<string>>(){ new List<string>(){ "A", "a" } } },
-                { "A", new List<List<string>>(){ new List<string>(){ "B", "D" } } },
-                { "B", new List<List<string>>(){ new List<string>(){ "b" },
-                                                 new List<string>(){ "EPSILON" } } },
-                { "D", new List<List<string>>(){ new List<string>(){ "d" },
-                                                 new List<string>(){ "EPSILON" } } }
-            };
+            var ast = bnfParser.Parse("Semantic.bnf");
 
-            bnf = bnfParser.Parse("Semantic.bnf");
+            var bnf = bnfParser.Parse("BNFGrammar.bnf");
 
             // var grammarInfo = bnfAnalyzer.Analyze(bnf);
 
+            string ASTPath = "../Compiler/Data/AST/Generated";
+
+            Console.WriteLine(1);
             IParserGenerator generator = new ParserGenerator(bnfAnalyzer);
 
-            Directory.CreateDirectory("../Compiler/Parsing/Generated");
-            Directory.CreateDirectory("../Compiler/Data/Generated");
-            Directory.CreateDirectory("../Compiler/Visitors/Generated");
+			if (Directory.Exists(ASTPath))
+            {
+				Directory.Delete(ASTPath, true);
+            }
 
-            // ClassType parserClass = generator.GenerateParserClass(bnf, "Compiler.Data", "Compiler.Parsing");
-            ClassType[] parseTreeClasses = generator.GenerateParseTreeClasses(bnf, "Compiler.Data", "Compiler.Visitors");
-            ClassType visitorClass = generator.GenerateVisitorClass(bnf, "Compiler.Data", "Compiler.Visitors");
+			Console.WriteLine(2);
+
+            string ASTVistorPath = "../Compiler/Visitors/AST/Generated";
+
+			if (Directory.Exists(ASTVistorPath))
+            {
+				Directory.Delete(ASTVistorPath, true);
+            }
+
+			Console.WriteLine(3);
+            string parserString = "../Compiler/Parsing/Generated";  
+
+			if (Directory.Exists(parserString))
+            {
+				Directory.Delete(parserString, true);
+            }
+
+            Console.WriteLine(4);
+            string parseTree = "../Compiler/Data/ParseTree/Generated";
+			if (Directory.Exists(parseTree))
+            {
+				Directory.Delete(parseTree, true);
+            }
+
+			Console.WriteLine(5);
+
+            string parseTreeVisitor = "../Compiler/Visitors/ParseTree/Generated";
+			if (Directory.Exists(parseTreeVisitor))
+            {
+				Directory.Delete(parseTreeVisitor, true);
+            }
+
+
+            Directory.CreateDirectory(ASTPath);
+            Directory.CreateDirectory(ASTVistorPath);
+            Directory.CreateDirectory(parserString);
+			Directory.CreateDirectory(parseTree);
+            Directory.CreateDirectory(parseTreeVisitor);
+
+            ClassType parserClass = generator.GenerateParserClass(bnf, "Compiler.Data.ParseTree", "Compiler.Visitors.ParseTree");
+            ClassType[] parseTreeClasses = generator.GenerateParseTreeClasses(bnf, "Compiler.Data.ParseTree", "Compiler.Visitors.ParseTree");
+            ClassType bnfVisitorClass = generator.GenerateVisitorClass(ast, "Compiler.Data.Parsetree", "Compiler.Visitors.ParseTree");
+
+            ClassType[] AstClasses = generator.GenerateParseTreeClasses(ast, "Compiler.Data.AST", "Compiler.Visitors.AST");
+            ClassType visitorClass = generator.GenerateVisitorClass(ast, "Compiler.Data.AST", "Compiler.Visitors.AST");
 
             IClassGenerator classGenerator = new ClassGenerator();
 
-            // classGenerator.Generate(parserClass, $"../Compiler/Parsing/Generated/{parserClass.Identifier.Split('<')[0]}.cs");
+            classGenerator.Generate(parserClass, parserString + $"/{parserClass.Identifier.Split('<')[0]}.cs");
 
-            classGenerator.Generate(visitorClass, $"../Compiler/Visitors/Generated/{visitorClass.Identifier.Split('<')[0]}.cs");
+			classGenerator.Generate(visitorClass, ASTVistorPath + $"/{visitorClass.Identifier.Split('<')[0]}.cs");
+
+			classGenerator.Generate(bnfVisitorClass, parseTreeVisitor + $"/{bnfVisitorClass.Identifier.Split('<')[0]}.cs");
+
+            foreach (var c in AstClasses)
+            {
+                classGenerator.Generate(c, ASTPath + $"/{c.Identifier.Split('<')[0]}.cs");
+            }
 
             foreach (var c in parseTreeClasses)
             {
-                classGenerator.Generate(c, $"../Compiler/Data/Generated/{c.Identifier.Split('<')[0]}.cs");
+				classGenerator.Generate(c, parseTree + $"/{c.Identifier.Split('<')[0]}.cs");
             }
         }
     }
