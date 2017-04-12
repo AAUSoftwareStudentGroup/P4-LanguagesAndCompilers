@@ -23,15 +23,12 @@ namespace Generator
 
             string ASTPath = "../Compiler/Data/AST/Generated";
 
-            Console.WriteLine(1);
             IParserGenerator generator = new ParserGenerator(bnfAnalyzer);
 
 			if (Directory.Exists(ASTPath))
             {
 				Directory.Delete(ASTPath, true);
             }
-
-			Console.WriteLine(2);
 
             string ASTVistorPath = "../Compiler/Visitors/AST/Generated";
 
@@ -40,7 +37,6 @@ namespace Generator
 				Directory.Delete(ASTVistorPath, true);
             }
 
-			Console.WriteLine(3);
             string parserString = "../Compiler/Parsing/Generated";  
 
 			if (Directory.Exists(parserString))
@@ -48,14 +44,11 @@ namespace Generator
 				Directory.Delete(parserString, true);
             }
 
-            Console.WriteLine(4);
             string parseTree = "../Compiler/Data/ParseTree/Generated";
 			if (Directory.Exists(parseTree))
             {
 				Directory.Delete(parseTree, true);
             }
-
-			Console.WriteLine(5);
 
             string parseTreeVisitor = "../Compiler/Visitors/ParseTree/Generated";
 			if (Directory.Exists(parseTreeVisitor))
