@@ -1,6 +1,8 @@
+Program -> Statement 
+        | EPSILON
+
 Statement	->  CompoundStatement
 		| ScopedLevelStatement
-		| ClassDeclaration
 		| ProcedureDeclaration
         
 CompoundStatement -> Statement Newline SStatement
@@ -8,61 +10,47 @@ CompoundStatement -> Statement Newline SStatement
 ScopedLevelStatement ->  Newline 
 		| Expression
 		| CompoundScopedLevelStatement
-		| VariableDeclaration 
-		| ObjectDelacartion 
+		| IdentifierDcl
+        | IdentifierDclAssign 
 		| Assignment
-		| SingleBitAssignment
-		| returnExpression
-		| IfStatementChains 
+		| ReturnExpression
+		| IfStatement
+        | IfElseIfStatement
+        | IfElseStatement
 		| WhileStatement
-		| ForStatement
 
 Newline -> nl
 
-ForStatement -> for ( int x from IntegerExpression to IntegerExpression ) indent ScopedLevelStatement dedent
+IdentifierDcl -> T VariableNames
+
+IdentifierDclAssign -> T VariableNames = Expression 
 
 WhileStatement -> while ( BooleanExpression ) indent ScopedLevelStatement dedent
 
 Assignment -> LeftValue = Expression 
 
-                      
-
-SingleBitAssignment -> lv { i } = BooleanExpression
-
 CompoundScopedLevelStatement -> ScopedLevelStatement Newline ScopedLevelStatement
-                        
-ClassStatement	->  ClassStatement Newline ClassStatement 
-		| VariableDeclaration 
-		| ObjectDelacartion
-		| ProcedureDeclaration
-IfStatementChains ->  if ( BooleanExpression ) indent ScopedLevelStatement dedent 
-		| if ( BooleanExpression ) indent ScopedLevelStatement dedent else IfStatementChains
-		|if ( BooleanExpression ) indent ScopedLevelStatement dedent else indent ScopedLevelStatement dedent
-        
 
-LeftValue ->  x 
-		| ObjectNames 
-		| ElementAccessor 
-		| ArraylvAccessor
-        
-ObjectNames -> o
+IfStatement -> if ( BooleanExpression ) indent ScopedLevelStatement dedent 
 
-ElementAccessor -> LeftValue . LeftValue
+IfElseIfStatement -> if ( BooleanExpression ) indent ScopedLevelStatement dedent else IfStatement                     
 
-ArraylvAccessor -> LeftValue [ IntegerExpression ]                              
-        
-Expression	->  LeftValue 
+IfElseStatement -> if ( BooleanExpression ) indent ScopedLevelStatement dedent else indent ScopedLevelStatement dedent
+                                           
+Expression	->  VariableNames 
 		| IntegerExpression 
 		| BooleanExpression 
 		| ParenthesisExpression 
 		| ProcedecureCall
+        | RegisterExpression
 
-ProcedecureCall -> p ( expression , expression_1 , ... , expression_k )
+RegisterExpression -> register ( IntegerExpression )
+
+ProcedecureCall -> ProcedureName ( Expression , Expression_1 , ... , Expression_k )
         
+ParenthesisExpression -> ( Expression )        
 
-ParenthesisExpression -> ( expression )        
-
-returnExpression -> return expression
+ReturnExpression -> return Expression
 
 IntegerExpression	-> Numerals   
 		| expression 
@@ -84,8 +72,7 @@ DivOp -> IntegerExpression / IntegerExpression
 ModOp -> IntegerExpression % IntegerExpression
 
 PowOp -> IntegerExpression ^ IntegerExpression
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 BooleanExpression	->  true 
 		| false 
 		| Expression 
@@ -95,7 +82,6 @@ BooleanExpression	->  true
 		| LessThanOrEqOp 
 		| GreaterThanOrEqOp
 		| NotOp 
-		| SingleBitAccessor
 		| AndOp 
 		| OrOp
         
@@ -111,38 +97,8 @@ GreaterThanOrEqOp -> IntegerExpression geq IntegerExpression
 
 NotOp -> ! IntegerExpression
 
-SingleBitAccessor -> LeftValue { IntegerExpression }
-
 AndOp -> BooleanExpression and BooleanExpression
 
 OrOp -> BooleanExpression and BooleanExpression
     
-
-ProcedureDeclaration ->  T_r p ( T_1 x_1 , T_2 x_2 , ... , T_k x_k ) indent ScopedLevelStatement dedent
-
-VariableDeclaration	-> identifierDcl
-		| identifierDclAssign
-		| identifierArrayDcl1 
-		| identifierArrayDcl2
-		| ArrayAccessor 
-
-identifierDcl -> T x
-
-identifierDclAssign -> T x = expression 
-
-identifierArrayDcl1 -> T [ ] x = [ e_1 , e_2 , ... , e_k ] 
-
-identifierArrayDcl2 -> T [ ] x = [ e_1 , e_2 , ... , e_k ] 
-
-ArrayAccessor -> T [ i ]
-
-                
-
-ObjectDelacartion ->  C o 
-		| C o [ i ]
-
-SingleObjectDeclaration -> C o 
-
-ArrayObjectDeclartion -> C o [ i ]
-
-ClassDeclaration	->  class C indent _sC dedent
+ProcedureDeclaration ->  T_r ProcedureName ( T_1 VariableNames_1 , T_2 VariableNames_2 , ... , T_k VariableNames_k ) indent ScopedLevelStatement dedent
