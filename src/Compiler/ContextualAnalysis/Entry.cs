@@ -1,4 +1,4 @@
-using Compiler.Data;
+using Compiler.Shared;
 
 namespace Compiler.ContextualAnalysis
 {

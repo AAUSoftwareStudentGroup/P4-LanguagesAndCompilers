@@ -13,6 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converter\" />
+    <Folder Include="Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ContextualAnalysis\" />
@@ -20,6 +21,34 @@
   <ItemGroup>
     <Compile Remove="ContextualAnalysis\EmptyClass.cs" />
     <Compile Remove="ContextualAnalysis\Construct.cs" />
+    <Compile Remove="Data\Generated\AddOpNode.cs" />
+    <Compile Remove="Data\Generated\AndOpNode.cs" />
+    <Compile Remove="Data\Generated\ArrayAccessorNode.cs" />
+    <Compile Remove="Data\Generated\ArrayObjectDeclartionNode.cs" />
+    <Compile Remove="Data\Generated\ArraylvAccessorNode.cs" />
+    <Compile Remove="Data\Generated\AssignmentNode.cs" />
+    <Compile Remove="Data\Generated\BooleanExpressionNode.cs" />
+    <Compile Remove="Data\Generated\ClassDeclarationNode.cs" />
+    <Compile Remove="Data\Generated\MulOpNode.cs" />
+    <Compile Remove="Data\Generated\NewlineNode.cs" />
+    <Compile Remove="Data\Generated\NotOpNode.cs" />
+    <Compile Remove="Data\Generated\ObjectDelacartionNode.cs" />
+    <Compile Remove="Data\Generated\ObjectNamesNode.cs" />
+    <Compile Remove="Data\Generated\OrOpNode.cs" />
+    <Compile Remove="Data\Generated\ParenthesisExpressionNode.cs" />
+    <Compile Remove="Data\Generated\PowOpNode.cs" />
+    <Compile Remove="Data\Generated\ProcedecureCallNode.cs" />
+    <Compile Remove="Data\Generated\ProcedureDeclarationNode.cs" />
+    <Compile Remove="Data\Generated\ScopedLevelStatementNode.cs" />
+    <Compile Remove="Data\Generated\SingleBitAccessorNode.cs" />
+    <Compile Remove="Data\Generated\SingleBitAssignmentNode.cs" />
+    <Compile Remove="Data\Generated\SingleObjectDeclarationNode.cs" />
+    <Compile Remove="Data\Generated\StatementNode.cs" />
+    <Compile Remove="Data\Generated\SubOpNode.cs" />
+    <Compile Remove="Data\Generated\VariableDeclarationNode.cs" />
+    <Compile Remove="Data\Generated\WhileStatementNode.cs" />
+    <Compile Remove="Data\Generated\returnExpressionNode.cs" />
+    <Compile Remove="Visitors\Generated\Visitor.cs" />
   </ItemGroup>
   <PropertyGroup>
     <PrepareForRunDependsOn>$(PrepareForRunDependsOn);CopyFilesToOutputDirectory</PrepareForRunDependsOn>

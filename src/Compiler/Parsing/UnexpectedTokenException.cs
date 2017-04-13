@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Compiler.Data;
-
+using Compiler.Shared;
 
 namespace Compiler.Parsing
 {

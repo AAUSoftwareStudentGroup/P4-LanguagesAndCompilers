@@ -30,6 +30,8 @@ namespace Generator.Parsing
             {
                 Usings = new string[]
                 {
+                    "using Compiler.Parsing;",
+                    "using Compiler.Shared;",
                     "using System;",
                     "using System.Collections.Generic;",
                     $"using {dataNamespace};"
@@ -127,6 +129,7 @@ namespace Generator.Parsing
             {
                 Usings = new string[]
                 {
+					"using Compiler.Shared;",
                     $"using {dataNamespace};"
                 }
             };
@@ -163,6 +166,7 @@ namespace Generator.Parsing
             {
                 Usings = new string[]
                 {
+                    "using Compiler.Shared;",
                     "using System.Collections.Generic;",
                     $"using {parserNamespace};"
                 },

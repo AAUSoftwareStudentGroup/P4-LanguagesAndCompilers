@@ -1,8 +1,10 @@
+using Compiler.Parsing;
+using Compiler.Shared;
 using System;
 using System.Collections.Generic;
-using Compiler.Data;
+using Compiler.Data.ParseTree;
 
-namespace Compiler.Parsing
+namespace Compiler.Visitors
 {
 	public class Parser 
 	{

@@ -63,12 +63,12 @@ namespace Generator
 			Directory.CreateDirectory(parseTree);
             Directory.CreateDirectory(parseTreeVisitor);
 
-            ClassType parserClass = generator.GenerateParserClass(bnf, "Compiler.Data.ParseTree", "Compiler.Visitors.ParseTree");
-            ClassType[] parseTreeClasses = generator.GenerateParseTreeClasses(bnf, "Compiler.Data.ParseTree", "Compiler.Visitors.ParseTree");
-            ClassType bnfVisitorClass = generator.GenerateVisitorClass(ast, "Compiler.Data.Parsetree", "Compiler.Visitors.ParseTree");
+            ClassType parserClass = generator.GenerateParserClass(bnf, "Compiler.Data.ParseTree", "Compiler.Visitors");
+            ClassType[] parseTreeClasses = generator.GenerateParseTreeClasses(bnf, "Compiler.Data.ParseTree", "Compiler.Visitors");
+			ClassType bnfVisitorClass = generator.GenerateVisitorClass(bnf, "Compiler.Data.ParseTree", "Compiler.Visitors");
 
-            ClassType[] AstClasses = generator.GenerateParseTreeClasses(ast, "Compiler.Data.AST", "Compiler.Visitors.AST");
-            ClassType visitorClass = generator.GenerateVisitorClass(ast, "Compiler.Data.AST", "Compiler.Visitors.AST");
+            ClassType[] AstClasses = generator.GenerateParseTreeClasses(ast, "Compiler.Data.AST", "Compiler.Visitors");
+            ClassType visitorClass = generator.GenerateVisitorClass(ast, "Compiler.Data.AST", "Compiler.Visitors");
 
             IClassGenerator classGenerator = new ClassGenerator();
 

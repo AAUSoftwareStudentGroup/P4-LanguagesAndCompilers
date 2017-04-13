@@ -1,8 +1,4 @@
-﻿using Compiler.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Compiler.Shared;
 
 namespace Compiler.Visitors
 {

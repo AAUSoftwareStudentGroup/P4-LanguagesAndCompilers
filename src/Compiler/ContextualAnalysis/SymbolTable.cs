@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Compiler.Data;
+using Compiler.Shared;
 
 namespace Compiler.ContextualAnalysis
 {
