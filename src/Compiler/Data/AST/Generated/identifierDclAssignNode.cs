@@ -4,7 +4,7 @@ using Compiler.Visitors;
 
 namespace Compiler.Data.AST
 {
-	public class identifierDclAssignNode : Node
+	public class IdentifierDclAssignNode : Node
 	{
 		public override T Accept<T>(Visitor<T> visitor)
 		{

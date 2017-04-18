@@ -4,7 +4,7 @@ using Compiler.Visitors;
 
 namespace Compiler.Data.AST
 {
-	public class returnExpressionNode : Node
+	public class ReturnExpressionNode : Node
 	{
 		public override T Accept<T>(Visitor<T> visitor)
 		{

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Compiler.Visitors;
+using Compiler.Shared;
 
 namespace Compiler.Tests
 {

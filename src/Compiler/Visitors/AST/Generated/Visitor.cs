@@ -5,6 +5,11 @@ namespace Compiler.Visitors
 {
 	public abstract partial class Visitor<T> 
 	{
+		public virtual T Visit(ProgramNode node)
+		{
+			return Visit((Node)node);
+		}
+
 		public virtual T Visit(StatementNode node)
 		{
 			return Visit((Node)node);
@@ -25,7 +30,12 @@ namespace Compiler.Visitors
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ForStatementNode node)
+		public virtual T Visit(IdentifierDclNode node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(IdentifierDclAssignNode node)
 		{
 			return Visit((Node)node);
 		}
@@ -40,47 +50,32 @@ namespace Compiler.Visitors
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(SingleBitAssignmentNode node)
-		{
-			return Visit((Node)node);
-		}
-
 		public virtual T Visit(CompoundScopedLevelStatementNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(ClassStatementNode node)
+		public virtual T Visit(IfStatementNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(IfStatementChainsNode node)
+		public virtual T Visit(IfElseIfStatementNode node)
 		{
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(LeftValueNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ObjectNamesNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ElementAccessorNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ArraylvAccessorNode node)
+		public virtual T Visit(IfElseStatementNode node)
 		{
 			return Visit((Node)node);
 		}
 
 		public virtual T Visit(ExpressionNode node)
+		{
+			return Visit((Node)node);
+		}
+
+		public virtual T Visit(RegisterExpressionNode node)
 		{
 			return Visit((Node)node);
 		}
@@ -95,7 +90,7 @@ namespace Compiler.Visitors
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(returnExpressionNode node)
+		public virtual T Visit(ReturnExpressionNode node)
 		{
 			return Visit((Node)node);
 		}
@@ -170,11 +165,6 @@ namespace Compiler.Visitors
 			return Visit((Node)node);
 		}
 
-		public virtual T Visit(SingleBitAccessorNode node)
-		{
-			return Visit((Node)node);
-		}
-
 		public virtual T Visit(AndOpNode node)
 		{
 			return Visit((Node)node);
@@ -186,56 +176,6 @@ namespace Compiler.Visitors
 		}
 
 		public virtual T Visit(ProcedureDeclarationNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(VariableDeclarationNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(identifierDclNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(identifierDclAssignNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(identifierArrayDcl1Node node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(identifierArrayDcl2Node node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ArrayAccessorNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ObjectDelacartionNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(SingleObjectDeclarationNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ArrayObjectDeclartionNode node)
-		{
-			return Visit((Node)node);
-		}
-
-		public virtual T Visit(ClassDeclarationNode node)
 		{
 			return Visit((Node)node);
 		}
