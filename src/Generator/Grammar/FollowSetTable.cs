@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Generator.Grammar
 {
-    public class FollowSetTable : Dictionary<string, HashSet<string>>
+    public class FollowSetTable : Dictionary<string, IEnumerable<string>>
     {
     }
 }

@@ -12,17 +12,17 @@ namespace Generator.Class
             ClassModifiers = classModifiers;
             Identifier = identifier;
             BaseClass = baseClass;
-            Usings = new string[0];
-            Fields = new FieldType[0];
-            Methods = new MethodType[0];
+            Usings = new List<string>();
+            Fields = new List<FieldType>();
+            Methods = new List<MethodType>();
         }
 
         public string NameSpace { get; set; }
         public string ClassModifiers { get; set; }
         public string Identifier { get; set; }
         public string BaseClass { get; set; }
-        public FieldType[] Fields { get; set; }
-        public MethodType[] Methods { get; set; }
-        public string[] Usings { get; set; }
+        public List<FieldType> Fields { get; set; }
+        public List<MethodType> Methods { get; set; }
+        public List<string> Usings { get; set; }
     }
 }

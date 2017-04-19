@@ -131,70 +131,57 @@ namespace Generator.Grammar
         public FollowSetTable GetFollowSets(BNF bnf, FirstSetTable firstSets)
         {
             FollowSetTable followSets = new FollowSetTable();
-            foreach (var production in bnf)
-            {
-                followSets.Add(production.Key, null);
-            }
 
             foreach (var production in bnf)
             {
-                GetProductionFollowSet(production.Key, bnf, followSets, firstSets);
+                followSets.Add(production.Key, new HashSet<string>());
             }
+
+            while (IterateFollow(bnf, followSets, firstSets) == true) ;
+
             return followSets;
         }
 
-        HashSet<string> GetProductionFollowSet(string symbol, BNF bnf, FollowSetTable followSets, FirstSetTable firstSets)
+        bool IterateFollow(BNF bnf, FollowSetTable followSets, FirstSetTable firstSets)
         {
-            if (followSets[symbol] != null)
-            {
-                return followSets[symbol];
-            }
+            bool changed = false;
 
-            followSets[symbol] = new HashSet<string>();
-
-            foreach (var production in bnf)
+            foreach (var nonterminal in bnf.Keys)
             {
-                foreach (var expansion in production.Value)
+                int p = 0;
+                foreach (var production in bnf)
                 {
-                    for (int i = 0; i < expansion.Count; i++)
+                    int e = 0;
+                    foreach (var expansion in production.Value)
                     {
-                        string b = expansion[i];
-                        if (b == symbol)
+                        int s = 0;
+                        foreach (var symbol in expansion)
                         {
-                            if (i < expansion.Count - 1)
+                            if(nonterminal == symbol)
                             {
-                                var tail = expansion.Skip(i+1);
-                                var tailFirstSet = new HashSet<string>(GetSymbolsFirstSet(tail.ToList(), bnf, firstSets));
-
-                                bool tailFirstSetContainsEpsilon = false;
-
-                                foreach (var s in tailFirstSet)
+                                int oldCount = followSets[nonterminal].Count();
+                                var tailFirstSet = GetSymbolsFirstSet(expansion.Skip(s + 1).ToList(), bnf, firstSets);
+                                bool derivesEmpty = tailFirstSet.Contains("EPSILON") || s == expansion.Count - 1;
+                                followSets[nonterminal] = followSets[nonterminal].Union(new HashSet<string>(tailFirstSet.Where(sy => sy != "EPSILON")));
+                                if(derivesEmpty)
                                 {
-                                    if (s == "EPSILON")
-                                    {
-                                        tailFirstSetContainsEpsilon = true;
-                                        break;
-                                    }
+                                    followSets[nonterminal] = followSets[nonterminal].Union(new HashSet<string>(followSets[production.Key]));
                                 }
-
-                                tailFirstSet.RemoveWhere(s => s == "EPSILON");
-
-                                followSets[symbol].UnionWith(tailFirstSet);
-                                if (tailFirstSetContainsEpsilon)
+                                if(oldCount != followSets[nonterminal].Count())
                                 {
-                                    followSets[symbol].UnionWith(GetProductionFollowSet(production.Key, bnf, followSets, firstSets));
+                                    changed = true;
                                 }
                             }
-                            else
-                            {
-                                followSets[symbol].UnionWith(GetProductionFollowSet(production.Key, bnf, followSets, firstSets));
-                            }
+                            s++;
                         }
+                        e++;
                     }
+                    p++;
                 }
             }
+            
 
-            return followSets[symbol];
+            return changed;
         }
 
         public PredictSetTable GetPredictSets(BNF bnf, FirstSetTable firstSets, FollowSetTable followSets)

@@ -17,18 +17,24 @@ StatementsP -> newline Statement StatementsP
 
 Statement -> newline 
            | IdentifierDeclaration 
+           | RegisterStatement
            | Assignment
            | IfStatement 
            | WhileStatement
 
-IdentifierDeclaration -> type identifier
-		   
+IdentifierDeclaration -> intType identifier
+                       | booleanType identifier
+
+RegisterStatement -> registerType RegisterOperation
+
+RegisterOperation -> ( Expression ) { Expression } = Expression
+                   | identifier
+
 Assignment -> identifier BitSelector = Expression 
-            | register ( Expression ) { Expression } = Expression
 
 BitSelector -> { Expression }
              | EPSILON
-		   
+
 IfStatement -> if ( Expression ) indent Statements dedent 
 		   
 WhileStatement -> while ( Expression ) indent Statements dedent

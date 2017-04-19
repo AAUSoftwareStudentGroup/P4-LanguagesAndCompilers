@@ -1,0 +1,9 @@
+SymbolTable -> Declaration
+
+Declaration -> Variable Declaration
+             | EPSILON
+
+Variable -> intType identifier
+          | booleanType identifier
+          | registerType identifier
+          | EPSILON

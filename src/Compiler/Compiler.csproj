@@ -4,22 +4,24 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="ContextualAnalysis\**" />
+    <Compile Remove="Converter\**" />
+    <Compile Remove="Data\**" />
+    <Compile Remove="Visitors\**" />
+    <EmbeddedResource Remove="ContextualAnalysis\**" />
+    <EmbeddedResource Remove="Converter\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <EmbeddedResource Remove="Visitors\**" />
+    <None Remove="ContextualAnalysis\**" />
+    <None Remove="Converter\**" />
+    <None Remove="Data\**" />
+    <None Remove="Visitors\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Tokens.cfg.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converter\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ContextualAnalysis\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="ContextualAnalysis\EmptyClass.cs" />
-    <Compile Remove="ContextualAnalysis\Construct.cs" />
+    <Folder Include="Translation\ProgramToAST\" />
   </ItemGroup>
   <PropertyGroup>
     <PrepareForRunDependsOn>$(PrepareForRunDependsOn);CopyFilesToOutputDirectory</PrepareForRunDependsOn>

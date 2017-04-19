@@ -11,13 +11,15 @@ namespace Generator.Class
             Modifiers = modifiers;
             Type = type;
             Identifier = identifier;
-            Parameters = new ParameterType[0];
-            Body = new string[0];
+            Parameters = new List<ParameterType>();
+            Constraints = "";
+            Body = new List<string>();
         }
         public string Type { get; set; }
         public string Modifiers { get; set; }
         public string Identifier { get; set; }
-        public ParameterType[] Parameters { get; set; }
-        public string[] Body { get; set; }
+        public List<ParameterType> Parameters { get; set; }
+        public string Constraints { get; set; }
+        public List<string> Body { get; set; }
     }
 }

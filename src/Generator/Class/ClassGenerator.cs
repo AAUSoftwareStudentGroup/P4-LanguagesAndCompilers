@@ -20,7 +20,7 @@ namespace Generator.Class
                 yield return usingElement;
             }
 
-            if(classType.Usings.Length > 0)
+            if(classType.Usings.Count > 0)
             {
                 yield return "";
             }
@@ -48,7 +48,7 @@ namespace Generator.Class
                     {
                         first = false;
                     }
-                    yield return $"\t\t{method.Modifiers} {method.Type} {method.Identifier}({string.Join(", ", method.Parameters.Select(p => $"{p.Type} {p.Identifier}"))})";
+                    yield return $"\t\t{method.Modifiers} {method.Type} {method.Identifier}({string.Join(", ", method.Parameters.Select(p => $"{p.Type} {p.Identifier}"))}){method.Constraints}";
                     yield return "\t\t{";
                     foreach (var statement in method.Body)
                     {
@@ -58,7 +58,7 @@ namespace Generator.Class
                 }
                 else
                 {
-                    yield return $"\t\t{method.Modifiers} {method.Type} {method.Identifier}({string.Join(", ", method.Parameters.Select(p => $"{p.Type} {p.Identifier}"))});";
+                    yield return $"\t\t{method.Modifiers} {method.Type} {method.Identifier}({string.Join(", ", method.Parameters.Select(p => $"{p.Type} {p.Identifier}"))}){method.Constraints};";
                 }
                 
             }
