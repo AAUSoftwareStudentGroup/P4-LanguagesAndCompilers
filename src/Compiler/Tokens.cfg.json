@@ -1,4 +1,4 @@
-[
+[ //THIS IS NOT THE CORRECT FILE, THE MOST UPDATED FILE CAN BE FOUND AT ...\projectRepo\src\Compiler.Tests\TestFiles\Tokens.cfg.json
     {
         "Name": "lineComment",
         "PatternString": "//.*",
@@ -75,7 +75,7 @@
     },
     {
         "Name": "simpleType",
-        "PatternString": "(u?int(8|16|32)|nothing|register)"
+        "PatternString": "(u?int(8|16|32)|nothing|register|bool)"
     },
     {
         "Name": "equality",

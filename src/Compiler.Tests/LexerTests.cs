@@ -23,19 +23,29 @@ namespace Compiler.Tests
             // Initialise Lexer
             Lexer l = new Lexer(AppContext.BaseDirectory + "\\TestFiles\\Tokens.cfg.json");
 
-            // Read from another file, tokens should be SimpleType Identifier Assign Number eof (int16 a = 1)
+            // Read from test file
             IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\testSourceFile.tang"));
             
-            // Assert that there are five tokens
-            //Assert.AreEqual(tokens.Count(), 5);
+            /*
+             * Assert that we have 23 tokens in testSourceFile.tang
+             * intType identifier = IntLiteral
+             * newLine
+             * boolType identifier = boolLiteral
+             * newLine
+             * while ( identifier )
+             * indent identifier = identifier + intLiteral
+             * dedent newLine eof
+             */
+            Assert.AreEqual(tokens.Count(), 23);
 
-            //Test if each token is correctly generated
-            Assert.AreEqual(tokens.ElementAt(0).Name, "SimpleType");
-            Assert.AreEqual(tokens.ElementAt(1).Name, "Identifier");
-            Assert.AreEqual(tokens.ElementAt(2).Name, "Assign");
-            Assert.AreEqual(tokens.ElementAt(3).Name, "Number");
-            //Assert.AreEqual(tokens.ElementAt(4).Name, "eof");
-            //Assert.AreNotEqual(tokens.ElementAt(4).Name, "eoF");
+            // For safety measures, test at random places that the token is of correct name
+            Assert.AreEqual(tokens.ElementAt(0).Name, "intType");
+            Assert.AreEqual(tokens.ElementAt(4).Name, "newLine");
+            Assert.AreEqual(tokens.ElementAt(10).Name, "while");
+            Assert.AreEqual(tokens.ElementAt(13).Name, ")");
+            Assert.AreEqual(tokens.ElementAt(16).Name, "=");
+            Assert.AreEqual(tokens.ElementAt(22).Name, "eof");
+
         }
 
         [TestMethod]
@@ -52,12 +62,6 @@ namespace Compiler.Tests
             Assert.AreEqual(tokens.ElementAt(2).Row, 0);
             Assert.AreEqual(tokens.ElementAt(2).Column, 8);
         }
-
-
-
-
-
-
 
     }
 }
