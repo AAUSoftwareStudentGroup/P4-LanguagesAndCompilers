@@ -1,0 +1,110 @@
+Program -> GlobalStatement eof
+		 | eof
+
+GlobalStatement -> Interrupt
+                 | CompoundGlobalStatement
+                 | Statement
+
+Interrupt -> interrupt ( IntegerExpression ) indent Statement dedent
+
+CompoundGlobalStatement -> GlobalStatement newline GlobalStatement
+
+Statement -> newline 
+           | CompoundStatement
+           | IntegerDeclaration
+           | BooleanDeclaration
+           | DirectBitAssignment
+           | IndirectBitAssignment
+           | RegisterDeclaration 
+           | IntegerAssignment
+           | BooleanAssignment
+           | RegisterAssignment
+           | IfStatement 
+           | WhileStatement
+           | ForStatement
+
+CompoundStatement -> Statement newline Statement
+
+IntegerDeclaration -> intType identifier
+		   
+IntegerAssignment -> identifier = IntegerExpression
+
+BooleanDeclaration -> booleanType identifier
+
+BooleanAssignment -> identifier = BooleanExpression
+
+DirectBitAssignment -> register ( IntegerExpression ) { IntegerExpression } = BooleanExpression
+
+IndirectBitAssignment -> identifier { IntegerExpression } = BooleanExpression
+
+RegisterDeclaration -> registerType identifier
+
+RegisterAssignment -> identifier = RegisterExpression
+
+RegisterExpression -> RegisterLiteral
+					| RegisterVariable
+
+RegisterLiteral -> register ( IntegerExpression )
+
+RegisterVariable -> identifier
+
+IfStatement -> if ( BooleanExpression ) indent Statement dedent 
+		   
+WhileStatement -> while ( BooleanExpression ) indent Statement dedent
+		   
+ForStatement -> for ( type identifier from IntegerExpression to IntegerExpression ) indent Statement dedent
+
+IntegerExpression -> IntegerVariable   
+                   | IntegerParenthesisExpression
+                   | AddExpression
+                   | SubExpression
+                   | MulExpression
+                   | DivExpression 
+
+IntegerVariable -> identifier
+
+IntegerParenthesisExpression -> ( IntegerExpression )        
+
+AddExpression -> IntegerExpression + IntegerExpression
+
+SubExpression -> IntegerExpression - IntegerExpression
+
+MulExpression -> IntegerExpression * IntegerExpression
+
+DivExpression -> IntegerExpression / IntegerExpression
+
+BooleanExpression -> true 
+                   | false 
+				   | BooleanVariable
+                   | DirectBitValue
+                   | IndirectBitValue
+                   | BooleanParenthesisExpression
+                   | IntegerEqExpression 
+                   | BooleanEqExpression 
+                   | LessThanExpression 
+                   | GreaterThanExpression
+                   | NotExpression 
+                   | AndExpression 
+                   | OrExpression
+
+BooleanVariable -> identifier
+
+DirectBitValue -> register ( IntegerExpression ) { IntegerExpression }
+
+IndirectBitValue -> RegisterVariable { IntegerExpression }
+
+BooleanParenthesisExpression -> ( BooleanExpression )
+
+IntegerEqExpression -> IntegerExpression == IntegerExpression
+
+BooleanEqExpression -> BooleanExpression == BooleanExpression
+
+LessThanExpression -> IntegerExpression < IntegerExpression
+
+GreaterThanExpression -> IntegerExpression > IntegerExpression
+
+NotExpression -> ! BooleanExpression
+
+AndExpression -> BooleanExpression and BooleanExpression
+
+OrExpression -> BooleanExpression and BooleanExpression
