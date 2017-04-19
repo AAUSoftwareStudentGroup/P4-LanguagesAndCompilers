@@ -60,7 +60,7 @@ namespace Compiler.LexicalAnalysis
                         if(indentSize > indentationLevel.Peek())
                         {
                             token = new Token {
-                                Name = "Indent",
+                                Name = "indent",
                                 Value = match.Value,
                                 Row = row,
                                 Column = column
@@ -73,7 +73,7 @@ namespace Compiler.LexicalAnalysis
                         {
                             token = new Token
                             {
-                                Name = "NewLine",
+                                Name = "newLine",
                                 Value = match.Value,
                                 Row = row,
                                 Column = column
@@ -86,7 +86,7 @@ namespace Compiler.LexicalAnalysis
                         {
                             indentationLevel.Pop();
                             token = new Token {
-                                Name = "Dedent",
+                                Name = "dedent",
                                 Value = match.Value,
                                 Row = row,
                                 Column = column
@@ -95,7 +95,7 @@ namespace Compiler.LexicalAnalysis
                             yield return token;
 
                             token = new Token {
-                                Name = "NewLine",
+                                Name = "newLine",
                                 Value = match.Value,
                                 Row = row,
                                 Column = column
@@ -136,7 +136,7 @@ namespace Compiler.LexicalAnalysis
             {
                 indentationLevel.Pop();
                 token = new Token {
-                    Name = "Dedent",
+                    Name = "dedent",
                     Value = match.Value,
                     Row = row,
                     Column = column
@@ -145,7 +145,7 @@ namespace Compiler.LexicalAnalysis
                 yield return token;
 
                 token = new Token {
-                    Name = "NewLine",
+                    Name = "newLine",
                     Value = match.Value,
                     Row = row,
                     Column = column

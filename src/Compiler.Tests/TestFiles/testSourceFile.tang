@@ -2,4 +2,4 @@
 bool on = true
 
 while(on)
-    a = a+1
+    a = a + 1

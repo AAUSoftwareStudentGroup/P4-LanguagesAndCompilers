@@ -1,98 +1,172 @@
-[
+[ //Dette er DEN RIGTIGE FIL, ikke den, der ligger under compileren.
     {
-        "Name": "LineComment",
+        "Name": "lineComment",
         "PatternString": "//.*",
         "Ignore": true
     },
     {
-        "Name": "BlockComment",
+        "Name": "blockComment",
         "PatternString": "/\\*.*\\*/",
         "SingleLine": true,
         "Ignore": true
     },
     {
-        "Name": "Whitespace",
+        "Name": "whitespace",
         "PatternString": "[\\t ]+",
         "Ignore": true
     },
     {
-        "Name": "NewLine",
+        "Name": "newLine",
         "PatternString": "\\r?\\n[\\r\\n\\t ]+",
         "SingleLine": true
     },
     {
-        "Name": "Number",
-        "PatternString": "([+-]?(0|([1-9][0-9]*))|true|false)"
+        "Name": "intLiteral",
+        "PatternString": "([+-]?(0|([1-9][0-9]*)))"
     },
-    /*
     {
-        "Name": "Decimal",
-        "PatternString": "[+-]?(0|([1-9][0-9]*))\\.[0-9]+"
+        "Name": "boolLiteral",
+        "PatternString": "(true)|(false)"
     },
-    */
     {
-        "Name": "If",
+        "Name": "strLiteral",
+        "PatternString": "\"((\\\\\\\\)|(\\\\n)|(\\\\r)|(\\\\')|(\\\\\")|!|[#-&]|[\\(-\\[]|[\\]-~])*\""
+    },
+    {
+        "Name": "charLiteral",
+        "PatternString": "'((\\\\\\\\)|(\\\\n)|(\\\\r)|(\\\\')|(\\\\\")|!|[#-&]|[\\(-\\[]|[\\]-~])'"
+    },
+    {
+        "Name": "if",
         "PatternString": "if"
     },
     {
-        "Name": "For",
+        "Name": "else",
+        "PatternString": "else"
+    },
+    {
+        "Name": "for",
         "PatternString": "for"
     },
     {
-        "Name": "While",
+        "Name": "while",
         "PatternString": "while"
     },
     {
-        "Name": "And",
+        "Name": "and",
         "PatternString": "and"
     },
     {
-        "Name": "Or",
+        "Name": "or",
         "PatternString": "or"
     },
     {
-        "Name": "ClassWord",
+        "Name": "class",
         "PatternString": "class"
     },
     {
-        "Name": "Return",
+        "Name": "return",
         "PatternString": "return"
     },
     {
-        "Name": "SimpleType",
-        "PatternString": "(u?int(8|16|32)|nothing|decimal)"
+        "Name": "intType",
+        "PatternString": "(u?int(8|16|32))"
     },
     {
-        "Name": "Compare",
-        "PatternString": "(==)|(!=)|(<=)|(>=)|<|>"
+        "Name": "registerType",
+        "PatternString": "register"
     },
     {
-        "Name": "Assign",
+        "Name": "booleanType",
+        "PatternString": "bool"
+    },
+    {
+        "Name": "==",
+        "PatternString": "=="
+    },
+    {
+        "Name": "!=",
+        "PatternString": "!="
+    },
+    {
+        "Name": "<=",
+        "PatternString": "<="
+    },
+    {
+        "Name": ">=",
+        "PatternString": ">="
+    },
+    {
+        "Name": "<",
+        "PatternString": "<"
+    },
+    {
+        "Name": ">",
+        "PatternString": ">"
+    },
+    {
+        "Name": "=",
         "PatternString": "="
     },
     {
-        "Name": "AddSubOpp",
-        "PatternString": "[\\+\\-]"
+        "Name": "+",
+        "PatternString": "[\\+]"
     },
     {
-        "Name": "MulDivOpp",
-        "PatternString": "[\\*\\/]"
+        "Name": "-",
+        "PatternString": "[\\-]"
     },
     {
-        "Name": "StartDel",
+        "Name": "*",
+        "PatternString": "[\\*]"
+    },
+    {
+        "Name": "/",
+        "PatternString": "[\\/]"
+    },
+    {
+        "Name": "(",
         "PatternString": "\\("
     },
     {
-        "Name": "EndDel",
+        "Name": ")",
         "PatternString": "\\)"
     },
     {
-        "Name": "SepOp",
+        "Name": ",",
         "PatternString": ","
     },
     {
-        "Name": "Identifier",
+        "Name": "identifier",
         "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
+    },
+    {
+        "Name": "[",
+        "PatternString": "\\["
+    },
+    {
+        "Name": "]",
+        "PatternString": "\\]"
+    },
+    {
+        "Name": "{",
+        "PatternString": "\\{"
+    },
+    {
+        "Name": "}",
+        "PatternString": "\\}"
+    },
+    {
+        "Name": ".",
+        "PatternString": "\\."
+    },
+    {
+        "Name": "from",
+        "PatternString": "from"
+    },
+    {
+        "Name": "to",
+        "PatternString": "to"
     }
     /*
 -Number     -> Digit
