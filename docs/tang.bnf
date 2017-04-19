@@ -1,0 +1,72 @@
+Program -> GlobalStatements eof
+
+GlobalStatements -> GlobalStatement GlobalStatementsP
+                  | EPSILON
+GlobalStatementsP -> newline GlobalStatement GlobalStatementsP
+                   | EPSILON
+
+GlobalStatement -> Interrupt
+                 | Statement
+
+Interrupt -> interrupt ( Expression ) indent Statements dedent
+
+Statements -> Statement StatementsP
+            | EPSILON
+StatementsP -> newline Statement StatementsP
+             | EPSILON
+
+Statement -> newline 
+           | IdentifierDeclaration 
+           | Assignment
+           | IfStatement 
+           | WhileStatement
+
+IdentifierDeclaration -> intType identifier
+                       | registerType identifier
+                       | booleanType identifier
+		   
+Assignment -> identifier BitSelector = Expression 
+            | registerType ( Expression ) { Expression } = Expression
+
+BitSelector -> { Expression }
+             | EPSILON
+
+IfStatement -> if ( Expression ) indent Statements dedent 
+		   
+WhileStatement -> while ( Expression ) indent Statements dedent
+        
+Expression -> OrExpression
+
+OrExpression -> AndExpression OrExpressionP
+OrExpressionP -> or AndExpression OrExpressionP
+               | EPSILON
+
+AndExpression -> EqExpression AndExpressionP
+AndExpressionP -> and EqExpression AndExpressionP
+                | EPSILON
+
+EqExpression -> RelationalExpression EqExpressionP
+EqExpressionP -> = RelationalExpression EqExpressionP
+               | EPSILON
+
+RelationalExpression -> AddSubExpression RelationalExpressionP
+RelationalExpressionP -> < AddSubExpression RelationalExpressionP
+                       | > AddSubExpression RelationalExpressionP
+                       | EPSILON
+
+AddSubExpression -> MulDivExpression AddSubExpressionP
+AddSubExpressionP -> + MulDivExpression AddSubExpressionP
+                   | - MulDivExpression AddSubExpressionP
+                   | EPSILON
+
+MulDivExpression -> PrimaryExpression MulDivExpressionP
+MulDivExpressionP -> / PrimaryExpression MulDivExpressionP
+                   | * PrimaryExpression MulDivExpressionP
+                   | EPSILON
+
+PrimaryExpression -> integer
+                   | identifier BitSelector
+                   | ( Expression )
+                   | register ( Expression ) BitSelector
+                   | true
+                   | false

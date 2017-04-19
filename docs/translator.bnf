@@ -1,0 +1,68 @@
+Converter -> Rules eof
+
+Rules -> Rule RulesP
+RulesP -> newline Rule RulesP
+        | EPSILON
+
+Rule -> Conclusion Premises
+      | EPSILON
+
+Conclusion -> Pattern NewlineGoto Structure
+
+NewlineGoto -> newline goto
+             | goto
+
+Premises -> indent Premis PremisesP dedent
+          | EPSILON
+PremisesP -> newline Premis PremisesP
+           | EPSILON
+
+Premis -> Structure StructureOperation
+        | EPSILON
+
+StructureOperation -> Goto
+					| Equal
+					| NotEqual
+
+Goto -> goto Pattern
+
+Equal -> <=> Structure
+
+NotEqual -> </> Structure
+
+Pattern -> ListPattern
+         | TreePattern
+
+ListPattern -> [ Patterns ]
+
+TreePattern -> Name Alias ChildrenPattern
+
+Name -> symbol
+
+Alias -> : symbol
+       | EPSILON
+
+ChildrenPattern -> [ Patterns ]
+                 | EPSILON
+
+Patterns -> TreePattern Patterns
+          | EPSILON
+
+Structure -> ListStructure
+		   | TreeStructure
+
+ListStructure -> [ Structures ]
+
+TreeStructure -> Placeholder Name ChildrenStructure Insertion
+
+Placeholder -> %
+			 | EPSILON
+
+Insertion -> insert TreeStructure
+           | EPSILON
+
+ChildrenStructure -> [ Structures ]
+                   | EPSILON
+
+Structures -> TreeStructure Structures
+         | EPSILON
