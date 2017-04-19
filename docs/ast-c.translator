@@ -1,18 +1,28 @@
-﻿Program[GlobalStatement:G] -> [ int main ( void ) { G1 return 0 ; } ]
-     G -> G1
+﻿IntTbl[IntTbl[EPSILON]] -> []
+IntTbl[IntTbl[]] ->
 
-Program[eof] -> [int main (void) {return 0 ; } ]
+/*
+ *   Program entrypoint, Creates new Interupt table
+ */
+Program[GlobalStatement:G eof] -> [ il int main ( void ) { S return 0 ; } ]
+     [G IntTbl[ %IntTbl[ EPSILON ] ] ] -> [Stms:S IntTbl:I]
+     I -> IntList:il
 
-GlobalStatement[Interrupt:S] -> [ S1 ]
-    S -> S1
-GlobalStatement[CompoundGlobalStatement:S] -> [ S1 ]
-    S -> S1
-GlobalStatement[Statement:S] -> [ S1 ]
+Program[eof] -> [ int main ( void ) { return 0 ; } ]
+
+[GlobalStatement[Interrupt:S] IntTbl:I] -> [ S1 I1 ]
+    [S I] -> [S1 I1]
+
+[GlobalStatement[CompoundGlobalStatement:S] IntTbl:I] -> [ S1 I1 ]
+    [S I] -> [S1 I1]
+
+[GlobalStatement[Statement:S] IntTbl] -> S1
     S -> S1
 
-Interrupt[interrupt ( IntegerExpression:i ) indent Statement:S dedent] -> [ ISR ( i1 ) { S1 } ]
+[Interrupt[interrupt ( IntegerExpression:i ) indent Statement:S dedent] IntTbl:I] -> [ ISR ( i1 ) { S1 } ]
     i -> i1
     S -> S1
+    [I i1 S1] -> I1
 
 CompoundGlobalStatement[GlobalStatement:S1 newline GlobalStatement:S2] -> [ S3 S4 ]
     S1 -> S3

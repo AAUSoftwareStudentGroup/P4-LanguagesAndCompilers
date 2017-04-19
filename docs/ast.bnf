@@ -5,7 +5,7 @@ GlobalStatement -> Interrupt
                  | CompoundGlobalStatement
                  | Statement
 
-Interrupt -> interrupt ( IntegerExpression ) indent Statement dedent
+Interrupt -> interrupt ( IntLiteral ) indent Statement dedent
 
 CompoundGlobalStatement -> GlobalStatement newline GlobalStatement
 
@@ -60,6 +60,7 @@ IntegerExpression -> IntegerVariable
                    | SubExpression
                    | MulExpression
                    | DivExpression 
+                   | IntLiteral
 
 IntegerVariable -> identifier
 
@@ -75,7 +76,7 @@ DivExpression -> IntegerExpression / IntegerExpression
 
 BooleanExpression -> true 
                    | false 
-				   | BooleanVariable
+				           | BooleanVariable
                    | DirectBitValue
                    | IndirectBitValue
                    | BooleanParenthesisExpression
