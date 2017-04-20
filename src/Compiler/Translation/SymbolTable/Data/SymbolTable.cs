@@ -1,3 +1,4 @@
+using Compiler.Translation.SymbolTable.Visitors;
 using System.Collections.Generic;
 
 namespace Compiler.Translation.SymbolTable.Data

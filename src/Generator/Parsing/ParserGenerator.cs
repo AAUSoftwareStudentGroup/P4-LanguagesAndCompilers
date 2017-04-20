@@ -29,6 +29,7 @@ namespace Generator.Parsing
             {
                 Usings = new List<string>()
                 {
+                   $"using {dataNamespace};",
                     "using System;",
                     "using System.Collections.Generic;"
                 }
@@ -171,17 +172,6 @@ namespace Generator.Parsing
                 },
                 Methods = new List<MethodType>()
                 {
-                    new MethodType("public", "", "Node")
-                    {
-                        Parameters = new List<ParameterType>()
-                        {
-                            new ParameterType("bool", "isPlaceholder")
-                        },
-                        Body = new List<string>()
-                        {
-                            "IsPlaceholder = isPlaceholder;"
-                        }
-                    },
                     new MethodType("public abstract", "T", "Accept<T>")
                     {
                         Parameters = new List<ParameterType>()
@@ -209,8 +199,6 @@ namespace Generator.Parsing
 
             classes.Add(tokenClass);
 
-            classes.Add(CreateParseTreeClass(dataNamespace, visitorNamespace, visitorName, "ListNode"));
-
             return classes.ToArray();
         }
 
@@ -220,6 +208,7 @@ namespace Generator.Parsing
             {
                 Usings = new List<string>()
                 {
+                    $"using {visitorNamespace};",
                     "using System.Collections.Generic;",
                 },
                 Methods = new List<MethodType>()

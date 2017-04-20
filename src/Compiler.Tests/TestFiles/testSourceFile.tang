@@ -1,1 +1,5 @@
 ﻿int16 a = 1
+bool on = true
+
+while(on)
+    a = a + 1

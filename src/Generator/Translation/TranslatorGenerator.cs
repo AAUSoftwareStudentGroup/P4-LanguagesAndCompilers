@@ -108,8 +108,6 @@ namespace Generator.Translation
                 systems = systems.Nodes<Systems>()[0];
             }
 
-            int i = 0;
-
             Node rules = translator.Nodes<Rules>()[0];
 
             while (rules.Nodes<Rule>().Count() > 0)
@@ -122,8 +120,6 @@ namespace Generator.Translation
                     List<string> patternConditions = new List<string>();
                     List<ParameterType> parameters = new List<ParameterType>();
                     Dictionary<string, (string type, string name)> symbols = new Dictionary<string, (string type, string name)>();
-
-                    Console.WriteLine(i++);
 
                     string alias = GetAlias(conclusion.Nodes<Alias>()[0]);
 

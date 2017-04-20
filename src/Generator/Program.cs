@@ -83,8 +83,8 @@ namespace Generator
             {
                 classTypes.Add(classType);
             }
-            ClassType astTableVisitor = parserGenerator.GenerateVisitorClass(astGrammar, astVisitorName, astDataNamspace, astVisitorNamspace);
-            classTypes.Add(symbolTableVisitor);
+            ClassType astVisitor = parserGenerator.GenerateVisitorClass(astGrammar, astVisitorName, astDataNamspace, astVisitorNamspace);
+            classTypes.Add(astVisitor);
             foreach (ClassType classType in parserGenerator.GenerateParseTreeClasses(astGrammar, astVisitorName, astDataNamspace, astVisitorNamspace))
             {
                 classTypes.Add(classType);

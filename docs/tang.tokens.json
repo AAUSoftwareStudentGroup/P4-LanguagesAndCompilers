@@ -27,7 +27,7 @@
     },
     {
         "Name": "intLiteral",
-        "PatternString": "([+-]?(0|([1-9][0-9]*))"
+        "PatternString": "[+-]?(0|([1-9][0-9]*))"
     },
     {
         "Name": "boolLiteral",

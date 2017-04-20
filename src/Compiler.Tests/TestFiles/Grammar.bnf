@@ -54,7 +54,7 @@ TypedParametersF -> Type Identifier TypedParametersP
 TypedParametersP -> SepOp Type Identifier TypedParametersP
                | EndDel
 
-Type -> SimpleType TypeParameters
+Type -> simpleType TypeParameters
      |  StartDel Type EndDel TypeParameters
 
 TypeParameters -> StartDel TypeParametersF

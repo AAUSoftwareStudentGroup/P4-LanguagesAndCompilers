@@ -80,4 +80,4 @@ ChildrenStructure -> [ Structures ]
                    | EPSILON
 
 Structures -> TreeStructure Structures
-         | EPSILON
+            | EPSILON
