@@ -2,13 +2,13 @@ using System.Collections.Generic;
 
 namespace Compiler.Translation.SymbolTable.Data
 {
-	public class SymbolTable : Compiler.Translation.SymbolTable.Data.Node
+	public class Type : Compiler.Translation.SymbolTable.Data.Node
 	{
-		public  SymbolTable()
+		public  Type()
 		{
 		}
 
-		public  SymbolTable(bool isPlaceholder)
+		public  Type(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
 		}

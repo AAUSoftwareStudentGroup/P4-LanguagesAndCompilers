@@ -2,13 +2,13 @@ using System.Collections.Generic;
 
 namespace Compiler.AST.Data
 {
-	public class LessThanExpression : Compiler.AST.Data.Node
+	public class AST : Compiler.AST.Data.Node
 	{
-		public  LessThanExpression()
+		public  AST()
 		{
 		}
 
-		public  LessThanExpression(bool isPlaceholder)
+		public  AST(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
 		}

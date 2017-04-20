@@ -4,6 +4,15 @@ namespace Compiler.Parsing.Data
 {
 	public class IdentifierDeclaration : Compiler.Parsing.Data.Node
 	{
+		public  IdentifierDeclaration()
+		{
+		}
+
+		public  IdentifierDeclaration(bool isPlaceholder)
+		{
+			IsPlaceholder = isPlaceholder;
+		}
+
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)
 		{
 			return visitor.Visit(this);

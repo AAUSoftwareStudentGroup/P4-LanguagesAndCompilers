@@ -1,4 +1,19 @@
-Translator -> Rules eof
+Translator -> Systems Rules eof
+
+Systems -> System newline Systems
+         | EPSILON
+
+System -> goto Alias := Domain goto Domain
+
+Domain -> ListDomain
+        | TreeDomain
+
+ListDomain -> [ Domains ]
+
+Domains -> TreeDomain Domains
+         | EPSILON
+
+TreeDomain -> symbol
 
 Rules -> Rule RulesP
 RulesP -> newline Rule RulesP
@@ -7,7 +22,7 @@ RulesP -> newline Rule RulesP
 Rule -> Conclusion Premises
       | EPSILON
 
-Conclusion -> Pattern NewlineGoto Structure
+Conclusion -> Pattern NewlineGoto Alias Structure
 
 NewlineGoto -> newline goto
              | goto
@@ -24,7 +39,7 @@ StructureOperation -> Goto
                     | Equal
                     | NotEqual
 
-Goto -> goto Pattern
+Goto -> goto Alias Pattern
 
 Equal -> <=> Structure
 

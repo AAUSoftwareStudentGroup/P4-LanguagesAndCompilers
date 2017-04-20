@@ -22,7 +22,6 @@ namespace Generator
             IBNFAnalyzer bnfAnalyzer = new BNFAnalyzer();
             IBNFParser bnfParser = new BNFParser();
             IParserGenerator parserGenerator = new ParserGenerator(bnfAnalyzer);
-            ITranslatorGenerator translatorGenerator = new TranslatorGenerator();
 #if GENERATEGENERATOR
             Console.WriteLine("Generating generator...");
             BNF bnf = bnfParser.Parse("../../docs/translator.bnf");
@@ -43,6 +42,7 @@ namespace Generator
             }
             Console.WriteLine($"...DONE {2 + classTypes.Count} classes generated.");
 #else
+            ITranslatorGenerator translatorGenerator = new TranslatorGenerator();
             Console.WriteLine("Generating compiler...");
             Console.WriteLine("\tGenerating parser...");
             BNF bnf = bnfParser.Parse("../../docs/tang.bnf");
@@ -89,17 +89,13 @@ namespace Generator
             {
                 classTypes.Add(classType);
             }
-            List<(string nameSpace, BNF grammar)> domain = new List<(string nameSpace, BNF grammar)>()
+            List<TranslationDomain> translationDomains = new List<TranslationDomain>()
             {
-                (dataNamespace, bnf),
-                (symbolTableDataNamspace, symbolTableGrammar)
+                new TranslationDomain(){ Identifier = "Program", Grammar = bnf, Namespace = dataNamespace },
+                new TranslationDomain(){ Identifier = "AST", Grammar = astGrammar, Namespace = astDataNamspace },
+                new TranslationDomain(){ Identifier = "SymbolTable", Grammar = symbolTableGrammar, Namespace = symbolTableDataNamspace },
             };
-            List<(string nameSpace, BNF grammar)> coDomain = new List<(string nameSpace, BNF grammar)>()
-            {
-                (astDataNamspace, astGrammar),
-                (symbolTableDataNamspace, symbolTableGrammar)
-            };
-            ClassType toASTTranslator = translatorGenerator.GenerateTranslatorClass(translator, translatorName, domain, coDomain, translatorNamespace);
+            ClassType toASTTranslator = translatorGenerator.GenerateTranslatorClass(translator, translatorName, translationDomains, translatorNamespace);
             classTypes.Add(toASTTranslator);
             foreach (ClassType classType in classTypes)
             {

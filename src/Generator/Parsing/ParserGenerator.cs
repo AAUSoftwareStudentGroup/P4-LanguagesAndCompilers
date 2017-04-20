@@ -166,10 +166,22 @@ namespace Generator.Parsing
                 },
                 Fields = new List<FieldType>()
                 {
-                    new FieldType("public", "string", "Name") { Expression = "{ get; set; }"}
+                    new FieldType("public", "string", "Name") { Expression = "{ get; set; }"},
+                    new FieldType("public", "bool", "IsPlaceholder") { Expression = "{ get; set; } = false;"}
                 },
                 Methods = new List<MethodType>()
                 {
+                    new MethodType("public", "", "Node")
+                    {
+                        Parameters = new List<ParameterType>()
+                        {
+                            new ParameterType("bool", "isPlaceholder")
+                        },
+                        Body = new List<string>()
+                        {
+                            "IsPlaceholder = isPlaceholder;"
+                        }
+                    },
                     new MethodType("public abstract", "T", "Accept<T>")
                     {
                         Parameters = new List<ParameterType>()
@@ -212,6 +224,18 @@ namespace Generator.Parsing
                 },
                 Methods = new List<MethodType>()
                 {
+                    new MethodType("public", "", name),
+                    new MethodType("public", "", name)
+                    {
+                        Parameters = new List<ParameterType>()
+                        {
+                            new ParameterType("bool", "isPlaceholder")
+                        },
+                        Body = new List<string>()
+                        {
+                            "IsPlaceholder = isPlaceholder;"
+                        }
+                    },
                     CreateAcceptMethod(visitorNamespace, visitorName)
                 }
             };

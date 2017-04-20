@@ -3,7 +3,9 @@ SymbolTable -> Declaration
 Declaration -> Variable Declaration
              | EPSILON
 
-Variable -> intType identifier
-          | booleanType identifier
-          | registerType identifier
+Variable -> Type identifier
           | EPSILON
+
+Type -> intType
+      | registerType
+      | booleanType

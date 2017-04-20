@@ -28,12 +28,114 @@ namespace Generator.Translation.Parsing
 			Generator.Translation.Data.Translator node = new Generator.Translation.Data.Translator(){ Name = "Translator" };
 			switch(tokens.Current.Name)
 			{
+				case "goto":
 				case "[":
 				case "symbol":
 				case "newline":
 				case "eof":
+					node.Add(ParseSystems(tokens));
 					node.Add(ParseRules(tokens));
 					node.Add(ParseTerminal(tokens, "eof"));
+					return node;
+				default:
+					throw new Exception();
+			}
+		}
+
+		public Generator.Translation.Data.Systems ParseSystems(IEnumerator<Generator.Translation.Data.Token> tokens)
+		{
+			Generator.Translation.Data.Systems node = new Generator.Translation.Data.Systems(){ Name = "Systems" };
+			switch(tokens.Current.Name)
+			{
+				case "goto":
+					node.Add(ParseSystem(tokens));
+					node.Add(ParseTerminal(tokens, "newline"));
+					node.Add(ParseSystems(tokens));
+					return node;
+				case "[":
+				case "symbol":
+				case "newline":
+				case "eof":
+					node.Add(ParseTerminal(tokens, "EPSILON"));
+					return node;
+				default:
+					throw new Exception();
+			}
+		}
+
+		public Generator.Translation.Data.System ParseSystem(IEnumerator<Generator.Translation.Data.Token> tokens)
+		{
+			Generator.Translation.Data.System node = new Generator.Translation.Data.System(){ Name = "System" };
+			switch(tokens.Current.Name)
+			{
+				case "goto":
+					node.Add(ParseTerminal(tokens, "goto"));
+					node.Add(ParseAlias(tokens));
+					node.Add(ParseTerminal(tokens, ":="));
+					node.Add(ParseDomain(tokens));
+					node.Add(ParseTerminal(tokens, "goto"));
+					node.Add(ParseDomain(tokens));
+					return node;
+				default:
+					throw new Exception();
+			}
+		}
+
+		public Generator.Translation.Data.Domain ParseDomain(IEnumerator<Generator.Translation.Data.Token> tokens)
+		{
+			Generator.Translation.Data.Domain node = new Generator.Translation.Data.Domain(){ Name = "Domain" };
+			switch(tokens.Current.Name)
+			{
+				case "[":
+					node.Add(ParseListDomain(tokens));
+					return node;
+				case "symbol":
+					node.Add(ParseTreeDomain(tokens));
+					return node;
+				default:
+					throw new Exception();
+			}
+		}
+
+		public Generator.Translation.Data.ListDomain ParseListDomain(IEnumerator<Generator.Translation.Data.Token> tokens)
+		{
+			Generator.Translation.Data.ListDomain node = new Generator.Translation.Data.ListDomain(){ Name = "ListDomain" };
+			switch(tokens.Current.Name)
+			{
+				case "[":
+					node.Add(ParseTerminal(tokens, "["));
+					node.Add(ParseDomains(tokens));
+					node.Add(ParseTerminal(tokens, "]"));
+					return node;
+				default:
+					throw new Exception();
+			}
+		}
+
+		public Generator.Translation.Data.Domains ParseDomains(IEnumerator<Generator.Translation.Data.Token> tokens)
+		{
+			Generator.Translation.Data.Domains node = new Generator.Translation.Data.Domains(){ Name = "Domains" };
+			switch(tokens.Current.Name)
+			{
+				case "symbol":
+					node.Add(ParseTreeDomain(tokens));
+					node.Add(ParseDomains(tokens));
+					return node;
+				case "]":
+					node.Add(ParseTerminal(tokens, "EPSILON"));
+					return node;
+				default:
+					throw new Exception();
+			}
+		}
+
+		public Generator.Translation.Data.TreeDomain ParseTreeDomain(IEnumerator<Generator.Translation.Data.Token> tokens)
+		{
+			Generator.Translation.Data.TreeDomain node = new Generator.Translation.Data.TreeDomain(){ Name = "TreeDomain" };
+			switch(tokens.Current.Name)
+			{
+				case "symbol":
+					node.Add(ParseTerminal(tokens, "symbol"));
 					return node;
 				default:
 					throw new Exception();
@@ -103,6 +205,7 @@ namespace Generator.Translation.Parsing
 				case "symbol":
 					node.Add(ParsePattern(tokens));
 					node.Add(ParseNewlineGoto(tokens));
+					node.Add(ParseAlias(tokens));
 					node.Add(ParseStructure(tokens));
 					return node;
 				default:
@@ -211,6 +314,7 @@ namespace Generator.Translation.Parsing
 			{
 				case "goto":
 					node.Add(ParseTerminal(tokens, "goto"));
+					node.Add(ParseAlias(tokens));
 					node.Add(ParsePattern(tokens));
 					return node;
 				default:
@@ -314,11 +418,13 @@ namespace Generator.Translation.Parsing
 					node.Add(ParseTerminal(tokens, ":"));
 					node.Add(ParseTerminal(tokens, "symbol"));
 					return node;
+				case ":=":
 				case "[":
+				case "%":
+				case "symbol":
 				case "newline":
 				case "goto":
 				case "dedent":
-				case "symbol":
 				case "]":
 					node.Add(ParseTerminal(tokens, "EPSILON"));
 					return node;

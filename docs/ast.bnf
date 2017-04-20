@@ -1,4 +1,4 @@
-Program -> GlobalStatement eof
+AST -> GlobalStatement eof
 		 | eof
 
 GlobalStatement -> Interrupt

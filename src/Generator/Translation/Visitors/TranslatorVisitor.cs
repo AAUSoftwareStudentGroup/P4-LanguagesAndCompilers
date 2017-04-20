@@ -7,6 +7,36 @@ namespace Generator.Translation.Visitors
 			return Visit((Generator.Translation.Data.Node)node);
 		}
 
+		public virtual T Visit(Generator.Translation.Data.Systems node)
+		{
+			return Visit((Generator.Translation.Data.Node)node);
+		}
+
+		public virtual T Visit(Generator.Translation.Data.System node)
+		{
+			return Visit((Generator.Translation.Data.Node)node);
+		}
+
+		public virtual T Visit(Generator.Translation.Data.Domain node)
+		{
+			return Visit((Generator.Translation.Data.Node)node);
+		}
+
+		public virtual T Visit(Generator.Translation.Data.ListDomain node)
+		{
+			return Visit((Generator.Translation.Data.Node)node);
+		}
+
+		public virtual T Visit(Generator.Translation.Data.Domains node)
+		{
+			return Visit((Generator.Translation.Data.Node)node);
+		}
+
+		public virtual T Visit(Generator.Translation.Data.TreeDomain node)
+		{
+			return Visit((Generator.Translation.Data.Node)node);
+		}
+
 		public virtual T Visit(Generator.Translation.Data.Rules node)
 		{
 			return Visit((Generator.Translation.Data.Node)node);
