@@ -1,4 +1,9 @@
-Converter -> Rules eof
+Converter -> Systems Rules eof
+
+Systems -> Name : Domain goto Domain
+
+Domain -> Name 
+        | [ Names ]
 
 Rules -> Rule RulesP
 RulesP -> newline Rule RulesP
@@ -9,8 +14,8 @@ Rule -> Conclusion Premises
 
 Conclusion -> Pattern NewlineGoto Structure
 
-NewlineGoto -> newline goto
-             | goto
+NewlineGoto -> newline goto : Name
+             | goto : Name
 
 Premises -> indent Premis PremisesP dedent
           | EPSILON
@@ -24,7 +29,7 @@ StructureOperation -> Goto
 					| Equal
 					| NotEqual
 
-Goto -> goto Pattern
+Goto -> goto : Name Pattern
 
 Equal -> <=> Structure
 
@@ -38,6 +43,9 @@ ListPattern -> [ Patterns ]
 TreePattern -> Name Alias ChildrenPattern
 
 Name -> symbol
+
+Names -> Name Names
+       | EPSILON
 
 Alias -> : symbol
        | EPSILON
