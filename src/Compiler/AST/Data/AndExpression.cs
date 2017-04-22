@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  AndExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "AndExpression";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

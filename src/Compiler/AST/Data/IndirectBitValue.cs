@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  IndirectBitValue(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "IndirectBitValue";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

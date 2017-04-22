@@ -1,4 +1,4 @@
-[
+[ //Dette er DEN RIGTIGE FIL, ikke den, der ligger under compileren.
     {
         "Name": "lineComment",
         "PatternString": "//.*",
@@ -16,18 +16,13 @@
         "Ignore": true
     },
     {
-        "Name": "import",
-        "PatternString": "import",
-        "Ignore": false
-    },
-    {
         "Name": "newline",
         "PatternString": "\\r?\\n[\\r\\n\\t ]+",
         "SingleLine": true
     },
     {
         "Name": "intLiteral",
-        "PatternString": "[+-]?(0|([1-9][0-9]*))"
+        "PatternString": "([+-]?(0|([1-9][0-9]*)))"
     },
     {
         "Name": "boolLiteral",
@@ -74,39 +69,71 @@
         "PatternString": "return"
     },
     {
-        "Name": "simpleType",
-        "PatternString": "(u?int(8|16|32)|nothing|register)"
+        "Name": "intType",
+        "PatternString": "(u?int(8|16|32))"
     },
     {
-        "Name": "equality",
-        "PatternString": "(==)|(!=)"
+        "Name": "registerType",
+        "PatternString": "register"
     },
     {
-        "Name": "relational",
-        "PatternString": "(<=)|(>=)|<|>"
+        "Name": "booleanType",
+        "PatternString": "bool"
     },
     {
-        "Name": "assign",
+        "Name": "==",
+        "PatternString": "=="
+    },
+    {
+        "Name": "!=",
+        "PatternString": "!="
+    },
+    {
+        "Name": "<=",
+        "PatternString": "<="
+    },
+    {
+        "Name": ">=",
+        "PatternString": ">="
+    },
+    {
+        "Name": "<",
+        "PatternString": "<"
+    },
+    {
+        "Name": ">",
+        "PatternString": ">"
+    },
+    {
+        "Name": "=",
         "PatternString": "="
     },
     {
-        "Name": "addSub",
-        "PatternString": "[\\+\\-]"
+        "Name": "+",
+        "PatternString": "[\\+]"
     },
     {
-        "Name": "multDiv",
-        "PatternString": "[\\*/]"
+        "Name": "-",
+        "PatternString": "[\\-]"
     },
     {
-        "Name": "startDel",
+        "Name": "*",
+        "PatternString": "[\\*]"
+    },
+    {
+        "Name": "/",
+        "PatternString": "[\\/]"
+    },
+    {
+        "Name": "(",
         "PatternString": "\\("
     },
     {
-        "Name": "endDel",
+        "Name": ")",
         "PatternString": "\\)"
     },
     {
-        "Name": "sep",
+        "Name": ",",
         "PatternString": ","
     },
     {
@@ -114,23 +141,23 @@
         "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
     },
     {
-        "Name": "startBracket",
+        "Name": "[",
         "PatternString": "\\["
     },
     {
-        "Name": "endBracket",
+        "Name": "]",
         "PatternString": "\\]"
     },
     {
-        "Name": "startCurly",
+        "Name": "{",
         "PatternString": "\\{"
     },
     {
-        "Name": "endCurly",
+        "Name": "}",
         "PatternString": "\\}"
     },
     {
-        "Name": "dot",
+        "Name": ".",
         "PatternString": "\\."
     },
     {

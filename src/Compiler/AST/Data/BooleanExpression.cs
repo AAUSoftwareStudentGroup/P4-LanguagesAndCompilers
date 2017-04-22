@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  BooleanExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "BooleanExpression";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

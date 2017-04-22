@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  IntegerVariable(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "IntegerVariable";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

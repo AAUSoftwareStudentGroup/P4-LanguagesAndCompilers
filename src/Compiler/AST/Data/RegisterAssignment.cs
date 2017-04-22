@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  RegisterAssignment(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "RegisterAssignment";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  AddSubExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "AddSubExpression";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

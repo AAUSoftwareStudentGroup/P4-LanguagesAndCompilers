@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  OrExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "OrExpression";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

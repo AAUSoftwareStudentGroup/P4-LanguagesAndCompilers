@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  RegisterVariable(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "RegisterVariable";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

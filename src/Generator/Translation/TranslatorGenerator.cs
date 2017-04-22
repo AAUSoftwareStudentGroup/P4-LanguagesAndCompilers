@@ -423,6 +423,10 @@ namespace Generator.Translation
 
         private string CreateChildrenPatternCondition(string identifier, TranslationDomain domain, ChildrenPattern childrenPattern, Dictionary<string, (string type, string name)> symbols)
         {
+            if(childrenPattern.Nodes<Token>()[0].Name == "EPSILON")
+            {
+                return "true";
+            }
             string childrenConditions = "true";
             int index = 0;
             Patterns patterns = childrenPattern.Nodes<Patterns>().FirstOrDefault();
@@ -441,6 +445,7 @@ namespace Generator.Translation
                 patterns = patterns.Nodes<Patterns>().FirstOrDefault();
                 index++;
             }
+            
             return $"({identifier}.Count == {index} && {childrenConditions})";
         }
 

@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  IntegerDeclaration(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "IntegerDeclaration";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

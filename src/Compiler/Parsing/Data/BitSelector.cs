@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  BitSelector(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "BitSelector";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  Interrupt(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "Interrupt";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

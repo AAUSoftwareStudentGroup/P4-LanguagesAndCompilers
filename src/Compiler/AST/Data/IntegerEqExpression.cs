@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  IntegerEqExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "IntegerEqExpression";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

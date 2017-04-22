@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  WhileStatement(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "WhileStatement";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

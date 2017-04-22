@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  Interrupt(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "Interrupt";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

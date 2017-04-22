@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  IfStatement(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "IfStatement";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

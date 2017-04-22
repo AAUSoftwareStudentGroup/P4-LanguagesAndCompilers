@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  RegisterExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "RegisterExpression";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

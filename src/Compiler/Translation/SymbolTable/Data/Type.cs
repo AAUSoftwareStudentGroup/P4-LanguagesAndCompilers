@@ -12,6 +12,7 @@ namespace Compiler.Translation.SymbolTable.Data
 		public  Type(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "Type";
 		}
 
 		public override T Accept<T>(Compiler.Translation.SymbolTable.Visitors.SymbolTableVisitor<T> visitor)

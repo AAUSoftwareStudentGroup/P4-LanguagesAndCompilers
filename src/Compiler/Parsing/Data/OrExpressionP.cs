@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  OrExpressionP(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "OrExpressionP";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

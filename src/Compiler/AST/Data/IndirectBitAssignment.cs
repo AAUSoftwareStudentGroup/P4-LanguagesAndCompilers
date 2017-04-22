@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  IndirectBitAssignment(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "IndirectBitAssignment";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

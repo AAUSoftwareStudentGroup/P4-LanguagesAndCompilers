@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  AndExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "AndExpression";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

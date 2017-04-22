@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  WhileStatement(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "WhileStatement";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

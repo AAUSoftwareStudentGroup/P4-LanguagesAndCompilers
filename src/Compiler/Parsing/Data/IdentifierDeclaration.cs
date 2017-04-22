@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  IdentifierDeclaration(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "IdentifierDeclaration";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

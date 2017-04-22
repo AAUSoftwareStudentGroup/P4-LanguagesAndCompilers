@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  ForStatement(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "ForStatement";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

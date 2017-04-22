@@ -1,4 +1,4 @@
-using Compiler.Parsing.Data;
+﻿using Compiler.Parsing.Data;
 using System;
 using System.Collections.Generic;
 
@@ -27,7 +27,8 @@ namespace Compiler.Parsing
 		public Compiler.Parsing.Data.Program ParseProgram(IEnumerator<Compiler.Parsing.Data.Token> tokens)
 		{
 			Compiler.Parsing.Data.Program node = new Compiler.Parsing.Data.Program(){ Name = "Program" };
-			switch(tokens.Current.Name)
+            Console.WriteLine(tokens.Current.Name);
+            switch(tokens.Current.Name)
 			{
 				case "interrupt":
 				case "newline":
@@ -344,10 +345,10 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.Expression node = new Compiler.Parsing.Data.Expression(){ Name = "Expression" };
 			switch(tokens.Current.Name)
 			{
-				case "integer":
+				case "intLiteral":
 				case "identifier":
 				case "(":
-				case "register":
+				case "registerType":
 				case "true":
 				case "false":
 					node.Add(ParseOrExpression(tokens));
@@ -362,10 +363,10 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.OrExpression node = new Compiler.Parsing.Data.OrExpression(){ Name = "OrExpression" };
 			switch(tokens.Current.Name)
 			{
-				case "integer":
+				case "intLiteral":
 				case "identifier":
 				case "(":
-				case "register":
+				case "registerType":
 				case "true":
 				case "false":
 					node.Add(ParseAndExpression(tokens));
@@ -403,10 +404,10 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.AndExpression node = new Compiler.Parsing.Data.AndExpression(){ Name = "AndExpression" };
 			switch(tokens.Current.Name)
 			{
-				case "integer":
+				case "intLiteral":
 				case "identifier":
 				case "(":
-				case "register":
+				case "registerType":
 				case "true":
 				case "false":
 					node.Add(ParseEqExpression(tokens));
@@ -445,10 +446,10 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.EqExpression node = new Compiler.Parsing.Data.EqExpression(){ Name = "EqExpression" };
 			switch(tokens.Current.Name)
 			{
-				case "integer":
+				case "intLiteral":
 				case "identifier":
 				case "(":
-				case "register":
+				case "registerType":
 				case "true":
 				case "false":
 					node.Add(ParseRelationalExpression(tokens));
@@ -488,10 +489,10 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.RelationalExpression node = new Compiler.Parsing.Data.RelationalExpression(){ Name = "RelationalExpression" };
 			switch(tokens.Current.Name)
 			{
-				case "integer":
+				case "intLiteral":
 				case "identifier":
 				case "(":
-				case "register":
+				case "registerType":
 				case "true":
 				case "false":
 					node.Add(ParseAddSubExpression(tokens));
@@ -537,10 +538,10 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.AddSubExpression node = new Compiler.Parsing.Data.AddSubExpression(){ Name = "AddSubExpression" };
 			switch(tokens.Current.Name)
 			{
-				case "integer":
+				case "intLiteral":
 				case "identifier":
 				case "(":
-				case "register":
+				case "registerType":
 				case "true":
 				case "false":
 					node.Add(ParseMulDivExpression(tokens));
@@ -588,10 +589,10 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.MulDivExpression node = new Compiler.Parsing.Data.MulDivExpression(){ Name = "MulDivExpression" };
 			switch(tokens.Current.Name)
 			{
-				case "integer":
+				case "intLiteral":
 				case "identifier":
 				case "(":
-				case "register":
+				case "registerType":
 				case "true":
 				case "false":
 					node.Add(ParsePrimaryExpression(tokens));
@@ -641,8 +642,8 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.PrimaryExpression node = new Compiler.Parsing.Data.PrimaryExpression(){ Name = "PrimaryExpression" };
 			switch(tokens.Current.Name)
 			{
-				case "integer":
-					node.Add(ParseTerminal(tokens, "integer"));
+				case "intLiteral":
+					node.Add(ParseTerminal(tokens, "intLiteral"));
 					return node;
 				case "identifier":
 					node.Add(ParseTerminal(tokens, "identifier"));
@@ -653,8 +654,8 @@ namespace Compiler.Parsing
 					node.Add(ParseExpression(tokens));
 					node.Add(ParseTerminal(tokens, ")"));
 					return node;
-				case "register":
-					node.Add(ParseTerminal(tokens, "register"));
+				case "registerType":
+					node.Add(ParseTerminal(tokens, "registerType"));
 					node.Add(ParseTerminal(tokens, "("));
 					node.Add(ParseExpression(tokens));
 					node.Add(ParseTerminal(tokens, ")"));

@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  IntegerParenthesisExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "IntegerParenthesisExpression";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

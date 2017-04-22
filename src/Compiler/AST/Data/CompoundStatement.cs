@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  CompoundStatement(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "CompoundStatement";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

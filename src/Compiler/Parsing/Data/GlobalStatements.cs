@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  GlobalStatements(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "GlobalStatements";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

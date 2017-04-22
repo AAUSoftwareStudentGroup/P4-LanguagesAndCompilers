@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  RelationalExpressionP(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "RelationalExpressionP";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

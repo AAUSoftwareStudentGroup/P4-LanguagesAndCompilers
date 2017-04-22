@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  MulDivExpressionP(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "MulDivExpressionP";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

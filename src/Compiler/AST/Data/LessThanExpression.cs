@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  LessThanExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "LessThanExpression";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

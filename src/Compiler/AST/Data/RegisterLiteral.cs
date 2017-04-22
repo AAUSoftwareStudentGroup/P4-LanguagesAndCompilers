@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  RegisterLiteral(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "RegisterLiteral";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

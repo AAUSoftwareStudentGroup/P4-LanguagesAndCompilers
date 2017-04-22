@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  GreaterThanExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "GreaterThanExpression";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

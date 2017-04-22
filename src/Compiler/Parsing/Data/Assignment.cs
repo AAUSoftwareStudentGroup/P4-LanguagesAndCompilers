@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  Assignment(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "Assignment";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

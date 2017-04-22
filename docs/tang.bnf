@@ -68,9 +68,9 @@ MulDivExpressionP -> / PrimaryExpression MulDivExpressionP
                    | * PrimaryExpression MulDivExpressionP
                    | EPSILON
 
-PrimaryExpression -> integer
+PrimaryExpression -> intLiteral
                    | identifier BitSelector
                    | ( Expression )
-                   | register ( Expression ) BitSelector
+                   | registerType ( Expression ) BitSelector
                    | true
                    | false

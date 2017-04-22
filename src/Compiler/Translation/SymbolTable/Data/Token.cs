@@ -15,6 +15,7 @@ namespace Compiler.Translation.SymbolTable.Data
 		public  Token(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "Token";
 		}
 
 		public override T Accept<T>(Compiler.Translation.SymbolTable.Visitors.SymbolTableVisitor<T> visitor)

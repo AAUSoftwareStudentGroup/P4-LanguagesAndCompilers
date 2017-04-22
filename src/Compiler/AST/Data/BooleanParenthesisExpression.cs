@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  BooleanParenthesisExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "BooleanParenthesisExpression";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

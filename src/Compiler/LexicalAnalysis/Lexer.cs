@@ -72,7 +72,7 @@ namespace Compiler.LexicalAnalysis
                         {
                             token = new Token
                             {
-                                Name = "newLine",
+                                Name = "newline",
                                 Value = match.Value,
                                 Row = row,
                                 Column = column
@@ -94,7 +94,7 @@ namespace Compiler.LexicalAnalysis
                             yield return token;
 
                             token = new Token {
-                                Name = "newLine",
+                                Name = "newline",
                                 Value = match.Value,
                                 Row = row,
                                 Column = column
@@ -144,7 +144,7 @@ namespace Compiler.LexicalAnalysis
                 yield return token;
 
                 token = new Token {
-                    Name = "newLine",
+                    Name = "newline",
                     Value = match.Value,
                     Row = row,
                     Column = column

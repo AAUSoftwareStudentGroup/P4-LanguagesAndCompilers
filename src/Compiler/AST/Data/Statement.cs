@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  Statement(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "Statement";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

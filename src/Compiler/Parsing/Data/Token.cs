@@ -15,6 +15,7 @@ namespace Compiler.Parsing.Data
 		public  Token(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "Token";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

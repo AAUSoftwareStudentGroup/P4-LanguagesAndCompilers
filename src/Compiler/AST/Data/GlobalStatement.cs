@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  GlobalStatement(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "GlobalStatement";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

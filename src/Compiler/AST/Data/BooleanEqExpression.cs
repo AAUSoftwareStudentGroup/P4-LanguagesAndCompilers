@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  BooleanEqExpression(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "BooleanEqExpression";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

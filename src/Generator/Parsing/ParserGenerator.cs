@@ -222,7 +222,8 @@ namespace Generator.Parsing
                         },
                         Body = new List<string>()
                         {
-                            "IsPlaceholder = isPlaceholder;"
+                            "IsPlaceholder = isPlaceholder;",
+                            $"Name = \"{name}\";"
                         }
                     },
                     CreateAcceptMethod(visitorNamespace, visitorName)

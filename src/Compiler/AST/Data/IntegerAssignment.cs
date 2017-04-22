@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  IntegerAssignment(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "IntegerAssignment";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

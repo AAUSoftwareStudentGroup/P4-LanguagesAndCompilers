@@ -12,6 +12,7 @@ namespace Compiler.AST.Data
 		public  RegisterDeclaration(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "RegisterDeclaration";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

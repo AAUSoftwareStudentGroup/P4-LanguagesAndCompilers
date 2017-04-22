@@ -12,6 +12,7 @@ namespace Compiler.Parsing.Data
 		public  RegisterStatement(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
+			Name = "RegisterStatement";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)
