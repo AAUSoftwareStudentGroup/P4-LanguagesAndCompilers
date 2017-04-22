@@ -81,7 +81,7 @@ Program:p ->:p ast
 [Statement[WhileStatement:whileStm] SymbolTable:s] -> [whileStm1 s]
     [whileStm s] -> [Statement:whileStm1 SymbolTable:s1]
 
-[IdentifierDeclaration[intType:t identifier:id] SymbolTable:s] -> [IntegerDeclaration22[t1 id1] s <- Declaration[Variable[Type[t2] id2] %Declaration[EPSILON]]]
+[IdentifierDeclaration[intType:t identifier:id] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Declaration[Variable[Type[t2] id2] %Declaration[EPSILON]]]
     t ->:p intType:t1
     t ->:q intType:t2
     id ->:p identifier:id1
