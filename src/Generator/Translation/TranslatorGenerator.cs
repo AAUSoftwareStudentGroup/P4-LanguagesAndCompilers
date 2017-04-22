@@ -178,22 +178,30 @@ namespace Generator.Translation
                                     }
 
                                     method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}{returnTypeStr1} = Translate{premisAlias}({translatorArgs});");
-                                    //if (pattern1.Nodes<ListPattern>().Count() > 0)
-                                    //{
-                                    //    for (int i = 0; i < parameters1.Count; i++)
-                                    //    {
-                                    //        ParameterType p = parameters1[i];
-                                    //        method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}{p.Type} {p.Identifier} = node{nodeNumber}[{i}] as {p.Type};");
-                                    //    }
-                                    //}
-                                    //else
-                                    //{
-                                    //    method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}{parameters1[0].Type} {parameters1[0].Identifier} = node{nodeNumber} as {parameters1[0].Type};");
-                                    //}
                                     method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}if({string.Join(" && ", patternConditions1)})");
                                     method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}{{");
                                     indentLevel++;
                                     nodeNumber++;
+                                }
+                                else
+                                {
+                                    Equal equal = operation.Nodes<Equal>().FirstOrDefault();
+                                    if(equal != null)
+                                    {
+                                        Structure compareStructure = equal.Nodes<Structure>()[0];
+                                        if (structure.Nodes<ListStructure>().Count() > 0 && compareStructure.Nodes<ListStructure>().Count() > 0)
+                                        {
+                                            method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}if(AreEqual({CreateListStructure(}, {}))");
+                                        }
+                                        else if (structure.Nodes<TreeStructure>().Count() > 0)
+                                        {
+                                            TreeStructure treeStructure = structure.Nodes<TreeStructure>()[0];
+                                            translatorArgs = CreateTreeStructure(treeStructure, translationSystems[premisAlias].Domain[0], symbols);
+                                        }
+                                        
+                                        method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}{{");
+                                        indentLevel++;
+                                    }
                                 }
                             }
                         }
@@ -400,15 +408,28 @@ namespace Generator.Translation
             string type = name;
             string fullType = type;
 
-            if (type[0] == type.ToLower()[0])
+            string namePattern = treePattern.Nodes<Name>()[0].Nodes<Token>()[0].Value;
+
+            if (namePattern == "*")
             {
-                type = "Token";
-                fullType = $"{domain.Namespace}.Token";
+                namePattern = $"{identifier}.Name";
+                type = "Node";
+                fullType = $"{domain.Namespace}.Node";
             }
             else
             {
-                fullType = FullType(type, domain);
+                namePattern = $"\"{namePattern}\"";
+                if (!domain.Grammar.ContainsKey(name))
+                {
+                    type = "Token";
+                    fullType = $"{domain.Namespace}.Token";
+                }
+                else
+                {
+                    fullType = FullType(type, domain);
+                }
             }
+            
             Alias alias = treePattern.Nodes<Alias>()[0];
             var aliasTokens = alias.Nodes<Token>().ToList();
             if (aliasTokens.Count == 2 && aliasTokens[1].Name == "symbol")
@@ -418,7 +439,8 @@ namespace Generator.Translation
                     symbols.Add(aliasTokens[1].Value, (fullType, identifier));
                 }
             }
-            return $"{identifier} != null && {identifier}.Name == \"{treePattern.Nodes<Name>()[0].Nodes<Token>()[0].Value}\" && {CreateChildrenPatternCondition(identifier, domain, treePattern.Nodes<ChildrenPattern>()[0], symbols)}";
+
+            return $"{identifier} != null && {identifier}.Name == {namePattern} && {CreateChildrenPatternCondition(identifier, domain, treePattern.Nodes<ChildrenPattern>()[0], symbols)}";
         }
 
         private string CreateChildrenPatternCondition(string identifier, TranslationDomain domain, ChildrenPattern childrenPattern, Dictionary<string, (string type, string name)> symbols)

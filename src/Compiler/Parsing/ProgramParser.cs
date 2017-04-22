@@ -1,4 +1,4 @@
-﻿using Compiler.Parsing.Data;
+using Compiler.Parsing.Data;
 using System;
 using System.Collections.Generic;
 
@@ -27,8 +27,7 @@ namespace Compiler.Parsing
 		public Compiler.Parsing.Data.Program ParseProgram(IEnumerator<Compiler.Parsing.Data.Token> tokens)
 		{
 			Compiler.Parsing.Data.Program node = new Compiler.Parsing.Data.Program(){ Name = "Program" };
-            Console.WriteLine(tokens.Current.Name);
-            switch(tokens.Current.Name)
+			switch(tokens.Current.Name)
 			{
 				case "interrupt":
 				case "newline":

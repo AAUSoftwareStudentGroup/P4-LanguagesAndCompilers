@@ -2,6 +2,8 @@
 ->:q := Program -> SymbolTable
 ->:s := [Program SymbolTable] -> [SymbolTable]
 -> := [Program SymbolTable] -> [AST SymbolTable]
+<=> := Program <=> SymbolTable
+</> := Program </> SymbolTable
 
 //Program to AST translation initialization
 
@@ -24,9 +26,9 @@ Program:p ->:p ast
 
 //Program to AST translation
 
-[Program[GlobalStatements[EPSILON] eof] SymbolTable:s] -> [Program[eof] s]
-[Program[GlobalStatements:stms eof] SymbolTable:s] -> [Program[stm eof] s1]
-    [stms s] -> [stm:GlobalStatement SymbolTable:s1]
+[Program[GlobalStatements[EPSILON] eof] SymbolTable:s] -> [AST[eof] s]
+[Program[GlobalStatements:stms eof] SymbolTable:s] -> [AST[stm eof] s1]
+    [stms s] -> [GlobalStatement:stm SymbolTable:s1]
 
 [GlobalStatements[GlobalStatement:stm GlobalStatementsP:stmsp] SymbolTable:s] -> [stm2 <- stm1 s2]
     [stm s] -> [GlobalStatement:stm1 SymbolTable:s1]
@@ -69,17 +71,17 @@ Program:p ->:p ast
 
 [Statement[newline] SymbolTable:s] -> [Statement[newline] s]
 
-[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [dclStm s1]
-    [idDcl s] -> [Statement:dclStm SymbolTable:s1]
+[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
+    [idDcl s] -> [*:dclStm SymbolTable:s1]
 
-[Statement[Assignment:ass] SymbolTable:s] -> [assStm s1]
-    [ass s] -> [Statement:assStm SymbolTable:s1]
+[Statement[Assignment:ass] SymbolTable:s] -> [Statement[assStm] s1]
+    [ass s] -> [*:assStm SymbolTable:s1]
 
-[Statement[IfStatement:ifStm] SymbolTable:s] -> [ifStm1 s]
-    [ifStm s] -> [Statement:ifStm1 SymbolTable:s1]
+[Statement[IfStatement:ifStm] SymbolTable:s] -> [Statement[ifStm1] s]
+    [ifStm s] -> [*:ifStm1 SymbolTable:s1]
 
-[Statement[WhileStatement:whileStm] SymbolTable:s] -> [whileStm1 s]
-    [whileStm s] -> [Statement:whileStm1 SymbolTable:s1]
+[Statement[WhileStatement:whileStm] SymbolTable:s] -> [Statement[whileStm1] s]
+    [whileStm s] -> [*:whileStm1 SymbolTable:s1]
 
 [IdentifierDeclaration[intType:t identifier:id] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Declaration[Variable[Type[t2] id2] %Declaration[EPSILON]]]
     t ->:p intType:t1
@@ -116,7 +118,7 @@ Program:p ->:p ast
 
 [Assignment[identifier:id BitSelector[EPSILON] = Expression:expr] SymbolTable:s] -> [IntegerAssignment[id1 = intExpr] s]
     id ->:p identifier:id1
-    [id s] ->:s Variable[intType identifier]
+    [id s] ->:s Variable[Type[intType] identifier]
     [expr s] -> [IntegerExpression:intExpr SymbolTable:s1]
 
 [Assignment[identifier:id BitSelector[EPSILON] = Expression:expr] SymbolTable:s] -> [RegisterAssignment[id1 = registerExpr] s]
@@ -126,7 +128,7 @@ Program:p ->:p ast
 
 [Assignment[identifier:id BitSelector[EPSILON] = Expression:expr] SymbolTable:s] -> [BooleanAssignment[id1 = boolExpr] s]
     id ->:p identifier:id1
-    [id s] ->:s Variable[booleanType identifier]
+    [id s] ->:s Variable[Type[booleanType] identifier]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]
 
 [IfStatement[if ( Expression:expr ) indent Statements:stms dedent] SymbolTable:s] -> [IfStatement[if ( boolExpr ) indent stm dedent] s]

@@ -21,13 +21,31 @@ namespace Compiler
 
             Console.WriteLine(string.Join(", ", tokens.Select(t => t.Name)));
 
+            Console.WriteLine("");
+            Console.WriteLine("--------------------------------------");
+            Console.WriteLine("");
+
             ProgramParser parser = new ProgramParser();
             var tokenEnumerator = tokens.Select(t => new Parsing.Data.Token() { Name = t.Name, Value = t.Value }).GetEnumerator();
             tokenEnumerator.MoveNext();
-            var programTokens = parser.ParseProgram(tokenEnumerator);
-            var ASTConverter = new Translation.ProgramToAST.ProgramToASTTranslator();
-            ASTConverter.Translatep(programTokens as Parsing.Data.Program);
+            var parseTree = parser.ParseProgram(tokenEnumerator);
+            var parseTreeLines = parseTree.Accept(new Parsing.Visitors.PrintVisitor());
+            foreach (var line in parseTreeLines)
+            {
+                Console.WriteLine(line);
+            }
 
+            Console.WriteLine("");
+            Console.WriteLine("--------------------------------------");
+            Console.WriteLine("");
+
+            var astConverter = new Translation.ProgramToAST.ProgramToASTTranslator();
+            AST.Data.AST ast = astConverter.Translatep(parseTree) as AST.Data.AST;
+            var astLines = ast.Accept(new AST.Visitors.PrintVisitor());
+            foreach (var line in astLines)
+            {
+                Console.WriteLine(line);
+            }
             Console.ReadKey();
             //Todo
 
