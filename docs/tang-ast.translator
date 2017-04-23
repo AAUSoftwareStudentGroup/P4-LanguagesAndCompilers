@@ -30,6 +30,9 @@ Program:p ->:p ast
 [Program[GlobalStatements:stms eof] SymbolTable:s] -> [AST[stm eof] s1]
     [stms s] -> [GlobalStatement:stm SymbolTable:s1]
 
+[GlobalStatements[GlobalStatement:stm GlobalStatementsP[EPSILON]] SymbolTable:s] -> [stm1 s1]
+    [stm s] -> [GlobalStatement:stm1 SymbolTable:s1]
+
 [GlobalStatements[GlobalStatement:stm GlobalStatementsP:stmsp] SymbolTable:s] -> [stm2 <- stm1 s2]
     [stm s] -> [GlobalStatement:stm1 SymbolTable:s1]
     [stmsp s1] -> [GlobalStatement:stm2 SymbolTable:s2]
@@ -68,6 +71,8 @@ Program:p ->:p ast
 -> [stm2 <- Statement[CompoundStatement[%Statement newline stm1]] s2]
     [stm s] -> [Statement:stm1 SymbolTable:s1]
     [stmsp s1] -> [Statement:stm2 SymbolTable:s2]
+
+[Statement[EPSILON] SymbolTable:s] -> [Statement[EPSILON] s]
 
 [Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
     [idDcl s] -> [*:dclStm SymbolTable:s1]

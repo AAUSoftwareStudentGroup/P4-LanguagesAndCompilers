@@ -130,7 +130,63 @@ namespace Generator.Parsing
 
             visitorClasses.Add(cloneVisitorClass);
 
+            ClassType printVisitorClass = CreatePrintVisitorClass(visitorName, dataNamespace, visitorNamespace);
+
+            visitorClasses.Add(printVisitorClass);
+
             return visitorClasses.ToArray();
+        }
+
+        private static ClassType CreatePrintVisitorClass(string visitorName, string dataNamespace, string visitorNamespace)
+        {
+            ClassType printVisitorClass = new ClassType(visitorNamespace, "public", "TreePrintVisitor", $"{visitorName}<IEnumerable<string>>")
+            {
+                Usings = new List<string>()
+                {
+                    "using System.Collections.Generic;",
+                    "using System.Linq;"
+                }
+            };
+
+            MethodType visitNode = new MethodType("public override", $"IEnumerable<string>", "Visit")
+            {
+                Parameters = new List<ParameterType>()
+                {
+                    new ParameterType($"{dataNamespace}.Node", "node")
+                },
+                Body = new List<string>()
+                {
+                    "yield return node.Name;",
+                    "int childIndex = 0;",
+                    "foreach (var child in node)",
+                    "{",
+                    "    if(childIndex < node.Count - 1)",
+                    "    {",
+                    "        yield return $\"|-{child.Accept(this).First()}\";",
+                    "    }",
+                    "    else",
+                    "    {",
+                    "        yield return $\"'-{child.Accept(this).First()}\";",
+                    "    }",
+                    "",
+                    "    foreach (var line in child.Accept(this).Skip(1))",
+                    "    {",
+                    "        if (childIndex < node.Count - 1)",
+                    "        {",
+                    "            yield return $\"| {line}\";",
+                    "        }",
+                    "        else",
+                    "        {",
+                    "            yield return $\"  {line}\";",
+                    "        }",
+                    "    }",
+                    "    childIndex++;",
+                    "}"
+                }
+            };
+
+            printVisitorClass.Methods.Add(visitNode);
+            return printVisitorClass;
         }
 
         private static ClassType CreateCloneVisitorClass(BNF bnf, string visitorName, string dataNamespace, string visitorNamespace)
