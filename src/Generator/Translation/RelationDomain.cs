@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Generator.Translation
 {
-    public class TranslationDomain
+    public class RelationDomain
     {
         public string Identifier { get; set; }
         public string Namespace { get; set; }

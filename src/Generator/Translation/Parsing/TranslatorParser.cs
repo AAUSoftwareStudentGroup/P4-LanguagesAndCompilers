@@ -1,3 +1,4 @@
+using Generator.Translation.Data;
 using System;
 using System.Collections.Generic;
 
@@ -29,6 +30,8 @@ namespace Generator.Translation.Parsing
 			switch(tokens.Current.Name)
 			{
 				case "goto":
+				case "<=>":
+				case "</>":
 				case "[":
 				case "symbol":
 				case "newline":
@@ -48,6 +51,8 @@ namespace Generator.Translation.Parsing
 			switch(tokens.Current.Name)
 			{
 				case "goto":
+				case "<=>":
+				case "</>":
 					node.Add(ParseSystem(tokens));
 					node.Add(ParseTerminal(tokens, "newline"));
 					node.Add(ParseSystems(tokens));
@@ -74,6 +79,22 @@ namespace Generator.Translation.Parsing
 					node.Add(ParseTerminal(tokens, ":="));
 					node.Add(ParseDomain(tokens));
 					node.Add(ParseTerminal(tokens, "goto"));
+					node.Add(ParseDomain(tokens));
+					return node;
+				case "<=>":
+					node.Add(ParseTerminal(tokens, "<=>"));
+					node.Add(ParseAlias(tokens));
+					node.Add(ParseTerminal(tokens, ":="));
+					node.Add(ParseDomain(tokens));
+					node.Add(ParseTerminal(tokens, "<=>"));
+					node.Add(ParseDomain(tokens));
+					return node;
+				case "</>":
+					node.Add(ParseTerminal(tokens, "</>"));
+					node.Add(ParseAlias(tokens));
+					node.Add(ParseTerminal(tokens, ":="));
+					node.Add(ParseDomain(tokens));
+					node.Add(ParseTerminal(tokens, "</>"));
 					node.Add(ParseDomain(tokens));
 					return node;
 				default:
@@ -329,6 +350,7 @@ namespace Generator.Translation.Parsing
 			{
 				case "<=>":
 					node.Add(ParseTerminal(tokens, "<=>"));
+					node.Add(ParseAlias(tokens));
 					node.Add(ParseStructure(tokens));
 					return node;
 				default:
@@ -343,6 +365,7 @@ namespace Generator.Translation.Parsing
 			{
 				case "</>":
 					node.Add(ParseTerminal(tokens, "</>"));
+					node.Add(ParseAlias(tokens));
 					node.Add(ParseStructure(tokens));
 					return node;
 				default:

@@ -89,11 +89,11 @@ namespace Generator
             {
                 classTypes.Add(classType);
             }
-            List<TranslationDomain> translationDomains = new List<TranslationDomain>()
+            List<RelationDomain> translationDomains = new List<RelationDomain>()
             {
-                new TranslationDomain(){ Identifier = "Program", Grammar = bnf, Namespace = dataNamespace },
-                new TranslationDomain(){ Identifier = "AST", Grammar = astGrammar, Namespace = astDataNamspace },
-                new TranslationDomain(){ Identifier = "SymbolTable", Grammar = symbolTableGrammar, Namespace = symbolTableDataNamspace },
+                new RelationDomain(){ Identifier = "Program", Grammar = bnf, Namespace = dataNamespace },
+                new RelationDomain(){ Identifier = "AST", Grammar = astGrammar, Namespace = astDataNamspace },
+                new RelationDomain(){ Identifier = "SymbolTable", Grammar = symbolTableGrammar, Namespace = symbolTableDataNamspace },
             };
             ClassType toASTTranslator = translatorGenerator.GenerateTranslatorClass(translator, translatorName, translationDomains, translatorNamespace);
             classTypes.Add(toASTTranslator);

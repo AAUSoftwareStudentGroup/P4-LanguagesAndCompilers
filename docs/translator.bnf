@@ -4,6 +4,8 @@ Systems -> System newline Systems
          | EPSILON
 
 System -> goto Alias := Domain goto Domain
+        | <=> Alias := Domain <=> Domain
+        | </> Alias := Domain </> Domain
 
 Domain -> ListDomain
         | TreeDomain
@@ -41,9 +43,9 @@ StructureOperation -> Goto
 
 Goto -> goto Alias Pattern
 
-Equal -> <=> Structure
+Equal -> <=> Alias Structure
 
-NotEqual -> </> Structure
+NotEqual -> </> Alias Structure
 
 Pattern -> ListPattern
          | TreePattern

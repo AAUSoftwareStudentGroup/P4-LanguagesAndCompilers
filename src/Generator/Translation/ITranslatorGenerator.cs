@@ -9,6 +9,6 @@ namespace Generator.Translation
 {
     interface ITranslatorGenerator
     {
-        ClassType GenerateTranslatorClass(Translator translator, string translatorName, List<TranslationDomain> domains, string translatorNamespace);
+        ClassType GenerateTranslatorClass(Translator translator, string translatorName, List<RelationDomain> domains, string translatorNamespace);
     }
 }

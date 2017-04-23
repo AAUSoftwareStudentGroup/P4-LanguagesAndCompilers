@@ -11,9 +11,9 @@ namespace Generator.Translation
 {
     class TranslatorGenerator : ITranslatorGenerator
     {
-        private List<TranslationDomain> AnalyzeDomain(Domain domain, List<TranslationDomain> translationDomains)
+        private List<RelationDomain> AnalyzeDomain(Domain domain, List<RelationDomain> translationDomains)
         {
-            List<TranslationDomain> resultTranslationDomains = new List<TranslationDomain>();
+            List<RelationDomain> resultTranslationDomains = new List<RelationDomain>();
 
             if (domain.Nodes<TreeDomain>().Count() > 0)
             {
@@ -52,11 +52,11 @@ namespace Generator.Translation
             return aliasName;
         }
 
-        private List<string> AnalyzeReturnTypes(Conclusion conclusion, List<TranslationDomain> translationDomains, Dictionary<string, (string type, string name)> symbols)
+        private List<string> AnalyzeReturnTypes(Conclusion conclusion, List<RelationDomain> translationDomains, Dictionary<string, (string type, string name)> symbols)
         {
             List<string> returnTypes = new List<string>();
             Structure structure = conclusion.Nodes<Structure>()[0];
-            if(structure.Nodes<TreeStructure>().Count() > 0)
+            if (structure.Nodes<TreeStructure>().Count() > 0)
             {
                 TreeStructure treeStructure = structure.Nodes<TreeStructure>()[0];
                 AnalyzeTreeStructureReturnType(translationDomains[0], symbols, returnTypes, treeStructure);
@@ -65,7 +65,7 @@ namespace Generator.Translation
             {
                 int domainIndex = 0;
                 Structures structures = structure.Nodes<ListStructure>()[0].Nodes<Structures>()[0];
-                while(structures.Nodes<TreeStructure>().Count() > 0)
+                while (structures.Nodes<TreeStructure>().Count() > 0)
                 {
                     TreeStructure treeStructure = structures.Nodes<TreeStructure>()[0];
                     AnalyzeTreeStructureReturnType(translationDomains[domainIndex], symbols, returnTypes, treeStructure);
@@ -76,33 +76,36 @@ namespace Generator.Translation
             return returnTypes;
         }
 
-        private static void AnalyzeTreeStructureReturnType(TranslationDomain translationDomain, Dictionary<string, (string type, string name)> symbols, List<string> returnTypes, TreeStructure treeStructure)
+        private static void AnalyzeTreeStructureReturnType(RelationDomain translationDomain, Dictionary<string, (string type, string name)> symbols, List<string> returnTypes, TreeStructure treeStructure)
         {
             string name = treeStructure.Nodes<Name>()[0].Nodes<Token>()[0].Value;
             returnTypes.Add($"{translationDomain.Namespace}.Node");
         }
 
-        public ClassType GenerateTranslatorClass(Translator translator, string translatorName, List<TranslationDomain> translationDomains, string translatorNamespace)
+        public ClassType GenerateTranslatorClass(Translator translator, string translatorName, List<RelationDomain> translationDomains, string translatorNamespace)
         {
             ClassType translatorClass = new ClassType(translatorNamespace, "public", translatorName, null);
 
             Node systems = translator.Nodes<Systems>()[0];
 
-            Dictionary<string, TranslationSystem> translationSystems = new Dictionary<string, TranslationSystem>();
+            Dictionary<(string alias, string symbol), Relation> relations = new Dictionary<(string alias, string symbol), Relation>();
 
             while (systems.Nodes<Data.System>().Count() > 0)
             {
                 Data.System system = systems.Nodes<Data.System>()[0];
 
+                string symbol = system.Nodes<Token>()[0].Value;
+
                 string alias = GetAlias(system.Nodes<Alias>()[0]);
 
-                Domain domain = system.Nodes<Domain>()[0];
-                Domain coDomain = system.Nodes<Domain>()[1];
+                Domain leftDomain = system.Nodes<Domain>()[0];
+                Domain rightDomain = system.Nodes<Domain>()[1];
 
-                translationSystems.Add(alias, new TranslationSystem()
+                relations.Add((alias, symbol), new Relation()
                 {
-                    Domain = AnalyzeDomain(domain, translationDomains),
-                    CoDomain = AnalyzeDomain(coDomain, translationDomains)
+                    Operator = system.Nodes<Token>()[0].Value,
+                    LeftDomains = AnalyzeDomain(leftDomain, translationDomains),
+                    RightDomains = AnalyzeDomain(rightDomain, translationDomains)
                 });
 
                 systems = systems.Nodes<Systems>()[0];
@@ -123,8 +126,9 @@ namespace Generator.Translation
 
                     string alias = GetAlias(conclusion.Nodes<Alias>()[0]);
 
-                    AnalyzePattern(pattern, false, translationSystems[alias].Domain, patternConditions, parameters, symbols);
+                    string symbol = "->";
 
+                    AnalyzePattern(pattern, false, relations[(alias, symbol)].LeftDomains, patternConditions, parameters, symbols);
 
                     MethodType method = new MethodType("public", null, $"Translate{alias}")
                     {
@@ -145,7 +149,7 @@ namespace Generator.Translation
                             Structure structure = premis.Nodes<Structure>().FirstOrDefault();
                             if (structure != null)
                             {
-                                
+
                                 StructureOperation operation = premis.Nodes<StructureOperation>()[0];
                                 Goto gotoNode = operation.Nodes<Goto>().FirstOrDefault();
                                 if (gotoNode != null)
@@ -154,7 +158,7 @@ namespace Generator.Translation
                                     string premisAlias = GetAlias(gotoNode.Nodes<Alias>()[0]);
                                     List<string> patternConditions1 = new List<string>();
                                     List<ParameterType> parameters1 = new List<ParameterType>();
-                                    AnalyzePattern(pattern1, true, translationSystems[premisAlias].CoDomain, patternConditions1, parameters1, symbols);
+                                    AnalyzePattern(pattern1, true, relations[(premisAlias, "->")].RightDomains, patternConditions1, parameters1, symbols);
 
                                     string returnTypeStr1 = string.Join(", ", parameters1.Select(p => $"{string.Join(".", p.Type.Split('.').Reverse().Skip(1).Reverse().Concat(new string[] { "Node" }))} {p.Identifier}"));
 
@@ -168,13 +172,13 @@ namespace Generator.Translation
                                     if (structure.Nodes<ListStructure>().Count() > 0)
                                     {
                                         ListStructure listStructure = structure.Nodes<ListStructure>()[0];
-                                        List<string> lst = CreateListStructure(listStructure, translationSystems[premisAlias].Domain, symbols);
+                                        List<string> lst = CreateListStructure(listStructure, relations[(premisAlias, "->")].LeftDomains, symbols);
                                         translatorArgs = string.Join(", ", lst);
                                     }
                                     else if (structure.Nodes<TreeStructure>().Count() > 0)
                                     {
                                         TreeStructure treeStructure = structure.Nodes<TreeStructure>()[0];
-                                        translatorArgs = CreateTreeStructure(treeStructure, translationSystems[premisAlias].Domain[0], symbols);
+                                        translatorArgs = CreateTreeStructure(treeStructure, relations[(premisAlias, "->")].LeftDomains[0], symbols);
                                     }
 
                                     method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}{returnTypeStr1} = Translate{premisAlias}({translatorArgs});");
@@ -186,19 +190,42 @@ namespace Generator.Translation
                                 else
                                 {
                                     Equal equal = operation.Nodes<Equal>().FirstOrDefault();
-                                    if(equal != null)
+                                    NotEqual notEqual = operation.Nodes<NotEqual>().FirstOrDefault();
+                                    bool compareEqual = equal != null;
+                                    if (compareEqual || notEqual != null)
                                     {
-                                        Structure compareStructure = equal.Nodes<Structure>()[0];
+                                        string premisAlias = null;
+                                        Structure compareStructure = null;
+                                        if (compareEqual)
+                                        {
+                                            premisAlias = GetAlias(equal.Nodes<Alias>()[0]);
+                                            compareStructure = equal.Nodes<Structure>()[0];
+                                        }
+                                        else
+                                        {
+                                            premisAlias = GetAlias(notEqual.Nodes<Alias>()[0]);
+                                            compareStructure = notEqual.Nodes<Structure>()[0];
+                                        }
+
+                                        string compareMethod = compareEqual ? "AreEqual" : "!AreEqual";
+
                                         if (structure.Nodes<ListStructure>().Count() > 0 && compareStructure.Nodes<ListStructure>().Count() > 0)
                                         {
-                                            method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}if(AreEqual({CreateListStructure(}, {}))");
+                                            ListStructure left = structure.Nodes<ListStructure>()[0];
+                                            ListStructure right = compareStructure.Nodes<ListStructure>()[0];
+                                            string leftStructure = $"({string.Join(", ", CreateListStructure(left, relations[(premisAlias, "<=>")].LeftDomains, symbols))})";
+                                            string rightStructure = $"({string.Join(", ", CreateListStructure(right, relations[(premisAlias, "<=>")].RightDomains, symbols))})";
+                                            method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}if({compareMethod}({leftStructure}, {rightStructure}))");
                                         }
-                                        else if (structure.Nodes<TreeStructure>().Count() > 0)
+                                        else if (structure.Nodes<TreeStructure>().Count() > 0 && compareStructure.Nodes<TreeStructure>().Count() > 0)
                                         {
-                                            TreeStructure treeStructure = structure.Nodes<TreeStructure>()[0];
-                                            translatorArgs = CreateTreeStructure(treeStructure, translationSystems[premisAlias].Domain[0], symbols);
+                                            TreeStructure left = structure.Nodes<TreeStructure>()[0];
+                                            TreeStructure right = compareStructure.Nodes<TreeStructure>()[0];
+                                            string leftStructure = $"({string.Join(", ", CreateTreeStructure(left, relations[(premisAlias, "</>")].LeftDomains[0], symbols))})";
+                                            string rightStructure = $"({string.Join(", ", CreateTreeStructure(right, relations[(premisAlias, "</>")].RightDomains[0], symbols))})";
+                                            method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}if({compareMethod}({leftStructure}, {rightStructure}))");
                                         }
-                                        
+
                                         method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}{{");
                                         indentLevel++;
                                     }
@@ -209,7 +236,7 @@ namespace Generator.Translation
                         premises = premises.Nodes<PremisesP>().FirstOrDefault();
                     }
 
-                    List<string> returnTypes = AnalyzeReturnTypes(conclusion, translationSystems[alias].CoDomain, symbols);
+                    List<string> returnTypes = AnalyzeReturnTypes(conclusion, relations[(alias, "->")].RightDomains, symbols);
 
                     string returnTypeStr = string.Join(", ", returnTypes);
 
@@ -225,13 +252,13 @@ namespace Generator.Translation
                     if (conclusionStructure.Nodes<ListStructure>().Count() > 0)
                     {
                         ListStructure listStructure = conclusionStructure.Nodes<ListStructure>()[0];
-                        List<string> lst = CreateListStructure(listStructure, translationSystems[alias].CoDomain, symbols);
+                        List<string> lst = CreateListStructure(listStructure, relations[(alias, "->")].RightDomains, symbols);
                         method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}return ({ string.Join(", ", lst) });");
                     }
                     else if (conclusionStructure.Nodes<TreeStructure>().Count() > 0)
                     {
                         TreeStructure treeStructure = conclusionStructure.Nodes<TreeStructure>()[0];
-                        method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}return {CreateTreeStructure(treeStructure, translationSystems[alias].CoDomain[0], symbols)};");
+                        method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}return {CreateTreeStructure(treeStructure, relations[(alias, "->")].RightDomains[0], symbols)};");
                     }
 
                     indentLevel--;
@@ -246,7 +273,7 @@ namespace Generator.Translation
 
                     MethodType exisitingMethod = translatorClass.Methods.FirstOrDefault(m => m.Identifier == method.Identifier && m.Type == method.Type && m.Parameters.Count == parameters.Count && m.Parameters.Count == m.Parameters.Select(p => p.Type).Intersect(parameters.Select(p => p.Type)).Count());
 
-                    if(exisitingMethod != null)
+                    if (exisitingMethod != null)
                     {
                         foreach (var statement in method.Body)
                         {
@@ -267,23 +294,28 @@ namespace Generator.Translation
                 method.Body.Add("throw new System.Exception();");
             }
 
-            foreach (var translationSystem in translationSystems)
+            foreach (var relation in relations.Where(r => r.Key.symbol == "->"))
             {
-                if(translationSystem.Value.Domain.Count == 1 && translationSystem.Value.CoDomain.Count == 1)
+                if (relation.Value.LeftDomains.Count == 1 && relation.Value.RightDomains.Count == 1)
                 {
-                    MethodType translateMethod = new MethodType("public", $"{translationSystem.Value.CoDomain[0].Namespace}.Token", $"Translate{translationSystem.Key}")
+                    MethodType translateMethod = new MethodType("public", $"{relation.Value.RightDomains[0].Namespace}.Token", $"Translate{relation.Key.alias}")
                     {
                         Parameters = new List<ParameterType>()
                         {
-                            new ParameterType($"{translationSystem.Value.Domain[0].Namespace}.Token", "token")
+                            new ParameterType($"{relation.Value.LeftDomains[0].Namespace}.Token", "token")
                         },
                         Body = new List<string>()
                         {
-                            $"return new {translationSystem.Value.CoDomain[0].Namespace}.Token() {{ Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column }};"
+                            $"return new {relation.Value.RightDomains[0].Namespace}.Token() {{ Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column }};"
                         }
                     };
                     translatorClass.Methods.Add(translateMethod);
                 }
+            }
+
+            foreach (var relation in relations.Where(r => r.Key.symbol == "<=>" || r.Key.symbol == "</>"))
+            {
+                AddAreEqualMethod(relation.Key.alias, relation.Value.LeftDomains, relation.Value.RightDomains, translatorClass.Methods);
             }
 
             foreach (var translationDomain in translationDomains)
@@ -321,7 +353,104 @@ namespace Generator.Translation
             return translatorClass;
         }
 
-        private string FullType(string typeName, TranslationDomain domain)
+        private void AddAreEqualMethod(string alias, List<RelationDomain> leftDomains, List<RelationDomain> rightDomains, List<MethodType> methods)
+        {
+            if(!AlreadyDefined(alias, leftDomains, rightDomains, methods))
+            {
+                MethodType compareMethod = new MethodType("public", "bool", $"AreEqual{alias}");
+                if(leftDomains.Count == 1 && rightDomains.Count == 1)
+                {
+                    compareMethod.Parameters = new List<ParameterType>()
+                    {
+                        new ParameterType($"{leftDomains[0].Namespace}.Node", "left"),
+                        new ParameterType($"{rightDomains[0].Namespace}.Node", "right")
+                    };
+                    methods.Add(compareMethod);
+                    compareMethod.Body = new List<string>()
+                    {
+                        "if (left.Count != right.Count || left.Name != right.Name)",
+                        "{",
+                        "    return false;",
+                        "}",
+                       $"if (left is {leftDomains[0].Namespace}.Token || right is {rightDomains[0].Namespace}.Token)",
+                        "{",
+                       $"    if (left is {leftDomains[0].Namespace}.Token leftToken && right is {rightDomains[0].Namespace}.Token rightToken && leftToken.Value == rightToken.Value)",
+                        "    {",
+                        "        return true;",
+                        "    }",
+                        "    return false;",
+                        "}",
+                        "for (int index = 0; index < left.Count; index++)",
+                        "{",
+                        "    if (!AreEqual(left[index], right[index]))",
+                        "    {",
+                        "        return false;",
+                        "    }",
+                        "}",
+                        "return true;"
+                    };
+                }
+                else
+                {
+                    compareMethod.Parameters = new List<ParameterType>()
+                    {
+                        new ParameterType(CreateCompareParameterTupleType(leftDomains, "left"), "left"),
+                        new ParameterType(CreateCompareParameterTupleType(rightDomains, "right"), "right")
+                    };
+
+                    methods.Add(compareMethod);
+
+                    for (int i = 0; i < leftDomains.Count; i++)
+                    {
+                        RelationDomain leftDomain = leftDomains[i];
+                        RelationDomain rightDomain = rightDomains[i];
+                        AddAreEqualMethod("", new List<RelationDomain>() { leftDomain }, new List<RelationDomain>() { rightDomain }, methods);
+                        compareMethod.Body.Add($"if(!AreEqual(left.left{i}, right.right{i})");
+                        compareMethod.Body.Add("{");
+                        compareMethod.Body.Add("\treturn false;");
+                        compareMethod.Body.Add("}");
+                    }
+
+                    compareMethod.Body.Add("return true;");
+                }
+            }
+        }
+
+        private string CreateCompareParameterTupleType(List<RelationDomain> domains, string prefix)
+        {
+            List<string> types = new List<string>();
+
+            for (int i = 0; i < domains.Count; i++)
+            {
+                types.Add($"{domains[i].Namespace}.Node {prefix}{i}");
+            }
+
+            return string.Join(", ", types);
+        }
+
+        private bool AlreadyDefined(string alias, List<RelationDomain> leftDomains, List<RelationDomain> rightDomains, List<MethodType> methods)
+        {
+            string leftType = $"{leftDomains[0].Namespace}.Node";
+            string rightType = $"{rightDomains[0].Namespace}.Node";
+
+            if (leftDomains.Count > 1)
+            {
+                leftType = CreateCompareParameterTupleType(leftDomains, "left");
+                rightType = CreateCompareParameterTupleType(rightDomains, "right");
+            }
+
+            foreach (var method in methods.Where(m => m.Identifier == $"AreEqual{alias}"))
+            {
+                if(method.Parameters.Count == 2 && method.Parameters[0].Type == leftType && method.Parameters[1].Type == rightType)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private string FullType(string typeName, RelationDomain domain)
         {
             if (domain.Grammar.ContainsKey(typeName))
             {
@@ -330,7 +459,7 @@ namespace Generator.Translation
             return $"{domain.Namespace}.{typeName}?";
         }
 
-        private void AnalyzePattern(Pattern pattern, bool useAlias, List<TranslationDomain> domain, List<string> patternConditions, List<ParameterType> parameters, Dictionary<string, (string type, string name)> symbols)
+        private void AnalyzePattern(Pattern pattern, bool useAlias, List<RelationDomain> domain, List<string> patternConditions, List<ParameterType> parameters, Dictionary<string, (string type, string name)> symbols)
         {
             int domainIndex = 0;
             if (pattern != null && pattern.Nodes<ListPattern>().Count() > 0)
@@ -357,7 +486,7 @@ namespace Generator.Translation
             }
         }
 
-        private void AnalyzeTreePattern(List<string> patternConditions, bool useAlias, TranslationDomain domain, List<ParameterType> parameters, Dictionary<string, (string type, string name)> symbols, TreePattern treePattern)
+        private void AnalyzeTreePattern(List<string> patternConditions, bool useAlias, RelationDomain domain, List<ParameterType> parameters, Dictionary<string, (string type, string name)> symbols, TreePattern treePattern)
         {
             Name name = treePattern.Nodes<Name>()[0];
             string type = name.Nodes<Token>()[0].Value;
@@ -401,7 +530,7 @@ namespace Generator.Translation
             parameters.Add(new ParameterType(fullType, identifier));
         }
 
-        private string CreateTreePatternCondition(string identifier, TranslationDomain domain, TreePattern treePattern, Dictionary<string, (string type, string name)> symbols)
+        private string CreateTreePatternCondition(string identifier, RelationDomain domain, TreePattern treePattern, Dictionary<string, (string type, string name)> symbols)
         {
             Name nameN = treePattern.Nodes<Name>()[0];
             string name = nameN.Nodes<Token>()[0].Value;
@@ -429,7 +558,7 @@ namespace Generator.Translation
                     fullType = FullType(type, domain);
                 }
             }
-            
+
             Alias alias = treePattern.Nodes<Alias>()[0];
             var aliasTokens = alias.Nodes<Token>().ToList();
             if (aliasTokens.Count == 2 && aliasTokens[1].Name == "symbol")
@@ -443,9 +572,9 @@ namespace Generator.Translation
             return $"{identifier} != null && {identifier}.Name == {namePattern} && {CreateChildrenPatternCondition(identifier, domain, treePattern.Nodes<ChildrenPattern>()[0], symbols)}";
         }
 
-        private string CreateChildrenPatternCondition(string identifier, TranslationDomain domain, ChildrenPattern childrenPattern, Dictionary<string, (string type, string name)> symbols)
+        private string CreateChildrenPatternCondition(string identifier, RelationDomain domain, ChildrenPattern childrenPattern, Dictionary<string, (string type, string name)> symbols)
         {
-            if(childrenPattern.Nodes<Token>()[0].Name == "EPSILON")
+            if (childrenPattern.Nodes<Token>()[0].Name == "EPSILON")
             {
                 return "true";
             }
@@ -467,11 +596,11 @@ namespace Generator.Translation
                 patterns = patterns.Nodes<Patterns>().FirstOrDefault();
                 index++;
             }
-            
+
             return $"({identifier}.Count == {index} && {childrenConditions})";
         }
 
-        private List<string> CreateListStructure(ListStructure listStructure, List<TranslationDomain> domains, Dictionary<string, (string type, string name)> symbols)
+        private List<string> CreateListStructure(ListStructure listStructure, List<RelationDomain> domains, Dictionary<string, (string type, string name)> symbols)
         {
             Structures structures = listStructure.Nodes<Structures>()[0];
             List<string> result = new List<string>();
@@ -494,7 +623,7 @@ namespace Generator.Translation
             return result;
         }
 
-        private List<string> CreateStructures(Structures structures, TranslationDomain domain, Dictionary<string, (string type, string name)> symbols)
+        private List<string> CreateStructures(Structures structures, RelationDomain domain, Dictionary<string, (string type, string name)> symbols)
         {
             List<string> result = new List<string>();
             while (structures.Nodes<TreeStructure>().Count() > 0)
@@ -508,7 +637,7 @@ namespace Generator.Translation
             return result;
         }
 
-        private string CreateTreeStructure(TreeStructure treeStructure, TranslationDomain domain, Dictionary<string, (string type, string name)> symbols)
+        private string CreateTreeStructure(TreeStructure treeStructure, RelationDomain domain, Dictionary<string, (string type, string name)> symbols)
         {
             string name = treeStructure.Nodes<Name>()[0].Nodes<Token>()[0].Value;
             bool isPlaceholder = treeStructure.Nodes<Placeholder>()[0].Nodes<Token>()[0].Name == "%";
@@ -531,7 +660,7 @@ namespace Generator.Translation
             {
                 instance = $"new {domain.Namespace}.{name}({(isPlaceholder ? "true" : "false")})";
             }
-            if(treeStructure.Nodes<Insertion>()[0].Nodes<TreeStructure>().Count() > 0)
+            if (treeStructure.Nodes<Insertion>()[0].Nodes<TreeStructure>().Count() > 0)
             {
                 TreeStructure insertTreeStructure = treeStructure.Nodes<Insertion>()[0].Nodes<TreeStructure>()[0];
                 instance = $"Insert({instance}, {CreateTreeStructure(insertTreeStructure, domain, symbols)}) as {symbols[name].type}";

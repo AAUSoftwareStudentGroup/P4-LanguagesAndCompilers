@@ -32,14 +32,20 @@ namespace Compiler.Translation.ProgramToAST
 		{
 			if(identifier != null && identifier.Name == "identifier" && true && declaration != null && declaration.Name == "Declaration" && (declaration.Count == 2 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && true && declaration[0][1] != null && declaration[0][1].Name == "identifier" && true) && declaration[1] != null && declaration[1].Name == "Declaration" && true))
 			{
-				return declaration[0] as Compiler.Translation.SymbolTable.Data.Variable;
+				if(AreEqual((identifier as Compiler.Parsing.Data.Token), (declaration[0][1] as Compiler.Translation.SymbolTable.Data.Token)))
+				{
+					return declaration[0] as Compiler.Translation.SymbolTable.Data.Variable;
+				}
 			}
 			if(identifier != null && identifier.Name == "identifier" && true && declaration != null && declaration.Name == "Declaration" && (declaration.Count == 2 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && true && declaration[0][1] != null && declaration[0][1].Name == "identifier" && true) && declaration[1] != null && declaration[1].Name == "Declaration" && true))
 			{
-				Compiler.Translation.SymbolTable.Data.Node var = Translates(identifier as Compiler.Parsing.Data.Token, declaration[1] as Compiler.Translation.SymbolTable.Data.Declaration);
-				if(var != null && var.Name == "Variable" && true)
+				if(!AreEqual((identifier as Compiler.Parsing.Data.Token), (declaration[0][1] as Compiler.Translation.SymbolTable.Data.Token)))
 				{
-					return var as Compiler.Translation.SymbolTable.Data.Variable;
+					Compiler.Translation.SymbolTable.Data.Node var = Translates(identifier as Compiler.Parsing.Data.Token, declaration[1] as Compiler.Translation.SymbolTable.Data.Declaration);
+					if(var != null && var.Name == "Variable" && true)
+					{
+						return var as Compiler.Translation.SymbolTable.Data.Variable;
+					}
 				}
 			}
 			if(identifier != null && identifier.Name == "identifier" && true && declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON" && true))
@@ -980,6 +986,30 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Token Translateq(Compiler.Parsing.Data.Token token)
 		{
 			return new Compiler.Translation.SymbolTable.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
+		}
+
+		public bool AreEqual(Compiler.Parsing.Data.Node left, Compiler.Translation.SymbolTable.Data.Node right)
+		{
+			if (left.Count != right.Count || left.Name != right.Name)
+			{
+			    return false;
+			}
+			if (left is Compiler.Parsing.Data.Token || right is Compiler.Translation.SymbolTable.Data.Token)
+			{
+			    if (left is Compiler.Parsing.Data.Token leftToken && right is Compiler.Translation.SymbolTable.Data.Token rightToken && leftToken.Value == rightToken.Value)
+			    {
+			        return true;
+			    }
+			    return false;
+			}
+			for (int index = 0; index < left.Count; index++)
+			{
+			    if (!AreEqual(left[index], right[index]))
+			    {
+			        return false;
+			    }
+			}
+			return true;
 		}
 
 		public Compiler.Parsing.Data.Node Insert(Compiler.Parsing.Data.Node left, Compiler.Parsing.Data.Node right)
