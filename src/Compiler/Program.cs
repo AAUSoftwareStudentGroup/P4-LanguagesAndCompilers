@@ -12,7 +12,7 @@ namespace Compiler
         {
             Lexer lexer = new Lexer("../../docs/tang.tokens.json");
 
-            var tokens = lexer.Analyse(File.ReadAllText("../../docs/samples/Empty.tang"));
+            var tokens = lexer.Analyse(File.ReadAllText("../../docs/samples/Register.tang"));
 
             if (args.Any())
             {
@@ -46,7 +46,6 @@ namespace Compiler
             {
                 Console.WriteLine(line);
             }
-            Console.ReadKey();
             //Todo
 
         }
