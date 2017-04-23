@@ -52,9 +52,9 @@ namespace Generator
             string parsingNamespace = "Compiler.Parsing";
             string visitorNamespace = "Compiler.Parsing.Visitors";
             ClassType programParser = parserGenerator.GenerateParserClass(bnf, programParserName, dataNamespace, parsingNamespace);
-            ClassType programVisitor = parserGenerator.GenerateVisitorClass(bnf, programVisitorName, dataNamespace, visitorNamespace);
+            ClassType[] programVisitors = parserGenerator.GenerateVisitorClasses(bnf, programVisitorName, dataNamespace, visitorNamespace);
             ClassType[] programData = parserGenerator.GenerateParseTreeClasses(bnf, programVisitorName, dataNamespace, visitorNamespace);
-            List<ClassType> classTypes = new List<ClassType>(programData) { programParser, programVisitor };
+            IEnumerable<ClassType> classesToGenerate = new List<ClassType>(programData.Union(programVisitors)) { programParser };
             Console.WriteLine("\tGenerating Program to AST translator...");
             Lexer lexer = new Lexer("../../docs/translator.tokens.json");
             IEnumerator<Translation.Data.Token> tokens = lexer.Analyse(File.ReadAllText("../../docs/tang-ast.translator")).Select(t => new Translation.Data.Token()
@@ -73,37 +73,34 @@ namespace Generator
             string symbolTableVisitorNamspace = "Compiler.Translation.SymbolTable.Visitors";
             string symbolTableVisitorName = "SymbolTableVisitor";
             string astDataNamspace = "Compiler.AST.Data";
-            string astVisitorNamspace = "Compiler.AST.Visitors";
+            string astVisitorNamespace = "Compiler.AST.Visitors";
             string astVisitorName = "ASTVisitor";
             BNF astGrammar = bnfParser.Parse("../../docs/ast.bnf");
             BNF symbolTableGrammar = bnfParser.Parse("../../docs/symboltable.bnf");
-            ClassType symbolTableVisitor = parserGenerator.GenerateVisitorClass(symbolTableGrammar, symbolTableVisitorName, symbolTableDataNamspace, symbolTableVisitorNamspace);
-            classTypes.Add(symbolTableVisitor);
-            foreach (ClassType classType in parserGenerator.GenerateParseTreeClasses(symbolTableGrammar, symbolTableVisitorName, symbolTableDataNamspace, symbolTableVisitorNamspace))
+
+            classesToGenerate = classesToGenerate.Union(parserGenerator.GenerateVisitorClasses(symbolTableGrammar, symbolTableVisitorName, symbolTableDataNamspace, symbolTableVisitorNamspace));
+            classesToGenerate = classesToGenerate.Union(parserGenerator.GenerateParseTreeClasses(symbolTableGrammar, symbolTableVisitorName, symbolTableDataNamspace, symbolTableVisitorNamspace));
+            classesToGenerate = classesToGenerate.Union(parserGenerator.GenerateVisitorClasses(astGrammar, astVisitorName, astDataNamspace, astVisitorNamespace));
+            classesToGenerate = classesToGenerate.Union(parserGenerator.GenerateParseTreeClasses(astGrammar, astVisitorName, astDataNamspace, astVisitorNamespace));
+
+            List<RelationDomain> relationDomains = new List<RelationDomain>()
             {
-                classTypes.Add(classType);
-            }
-            ClassType astVisitor = parserGenerator.GenerateVisitorClass(astGrammar, astVisitorName, astDataNamspace, astVisitorNamspace);
-            classTypes.Add(astVisitor);
-            foreach (ClassType classType in parserGenerator.GenerateParseTreeClasses(astGrammar, astVisitorName, astDataNamspace, astVisitorNamspace))
-            {
-                classTypes.Add(classType);
-            }
-            List<RelationDomain> translationDomains = new List<RelationDomain>()
-            {
-                new RelationDomain(){ Identifier = "Program", Grammar = bnf, Namespace = dataNamespace },
-                new RelationDomain(){ Identifier = "AST", Grammar = astGrammar, Namespace = astDataNamspace },
-                new RelationDomain(){ Identifier = "SymbolTable", Grammar = symbolTableGrammar, Namespace = symbolTableDataNamspace },
+                new RelationDomain(){ Identifier = "Program", Grammar = bnf, DataNamespace = dataNamespace, VisitorNamespace = visitorNamespace },
+                new RelationDomain(){ Identifier = "AST", Grammar = astGrammar, DataNamespace = astDataNamspace, VisitorNamespace = astVisitorNamespace },
+                new RelationDomain(){ Identifier = "SymbolTable", Grammar = symbolTableGrammar, DataNamespace = symbolTableDataNamspace, VisitorNamespace = symbolTableVisitorNamspace },
             };
-            ClassType toASTTranslator = translatorGenerator.GenerateTranslatorClass(translator, translatorName, translationDomains, translatorNamespace);
-            classTypes.Add(toASTTranslator);
-            foreach (ClassType classType in classTypes)
+
+            ClassType toASTTranslator = translatorGenerator.GenerateTranslatorClass(translator, translatorName, relationDomains, translatorNamespace);
+
+            classesToGenerate = classesToGenerate.Append(toASTTranslator);
+
+            foreach (ClassType classType in classesToGenerate)
             {
                 string folder = $"../{string.Join("/", classType.NameSpace.Split('.'))}";
                 Directory.CreateDirectory(folder);
                 classGenerator.Generate(classType, $"{folder}/{classType.Identifier.Split('<')[0]}.cs");
             }
-            Console.WriteLine($"...Done {classTypes.Count} classes generated. Thank You.");
+            Console.WriteLine($"...Done {classesToGenerate.Count()} classes generated. Approximately {classesToGenerate.Sum(c => c.Methods.Sum(m => m.Body.Count + 3) + c.Usings.Count + c.Fields.Count)} lines of code. Thank You.");
 #endif
         }
     }

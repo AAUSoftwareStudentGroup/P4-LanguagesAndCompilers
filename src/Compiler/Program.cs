@@ -12,14 +12,14 @@ namespace Compiler
         {
             Lexer lexer = new Lexer("../../docs/tang.tokens.json");
 
-            var tokens = lexer.Analyse(File.ReadAllText("../../docs/samples/Alias.tang"));
+            var tokens = lexer.Analyse(File.ReadAllText("../../docs/samples/Register.tang"));
 
             if (args.Any())
             {
                 tokens = lexer.Analyse(File.ReadAllText(args[0]));
             }
 
-            Console.WriteLine(string.Join(", ", tokens.Select(t => t.Name)));
+            Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
 
             Console.WriteLine("");
             Console.WriteLine("--------------------------------------");

@@ -9,7 +9,7 @@ Interrupt -> interrupt ( IntLiteral ) indent Statement dedent
 
 CompoundGlobalStatement -> GlobalStatement newline GlobalStatement
 
-Statement -> newline 
+Statement -> EPSILON 
            | CompoundStatement
            | IntegerDeclaration
            | BooleanDeclaration
@@ -33,7 +33,7 @@ BooleanDeclaration -> booleanType identifier
 
 BooleanAssignment -> identifier = BooleanExpression
 
-DirectBitAssignment -> register ( IntegerExpression ) { IntegerExpression } = BooleanExpression
+DirectBitAssignment -> register ( IntLiteral ) { IntegerExpression } = BooleanExpression
 
 IndirectBitAssignment -> identifier { IntegerExpression } = BooleanExpression
 
@@ -44,7 +44,7 @@ RegisterAssignment -> identifier = RegisterExpression
 RegisterExpression -> RegisterLiteral
 					| RegisterVariable
 
-RegisterLiteral -> register ( IntegerExpression )
+RegisterLiteral -> register ( IntLiteral )
 
 RegisterVariable -> identifier
 
@@ -90,7 +90,7 @@ BooleanExpression -> true
 
 BooleanVariable -> identifier
 
-DirectBitValue -> register ( IntegerExpression ) { IntegerExpression }
+DirectBitValue -> register ( IntLiteral ) { IntegerExpression }
 
 IndirectBitValue -> RegisterVariable { IntegerExpression }
 

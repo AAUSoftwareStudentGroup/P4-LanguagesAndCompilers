@@ -8,7 +8,8 @@ namespace Generator.Translation
     public class RelationDomain
     {
         public string Identifier { get; set; }
-        public string Namespace { get; set; }
+        public string DataNamespace { get; set; }
+        public string VisitorNamespace { get; set; }
         public BNF Grammar { get; set; }
     }
 }

@@ -9,6 +9,6 @@ namespace Generator.Parsing
     {
         ClassType[] GenerateParseTreeClasses(BNF bnf, string visitorName, string dataNamespace, string visitorNamespace);
         ClassType GenerateParserClass(BNF bnf, string parserName, string dataNamespace, string parserNamespace);
-        ClassType GenerateVisitorClass(BNF bnf, string visitorName, string dataNamespace, string visitorNamespace);
+        ClassType[] GenerateVisitorClasses(BNF bnf, string visitorName, string dataNamespace, string visitorNamespace);
     }
 }

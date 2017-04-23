@@ -69,8 +69,6 @@ Program:p ->:p ast
     [stm s] -> [Statement:stm1 SymbolTable:s1]
     [stmsp s1] -> [Statement:stm2 SymbolTable:s2]
 
-[Statement[newline] SymbolTable:s] -> [Statement[newline] s]
-
 [Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
     [idDcl s] -> [*:dclStm SymbolTable:s1]
 
@@ -82,6 +80,9 @@ Program:p ->:p ast
 
 [Statement[WhileStatement:whileStm] SymbolTable:s] -> [Statement[whileStm1] s]
     [whileStm s] -> [*:whileStm1 SymbolTable:s1]
+
+[Statement[RegisterStatement:regStm] SymbolTable:s] -> [Statement[regStm1] s1]
+    [regStm s] -> [*:regStm1 SymbolTable:s1]
 
 [IdentifierDeclaration[intType:t identifier:id] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Declaration[Variable[Type[t2] id2] %Declaration[EPSILON]]]
     t ->:p intType:t1
@@ -98,19 +99,20 @@ Program:p ->:p ast
     [id s] ->:s Variable[EPSILON]
 
 [IdentifierDeclaration[booleanType:t identifier:id] SymbolTable:s] -> [BooleanDeclaration[t1 id1] s <- Declaration[Variable[Type[t2] id2] %Declaration[EPSILON]]]
-    t ->:p registerType:t1
-    t ->:q registerType:t2
+    t ->:p booleanType:t1
+    t ->:q booleanType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
     [id s] ->:s Variable[EPSILON]
 
-[RegisterStatement[registerType RegisterOperation[( Expression:expr1 ) { Expression:expr2 } = Expression:expr3]] SymbolTable:s] 
--> [DirectBitAssignment[registerType ( intExpr1 ) { intExpr2 } = boolExpr] s]
-    [expr1 s] -> [IntegerExpression:intExpr1 SymbolTable:s1]
+[RegisterStatement[registerType:t RegisterOperation[( intLiteral:i ) { Expression:expr2 } = Expression:expr3]] SymbolTable:s] 
+-> [DirectBitAssignment[regType ( i1 ) { intExpr2 } = boolExpr] s]
+    t ->:p registerType:regType
+    i ->:p intLiteral:i1
     [expr2 s] -> [IntegerExpression:intExpr2 SymbolTable:s2]
     [expr3 s] -> [BooleanExpression:boolExpr SymbolTable:s3]
 
-[Assignment[identifier:id BitSelector[{ Expression:expr1 }] = Expression:expr2] SymbolTable:s] -> [IndirectBitAssigment[id1 { intExpr } = boolExpr] s]
+[Assignment[identifier:id BitSelector[{ Expression:expr1 }] = Expression:expr2] SymbolTable:s] -> [IndirectBitAssignment[id1 { intExpr } = boolExpr] s]
     id ->:p identifier:id1
     [id s] ->:s Variable[Type[registerType] identifier]
     [expr1 s] -> [IntegerExpression:intExpr SymbolTable:s1]
@@ -146,7 +148,7 @@ Program:p ->:p ast
     [andExpr s] -> [*:expr SymbolTable]
 [OrExpression[AndExpression:andExpr OrExpressionP:orExprP] SymbolTable:s] -> [expr2 <- expr1 s]
     [andExpr s] -> [BooleanExpression:expr1 SymbolTable]
-    [orExprP s] -> [BooleanAssignment:expr2 SymbolTable]
+    [orExprP s] -> [BooleanExpression:expr2 SymbolTable]
 
 [OrExpressionP[or AndExpression:andExpr OrExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[OrExpression[%BooleanExpression or expr]] s]
     [andExpr s] -> [BooleanExpression:expr SymbolTable]
@@ -159,7 +161,7 @@ Program:p ->:p ast
     [eqExpr s] -> [*:expr SymbolTable]
 [AndExpression[EqExpression:eqExpr AndExpressionP:andExprP] SymbolTable:s] -> [expr2 <- expr1 s]
     [eqExpr s] -> [BooleanExpression:expr1 SymbolTable]
-    [andExprP s] -> [BooleanAssignment:expr2 SymbolTable]
+    [andExprP s] -> [BooleanExpression:expr2 SymbolTable]
 
 [AndExpressionP[and EqExpression:eqExpr AndExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[AndExpression[%BooleanExpression and expr]] s]
     [eqExpr s] -> [BooleanExpression:expr SymbolTable]
@@ -214,7 +216,7 @@ Program:p ->:p ast
     [expr s] -> [*:expr1 SymbolTable]
 [AddSubExpression[MulDivExpression:expr1 AddSubExpressionP:expr2] SymbolTable:s] -> [intExpr2 <- intExpr1 s]
     [expr1 s] -> [IntegerExpression:intExpr1 SymbolTable]
-    [expr2 s] -> [BooleanExpression:intExpr2 SymbolTable]
+    [expr2 s] -> [IntegerExpression:intExpr2 SymbolTable]
 
 [AddSubExpressionP[+ MulDivExpression:expr1 AddSubExpressionP[EPSILON]] SymbolTable:s] -> [IntegerExpression[AddExpression[%IntegerExpression + intExpr1]] s]
     [expr1 s] -> [IntegerExpression:intExpr1 SymbolTable]
@@ -263,12 +265,14 @@ Program:p ->:p ast
     [expr s] -> [IntegerExpression:intExpr SymbolTable]
 [PrimaryExpression[( Expression:expr )] SymbolTable:s] -> [BooleanExpression[( boolExpr )] s]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]
-[PrimaryExpression[registerType:t ( Expression:expr ) BitSelector[EPSILON]] SymbolTable:s] -> [RegisterExpression[RegisterLiteral[t1 ( intExpr )]] s]
+[PrimaryExpression[! PrimaryExpression:expr] SymbolTable:s] -> [BooleanExpression[! boolExpr] s]
+    [expr s] -> [BooleanExpression:boolExpr SymbolTable]
+[PrimaryExpression[registerType:t ( intLiteral:i ) BitSelector[EPSILON]] SymbolTable:s] -> [RegisterExpression[RegisterLiteral[t1 ( i1 )]] s]
     t ->:p registerType:t1
-    [expr s] -> [IntegerExpression:intExpr SymbolTable]
-[PrimaryExpression[registerType:t ( Expression:expr1 ) BitSelector[{ Expression:expr2 }]] SymbolTable:s] -> [BooleanExpression[DirectBitValue[t1 ( intExpr1 ) { intExpr2 }]] s]
+    i ->:p intLiteral:i1
+[PrimaryExpression[registerType:t ( intLiteral:i ) BitSelector[{ Expression:expr2 }]] SymbolTable:s] -> [BooleanExpression[DirectBitValue[t1 ( i1 ) { intExpr2 }]] s]
     t ->:p registerType:t1
-    [expr1 s] -> [IntegerExpression:intExpr1 SymbolTable]
+    i ->:p intLiteral:i1
     [expr2 s] -> [IntegerExpression:intExpr2 SymbolTable]
 [PrimaryExpression[true:t] SymbolTable:s] -> [BooleanExpression[t1] s]
     t ->:p true:t1

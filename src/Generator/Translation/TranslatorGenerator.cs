@@ -79,7 +79,7 @@ namespace Generator.Translation
         private static void AnalyzeTreeStructureReturnType(RelationDomain translationDomain, Dictionary<string, (string type, string name)> symbols, List<string> returnTypes, TreeStructure treeStructure)
         {
             string name = treeStructure.Nodes<Name>()[0].Nodes<Token>()[0].Value;
-            returnTypes.Add($"{translationDomain.Namespace}.Node");
+            returnTypes.Add($"{translationDomain.DataNamespace}.Node");
         }
 
         public ClassType GenerateTranslatorClass(Translator translator, string translatorName, List<RelationDomain> translationDomains, string translatorNamespace)
@@ -298,15 +298,15 @@ namespace Generator.Translation
             {
                 if (relation.Value.LeftDomains.Count == 1 && relation.Value.RightDomains.Count == 1)
                 {
-                    MethodType translateMethod = new MethodType("public", $"{relation.Value.RightDomains[0].Namespace}.Token", $"Translate{relation.Key.alias}")
+                    MethodType translateMethod = new MethodType("public", $"{relation.Value.RightDomains[0].DataNamespace}.Token", $"Translate{relation.Key.alias}")
                     {
                         Parameters = new List<ParameterType>()
                         {
-                            new ParameterType($"{relation.Value.LeftDomains[0].Namespace}.Token", "token")
+                            new ParameterType($"{relation.Value.LeftDomains[0].DataNamespace}.Token", "token")
                         },
                         Body = new List<string>()
                         {
-                            $"return new {relation.Value.RightDomains[0].Namespace}.Token() {{ Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column }};"
+                            $"return new {relation.Value.RightDomains[0].DataNamespace}.Token() {{ Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column }};"
                         }
                     };
                     translatorClass.Methods.Add(translateMethod);
@@ -320,27 +320,28 @@ namespace Generator.Translation
 
             foreach (var translationDomain in translationDomains)
             {
-                MethodType insertMethod = new MethodType("public", $"{translationDomain.Namespace}.Node", "Insert")
+                MethodType insertMethod = new MethodType("public", $"{translationDomain.DataNamespace}.Node", "Insert")
                 {
                     Parameters = new List<ParameterType>()
                     {
-                        new ParameterType($"{translationDomain.Namespace}.Node", "left"),
-                        new ParameterType($"{translationDomain.Namespace}.Node", "right")
+                        new ParameterType($"{translationDomain.DataNamespace}.Node", "left"),
+                        new ParameterType($"{translationDomain.DataNamespace}.Node", "right")
                     },
                     Body = new List<string>()
                     {
                         "if(left.IsPlaceholder && left.Name == right.Name)",
                         "{",
-                        "    return right;",
+                       $"    return right.Accept(new {translationDomain.VisitorNamespace}.CloneVisitor());",
                         "}",
                         "for (int i = 0; i < left.Count;  i++)",
                         "{",
-                       $"    {translationDomain.Namespace}.Node child = Insert(left[i], right);",
+                       $"    {translationDomain.DataNamespace}.Node child = Insert(left[i], right);",
                         "    if(child != null)",
                         "    {",
-                        "        left.RemoveAt(i);",
-                        "        left.Insert(i, child);",
-                        "        return left;",
+                       $"        var leftClone = left.Accept(new {translationDomain.VisitorNamespace}.CloneVisitor());",
+                        "        leftClone.RemoveAt(i);",
+                        "        leftClone.Insert(i, child);",
+                        "        return leftClone;",
                         "    }",
                         "}",
                         "return null;"
@@ -362,8 +363,8 @@ namespace Generator.Translation
                 {
                     compareMethod.Parameters = new List<ParameterType>()
                     {
-                        new ParameterType($"{leftDomains[0].Namespace}.Node", "left"),
-                        new ParameterType($"{rightDomains[0].Namespace}.Node", "right")
+                        new ParameterType($"{leftDomains[0].DataNamespace}.Node", "left"),
+                        new ParameterType($"{rightDomains[0].DataNamespace}.Node", "right")
                     };
                     methods.Add(compareMethod);
                     compareMethod.Body = new List<string>()
@@ -372,9 +373,9 @@ namespace Generator.Translation
                         "{",
                         "    return false;",
                         "}",
-                       $"if (left is {leftDomains[0].Namespace}.Token || right is {rightDomains[0].Namespace}.Token)",
+                       $"if (left is {leftDomains[0].DataNamespace}.Token || right is {rightDomains[0].DataNamespace}.Token)",
                         "{",
-                       $"    if (left is {leftDomains[0].Namespace}.Token leftToken && right is {rightDomains[0].Namespace}.Token rightToken && leftToken.Value == rightToken.Value)",
+                       $"    if (left is {leftDomains[0].DataNamespace}.Token leftToken && right is {rightDomains[0].DataNamespace}.Token rightToken && leftToken.Value == rightToken.Value)",
                         "    {",
                         "        return true;",
                         "    }",
@@ -422,7 +423,7 @@ namespace Generator.Translation
 
             for (int i = 0; i < domains.Count; i++)
             {
-                types.Add($"{domains[i].Namespace}.Node {prefix}{i}");
+                types.Add($"{domains[i].DataNamespace}.Node {prefix}{i}");
             }
 
             return string.Join(", ", types);
@@ -430,8 +431,8 @@ namespace Generator.Translation
 
         private bool AlreadyDefined(string alias, List<RelationDomain> leftDomains, List<RelationDomain> rightDomains, List<MethodType> methods)
         {
-            string leftType = $"{leftDomains[0].Namespace}.Node";
-            string rightType = $"{rightDomains[0].Namespace}.Node";
+            string leftType = $"{leftDomains[0].DataNamespace}.Node";
+            string rightType = $"{rightDomains[0].DataNamespace}.Node";
 
             if (leftDomains.Count > 1)
             {
@@ -454,9 +455,9 @@ namespace Generator.Translation
         {
             if (domain.Grammar.ContainsKey(typeName))
             {
-                return $"{domain.Namespace}.{typeName}";
+                return $"{domain.DataNamespace}.{typeName}";
             }
-            return $"{domain.Namespace}.{typeName}?";
+            return $"{domain.DataNamespace}.{typeName}?";
         }
 
         private void AnalyzePattern(Pattern pattern, bool useAlias, List<RelationDomain> domain, List<string> patternConditions, List<ParameterType> parameters, Dictionary<string, (string type, string name)> symbols)
@@ -499,7 +500,7 @@ namespace Generator.Translation
             if (type[0] == type.ToLower()[0])
             {
                 type = "Token";
-                fullType = $"{domain.Namespace}.Token";
+                fullType = $"{domain.DataNamespace}.Token";
             }
             else
             {
@@ -543,7 +544,7 @@ namespace Generator.Translation
             {
                 namePattern = $"{identifier}.Name";
                 type = "Node";
-                fullType = $"{domain.Namespace}.Node";
+                fullType = $"{domain.DataNamespace}.Node";
             }
             else
             {
@@ -551,7 +552,7 @@ namespace Generator.Translation
                 if (!domain.Grammar.ContainsKey(name))
                 {
                     type = "Token";
-                    fullType = $"{domain.Namespace}.Token";
+                    fullType = $"{domain.DataNamespace}.Token";
                 }
                 else
                 {
@@ -649,16 +650,16 @@ namespace Generator.Translation
             }
             else if (!domain.Grammar?.ContainsKey(name) ?? false)
             {
-                instance = $"new {domain.Namespace}.Token() {{ Name = \"{name}\", Value = \"{name}\" }}";
+                instance = $"new {domain.DataNamespace}.Token() {{ Name = \"{name}\", Value = \"{name}\" }}";
             }
             else if (childrenStructure.Nodes<Structures>().Count() > 0)
             {
                 Structures structures = childrenStructure.Nodes<Structures>()[0];
-                instance = $"new {domain.Namespace}.{name}({(isPlaceholder ? "true" : "false")}) {{ {string.Join(", ", CreateStructures(structures, domain, symbols))} }}";
+                instance = $"new {domain.DataNamespace}.{name}({(isPlaceholder ? "true" : "false")}) {{ {string.Join(", ", CreateStructures(structures, domain, symbols))} }}";
             }
             else
             {
-                instance = $"new {domain.Namespace}.{name}({(isPlaceholder ? "true" : "false")})";
+                instance = $"new {domain.DataNamespace}.{name}({(isPlaceholder ? "true" : "false")})";
             }
             if (treeStructure.Nodes<Insertion>()[0].Nodes<TreeStructure>().Count() > 0)
             {

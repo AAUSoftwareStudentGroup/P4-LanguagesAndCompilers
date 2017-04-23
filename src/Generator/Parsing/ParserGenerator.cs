@@ -48,17 +48,17 @@ namespace Generator.Parsing
                 {
                     "if(expected == \"EPSILON\")",
                     "{",
-                    $"\treturn new {dataNamespace}.Token() {{ Name = \"EPSILON\" }};",
+                    $"    return new {dataNamespace}.Token() {{ Name = \"EPSILON\" }};",
                     "}",
                     $"{dataNamespace}.Token token = tokens.Current;",
                     "if(token.Name == expected)",
                     "{",
-                        "\ttokens.MoveNext();",
-                        "\treturn token;",
+                    "    tokens.MoveNext();",
+                    "    return token;",
                     "}",
                     "else",
                     "{",
-                        "\tthrow new Exception();",
+                    "    throw new Exception();",
                     "}"
                 }
             };
@@ -86,27 +86,27 @@ namespace Generator.Parsing
                 {
                     foreach (var predictSymbol in grammerInfo.PredictsSets[(production.Key, expansionIndex)])
                     {
-                        methodStatements.Add($"\tcase \"{predictSymbol}\":");
+                        methodStatements.Add($"    case \"{predictSymbol}\":");
                     }
 
                     foreach (var expansionSymbol in bnf[production.Key][expansionIndex])
                     {
                         if(IsTerminal(expansionSymbol, bnf))
                         {
-                            methodStatements.Add($"\t\tnode.Add(ParseTerminal(tokens, \"{expansionSymbol}\"));");
+                            methodStatements.Add($"        node.Add(ParseTerminal(tokens, \"{expansionSymbol}\"));");
                         }
                         else
                         {
-                            methodStatements.Add($"\t\tnode.Add(Parse{expansionSymbol}(tokens));");
+                            methodStatements.Add($"        node.Add(Parse{expansionSymbol}(tokens));");
                         }
                     }
 
-                    methodStatements.Add($"\t\treturn node;");
+                    methodStatements.Add($"        return node;");
                     
                 }
 
-                methodStatements.Add($"\tdefault:");
-                methodStatements.Add($"\t\tthrow new Exception();");
+                methodStatements.Add($"    default:");
+                methodStatements.Add($"        throw new Exception();");
 
                 methodStatements.Add("}");
 
@@ -118,7 +118,62 @@ namespace Generator.Parsing
             return parserClass;
         }
 
-        public ClassType GenerateVisitorClass(BNF bnf, string visitorName, string dataNamespace, string visitorNamespace)
+        public ClassType[] GenerateVisitorClasses(BNF bnf, string visitorName, string dataNamespace, string visitorNamespace)
+        {
+            List<ClassType> visitorClasses = new List<ClassType>();
+
+            ClassType visitorClass = CreateVisitorClass(bnf, visitorName, dataNamespace, visitorNamespace);
+
+            visitorClasses.Add(visitorClass);
+
+            ClassType cloneVisitorClass = CreateCloneVisitorClass(bnf, visitorName, dataNamespace, visitorNamespace);
+
+            visitorClasses.Add(cloneVisitorClass);
+
+            return visitorClasses.ToArray();
+        }
+
+        private static ClassType CreateCloneVisitorClass(BNF bnf, string visitorName, string dataNamespace, string visitorNamespace)
+        {
+            ClassType cloneVisitorClass = CreateVisitorClass(bnf, "CloneVisitor", dataNamespace, visitorNamespace);
+
+            cloneVisitorClass.Identifier = "CloneVisitor";
+            cloneVisitorClass.ClassModifiers = "public";
+            cloneVisitorClass.BaseClass = $"{visitorName}<{dataNamespace}.Node>";
+
+            foreach (var method in cloneVisitorClass.Methods)
+            {
+                method.Modifiers = "public override";
+                method.Type = $"{dataNamespace}.Node";
+                if (method.Parameters[0].Type.Split('.').Last() == "Token")
+                {
+                    method.Body = new List<string>()
+                    {
+                        $"return new {method.Parameters[0].Type}() {{ Name = node.Name, Value = node.Value, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder }};"
+                    };
+                }
+                else if (method.Parameters[0].Type.Split('.').Last() == "Node")
+                {
+                    method.Body = new List<string>() { "return null;" };
+                }
+                else
+                {
+                    method.Body = new List<string>()
+                    {
+                        $"var clone = new {method.Parameters[0].Type}() {{ Name = node.Name, IsPlaceholder = node.IsPlaceholder }};",
+                        "foreach(var child in node)",
+                        "{",
+                        "    clone.Add(child.Accept(this));",
+                        "}",
+                        "return clone;"
+                    };
+                }
+            }
+
+            return cloneVisitorClass;
+        }
+
+        private static ClassType CreateVisitorClass(BNF bnf, string visitorName, string dataNamespace, string visitorNamespace)
         {
             ClassType visitorClass = new ClassType(visitorNamespace, "public abstract", $"{visitorName}<T>", null);
 

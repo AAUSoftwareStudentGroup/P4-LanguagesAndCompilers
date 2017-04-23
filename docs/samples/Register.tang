@@ -1,0 +1,10 @@
+register8 ddrb
+ddrb = register8(37)
+ddrb{4} = true or false
+
+if(ddrb{4})
+    ddrb{1} = true
+    uint8 p
+    uint16 q
+    p = 8 + 4
+    q = 99 - p

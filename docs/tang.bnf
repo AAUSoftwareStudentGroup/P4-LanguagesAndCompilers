@@ -1,21 +1,19 @@
 Program -> GlobalStatements eof
 
 GlobalStatements -> GlobalStatement GlobalStatementsP
-                  | EPSILON
 GlobalStatementsP -> newline GlobalStatement GlobalStatementsP
                    | EPSILON
 
 GlobalStatement -> Interrupt
                  | Statement
 
-Interrupt -> interrupt ( Expression ) indent Statements dedent
+Interrupt -> interrupt ( intLiteral ) indent Statements dedent
 
 Statements -> Statement StatementsP
-            | EPSILON
 StatementsP -> newline Statement StatementsP
              | EPSILON
 
-Statement -> newline 
+Statement -> EPSILON
            | IdentifierDeclaration 
            | RegisterStatement
            | Assignment
@@ -27,7 +25,7 @@ IdentifierDeclaration -> intType identifier
 
 RegisterStatement -> registerType RegisterOperation
 
-RegisterOperation -> ( Expression ) { Expression } = Expression
+RegisterOperation -> ( intLiteral ) { Expression } = Expression
                    | identifier
 
 Assignment -> identifier BitSelector = Expression 
@@ -69,8 +67,10 @@ MulDivExpressionP -> / PrimaryExpression MulDivExpressionP
                    | EPSILON
 
 PrimaryExpression -> intLiteral
+                   | boolLiteral
                    | identifier BitSelector
                    | ( Expression )
-                   | registerType ( Expression ) BitSelector
+                   | ! PrimaryExpression
+                   | registerType ( intLiteral ) BitSelector
                    | true
                    | false
