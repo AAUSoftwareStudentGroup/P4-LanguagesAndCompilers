@@ -1,0 +1,109 @@
+C -> Main eof
+   | eof
+
+Main -> int main ( void ) { GlobalStatement }
+
+GlobalStatement -> CompoundGlobalStatement
+                 | Statement
+
+Interrupt -> ISR ( IntLiteral ) { Statement }
+
+CompoundGlobalStatement -> GlobalStatement GlobalStatement
+
+Statement -> EPSILON 
+           | CompoundStatement
+           | IntegerDeclaration ;
+           | BooleanDeclaration ;
+           | DirectBitAssignment ;
+           | IndirectBitAssignment ;
+           | RegisterDeclaration ;
+           | IntegerAssignment ;
+           | BooleanAssignment ;
+           | RegisterAssignment ;
+           | IfStatement 
+           | WhileStatement
+
+CompoundStatement -> Statement Statement
+
+IntegerDeclaration -> long int identifier
+		   
+IntegerAssignment -> identifier = IntegerExpression
+
+BooleanDeclaration -> booleanType identifier
+
+BooleanAssignment -> identifier = BooleanExpression
+
+DirectBitAssignment -> ( * ( volatile unsigned char * ) ( intLiteral ) ) = ( BooleanExpression ? ( ( * ( volatile unsigned char * ) ( intLiteral ) ) | 1 << ( IntegerExpression ) ) : ( ( * ( volatile unsigned char * ) ( intLiteral ) ) & ! ( 1 << ( IntegerExpression ) ) ) )
+
+IndirectBitAssignment -> * identifier = ( BooleanExpression ? ( ( * identifier ) | 1 << ( IntegerExpression ) ) : ( ( * identifier ) & ! ( 1 << ( IntegerExpression ) ) ) )
+
+RegisterDeclaration -> volatile unsigned char * identifier
+
+RegisterAssignment -> identifier = RegisterExpression
+
+RegisterExpression -> RegisterLiteral
+					| RegisterVariable
+
+RegisterLiteral -> * ( volatile unsigned char * ) ( intLiteral )
+
+RegisterVariable -> identifier
+
+IfStatement -> if ( BooleanExpression ) { Statement } 
+		   
+WhileStatement -> while ( BooleanExpression ) { Statement }
+		   
+IntegerExpression -> IntegerVariable   
+                   | IntegerParenthesisExpression
+                   | AddExpression
+                   | SubExpression
+                   | MulExpression
+                   | DivExpression 
+                   | IntLiteral
+
+IntegerVariable -> identifier
+
+IntegerParenthesisExpression -> ( IntegerExpression )        
+
+AddExpression -> ( IntegerExpression + IntegerExpression )
+
+SubExpression -> ( IntegerExpression - IntegerExpression )
+
+MulExpression -> ( IntegerExpression * IntegerExpression )
+
+DivExpression -> ( IntegerExpression / IntegerExpression )
+
+BooleanExpression -> 1 
+                   | 0 
+				   | BooleanVariable
+                   | DirectBitValue
+                   | IndirectBitValue
+                   | BooleanParenthesisExpression
+                   | IntegerEqExpression 
+                   | BooleanEqExpression 
+                   | LessThanExpression 
+                   | GreaterThanExpression
+                   | NotExpression 
+                   | AndExpression 
+                   | OrExpression
+
+BooleanVariable -> identifier
+
+DirectBitValue -> ( ( * ( volatile unsigned char * ) ( intLiteral ) ) & ( 1 << ( IntegerExpression ) ) )
+
+IndirectBitValue -> ( * RegisterVariable & ( 1 << ( IntegerExpression ) ) )
+
+BooleanParenthesisExpression -> ( BooleanExpression )
+
+IntegerEqExpression -> ( IntegerExpression == IntegerExpression )
+
+BooleanEqExpression -> ( BooleanExpression == BooleanExpression )
+
+LessThanExpression -> ( IntegerExpression < IntegerExpression )
+
+GreaterThanExpression -> ( IntegerExpression > IntegerExpression )
+
+NotExpression -> ( ! BooleanExpression )
+
+AndExpression -> ( BooleanExpression && BooleanExpression )
+
+OrExpression -> ( BooleanExpression || BooleanExpression )

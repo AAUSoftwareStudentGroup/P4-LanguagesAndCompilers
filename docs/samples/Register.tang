@@ -1,10 +1,13 @@
 register8 ddrb
-ddrb = register8(37)
-ddrb{4} = true or false
-
-if(ddrb{4})
-    ddrb{1} = true
-    uint8 p
-    uint16 q
-    p = 8 + 4
-    q = 99 - p
+register8 portb
+ddrb = register8(36)
+portb = register8(37)
+ddrb{5} = true
+portb{5} = false
+uint32 c
+c = 0
+while(true)
+    if(c = 100000)
+        portb{5} = !portb{5}
+        c = 0
+    c = c + 1

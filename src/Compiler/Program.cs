@@ -39,13 +39,39 @@ namespace Compiler
             Console.WriteLine("--------------------------------------");
             Console.WriteLine("");
 
-            var astConverter = new Translation.ProgramToAST.ProgramToASTTranslator();
-            AST.Data.AST ast = astConverter.Translatep(parseTree) as AST.Data.AST;
+            var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
+            AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
             var astLines = ast.Accept(new AST.Visitors.TreePrintVisitor());
             foreach (var line in astLines)
             {
                 Console.WriteLine(line);
             }
+
+            Console.WriteLine("");
+            Console.WriteLine("--------------------------------------");
+            Console.WriteLine("");
+
+            var cTranslator = new Translation.ASTToC.ASTToCTranslator();
+            C.Data.C c = cTranslator.Translate(ast) as C.Data.C;
+            var cLines = c.Accept(new C.Visitors.TreePrintVisitor());
+            foreach (var line in cLines)
+            {
+                Console.WriteLine(line);
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine("--------------------------------------");
+            Console.WriteLine("");
+
+            var cStr = c.Accept(new C.Visitors.TextPrintVisitor());
+            foreach (var term in cStr)
+            {
+                Console.Write(term.Replace("$",":").Replace(";", ";\n"));
+                Console.Write(" ");
+            }
+
+            Console.WriteLine();
+
             //Todo
 
         }
