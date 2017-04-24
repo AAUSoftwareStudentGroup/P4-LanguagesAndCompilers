@@ -1,0 +1,6 @@
+bool bool = false
+int16 a = 0
+if(bool == true)
+    a = 42
+else
+    a = 17
