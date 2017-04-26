@@ -23,7 +23,7 @@ namespace Generator.Parsing
 
         public ClassType GenerateParserClass(BNF bnf, string parserName, string dataNamespace, string parserNamespace)
         {
-            GrammarInfo grammerInfo = _bnfAnalyzer.Analyze(bnf);
+            GrammarInfo grammarInfo = _bnfAnalyzer.Analyze(bnf);
 
             ClassType parserClass = new ClassType(parserNamespace, "public", parserName, null)
             {
@@ -84,7 +84,7 @@ namespace Generator.Parsing
 
                 for(int expansionIndex = 0; expansionIndex < production.Value.Count; expansionIndex++)
                 {
-                    foreach (var predictSymbol in grammerInfo.PredictsSets[(production.Key, expansionIndex)])
+                    foreach (var predictSymbol in grammarInfo.PredictsSets[(production.Key, expansionIndex)])
                     {
                         methodStatements.Add($"    case \"{predictSymbol}\":");
                     }
