@@ -237,7 +237,7 @@ namespace Compiler.Parsing
 			{
 			    case "(":
 			        node.Add(ParseTerminal(tokens, "("));
-			        node.Add(ParseTerminal(tokens, "intLiteral"));
+			        node.Add(ParseExpression(tokens));
 			        node.Add(ParseTerminal(tokens, ")"));
 			        node.Add(ParseTerminal(tokens, "{"));
 			        node.Add(ParseExpression(tokens));
@@ -288,11 +288,11 @@ namespace Compiler.Parsing
 			    case ">":
 			    case "and":
 			    case "or":
+			    case ")":
 			    case "}":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
-			    case ")":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -389,11 +389,11 @@ namespace Compiler.Parsing
 			        node.Add(ParseAndExpression(tokens));
 			        node.Add(ParseOrExpressionP(tokens));
 			        return node;
+			    case ")":
 			    case "}":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
-			    case ")":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -433,11 +433,11 @@ namespace Compiler.Parsing
 			        node.Add(ParseAndExpressionP(tokens));
 			        return node;
 			    case "or":
+			    case ")":
 			    case "}":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
-			    case ")":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -478,11 +478,11 @@ namespace Compiler.Parsing
 			        return node;
 			    case "and":
 			    case "or":
+			    case ")":
 			    case "}":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
-			    case ")":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -529,11 +529,11 @@ namespace Compiler.Parsing
 			    case "=":
 			    case "and":
 			    case "or":
+			    case ")":
 			    case "}":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
-			    case ")":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -582,11 +582,11 @@ namespace Compiler.Parsing
 			    case "=":
 			    case "and":
 			    case "or":
+			    case ")":
 			    case "}":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
-			    case ")":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -637,11 +637,11 @@ namespace Compiler.Parsing
 			    case "=":
 			    case "and":
 			    case "or":
+			    case ")":
 			    case "}":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
-			    case ")":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -676,7 +676,7 @@ namespace Compiler.Parsing
 			    case "registerType":
 			        node.Add(ParseTerminal(tokens, "registerType"));
 			        node.Add(ParseTerminal(tokens, "("));
-			        node.Add(ParseTerminal(tokens, "intLiteral"));
+			        node.Add(ParseExpression(tokens));
 			        node.Add(ParseTerminal(tokens, ")"));
 			        node.Add(ParseBitSelector(tokens));
 			        return node;

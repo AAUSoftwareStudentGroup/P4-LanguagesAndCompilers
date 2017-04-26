@@ -37,6 +37,11 @@ namespace Generator.Translation.Visitors
 			return Visit((Generator.Translation.Data.Node)node);
 		}
 
+		public virtual T Visit(Generator.Translation.Data.Symbol node)
+		{
+			return Visit((Generator.Translation.Data.Node)node);
+		}
+
 		public virtual T Visit(Generator.Translation.Data.Rules node)
 		{
 			return Visit((Generator.Translation.Data.Node)node);

@@ -1,13 +1,9 @@
-register8 ddrb
-register8 portb
-ddrb = register8(36)
-portb = register8(37)
-ddrb{5} = true
-portb{5} = false
+register8(36){5} = true
+register8(37){5} = false
 uint32 c
 c = 0
 while(true)
-    if(c = 100000)
-        portb{5} = !portb{5}
+    if(c = 300000)
+        register8(37){5} = !register8(37){5}
         c = 0
     c = c + 1

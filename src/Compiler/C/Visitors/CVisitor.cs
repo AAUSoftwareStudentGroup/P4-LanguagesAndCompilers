@@ -7,22 +7,27 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.Main node)
+		public virtual T Visit(Compiler.C.Data.GlobalDeclarations node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.GlobalStatement node)
+		public virtual T Visit(Compiler.C.Data.GlobalDeclaration node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.Interrupt node)
+		public virtual T Visit(Compiler.C.Data.FunctionPrototype node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.CompoundGlobalStatement node)
+		public virtual T Visit(Compiler.C.Data.Functions node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.Function node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}

@@ -31,9 +31,9 @@ namespace Generator
             string parsingNamespace = "Generator.Translation.Parsing";
             string visitorNamespace = "Generator.Translation.Visitors";
             ClassType translatorParser = parserGenerator.GenerateParserClass(bnf, translatorParserName, dataNamespace, parsingNamespace);
-            ClassType translatorVisitor = parserGenerator.GenerateVisitorClass(bnf, translatorVisitorName, dataNamespace, visitorNamespace);
+            ClassType[] translatorVisitors = parserGenerator.GenerateVisitorClasses(bnf, translatorVisitorName, dataNamespace, visitorNamespace);
             ClassType[] translatorData = parserGenerator.GenerateParseTreeClasses(bnf, translatorVisitorName, dataNamespace, visitorNamespace);
-            List<ClassType> classTypes = new List<ClassType>(translatorData) { translatorParser, translatorVisitor };
+            List<ClassType> classTypes = new List<ClassType>(translatorData.Union(translatorVisitors)) { translatorParser };
             foreach (ClassType classType in classTypes)
             {
                 string folder = $"../{string.Join("/", classType.NameSpace.Split('.'))}";

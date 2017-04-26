@@ -1,14 +1,19 @@
-C -> Main eof
-   | eof
+C -> GlobalDeclarations Functions
 
-Main -> int main ( void ) { GlobalStatement }
+GlobalDeclarations -> GlobalDeclaration GlobalDeclarations
+                    | EPSILON
 
-GlobalStatement -> CompoundGlobalStatement
-                 | Statement
+GlobalDeclaration -> IntegerDeclaration ;
+                   | BooleanDeclaration ;
+                   | RegisterDeclaration ;
+                   | FunctionPrototype ;
 
-Interrupt -> ISR ( IntLiteral ) { Statement }
+FunctionPrototype -> void symbol ( void )
 
-CompoundGlobalStatement -> GlobalStatement GlobalStatement
+Functions -> Function Functions
+           | EPSILON
+
+Function -> void symbol ( void ) { Statement }
 
 Statement -> EPSILON 
            | CompoundStatement

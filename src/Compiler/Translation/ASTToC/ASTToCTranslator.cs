@@ -6,161 +6,194 @@ namespace Compiler.Translation.ASTToC
 		{
 			if(aST != null && aST.Name == "AST" && (aST.Count == 2 && aST[0] != null && aST[0].Name == "GlobalStatement" && true && aST[1] != null && aST[1].Name == "eof" && true))
 			{
-				Compiler.C.Data.Node gs1 = Translate(aST[0] as Compiler.AST.Data.GlobalStatement);
-				if(gs1 != null && gs1.Name == "GlobalStatement" && true)
+				(Compiler.C.Data.Node gd, Compiler.C.Data.Node f, Compiler.C.Data.Node s) = Translatea(aST[0] as Compiler.AST.Data.GlobalStatement, new Compiler.C.Data.GlobalDeclarations(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+				if(gd != null && gd.Name == "GlobalDeclarations" && true && f != null && f.Name == "Functions" && true && s != null && s.Name == "Statement" && true)
 				{
-					return new Compiler.C.Data.C(false) { new Compiler.C.Data.Main(false) { new Compiler.C.Data.Token() { Name = "int", Value = "int" }, new Compiler.C.Data.Token() { Name = "main", Value = "main" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, gs1 as Compiler.C.Data.GlobalStatement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } };
+					return new Compiler.C.Data.C(false) { gd as Compiler.C.Data.GlobalDeclarations, Insert(f as Compiler.C.Data.Functions, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = "main", Value = "main" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, s as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } }, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.C.Data.Functions };
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public Compiler.C.Data.Node Translate(Compiler.AST.Data.GlobalStatement globalStatement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.GlobalStatement globalStatement, Compiler.C.Data.GlobalDeclarations globalDeclarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
 		{
-			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "CompoundGlobalStatement" && true))
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "CompoundGlobalStatement" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
 			{
-				Compiler.C.Data.Node cgs1 = Translate(globalStatement[0] as Compiler.AST.Data.CompoundGlobalStatement);
-				if(cgs1 != null && cgs1.Name == "CompoundGlobalStatement" && true)
+				(Compiler.C.Data.Node gd1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(globalStatement[0] as Compiler.AST.Data.CompoundGlobalStatement, globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
+				if(gd1 != null && gd1.Name == "GlobalDeclarations" && true && f1 != null && f1.Name == "Functions" && true && s1 != null && s1.Name == "Statement" && true)
 				{
-					return new Compiler.C.Data.GlobalStatement(false) { cgs1 as Compiler.C.Data.CompoundGlobalStatement };
+					return (gd1 as Compiler.C.Data.GlobalDeclarations, f1 as Compiler.C.Data.Functions, s1 as Compiler.C.Data.Statement);
 				}
 			}
-			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Statement" && true))
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Interrupt" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
 			{
-				Compiler.C.Data.Node s1 = Translate(globalStatement[0] as Compiler.AST.Data.Statement);
-				if(s1 != null && s1.Name == "Statement" && true)
+				(Compiler.C.Data.Node gd1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(globalStatement[0] as Compiler.AST.Data.Interrupt, globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
+				if(gd1 != null && gd1.Name == "GlobalDeclarations" && true && f1 != null && f1.Name == "Functions" && true && s1 != null && s1.Name == "Statement" && true)
 				{
-					return new Compiler.C.Data.GlobalStatement(false) { s1 as Compiler.C.Data.Statement };
+					return (gd1 as Compiler.C.Data.GlobalDeclarations, f1 as Compiler.C.Data.Functions, s1 as Compiler.C.Data.Statement);
+				}
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Statement" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			{
+				(Compiler.C.Data.Node gd2, Compiler.C.Data.Node f2, Compiler.C.Data.Node s2) = Translatea(globalStatement[0] as Compiler.AST.Data.Statement, globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
+				if(gd2 != null && gd2.Name == "GlobalDeclarations" && true && f2 != null && f2.Name == "Functions" && true && s2 != null && s2.Name == "Statement" && true)
+				{
+					return (gd2 as Compiler.C.Data.GlobalDeclarations, f2 as Compiler.C.Data.Functions, s2 as Compiler.C.Data.Statement);
+				}
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "CompoundGlobalStatement" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			{
+				(Compiler.C.Data.Node gd1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(globalStatement[0] as Compiler.AST.Data.CompoundGlobalStatement, globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
+				if(gd1 != null && gd1.Name == "GlobalDeclarations" && true && f1 != null && f1.Name == "Functions" && true && s1 != null && s1.Name == "Statement" && true)
+				{
+					return (gd1 as Compiler.C.Data.GlobalDeclarations, f1 as Compiler.C.Data.Functions, s1 as Compiler.C.Data.Statement);
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public Compiler.C.Data.Node Translate(Compiler.AST.Data.CompoundGlobalStatement compoundGlobalStatement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.CompoundGlobalStatement compoundGlobalStatement, Compiler.C.Data.GlobalDeclarations globalDeclarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
 		{
-			if(compoundGlobalStatement != null && compoundGlobalStatement.Name == "CompoundGlobalStatement" && (compoundGlobalStatement.Count == 3 && compoundGlobalStatement[0] != null && compoundGlobalStatement[0].Name == "GlobalStatement" && true && compoundGlobalStatement[1] != null && compoundGlobalStatement[1].Name == "newline" && true && compoundGlobalStatement[2] != null && compoundGlobalStatement[2].Name == "GlobalStatement" && true))
+			if(compoundGlobalStatement != null && compoundGlobalStatement.Name == "CompoundGlobalStatement" && (compoundGlobalStatement.Count == 3 && compoundGlobalStatement[0] != null && compoundGlobalStatement[0].Name == "GlobalStatement" && true && compoundGlobalStatement[1] != null && compoundGlobalStatement[1].Name == "newline" && true && compoundGlobalStatement[2] != null && compoundGlobalStatement[2].Name == "GlobalStatement" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
 			{
-				Compiler.C.Data.Node gs3 = Translate(compoundGlobalStatement[0] as Compiler.AST.Data.GlobalStatement);
-				if(gs3 != null && gs3.Name == "GlobalStatement" && true)
+				(Compiler.C.Data.Node gd1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(compoundGlobalStatement[0] as Compiler.AST.Data.GlobalStatement, globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
+				if(gd1 != null && gd1.Name == "GlobalDeclarations" && true && f1 != null && f1.Name == "Functions" && true && s1 != null && s1.Name == "Statement" && true)
 				{
-					Compiler.C.Data.Node gs4 = Translate(compoundGlobalStatement[2] as Compiler.AST.Data.GlobalStatement);
-					if(gs4 != null && gs4.Name == "GlobalStatement" && true)
+					(Compiler.C.Data.Node gd2, Compiler.C.Data.Node f2, Compiler.C.Data.Node s2) = Translatea(compoundGlobalStatement[2] as Compiler.AST.Data.GlobalStatement, gd1 as Compiler.C.Data.GlobalDeclarations, f1 as Compiler.C.Data.Functions, s1 as Compiler.C.Data.Statement);
+					if(gd2 != null && gd2.Name == "GlobalDeclarations" && true && f2 != null && f2.Name == "Functions" && true && s2 != null && s2.Name == "Statement" && true)
 					{
-						return new Compiler.C.Data.CompoundGlobalStatement(false) { gs3 as Compiler.C.Data.GlobalStatement, gs4 as Compiler.C.Data.GlobalStatement };
+						return (gd2 as Compiler.C.Data.GlobalDeclarations, f2 as Compiler.C.Data.Functions, s2 as Compiler.C.Data.Statement);
 					}
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public Compiler.C.Data.Node Translate(Compiler.AST.Data.Statement statement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.Interrupt interrupt, Compiler.C.Data.GlobalDeclarations globalDeclarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
 		{
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "EPSILON" && true))
+			if(interrupt != null && interrupt.Name == "Interrupt" && (interrupt.Count == 7 && interrupt[0] != null && interrupt[0].Name == "interrupt" && true && interrupt[1] != null && interrupt[1].Name == "(" && true && interrupt[2] != null && interrupt[2].Name == "intLiteral" && true && interrupt[3] != null && interrupt[3].Name == ")" && true && interrupt[4] != null && interrupt[4].Name == "indent" && true && interrupt[5] != null && interrupt[5].Name == "Statement" && true && interrupt[6] != null && interrupt[6].Name == "dedent" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
 			{
-				return new Compiler.C.Data.Statement(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "CompoundStatement" && true))
-			{
-				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.CompoundStatement);
-				if(s1 != null && s1.Name == "CompoundStatement" && true)
+				Compiler.C.Data.Node i1 = Translate(interrupt[2] as Compiler.AST.Data.Token);
+				if(i1 != null && i1.Name == "intLiteral" && true)
 				{
-					return new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.CompoundStatement };
-				}
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerDeclaration" && true))
-			{
-				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IntegerDeclaration);
-				if(s1 != null && s1.Name == "IntegerDeclaration" && true)
-				{
-					return new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.IntegerDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } };
-				}
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanDeclaration" && true))
-			{
-				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.BooleanDeclaration);
-				if(s1 != null && s1.Name == "BooleanDeclaration" && true)
-				{
-					return new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.BooleanDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } };
-				}
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "DirectBitAssignment" && true))
-			{
-				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.DirectBitAssignment);
-				if(s1 != null && s1.Name == "DirectBitAssignment" && true)
-				{
-					return new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.DirectBitAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } };
-				}
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IndirectBitAssignment" && true))
-			{
-				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IndirectBitAssignment);
-				if(s1 != null && s1.Name == "IndirectBitAssignment" && true)
-				{
-					return new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.IndirectBitAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } };
-				}
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterDeclaration" && true))
-			{
-				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.RegisterDeclaration);
-				if(s1 != null && s1.Name == "RegisterDeclaration" && true)
-				{
-					return new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.RegisterDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } };
-				}
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerAssignment" && true))
-			{
-				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IntegerAssignment);
-				if(s1 != null && s1.Name == "IntegerAssignment" && true)
-				{
-					return new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.IntegerAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } };
-				}
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanAssignment" && true))
-			{
-				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.BooleanAssignment);
-				if(s1 != null && s1.Name == "BooleanAssignment" && true)
-				{
-					return new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.BooleanAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } };
-				}
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterAssignment" && true))
-			{
-				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.RegisterAssignment);
-				if(s1 != null && s1.Name == "RegisterAssignment" && true)
-				{
-					return new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.RegisterAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } };
-				}
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IfStatement" && true))
-			{
-				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IfStatement);
-				if(s1 != null && s1.Name == "IfStatement" && true)
-				{
-					return new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.IfStatement };
-				}
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "WhileStatement" && true))
-			{
-				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.WhileStatement);
-				if(s1 != null && s1.Name == "WhileStatement" && true)
-				{
-					return new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.WhileStatement };
+					(Compiler.C.Data.Node gs1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si2) = Translatea(interrupt[5] as Compiler.AST.Data.Statement, globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
+					if(gs1 != null && gs1.Name == "GlobalDeclarations" && true && f1 != null && f1.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+					{
+						return (Insert(globalDeclarations as Compiler.C.Data.GlobalDeclarations, new Compiler.C.Data.GlobalDeclarations(false) { new Compiler.C.Data.GlobalDeclaration(false) { new Compiler.C.Data.FunctionPrototype(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } }, new Compiler.C.Data.GlobalDeclarations(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.C.Data.GlobalDeclarations, Insert(functions as Compiler.C.Data.Functions, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, si2 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } }, new Compiler.C.Data.Functions(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
+					}
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public Compiler.C.Data.Node Translate(Compiler.AST.Data.CompoundStatement compoundStatement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.Statement statement, Compiler.C.Data.GlobalDeclarations globalDeclarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement1)
 		{
-			if(compoundStatement != null && compoundStatement.Name == "CompoundStatement" && (compoundStatement.Count == 3 && compoundStatement[0] != null && compoundStatement[0].Name == "Statement" && true && compoundStatement[1] != null && compoundStatement[1].Name == "newline" && true && compoundStatement[2] != null && compoundStatement[2].Name == "Statement" && true))
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "EPSILON" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
-				Compiler.C.Data.Node s3 = Translate(compoundStatement[0] as Compiler.AST.Data.Statement);
-				if(s3 != null && s3.Name == "Statement" && true)
+				return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "CompoundStatement" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				(Compiler.C.Data.Node gd2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.CompoundStatement, globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+				if(gd2 != null && gd2.Name == "GlobalDeclarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
 				{
-					Compiler.C.Data.Node s4 = Translate(compoundStatement[2] as Compiler.AST.Data.Statement);
-					if(s4 != null && s4.Name == "Statement" && true)
+					return (gd2 as Compiler.C.Data.GlobalDeclarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerDeclaration" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IntegerDeclaration);
+				if(s1 != null && s1.Name == "IntegerDeclaration" && true)
+				{
+					return (Insert(globalDeclarations as Compiler.C.Data.GlobalDeclarations, new Compiler.C.Data.GlobalDeclarations(false) { new Compiler.C.Data.GlobalDeclaration(false) { s1 as Compiler.C.Data.IntegerDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, new Compiler.C.Data.GlobalDeclarations(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanDeclaration" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.BooleanDeclaration);
+				if(s1 != null && s1.Name == "BooleanDeclaration" && true)
+				{
+					return (Insert(globalDeclarations as Compiler.C.Data.GlobalDeclarations, new Compiler.C.Data.GlobalDeclarations(false) { new Compiler.C.Data.GlobalDeclaration(false) { s1 as Compiler.C.Data.BooleanDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, new Compiler.C.Data.GlobalDeclarations(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterDeclaration" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.RegisterDeclaration);
+				if(s1 != null && s1.Name == "RegisterDeclaration" && true)
+				{
+					return (Insert(globalDeclarations as Compiler.C.Data.GlobalDeclarations, new Compiler.C.Data.GlobalDeclarations(false) { new Compiler.C.Data.GlobalDeclaration(false) { s1 as Compiler.C.Data.RegisterDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, new Compiler.C.Data.GlobalDeclarations(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "DirectBitAssignment" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.DirectBitAssignment);
+				if(s1 != null && s1.Name == "DirectBitAssignment" && true)
+				{
+					return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, Insert(statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.DirectBitAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } } }) as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IndirectBitAssignment" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IndirectBitAssignment);
+				if(s1 != null && s1.Name == "IndirectBitAssignment" && true)
+				{
+					return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, Insert(statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.IndirectBitAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } } }) as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerAssignment" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IntegerAssignment);
+				if(s1 != null && s1.Name == "IntegerAssignment" && true)
+				{
+					return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, Insert(statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.IntegerAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } } }) as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanAssignment" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.BooleanAssignment);
+				if(s1 != null && s1.Name == "BooleanAssignment" && true)
+				{
+					return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, Insert(statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.BooleanAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } } }) as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterAssignment" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.RegisterAssignment);
+				if(s1 != null && s1.Name == "RegisterAssignment" && true)
+				{
+					return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, Insert(statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.RegisterAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } } }) as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IfStatement" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IfStatement);
+				if(s1 != null && s1.Name == "IfStatement" && true)
+				{
+					return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, Insert(statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.IfStatement }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } } }) as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "WhileStatement" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.WhileStatement);
+				if(s1 != null && s1.Name == "WhileStatement" && true)
+				{
+					return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, Insert(statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.WhileStatement }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } } }) as Compiler.C.Data.Statement);
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.CompoundStatement compoundStatement, Compiler.C.Data.GlobalDeclarations globalDeclarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
+		{
+			if(compoundStatement != null && compoundStatement.Name == "CompoundStatement" && (compoundStatement.Count == 3 && compoundStatement[0] != null && compoundStatement[0].Name == "Statement" && true && compoundStatement[1] != null && compoundStatement[1].Name == "newline" && true && compoundStatement[2] != null && compoundStatement[2].Name == "Statement" && true) && globalDeclarations != null && globalDeclarations.Name == "GlobalDeclarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			{
+				(Compiler.C.Data.Node gd2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(compoundStatement[0] as Compiler.AST.Data.Statement, globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
+				if(gd2 != null && gd2.Name == "GlobalDeclarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+				{
+					(Compiler.C.Data.Node gd3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(compoundStatement[2] as Compiler.AST.Data.Statement, gd2 as Compiler.C.Data.GlobalDeclarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+					if(gd3 != null && gd3.Name == "GlobalDeclarations" && true && f3 != null && f3.Name == "Functions" && true && si3 != null && si3.Name == "Statement" && true)
 					{
-						return new Compiler.C.Data.CompoundStatement(false) { s3 as Compiler.C.Data.Statement, s4 as Compiler.C.Data.Statement };
+						return (gd3 as Compiler.C.Data.GlobalDeclarations, f3 as Compiler.C.Data.Functions, si3 as Compiler.C.Data.Statement);
 					}
 				}
 			}
@@ -201,14 +234,10 @@ namespace Compiler.Translation.ASTToC
 		{
 			if(booleanDeclaration != null && booleanDeclaration.Name == "BooleanDeclaration" && (booleanDeclaration.Count == 2 && booleanDeclaration[0] != null && booleanDeclaration[0].Name == "booleanType" && true && booleanDeclaration[1] != null && booleanDeclaration[1].Name == "identifier" && true))
 			{
-				Compiler.C.Data.Node bt1 = Translate(booleanDeclaration[0] as Compiler.AST.Data.Token);
-				if(bt1 != null && bt1.Name == "booleanType" && true)
+				Compiler.C.Data.Node id1 = Translate(booleanDeclaration[1] as Compiler.AST.Data.Token);
+				if(id1 != null && id1.Name == "identifier" && true)
 				{
-					Compiler.C.Data.Node id1 = Translate(booleanDeclaration[1] as Compiler.AST.Data.Token);
-					if(id1 != null && id1.Name == "identifier" && true)
-					{
-						return new Compiler.C.Data.BooleanDeclaration(false) { bt1 as Compiler.C.Data.Token, id1 as Compiler.C.Data.Token };
-					}
+					return new Compiler.C.Data.BooleanDeclaration(false) { new Compiler.C.Data.Token() { Name = "char", Value = "char" }, id1 as Compiler.C.Data.Token };
 				}
 			}
 			throw new System.Exception();
@@ -233,18 +262,18 @@ namespace Compiler.Translation.ASTToC
 
 		public Compiler.C.Data.Node Translate(Compiler.AST.Data.DirectBitAssignment directBitAssignment)
 		{
-			if(directBitAssignment != null && directBitAssignment.Name == "DirectBitAssignment" && (directBitAssignment.Count == 9 && directBitAssignment[0] != null && directBitAssignment[0].Name == "registerType" && true && directBitAssignment[1] != null && directBitAssignment[1].Name == "(" && true && directBitAssignment[2] != null && directBitAssignment[2].Name == "intLiteral" && true && directBitAssignment[3] != null && directBitAssignment[3].Name == ")" && true && directBitAssignment[4] != null && directBitAssignment[4].Name == "{" && true && directBitAssignment[5] != null && directBitAssignment[5].Name == "IntegerExpression" && true && directBitAssignment[6] != null && directBitAssignment[6].Name == "}" && true && directBitAssignment[7] != null && directBitAssignment[7].Name == "=" && true && directBitAssignment[8] != null && directBitAssignment[8].Name == "BooleanExpression" && true))
+			if(directBitAssignment != null && directBitAssignment.Name == "DirectBitAssignment" && (directBitAssignment.Count == 9 && directBitAssignment[0] != null && directBitAssignment[0].Name == "registerType" && true && directBitAssignment[1] != null && directBitAssignment[1].Name == "(" && true && directBitAssignment[2] != null && directBitAssignment[2].Name == "IntegerExpression" && true && directBitAssignment[3] != null && directBitAssignment[3].Name == ")" && true && directBitAssignment[4] != null && directBitAssignment[4].Name == "{" && true && directBitAssignment[5] != null && directBitAssignment[5].Name == "IntegerExpression" && true && directBitAssignment[6] != null && directBitAssignment[6].Name == "}" && true && directBitAssignment[7] != null && directBitAssignment[7].Name == "=" && true && directBitAssignment[8] != null && directBitAssignment[8].Name == "BooleanExpression" && true))
 			{
-				Compiler.C.Data.Node i1 = Translate(directBitAssignment[2] as Compiler.AST.Data.Token);
-				if(i1 != null && i1.Name == "intLiteral" && true)
+				Compiler.C.Data.Node iexpr1 = Translate(directBitAssignment[2] as Compiler.AST.Data.IntegerExpression);
+				if(iexpr1 != null && iexpr1.Name == "IntegerExpression" && true)
 				{
-					Compiler.C.Data.Node iexpr1 = Translate(directBitAssignment[5] as Compiler.AST.Data.IntegerExpression);
-					if(iexpr1 != null && iexpr1.Name == "IntegerExpression" && true)
+					Compiler.C.Data.Node iexpr2 = Translate(directBitAssignment[5] as Compiler.AST.Data.IntegerExpression);
+					if(iexpr2 != null && iexpr2.Name == "IntegerExpression" && true)
 					{
 						Compiler.C.Data.Node bexpr1 = Translate(directBitAssignment[8] as Compiler.AST.Data.BooleanExpression);
 						if(bexpr1 != null && bexpr1.Name == "BooleanExpression" && true)
 						{
-							return new Compiler.C.Data.DirectBitAssignment(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "volatile", Value = "volatile" }, new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "char", Value = "char" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, i1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "=", Value = "=" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = "?", Value = "?" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "volatile", Value = "volatile" }, new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "char", Value = "char" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, i1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "|", Value = "|" }, new Compiler.C.Data.Token() { Name = "1", Value = "1" }, new Compiler.C.Data.Token() { Name = "<<", Value = "<<" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "$", Value = "$" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "volatile", Value = "volatile" }, new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "char", Value = "char" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, i1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "&", Value = "&" }, new Compiler.C.Data.Token() { Name = "!", Value = "!" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "1", Value = "1" }, new Compiler.C.Data.Token() { Name = "<<", Value = "<<" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
+							return new Compiler.C.Data.DirectBitAssignment(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "volatile", Value = "volatile" }, new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "char", Value = "char" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "=", Value = "=" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = "?", Value = "?" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "volatile", Value = "volatile" }, new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "char", Value = "char" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "|", Value = "|" }, new Compiler.C.Data.Token() { Name = "1", Value = "1" }, new Compiler.C.Data.Token() { Name = "<<", Value = "<<" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr2 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ":", Value = ":" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "volatile", Value = "volatile" }, new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "char", Value = "char" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "&", Value = "&" }, new Compiler.C.Data.Token() { Name = "~", Value = "~" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "1", Value = "1" }, new Compiler.C.Data.Token() { Name = "<<", Value = "<<" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr2 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
 						}
 					}
 				}
@@ -265,7 +294,7 @@ namespace Compiler.Translation.ASTToC
 						Compiler.C.Data.Node bexpr1 = Translate(indirectBitAssignment[5] as Compiler.AST.Data.BooleanExpression);
 						if(bexpr1 != null && bexpr1.Name == "BooleanExpression" && true)
 						{
-							return new Compiler.C.Data.IndirectBitAssignment(false) { new Compiler.C.Data.Token() { Name = "*", Value = "*" }, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "=", Value = "=" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = "?", Value = "?" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "|", Value = "|" }, new Compiler.C.Data.Token() { Name = "1", Value = "1" }, new Compiler.C.Data.Token() { Name = "<<", Value = "<<" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "$", Value = "$" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "&", Value = "&" }, new Compiler.C.Data.Token() { Name = "!", Value = "!" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "1", Value = "1" }, new Compiler.C.Data.Token() { Name = "<<", Value = "<<" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
+							return new Compiler.C.Data.IndirectBitAssignment(false) { new Compiler.C.Data.Token() { Name = "*", Value = "*" }, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "=", Value = "=" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = "?", Value = "?" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "|", Value = "|" }, new Compiler.C.Data.Token() { Name = "1", Value = "1" }, new Compiler.C.Data.Token() { Name = "<<", Value = "<<" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "$", Value = "$" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "&", Value = "&" }, new Compiler.C.Data.Token() { Name = "~", Value = "~" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "1", Value = "1" }, new Compiler.C.Data.Token() { Name = "<<", Value = "<<" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
 						}
 					}
 				}
@@ -326,12 +355,12 @@ namespace Compiler.Translation.ASTToC
 
 		public Compiler.C.Data.Node Translate(Compiler.AST.Data.RegisterLiteral registerLiteral)
 		{
-			if(registerLiteral != null && registerLiteral.Name == "RegisterLiteral" && (registerLiteral.Count == 4 && registerLiteral[0] != null && registerLiteral[0].Name == "registerType" && true && registerLiteral[1] != null && registerLiteral[1].Name == "(" && true && registerLiteral[2] != null && registerLiteral[2].Name == "intLiteral" && true && registerLiteral[3] != null && registerLiteral[3].Name == ")" && true))
+			if(registerLiteral != null && registerLiteral.Name == "RegisterLiteral" && (registerLiteral.Count == 4 && registerLiteral[0] != null && registerLiteral[0].Name == "registerType" && true && registerLiteral[1] != null && registerLiteral[1].Name == "(" && true && registerLiteral[2] != null && registerLiteral[2].Name == "IntegerExpression" && true && registerLiteral[3] != null && registerLiteral[3].Name == ")" && true))
 			{
-				Compiler.C.Data.Node i1 = Translate(registerLiteral[2] as Compiler.AST.Data.Token);
-				if(i1 != null && i1.Name == "intLiteral" && true)
+				Compiler.C.Data.Node iexpr1 = Translate(registerLiteral[2] as Compiler.AST.Data.IntegerExpression);
+				if(iexpr1 != null && iexpr1.Name == "IntegerExpression" && true)
 				{
-					return new Compiler.C.Data.RegisterLiteral(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "volatile", Value = "volatile" }, new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "char", Value = "char" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, i1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
+					return new Compiler.C.Data.RegisterLiteral(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "volatile", Value = "volatile" }, new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "char", Value = "char" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
 				}
 			}
 			throw new System.Exception();
@@ -357,10 +386,10 @@ namespace Compiler.Translation.ASTToC
 				Compiler.C.Data.Node bexpr1 = Translate(ifStatement[2] as Compiler.AST.Data.BooleanExpression);
 				if(bexpr1 != null && bexpr1.Name == "BooleanExpression" && true)
 				{
-					Compiler.C.Data.Node s1 = Translate(ifStatement[5] as Compiler.AST.Data.Statement);
-					if(s1 != null && s1.Name == "Statement" && true)
+					(Compiler.C.Data.Node gd3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(ifStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.GlobalDeclarations(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+					if(gd3 != null && gd3.Name == "GlobalDeclaration" && true && f3 != null && f3.Name == "Function" && true && si3 != null && si3.Name == "Statement" && true)
 					{
-						return new Compiler.C.Data.IfStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, s1 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } };
+						return new Compiler.C.Data.IfStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } };
 					}
 				}
 			}
@@ -374,10 +403,10 @@ namespace Compiler.Translation.ASTToC
 				Compiler.C.Data.Node bexpr1 = Translate(whileStatement[2] as Compiler.AST.Data.BooleanExpression);
 				if(bexpr1 != null && bexpr1.Name == "BooleanExpression" && true)
 				{
-					Compiler.C.Data.Node s1 = Translate(whileStatement[5] as Compiler.AST.Data.Statement);
-					if(s1 != null && s1.Name == "Statement" && true)
+					(Compiler.C.Data.Node gd3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(whileStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.GlobalDeclarations(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+					if(gd3 != null && gd3.Name == "GlobalDeclaration" && true && f3 != null && f3.Name == "Function" && true && si3 != null && si3.Name == "Statement" && true)
 					{
-						return new Compiler.C.Data.WhileStatement(false) { new Compiler.C.Data.Token() { Name = "while", Value = "while" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, s1 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } };
+						return new Compiler.C.Data.WhileStatement(false) { new Compiler.C.Data.Token() { Name = "while", Value = "while" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } };
 					}
 				}
 			}
@@ -655,15 +684,15 @@ namespace Compiler.Translation.ASTToC
 
 		public Compiler.C.Data.Node Translate(Compiler.AST.Data.DirectBitValue directBitValue)
 		{
-			if(directBitValue != null && directBitValue.Name == "DirectBitValue" && (directBitValue.Count == 7 && directBitValue[0] != null && directBitValue[0].Name == "registerType" && true && directBitValue[1] != null && directBitValue[1].Name == "(" && true && directBitValue[2] != null && directBitValue[2].Name == "intLiteral" && true && directBitValue[3] != null && directBitValue[3].Name == ")" && true && directBitValue[4] != null && directBitValue[4].Name == "{" && true && directBitValue[5] != null && directBitValue[5].Name == "IntegerExpression" && true && directBitValue[6] != null && directBitValue[6].Name == "}" && true))
+			if(directBitValue != null && directBitValue.Name == "DirectBitValue" && (directBitValue.Count == 7 && directBitValue[0] != null && directBitValue[0].Name == "registerType" && true && directBitValue[1] != null && directBitValue[1].Name == "(" && true && directBitValue[2] != null && directBitValue[2].Name == "IntegerExpression" && true && directBitValue[3] != null && directBitValue[3].Name == ")" && true && directBitValue[4] != null && directBitValue[4].Name == "{" && true && directBitValue[5] != null && directBitValue[5].Name == "IntegerExpression" && true && directBitValue[6] != null && directBitValue[6].Name == "}" && true))
 			{
-				Compiler.C.Data.Node i1 = Translate(directBitValue[2] as Compiler.AST.Data.Token);
-				if(i1 != null && i1.Name == "intLiteral" && true)
+				Compiler.C.Data.Node iexpr3 = Translate(directBitValue[2] as Compiler.AST.Data.IntegerExpression);
+				if(iexpr3 != null && iexpr3.Name == "IntegerExpression" && true)
 				{
-					Compiler.C.Data.Node iexpr1 = Translate(directBitValue[5] as Compiler.AST.Data.IntegerExpression);
-					if(iexpr1 != null && iexpr1.Name == "IntegerExpression" && true)
+					Compiler.C.Data.Node iexpr4 = Translate(directBitValue[5] as Compiler.AST.Data.IntegerExpression);
+					if(iexpr4 != null && iexpr4.Name == "IntegerExpression" && true)
 					{
-						return new Compiler.C.Data.DirectBitValue(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "volatile", Value = "volatile" }, new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "char", Value = "char" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, i1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "&", Value = "&" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "1", Value = "1" }, new Compiler.C.Data.Token() { Name = "<<", Value = "<<" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
+						return new Compiler.C.Data.DirectBitValue(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "volatile", Value = "volatile" }, new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "char", Value = "char" }, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr3 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "&", Value = "&" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "1", Value = "1" }, new Compiler.C.Data.Token() { Name = "<<", Value = "<<" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr4 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
 					}
 				}
 			}

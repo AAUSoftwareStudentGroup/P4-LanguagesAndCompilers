@@ -10,67 +10,83 @@ namespace Compiler
     {
         public static void Main(string[] args)
         {
-            Lexer lexer = new Lexer("../../docs/tang.tokens.json");
+            Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
 
-            var tokens = lexer.Analyse(File.ReadAllText("../../docs/samples/Register.tang"));
+            string file = "../../docs/samples/Interrupt.tang";
 
-            if (args.Any())
+            if(args.Length > 0)
             {
-                tokens = lexer.Analyse(File.ReadAllText(args[0]));
+                file = args[0];
             }
 
-            Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
+            var tokens = lexer.Analyse(File.ReadAllText(file));
 
-            Console.WriteLine("");
-            Console.WriteLine("--------------------------------------");
-            Console.WriteLine("");
+            if (args.Length == 0)
+            {
+                Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
+
+                Console.WriteLine("");
+                Console.WriteLine("--------------------------------------");
+                Console.WriteLine("");
+            }
 
             ProgramParser parser = new ProgramParser();
             var tokenEnumerator = tokens.Select(t => new Parsing.Data.Token() { Name = t.Name, Value = t.Value }).GetEnumerator();
             tokenEnumerator.MoveNext();
             var parseTree = parser.ParseProgram(tokenEnumerator);
             var parseTreeLines = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
-            foreach (var line in parseTreeLines)
+            if (args.Length == 0)
             {
-                Console.WriteLine(line);
-            }
+                foreach (var line in parseTreeLines)
+                {
+                    Console.WriteLine(line);
+                }
 
-            Console.WriteLine("");
-            Console.WriteLine("--------------------------------------");
-            Console.WriteLine("");
+
+                Console.WriteLine("");
+                Console.WriteLine("--------------------------------------");
+                Console.WriteLine("");
+            }
 
             var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
             AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
             var astLines = ast.Accept(new AST.Visitors.TreePrintVisitor());
-            foreach (var line in astLines)
+            if (args.Length == 0)
             {
-                Console.WriteLine(line);
-            }
+                foreach (var line in astLines)
+                {
+                    Console.WriteLine(line);
+                }
 
-            Console.WriteLine("");
-            Console.WriteLine("--------------------------------------");
-            Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine("--------------------------------------");
+                Console.WriteLine("");
+            }
 
             var cTranslator = new Translation.ASTToC.ASTToCTranslator();
             C.Data.C c = cTranslator.Translate(ast) as C.Data.C;
             var cLines = c.Accept(new C.Visitors.TreePrintVisitor());
-            foreach (var line in cLines)
-            {
-                Console.WriteLine(line);
-            }
-
-            Console.WriteLine("");
-            Console.WriteLine("--------------------------------------");
-            Console.WriteLine("");
-
             var cStr = c.Accept(new C.Visitors.TextPrintVisitor());
-            foreach (var term in cStr)
+            if (args.Length == 0)
             {
-                Console.Write(term.Replace("$",":").Replace(";", ";\n"));
-                Console.Write(" ");
+                foreach (var line in cLines)
+                {
+                    Console.WriteLine(line);
+                }
+
+                Console.WriteLine("");
+                Console.WriteLine("--------------------------------------");
+                Console.WriteLine("");
+
+                foreach (var term in cStr)
+                {
+                    Console.WriteLine(term);
+                }
+
+                Console.WriteLine();
             }
 
-            Console.WriteLine();
+            File.WriteAllLines(args.Length == 2 ? args[1] : "../../docs/samples/compiled/" + file.Replace("\\", " /").Split('/').Last().Split('.').First() + ".c", cStr);
 
             //Todo
 

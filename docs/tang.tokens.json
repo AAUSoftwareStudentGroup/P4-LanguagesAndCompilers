@@ -1,4 +1,8 @@
-[ //Dette er DEN RIGTIGE FIL, ikke den, der ligger under compileren.
+[
+    {
+        "Name": "interrupt",
+        "PatternString": "interrupt"
+    },
     {
         "Name": "+",
         "PatternString": "\\+"

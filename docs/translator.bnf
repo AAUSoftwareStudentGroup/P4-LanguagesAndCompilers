@@ -15,7 +15,10 @@ ListDomain -> [ Domains ]
 Domains -> TreeDomain Domains
          | EPSILON
 
-TreeDomain -> symbol
+TreeDomain -> Symbol
+
+Symbol -> symbol
+        | escapedSymbol
 
 Rules -> Rule RulesP
 RulesP -> newline Rule RulesP
@@ -54,9 +57,9 @@ ListPattern -> [ Patterns ]
 
 TreePattern -> Name Alias ChildrenPattern
 
-Name -> symbol
+Name -> Symbol
 
-Alias -> : symbol
+Alias -> : Symbol
        | EPSILON
 
 ChildrenPattern -> [ Patterns ]

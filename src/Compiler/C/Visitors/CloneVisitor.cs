@@ -12,9 +12,9 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.Main node)
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.GlobalDeclarations node)
 		{
-			var clone = new Compiler.C.Data.Main() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.C.Data.GlobalDeclarations() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -22,9 +22,9 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.GlobalStatement node)
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.GlobalDeclaration node)
 		{
-			var clone = new Compiler.C.Data.GlobalStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.C.Data.GlobalDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -32,9 +32,9 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.Interrupt node)
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.FunctionPrototype node)
 		{
-			var clone = new Compiler.C.Data.Interrupt() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.C.Data.FunctionPrototype() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -42,9 +42,19 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.CompoundGlobalStatement node)
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.Functions node)
 		{
-			var clone = new Compiler.C.Data.CompoundGlobalStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.C.Data.Functions() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.Function node)
+		{
+			var clone = new Compiler.C.Data.Function() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

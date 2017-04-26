@@ -25,7 +25,7 @@ IdentifierDeclaration -> intType identifier
 
 RegisterStatement -> registerType RegisterOperation
 
-RegisterOperation -> ( intLiteral ) { Expression } = Expression
+RegisterOperation -> ( Expression ) { Expression } = Expression
                    | identifier
 
 Assignment -> identifier BitSelector = Expression 
@@ -71,6 +71,6 @@ PrimaryExpression -> intLiteral
                    | identifier BitSelector
                    | ( Expression )
                    | ! PrimaryExpression
-                   | registerType ( intLiteral ) BitSelector
+                   | registerType ( Expression ) BitSelector
                    | true
                    | false
