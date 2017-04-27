@@ -53,9 +53,9 @@ RegisterLiteral -> * ( volatile unsigned char * ) ( intLiteral )
 
 RegisterVariable -> identifier
 
-IfStatement -> if ( BooleanExpression ) { Statement } 
+IfStatement -> if ( BooleanExpression ) { GlobalDeclarations Statement } 
 		   
-WhileStatement -> while ( BooleanExpression ) { Statement }
+WhileStatement -> while ( BooleanExpression ) { GlobalDeclarations Statement }
 		   
 IntegerExpression -> IntegerVariable   
                    | IntegerParenthesisExpression

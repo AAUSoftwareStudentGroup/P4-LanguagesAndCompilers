@@ -12,7 +12,7 @@ namespace Compiler
         {
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
 
-            string file = "../../docs/samples/Interrupt.tang";
+            string file = "../../docs/samples/Main.tang";
 
             if(args.Length > 0)
             {
