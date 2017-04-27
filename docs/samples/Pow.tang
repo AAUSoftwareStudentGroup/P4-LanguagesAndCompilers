@@ -1,0 +1,7 @@
+uint8 p
+
+interrupt(10)
+    p = 4
+
+if(p = 2)
+    p = 3

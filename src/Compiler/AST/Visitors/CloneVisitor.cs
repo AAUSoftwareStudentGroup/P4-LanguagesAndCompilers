@@ -262,6 +262,26 @@ namespace Compiler.AST.Visitors
 			return clone;
 		}
 
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.ModExpression node)
+		{
+			var clone = new Compiler.AST.Data.ModExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.PowExpression node)
+		{
+			var clone = new Compiler.AST.Data.PowExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.BooleanExpression node)
 		{
 			var clone = new Compiler.AST.Data.BooleanExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -332,6 +352,26 @@ namespace Compiler.AST.Visitors
 			return clone;
 		}
 
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.IntegerNotEqExpression node)
+		{
+			var clone = new Compiler.AST.Data.IntegerNotEqExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.BooleanNotEqExpression node)
+		{
+			var clone = new Compiler.AST.Data.BooleanNotEqExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.LessThanExpression node)
 		{
 			var clone = new Compiler.AST.Data.LessThanExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -345,6 +385,26 @@ namespace Compiler.AST.Visitors
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.GreaterThanExpression node)
 		{
 			var clone = new Compiler.AST.Data.GreaterThanExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.LessThanOrEqExpression node)
+		{
+			var clone = new Compiler.AST.Data.LessThanOrEqExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.GreaterThanOrEqExpression node)
+		{
+			var clone = new Compiler.AST.Data.GreaterThanOrEqExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

@@ -34,7 +34,7 @@ BitSelector -> { Expression }
              | EPSILON
 
 IfStatement -> if ( Expression ) indent Statements dedent 
-		   
+           
 WhileStatement -> while ( Expression ) indent Statements dedent
         
 Expression -> OrExpression
@@ -49,11 +49,14 @@ AndExpressionP -> and EqExpression AndExpressionP
 
 EqExpression -> RelationalExpression EqExpressionP
 EqExpressionP -> = RelationalExpression EqExpressionP
+               | != RelationalExpression EqExpressionP  
                | EPSILON
 
 RelationalExpression -> AddSubExpression RelationalExpressionP
 RelationalExpressionP -> < AddSubExpression RelationalExpressionP
                        | > AddSubExpression RelationalExpressionP
+                       | <= AddSubExpression RelationalExpressionP
+                       | >= AddSubExpression RelationalExpressionP
                        | EPSILON
 
 AddSubExpression -> MulDivExpression AddSubExpressionP
@@ -61,10 +64,15 @@ AddSubExpressionP -> + MulDivExpression AddSubExpressionP
                    | - MulDivExpression AddSubExpressionP
                    | EPSILON
 
-MulDivExpression -> PrimaryExpression MulDivExpressionP
-MulDivExpressionP -> / PrimaryExpression MulDivExpressionP
-                   | * PrimaryExpression MulDivExpressionP
+MulDivExpression -> PowExpression MulDivExpressionP
+MulDivExpressionP -> / PowExpression MulDivExpressionP
+                   | * PowExpression MulDivExpressionP
+                   | % PowExpression MulDivExpressionP
                    | EPSILON
+
+PowExpression -> PrimaryExpression PowExpressionP  
+PowExpressionP -> ^ PrimaryExpression PowExpressionP
+                | EPSILON
 
 PrimaryExpression -> intLiteral
                    | boolLiteral

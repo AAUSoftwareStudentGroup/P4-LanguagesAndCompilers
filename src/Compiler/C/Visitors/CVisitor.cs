@@ -142,6 +142,16 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.C.Data.ModExpression node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.PowExpression node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.C.Data.BooleanExpression node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
@@ -177,12 +187,32 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.C.Data.IntegerNotEqExpression node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.BooleanNotEqExpression node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.C.Data.LessThanExpression node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
 		public virtual T Visit(Compiler.C.Data.GreaterThanExpression node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.LessThanOrEqExpression node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.GreaterThanOrEqExpression node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}

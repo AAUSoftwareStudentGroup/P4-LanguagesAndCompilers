@@ -142,6 +142,16 @@ namespace Compiler.Parsing.Visitors
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.Parsing.Data.PowExpression node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Parsing.Data.PowExpressionP node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.Parsing.Data.PrimaryExpression node)
 		{
 			return Visit((Compiler.Parsing.Data.Node)node);

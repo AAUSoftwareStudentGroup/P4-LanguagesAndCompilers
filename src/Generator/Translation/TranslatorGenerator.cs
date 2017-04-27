@@ -596,9 +596,11 @@ namespace Generator.Translation
             string type = nameStr;
             string fullType = type;
 
+
+
             string namePattern = GetName(name);
 
-            if (namePattern == "*")
+            if (namePattern == "*" && name[0][0].Name == "symbol")
             {
                 namePattern = $"{identifier}.Name";
                 type = "Node";

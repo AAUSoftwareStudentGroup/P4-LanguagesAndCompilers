@@ -282,6 +282,26 @@ namespace Compiler.Parsing.Visitors
 			return clone;
 		}
 
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.PowExpression node)
+		{
+			var clone = new Compiler.Parsing.Data.PowExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.PowExpressionP node)
+		{
+			var clone = new Compiler.Parsing.Data.PowExpressionP() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.PrimaryExpression node)
 		{
 			var clone = new Compiler.Parsing.Data.PrimaryExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };

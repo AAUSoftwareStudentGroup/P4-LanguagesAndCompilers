@@ -280,12 +280,17 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "}"));
 			        return node;
 			    case "=":
+			    case "^":
 			    case "/":
 			    case "*":
+			    case "%":
 			    case "+":
 			    case "-":
 			    case "<":
 			    case ">":
+			    case "<=":
+			    case ">=":
+			    case "!=":
 			    case "and":
 			    case "or":
 			    case ")":
@@ -476,6 +481,11 @@ namespace Compiler.Parsing
 			        node.Add(ParseRelationalExpression(tokens));
 			        node.Add(ParseEqExpressionP(tokens));
 			        return node;
+			    case "!=":
+			        node.Add(ParseTerminal(tokens, "!="));
+			        node.Add(ParseRelationalExpression(tokens));
+			        node.Add(ParseEqExpressionP(tokens));
+			        return node;
 			    case "and":
 			    case "or":
 			    case ")":
@@ -526,7 +536,18 @@ namespace Compiler.Parsing
 			        node.Add(ParseAddSubExpression(tokens));
 			        node.Add(ParseRelationalExpressionP(tokens));
 			        return node;
+			    case "<=":
+			        node.Add(ParseTerminal(tokens, "<="));
+			        node.Add(ParseAddSubExpression(tokens));
+			        node.Add(ParseRelationalExpressionP(tokens));
+			        return node;
+			    case ">=":
+			        node.Add(ParseTerminal(tokens, ">="));
+			        node.Add(ParseAddSubExpression(tokens));
+			        node.Add(ParseRelationalExpressionP(tokens));
+			        return node;
 			    case "=":
+			    case "!=":
 			    case "and":
 			    case "or":
 			    case ")":
@@ -579,7 +600,10 @@ namespace Compiler.Parsing
 			        return node;
 			    case "<":
 			    case ">":
+			    case "<=":
+			    case ">=":
 			    case "=":
+			    case "!=":
 			    case "and":
 			    case "or":
 			    case ")":
@@ -607,7 +631,7 @@ namespace Compiler.Parsing
 			    case "registerType":
 			    case "true":
 			    case "false":
-			        node.Add(ParsePrimaryExpression(tokens));
+			        node.Add(ParsePowExpression(tokens));
 			        node.Add(ParseMulDivExpressionP(tokens));
 			        return node;
 			    default:
@@ -622,19 +646,83 @@ namespace Compiler.Parsing
 			{
 			    case "/":
 			        node.Add(ParseTerminal(tokens, "/"));
-			        node.Add(ParsePrimaryExpression(tokens));
+			        node.Add(ParsePowExpression(tokens));
 			        node.Add(ParseMulDivExpressionP(tokens));
 			        return node;
 			    case "*":
 			        node.Add(ParseTerminal(tokens, "*"));
-			        node.Add(ParsePrimaryExpression(tokens));
+			        node.Add(ParsePowExpression(tokens));
+			        node.Add(ParseMulDivExpressionP(tokens));
+			        return node;
+			    case "%":
+			        node.Add(ParseTerminal(tokens, "%"));
+			        node.Add(ParsePowExpression(tokens));
 			        node.Add(ParseMulDivExpressionP(tokens));
 			        return node;
 			    case "+":
 			    case "-":
 			    case "<":
 			    case ">":
+			    case "<=":
+			    case ">=":
 			    case "=":
+			    case "!=":
+			    case "and":
+			    case "or":
+			    case ")":
+			    case "}":
+			    case "newline":
+			    case "eof":
+			    case "dedent":
+			        node.Add(ParseTerminal(tokens, "EPSILON"));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.PowExpression ParsePowExpression(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.PowExpression node = new Compiler.Parsing.Data.PowExpression(){ Name = "PowExpression" };
+			switch(tokens.Current.Name)
+			{
+			    case "intLiteral":
+			    case "boolLiteral":
+			    case "identifier":
+			    case "(":
+			    case "!":
+			    case "registerType":
+			    case "true":
+			    case "false":
+			        node.Add(ParsePrimaryExpression(tokens));
+			        node.Add(ParsePowExpressionP(tokens));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.PowExpressionP ParsePowExpressionP(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.PowExpressionP node = new Compiler.Parsing.Data.PowExpressionP(){ Name = "PowExpressionP" };
+			switch(tokens.Current.Name)
+			{
+			    case "^":
+			        node.Add(ParseTerminal(tokens, "^"));
+			        node.Add(ParsePrimaryExpression(tokens));
+			        node.Add(ParsePowExpressionP(tokens));
+			        return node;
+			    case "/":
+			    case "*":
+			    case "%":
+			    case "+":
+			    case "-":
+			    case "<":
+			    case ">":
+			    case "<=":
+			    case ">=":
+			    case "=":
+			    case "!=":
 			    case "and":
 			    case "or":
 			    case ")":

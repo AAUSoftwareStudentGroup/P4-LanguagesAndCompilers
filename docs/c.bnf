@@ -63,6 +63,8 @@ IntegerExpression -> IntegerVariable
                    | SubExpression
                    | MulExpression
                    | DivExpression 
+                   | ModExpression
+                   | PowExpression
                    | IntLiteral
 
 IntegerVariable -> identifier
@@ -77,6 +79,11 @@ MulExpression -> ( IntegerExpression * IntegerExpression )
 
 DivExpression -> ( IntegerExpression / IntegerExpression )
 
+ModExpression -> ( IntegerExpression % IntegerExpression )
+
+/* implement this later */
+PowExpression -> ( IntegerExpression * IntegerExpression )
+
 BooleanExpression -> 1 
                    | 0 
 				   | BooleanVariable
@@ -85,8 +92,12 @@ BooleanExpression -> 1
                    | BooleanParenthesisExpression
                    | IntegerEqExpression 
                    | BooleanEqExpression 
+                   | IntegerNotEqExpression
+                   | BooleanNotEqExpression
                    | LessThanExpression 
                    | GreaterThanExpression
+                   | LessThanOrEqExpression
+                   | GreaterThanOrEqExpression
                    | NotExpression 
                    | AndExpression 
                    | OrExpression
@@ -103,9 +114,17 @@ IntegerEqExpression -> ( IntegerExpression == IntegerExpression )
 
 BooleanEqExpression -> ( BooleanExpression == BooleanExpression )
 
+IntegerNotEqExpression -> ( IntegerExpression != IntegerExpression )
+
+BooleanNotEqExpression -> ( BooleanExpression != BooleanExpression )
+
 LessThanExpression -> ( IntegerExpression < IntegerExpression )
 
 GreaterThanExpression -> ( IntegerExpression > IntegerExpression )
+
+LessThanOrEqExpression -> ( IntegerExpression <= IntegerExpression )
+
+GreaterThanOrEqExpression -> ( IntegerExpression >= IntegerExpression )
 
 NotExpression -> ( ! BooleanExpression )
 

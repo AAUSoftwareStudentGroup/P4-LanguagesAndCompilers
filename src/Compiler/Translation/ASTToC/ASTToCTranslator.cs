@@ -389,7 +389,7 @@ namespace Compiler.Translation.ASTToC
 					(Compiler.C.Data.Node gd3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(ifStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.GlobalDeclarations(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
 					if(gd3 != null && gd3.Name == "GlobalDeclarations" && true && f3 != null && f3.Name == "Functions" && true && si3 != null && si3.Name == "Statement" && true)
 					{
-						return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, Insert(statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, gd3 as Compiler.C.Data.GlobalDeclarations, Insert(si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }) as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } } }) as Compiler.C.Data.Statement);
+						return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, Insert(statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, gd3 as Compiler.C.Data.GlobalDeclarations, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } } }) as Compiler.C.Data.Statement);
 					}
 				}
 			}
@@ -406,7 +406,7 @@ namespace Compiler.Translation.ASTToC
 					(Compiler.C.Data.Node gd3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(whileStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.GlobalDeclarations(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
 					if(gd3 != null && gd3.Name == "GlobalDeclarations" && true && f3 != null && f3.Name == "Functions" && true && si3 != null && si3.Name == "Statement" && true)
 					{
-						return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, Insert(statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { new Compiler.C.Data.Statement(false) { new Compiler.C.Data.WhileStatement(false) { new Compiler.C.Data.Token() { Name = "while", Value = "while" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, gd3 as Compiler.C.Data.GlobalDeclarations, Insert(si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }) as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } } }) as Compiler.C.Data.Statement);
+						return (globalDeclarations as Compiler.C.Data.GlobalDeclarations, functions as Compiler.C.Data.Functions, Insert(statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { new Compiler.C.Data.Statement(false) { new Compiler.C.Data.WhileStatement(false) { new Compiler.C.Data.Token() { Name = "while", Value = "while" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, gd3 as Compiler.C.Data.GlobalDeclarations, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } }, new Compiler.C.Data.Statement(true) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } } }) as Compiler.C.Data.Statement);
 					}
 				}
 			}
@@ -461,6 +461,22 @@ namespace Compiler.Translation.ASTToC
 				if(s1 != null && s1.Name == "DivExpression" && true)
 				{
 					return new Compiler.C.Data.IntegerExpression(false) { s1 as Compiler.C.Data.DivExpression };
+				}
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "ModExpression" && true))
+			{
+				Compiler.C.Data.Node s1 = Translate(integerExpression[0] as Compiler.AST.Data.ModExpression);
+				if(s1 != null && s1.Name == "ModExpression" && true)
+				{
+					return new Compiler.C.Data.IntegerExpression(false) { s1 as Compiler.C.Data.ModExpression };
+				}
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "PowExpression" && true))
+			{
+				Compiler.C.Data.Node s1 = Translate(integerExpression[0] as Compiler.AST.Data.PowExpression);
+				if(s1 != null && s1.Name == "PowExpression" && true)
+				{
+					return new Compiler.C.Data.IntegerExpression(false) { s1 as Compiler.C.Data.PowExpression };
 				}
 			}
 			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "intLiteral" && true))
@@ -536,7 +552,7 @@ namespace Compiler.Translation.ASTToC
 
 		public Compiler.C.Data.Node Translate(Compiler.AST.Data.MulExpression mulExpression)
 		{
-			if(mulExpression != null && mulExpression.Name == "MulExpression" && (mulExpression.Count == 3 && mulExpression[0] != null && mulExpression[0].Name == "IntegerExpression" && true && mulExpression[1] != null && mulExpression[1].Name == mulExpression[1].Name && true && mulExpression[2] != null && mulExpression[2].Name == "IntegerExpression" && true))
+			if(mulExpression != null && mulExpression.Name == "MulExpression" && (mulExpression.Count == 3 && mulExpression[0] != null && mulExpression[0].Name == "IntegerExpression" && true && mulExpression[1] != null && mulExpression[1].Name == "*" && true && mulExpression[2] != null && mulExpression[2].Name == "IntegerExpression" && true))
 			{
 				Compiler.C.Data.Node iexpr3 = Translate(mulExpression[0] as Compiler.AST.Data.IntegerExpression);
 				if(iexpr3 != null && iexpr3.Name == "IntegerExpression" && true)
@@ -562,6 +578,40 @@ namespace Compiler.Translation.ASTToC
 					if(iexpr4 != null && iexpr4.Name == "IntegerExpression" && true)
 					{
 						return new Compiler.C.Data.DivExpression(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr3 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = "/", Value = "/" }, iexpr4 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.ModExpression modExpression)
+		{
+			if(modExpression != null && modExpression.Name == "ModExpression" && (modExpression.Count == 3 && modExpression[0] != null && modExpression[0].Name == "IntegerExpression" && true && modExpression[1] != null && modExpression[1].Name == "%" && true && modExpression[2] != null && modExpression[2].Name == "IntegerExpression" && true))
+			{
+				Compiler.C.Data.Node iexpr3 = Translate(modExpression[0] as Compiler.AST.Data.IntegerExpression);
+				if(iexpr3 != null && iexpr3.Name == "IntegerExpression" && true)
+				{
+					Compiler.C.Data.Node iexpr4 = Translate(modExpression[2] as Compiler.AST.Data.IntegerExpression);
+					if(iexpr4 != null && iexpr4.Name == "IntegerExpression" && true)
+					{
+						return new Compiler.C.Data.ModExpression(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr3 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = "%", Value = "%" }, iexpr4 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.PowExpression powExpression)
+		{
+			if(powExpression != null && powExpression.Name == "PowExpression" && (powExpression.Count == 3 && powExpression[0] != null && powExpression[0].Name == "IntegerExpression" && true && powExpression[1] != null && powExpression[1].Name == "^" && true && powExpression[2] != null && powExpression[2].Name == "IntegerExpression" && true))
+			{
+				Compiler.C.Data.Node iexpr3 = Translate(powExpression[0] as Compiler.AST.Data.IntegerExpression);
+				if(iexpr3 != null && iexpr3.Name == "IntegerExpression" && true)
+				{
+					Compiler.C.Data.Node iexpr4 = Translate(powExpression[2] as Compiler.AST.Data.IntegerExpression);
+					if(iexpr4 != null && iexpr4.Name == "IntegerExpression" && true)
+					{
+						return new Compiler.C.Data.PowExpression(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr3 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = "*", Value = "*" }, iexpr4 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
 					}
 				}
 			}
@@ -626,6 +676,22 @@ namespace Compiler.Translation.ASTToC
 					return new Compiler.C.Data.BooleanExpression(false) { s1 as Compiler.C.Data.BooleanEqExpression };
 				}
 			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "IntegerNotEqExpression" && true))
+			{
+				Compiler.C.Data.Node s1 = Translate(booleanExpression[0] as Compiler.AST.Data.IntegerNotEqExpression);
+				if(s1 != null && s1.Name == "IntegerNotEqExpression" && true)
+				{
+					return new Compiler.C.Data.BooleanExpression(false) { s1 as Compiler.C.Data.IntegerNotEqExpression };
+				}
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "BooleanNotEqExpression" && true))
+			{
+				Compiler.C.Data.Node s1 = Translate(booleanExpression[0] as Compiler.AST.Data.BooleanNotEqExpression);
+				if(s1 != null && s1.Name == "BooleanNotEqExpression" && true)
+				{
+					return new Compiler.C.Data.BooleanExpression(false) { s1 as Compiler.C.Data.BooleanNotEqExpression };
+				}
+			}
 			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "LessThanExpression" && true))
 			{
 				Compiler.C.Data.Node s1 = Translate(booleanExpression[0] as Compiler.AST.Data.LessThanExpression);
@@ -640,6 +706,22 @@ namespace Compiler.Translation.ASTToC
 				if(s1 != null && s1.Name == "GreaterThanExpression" && true)
 				{
 					return new Compiler.C.Data.BooleanExpression(false) { s1 as Compiler.C.Data.GreaterThanExpression };
+				}
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "LessThanOrEqExpression" && true))
+			{
+				Compiler.C.Data.Node s1 = Translate(booleanExpression[0] as Compiler.AST.Data.LessThanOrEqExpression);
+				if(s1 != null && s1.Name == "LessThanOrEqExpression" && true)
+				{
+					return new Compiler.C.Data.BooleanExpression(false) { s1 as Compiler.C.Data.LessThanOrEqExpression };
+				}
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "GreaterThanOrEqExpression" && true))
+			{
+				Compiler.C.Data.Node s1 = Translate(booleanExpression[0] as Compiler.AST.Data.GreaterThanOrEqExpression);
+				if(s1 != null && s1.Name == "GreaterThanOrEqExpression" && true)
+				{
+					return new Compiler.C.Data.BooleanExpression(false) { s1 as Compiler.C.Data.GreaterThanOrEqExpression };
 				}
 			}
 			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "NotExpression" && true))
@@ -763,6 +845,40 @@ namespace Compiler.Translation.ASTToC
 			throw new System.Exception();
 		}
 
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.IntegerNotEqExpression integerNotEqExpression)
+		{
+			if(integerNotEqExpression != null && integerNotEqExpression.Name == "IntegerNotEqExpression" && (integerNotEqExpression.Count == 3 && integerNotEqExpression[0] != null && integerNotEqExpression[0].Name == "IntegerExpression" && true && integerNotEqExpression[1] != null && integerNotEqExpression[1].Name == "!=" && true && integerNotEqExpression[2] != null && integerNotEqExpression[2].Name == "IntegerExpression" && true))
+			{
+				Compiler.C.Data.Node iexpr3 = Translate(integerNotEqExpression[0] as Compiler.AST.Data.IntegerExpression);
+				if(iexpr3 != null && iexpr3.Name == "IntegerExpression" && true)
+				{
+					Compiler.C.Data.Node iexpr4 = Translate(integerNotEqExpression[2] as Compiler.AST.Data.IntegerExpression);
+					if(iexpr4 != null && iexpr4.Name == "IntegerExpression" && true)
+					{
+						return new Compiler.C.Data.IntegerNotEqExpression(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr3 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = "!=", Value = "!=" }, iexpr4 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.BooleanNotEqExpression booleanNotEqExpression)
+		{
+			if(booleanNotEqExpression != null && booleanNotEqExpression.Name == "BooleanNotEqExpression" && (booleanNotEqExpression.Count == 3 && booleanNotEqExpression[0] != null && booleanNotEqExpression[0].Name == "BooleanExpression" && true && booleanNotEqExpression[1] != null && booleanNotEqExpression[1].Name == "!=" && true && booleanNotEqExpression[2] != null && booleanNotEqExpression[2].Name == "BooleanExpression" && true))
+			{
+				Compiler.C.Data.Node bexpr3 = Translate(booleanNotEqExpression[0] as Compiler.AST.Data.BooleanExpression);
+				if(bexpr3 != null && bexpr3.Name == "BooleanExpression" && true)
+				{
+					Compiler.C.Data.Node bexpr4 = Translate(booleanNotEqExpression[2] as Compiler.AST.Data.BooleanExpression);
+					if(bexpr4 != null && bexpr4.Name == "BooleanExpression" && true)
+					{
+						return new Compiler.C.Data.BooleanNotEqExpression(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr3 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = "!=", Value = "!=" }, bexpr4 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
 		public Compiler.C.Data.Node Translate(Compiler.AST.Data.LessThanExpression lessThanExpression)
 		{
 			if(lessThanExpression != null && lessThanExpression.Name == "LessThanExpression" && (lessThanExpression.Count == 3 && lessThanExpression[0] != null && lessThanExpression[0].Name == "IntegerExpression" && true && lessThanExpression[1] != null && lessThanExpression[1].Name == "<" && true && lessThanExpression[2] != null && lessThanExpression[2].Name == "IntegerExpression" && true))
@@ -791,6 +907,40 @@ namespace Compiler.Translation.ASTToC
 					if(iexpr4 != null && iexpr4.Name == "IntegerExpression" && true)
 					{
 						return new Compiler.C.Data.GreaterThanExpression(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr3 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ">", Value = ">" }, iexpr4 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.LessThanOrEqExpression lessThanOrEqExpression)
+		{
+			if(lessThanOrEqExpression != null && lessThanOrEqExpression.Name == "LessThanOrEqExpression" && (lessThanOrEqExpression.Count == 3 && lessThanOrEqExpression[0] != null && lessThanOrEqExpression[0].Name == "IntegerExpression" && true && lessThanOrEqExpression[1] != null && lessThanOrEqExpression[1].Name == "<=" && true && lessThanOrEqExpression[2] != null && lessThanOrEqExpression[2].Name == "IntegerExpression" && true))
+			{
+				Compiler.C.Data.Node iexpr3 = Translate(lessThanOrEqExpression[0] as Compiler.AST.Data.IntegerExpression);
+				if(iexpr3 != null && iexpr3.Name == "IntegerExpression" && true)
+				{
+					Compiler.C.Data.Node iexpr4 = Translate(lessThanOrEqExpression[2] as Compiler.AST.Data.IntegerExpression);
+					if(iexpr4 != null && iexpr4.Name == "IntegerExpression" && true)
+					{
+						return new Compiler.C.Data.LessThanOrEqExpression(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr3 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = "<=", Value = "<=" }, iexpr4 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.GreaterThanOrEqExpression greaterThanOrEqExpression)
+		{
+			if(greaterThanOrEqExpression != null && greaterThanOrEqExpression.Name == "GreaterThanOrEqExpression" && (greaterThanOrEqExpression.Count == 3 && greaterThanOrEqExpression[0] != null && greaterThanOrEqExpression[0].Name == "IntegerExpression" && true && greaterThanOrEqExpression[1] != null && greaterThanOrEqExpression[1].Name == ">=" && true && greaterThanOrEqExpression[2] != null && greaterThanOrEqExpression[2].Name == "IntegerExpression" && true))
+			{
+				Compiler.C.Data.Node iexpr3 = Translate(greaterThanOrEqExpression[0] as Compiler.AST.Data.IntegerExpression);
+				if(iexpr3 != null && iexpr3.Name == "IntegerExpression" && true)
+				{
+					Compiler.C.Data.Node iexpr4 = Translate(greaterThanOrEqExpression[2] as Compiler.AST.Data.IntegerExpression);
+					if(iexpr4 != null && iexpr4.Name == "IntegerExpression" && true)
+					{
+						return new Compiler.C.Data.GreaterThanOrEqExpression(false) { new Compiler.C.Data.Token() { Name = "(", Value = "(" }, iexpr3 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ">=", Value = ">=" }, iexpr4 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
 					}
 				}
 			}

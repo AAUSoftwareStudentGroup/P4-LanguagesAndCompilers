@@ -54,7 +54,7 @@ AST[GlobalStatement:gs eof] -> C[gd f <- Functions[Function[void main ( void ) {
 
 IntegerDeclaration[intType identifier:id] -> IntegerDeclaration[long long int id1]
     id -> identifier:id1
-		   
+
 IntegerAssignment[identifier:id = IntegerExpression:iexpr] -> IntegerAssignment[id1 = iexpr1] 
     id -> identifier:id1
     iexpr -> IntegerExpression:iexpr1
@@ -67,18 +67,18 @@ BooleanAssignment[identifier:id = BooleanExpression:bexpr] -> BooleanAssignment[
     bexpr -> BooleanExpression:bexpr1
 
 DirectBitAssignment[registerType ( IntegerExpression:expr1 ) { IntegerExpression:expr2 } = BooleanExpression:bexpr]
--> DirectBitAssignment[( * ( volatile unsigned char * ) ( iexpr1 ) ) = ( bexpr1 ? ( ( * ( volatile unsigned char * ) ( iexpr1 ) ) | 1 << ( iexpr2 ) ) \: ( ( * ( volatile unsigned char * ) ( iexpr1 ) ) & ~ ( 1 << ( iexpr2 ) ) ) )]
+-> DirectBitAssignment[( \* ( volatile unsigned char \* ) ( iexpr1 ) ) = ( bexpr1 ? ( ( \* ( volatile unsigned char \* ) ( iexpr1 ) ) | 1 << ( iexpr2 ) ) \: ( ( \* ( volatile unsigned char \* ) ( iexpr1 ) ) & ~ ( 1 << ( iexpr2 ) ) ) )]
     expr1 -> IntegerExpression:iexpr1
     expr2 -> IntegerExpression:iexpr2
     bexpr -> BooleanExpression:bexpr1
 
 IndirectBitAssignment[identifier:id { IntegerExpression:iexpr } = BooleanExpression:bexpr]
--> IndirectBitAssignment[* id1 = ( bexpr1 ? ( ( * id1 ) | 1 << ( iexpr1 ) ) \: ( ( * id1 ) & ~ ( 1 << ( iexpr1 ) ) ) )]
+-> IndirectBitAssignment[* id1 = ( bexpr1 ? ( ( \* id1 ) | 1 << ( iexpr1 ) ) \: ( ( \* id1 ) & ~ ( 1 << ( iexpr1 ) ) ) )]
     id -> identifier:id1
     iexpr -> IntegerExpression:iexpr1
     bexpr -> BooleanExpression:bexpr1
 
-RegisterDeclaration[registerType identifier:id] -> RegisterDeclaration[volatile unsigned char * id1]
+RegisterDeclaration[registerType identifier:id] -> RegisterDeclaration[volatile unsigned char \* id1]
     id -> identifier:id1
 
 RegisterAssignment[identifier:id = RegisterExpression:rexpr] -> RegisterAssignment[id1 = rexpr1]
@@ -91,17 +91,17 @@ RegisterExpression[RegisterLiteral:rlit] -> RegisterExpression[rlit1]
 RegisterExpression[RegisterVariable:rvar] -> RegisterExpression[rvar1]
     rvar -> RegisterVariable:rvar1
 
-RegisterLiteral[registerType ( IntegerExpression:iexpr )] -> RegisterLiteral[( volatile unsigned char * ) ( iexpr1 )]
+RegisterLiteral[registerType ( IntegerExpression:iexpr )] -> RegisterLiteral[( volatile unsigned char \* ) ( iexpr1 )]
     iexpr -> IntegerExpression:iexpr1
 
 RegisterVariable[identifier:id] -> RegisterVariable[id1]
     id -> identifier:id1
 
-[IfStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[IfStatement[if ( bexpr1 ) { gd3 si3 <- Statement[EPSILON] }]] %Statement[EPSILON]]]]
+[IfStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[IfStatement[if ( bexpr1 ) { gd3 si3 }]] %Statement[EPSILON]]]]
     bexpr -> BooleanExpression:bexpr1
     [s %GlobalDeclarations[EPSILON] %Functions[EPSILON] %Statement[EPSILON]] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
 
-[WhileStatement[while ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[WhileStatement[while ( bexpr1 ) { gd3 si3 <- Statement[EPSILON] }]] %Statement[EPSILON]]]]
+[WhileStatement[while ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[WhileStatement[while ( bexpr1 ) { gd3 si3 }]] %Statement[EPSILON]]]]
     bexpr -> BooleanExpression:bexpr1
     [s %GlobalDeclarations[EPSILON] %Functions[EPSILON] %Statement[EPSILON]] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
 
@@ -117,6 +117,10 @@ IntegerExpression[MulExpression:s] -> IntegerExpression[s1]
     s -> MulExpression:s1
 IntegerExpression[DivExpression:s] -> IntegerExpression[s1]
     s -> DivExpression:s1 
+IntegerExpression[ModExpression:s] -> IntegerExpression[s1]
+    s -> ModExpression:s1
+IntegerExpression[PowExpression:s] -> IntegerExpression[s1]
+    s -> PowExpression:s1
 IntegerExpression[intLiteral:s] -> IntegerExpression[s1]
     s -> intLiteral:s1
 
@@ -134,11 +138,19 @@ SubExpression[IntegerExpression:iexpr1 - IntegerExpression:iexpr2] -> SubExpress
     iexpr1 -> IntegerExpression:iexpr3
     iexpr2 -> IntegerExpression:iexpr4
 
-MulExpression[IntegerExpression:iexpr1 * IntegerExpression:iexpr2] -> MulExpression[( iexpr3 * iexpr4 )]
+MulExpression[IntegerExpression:iexpr1 \* IntegerExpression:iexpr2] -> MulExpression[( iexpr3 \* iexpr4 )]
     iexpr1 -> IntegerExpression:iexpr3
     iexpr2 -> IntegerExpression:iexpr4
 
 DivExpression[IntegerExpression:iexpr1 / IntegerExpression:iexpr2] -> DivExpression[( iexpr3 / iexpr4 )]
+    iexpr1 -> IntegerExpression:iexpr3
+    iexpr2 -> IntegerExpression:iexpr4
+
+ModExpression[IntegerExpression:iexpr1 \% IntegerExpression:iexpr2] -> ModExpression[( iexpr3 \% iexpr4 )]
+    iexpr1 -> IntegerExpression:iexpr3
+    iexpr2 -> IntegerExpression:iexpr4
+
+PowExpression[IntegerExpression:iexpr1 ^ IntegerExpression:iexpr2] -> PowExpression[( iexpr3 \* iexpr4 )]
     iexpr1 -> IntegerExpression:iexpr3
     iexpr2 -> IntegerExpression:iexpr4
 
@@ -156,10 +168,18 @@ BooleanExpression[IntegerEqExpression:s] -> BooleanExpression[s1]
     s -> IntegerEqExpression:s1 
 BooleanExpression[BooleanEqExpression:s] -> BooleanExpression[s1]
     s -> BooleanEqExpression:s1 
+BooleanExpression[IntegerNotEqExpression:s] -> BooleanExpression[s1]
+    s -> IntegerNotEqExpression:s1 
+BooleanExpression[BooleanNotEqExpression:s] -> BooleanExpression[s1]
+    s -> BooleanNotEqExpression:s1 
 BooleanExpression[LessThanExpression:s] -> BooleanExpression[s1]
     s -> LessThanExpression:s1 
 BooleanExpression[GreaterThanExpression:s] -> BooleanExpression[s1]
     s -> GreaterThanExpression:s1
+BooleanExpression[LessThanOrEqExpression:s] -> BooleanExpression[s1]
+    s -> LessThanOrEqExpression:s1 
+BooleanExpression[GreaterThanOrEqExpression:s] -> BooleanExpression[s1]
+    s -> GreaterThanOrEqExpression:s1 
 BooleanExpression[NotExpression:s] -> BooleanExpression[s1]
     s -> NotExpression:s1 
 BooleanExpression[AndExpression:s] -> BooleanExpression[s1]
@@ -171,12 +191,12 @@ BooleanVariable[identifier:id] -> BooleanVariable[id1]
     id -> identifier:id1
 
 DirectBitValue[registerType ( IntegerExpression:iexpr1 ) { IntegerExpression:iexpr2 }]
--> DirectBitValue[( ( * ( volatile unsigned char * ) ( iexpr3 ) ) & ( 1 << ( iexpr4 ) ) )]
+-> DirectBitValue[( ( \* ( volatile unsigned char \* ) ( iexpr3 ) ) & ( 1 << ( iexpr4 ) ) )]
     iexpr1 -> IntegerExpression:iexpr3
     iexpr2 -> IntegerExpression:iexpr4
 
 IndirectBitValue[RegisterVariable:rvar { IntegerExpression:iexpr }]
--> IndirectBitValue[( * rvar1 & ( 1 << ( iexpr1 ) ) )]
+-> IndirectBitValue[( \* rvar1 & ( 1 << ( iexpr1 ) ) )]
     rvar -> RegisterVariable:rvar1
     iexpr -> IntegerExpression:iexpr1
 
@@ -191,11 +211,27 @@ BooleanEqExpression[BooleanExpression:bexpr1 = BooleanExpression:bexpr2] -> Bool
     bexpr1 -> BooleanExpression:bexpr3
     bexpr2 -> BooleanExpression:bexpr4
 
+IntegerNotEqExpression[IntegerExpression:iexpr1 != IntegerExpression:iexpr2] -> IntegerNotEqExpression[( iexpr3 != iexpr4 )]
+    iexpr1 -> IntegerExpression:iexpr3
+    iexpr2 -> IntegerExpression:iexpr4
+
+BooleanNotEqExpression[BooleanExpression:bexpr1 != BooleanExpression:bexpr2] -> BooleanNotEqExpression[( bexpr3 != bexpr4 )]
+    bexpr1 -> BooleanExpression:bexpr3
+    bexpr2 -> BooleanExpression:bexpr4
+
 LessThanExpression[IntegerExpression:iexpr1 < IntegerExpression:iexpr2] -> LessThanExpression[( iexpr3 < iexpr4 )]
     iexpr1 -> IntegerExpression:iexpr3
     iexpr2 -> IntegerExpression:iexpr4
 
 GreaterThanExpression[IntegerExpression:iexpr1 > IntegerExpression:iexpr2] -> GreaterThanExpression[( iexpr3 > iexpr4 )]
+    iexpr1 -> IntegerExpression:iexpr3
+    iexpr2 -> IntegerExpression:iexpr4
+
+LessThanOrEqExpression[IntegerExpression:iexpr1 <= IntegerExpression:iexpr2] -> LessThanOrEqExpression[( iexpr3 <= iexpr4 )]
+    iexpr1 -> IntegerExpression:iexpr3
+    iexpr2 -> IntegerExpression:iexpr4
+
+GreaterThanOrEqExpression[IntegerExpression:iexpr1 >= IntegerExpression:iexpr2] -> GreaterThanOrEqExpression[( iexpr3 >= iexpr4 )]
     iexpr1 -> IntegerExpression:iexpr3
     iexpr2 -> IntegerExpression:iexpr4
 
