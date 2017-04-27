@@ -44,10 +44,10 @@ AST[GlobalStatement:gs eof] -> C[gd f <- Functions[Function[void main ( void ) {
     s -> BooleanAssignment:s1
 [Statement[RegisterAssignment:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[s1 ;] %Statement[EPSILON]]]]
     s -> RegisterAssignment:s1
-[Statement[IfStatement:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[s1] %Statement[EPSILON]]]]
-    s -> IfStatement:s1 
-[Statement[WhileStatement:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[s1] %Statement[EPSILON]]]]
-    s -> WhileStatement:s1
+[Statement[IfStatement:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd2 f2 si2]
+    [s gd f si] ->:a [GlobalDeclarations:gd2 Functions:f2 Statement:si2]
+[Statement[WhileStatement:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd2 f2 si2]
+    [s gd f si] ->:a [GlobalDeclarations:gd2 Functions:f2 Statement:si2]
 [CompoundStatement[Statement:s1 newline Statement:s2] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd3 f3 si3]
     [s1 gd f si] ->:a [GlobalDeclarations:gd2 Functions:f2 Statement:si2]
     [s2 gd2 f2 si2] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
@@ -73,7 +73,7 @@ DirectBitAssignment[registerType ( IntegerExpression:expr1 ) { IntegerExpression
     bexpr -> BooleanExpression:bexpr1
 
 IndirectBitAssignment[identifier:id { IntegerExpression:iexpr } = BooleanExpression:bexpr]
--> IndirectBitAssignment[* id1 = ( bexpr1 ? ( ( * id1 ) | 1 << ( iexpr1 ) ) $ ( ( * id1 ) & ~ ( 1 << ( iexpr1 ) ) ) )]
+-> IndirectBitAssignment[* id1 = ( bexpr1 ? ( ( * id1 ) | 1 << ( iexpr1 ) ) \: ( ( * id1 ) & ~ ( 1 << ( iexpr1 ) ) ) )]
     id -> identifier:id1
     iexpr -> IntegerExpression:iexpr1
     bexpr -> BooleanExpression:bexpr1
@@ -97,13 +97,13 @@ RegisterLiteral[registerType ( IntegerExpression:iexpr )] -> RegisterLiteral[( v
 RegisterVariable[identifier:id] -> RegisterVariable[id1]
     id -> identifier:id1
 
-IfStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent] -> IfStatement[if ( bexpr1 ) { si3 }] 
+[IfStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[IfStatement[if ( bexpr1 ) { gd3 si3 }]] %Statement[EPSILON]]]]
     bexpr -> BooleanExpression:bexpr1
-    [s %GlobalDeclarations[EPSILON] %Functions[EPSILON] %Statement[EPSILON]] ->:a [GlobalDeclaration:gd3 Function:f3 Statement:si3]
+    [s %GlobalDeclarations[EPSILON] %Functions[EPSILON] %Statement[EPSILON]] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
 
-WhileStatement[while ( BooleanExpression:bexpr ) indent Statement:s dedent] -> WhileStatement[while ( bexpr1 ) { si3 }]
+[WhileStatement[while ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[WhileStatement[while ( bexpr1 ) { gd3 si3 }]] %Statement[EPSILON]]]]
     bexpr -> BooleanExpression:bexpr1
-    [s %GlobalDeclarations[EPSILON] %Functions[EPSILON] %Statement[EPSILON]] ->:a [GlobalDeclaration:gd3 Function:f3 Statement:si3]
+    [s %GlobalDeclarations[EPSILON] %Functions[EPSILON] %Statement[EPSILON]] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
 
 IntegerExpression[IntegerVariable:s] -> IntegerExpression[s1]
     s -> IntegerVariable:s1

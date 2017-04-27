@@ -123,6 +123,10 @@ namespace Compiler.C.Visitors
             first += ")";
             yield return first;
             yield return "{";
+            foreach (var str in node.Nodes<GlobalDeclarations>()[0].Accept(this))
+            {
+                yield return $"    {str}";
+            }
             foreach (var str in node.Nodes<Statement>()[0].Accept(this))
             {
                 yield return $"    {str}";
@@ -140,6 +144,10 @@ namespace Compiler.C.Visitors
             first += ")";
             yield return first;
             yield return "{";
+            foreach (var str in node.Nodes<GlobalDeclarations>()[0].Accept(this))
+            {
+                yield return $"    {str}";
+            }
             foreach (var str in node.Nodes<Statement>()[0].Accept(this))
             {
                 yield return $"    {str}";
