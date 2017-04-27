@@ -3,9 +3,11 @@ register8 portb
 ddrb = register8(36)
 portb = register8(37)
 ddrb{5} = true
+portb{5} = true
+uint8 counter
+counter = 0
 while(true)
-    uint8 counter
     if(counter = 100000)
         counter = 0
         portb{5} = !portb{5}
-    counter = counter + 1
+    counter = counter + 1    

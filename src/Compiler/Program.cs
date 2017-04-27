@@ -10,9 +10,10 @@ namespace Compiler
     {
         public static void Main(string[] args)
         {
+            DateTime t1 = DateTime.Now;
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
 
-            string file = "../../docs/samples/Main.tang";
+            string file = "../../docs/samples/AllRegisters.tang";
 
             if(args.Length > 0)
             {
@@ -21,6 +22,8 @@ namespace Compiler
 
             var tokens = lexer.Analyse(File.ReadAllText(file));
 
+            Console.WriteLine("Lexer: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
+            t1 = DateTime.Now;
             if (args.Length == 0)
             {
                 Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
@@ -34,6 +37,8 @@ namespace Compiler
             var tokenEnumerator = tokens.Select(t => new Parsing.Data.Token() { Name = t.Name, Value = t.Value }).GetEnumerator();
             tokenEnumerator.MoveNext();
             var parseTree = parser.ParseProgram(tokenEnumerator);
+            Console.WriteLine("Parser: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
+            t1 = DateTime.Now;
             var parseTreeLines = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
             if (args.Length == 0)
             {
@@ -50,6 +55,8 @@ namespace Compiler
 
             var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
             AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
+            Console.WriteLine("tangToAST: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
+            t1 = DateTime.Now;
             var astLines = ast.Accept(new AST.Visitors.TreePrintVisitor());
             if (args.Length == 0)
             {
@@ -65,6 +72,8 @@ namespace Compiler
 
             var cTranslator = new Translation.ASTToC.ASTToCTranslator();
             C.Data.C c = cTranslator.Translate(ast) as C.Data.C;
+            Console.WriteLine("astToC: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
+            t1 = DateTime.Now;
             var cLines = c.Accept(new C.Visitors.TreePrintVisitor());
             var cStr = c.Accept(new C.Visitors.TextPrintVisitor());
             if (args.Length == 0)

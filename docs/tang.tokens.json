@@ -1,5 +1,21 @@
 [
     {
+        "Name": "lineComment",
+        "PatternString": "//.*",
+        "Ignore": true
+    },
+    {
+        "Name": "blockComment",
+        "PatternString": "/\\*.*\\*/",
+        "SingleLine": true,
+        "Ignore": true
+    },
+    {
+        "Name": "whitespace",
+        "PatternString": "[\\t ]+",
+        "Ignore": true
+    },
+    {
         "Name": "interrupt",
         "PatternString": "interrupt"
     },
@@ -31,22 +47,7 @@
         "Name": ")",
         "PatternString": "\\)"
     },
-    {
-        "Name": "lineComment",
-        "PatternString": "//.*",
-        "Ignore": true
-    },
-    {
-        "Name": "blockComment",
-        "PatternString": "/\\*.*\\*/",
-        "SingleLine": true,
-        "Ignore": true
-    },
-    {
-        "Name": "whitespace",
-        "PatternString": "[\\t ]+",
-        "Ignore": true
-    },
+
     {
         "Name": "newline",
         "PatternString": "\\r?\\n[\\r\\n\\t ]+",
