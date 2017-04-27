@@ -55,6 +55,7 @@ namespace Compiler
 
             var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
             AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
+            astTranslator.printCounts();
             Console.WriteLine("tangToAST: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;
             var astLines = ast.Accept(new AST.Visitors.TreePrintVisitor());
@@ -72,6 +73,7 @@ namespace Compiler
 
             var cTranslator = new Translation.ASTToC.ASTToCTranslator();
             C.Data.C c = cTranslator.Translate(ast) as C.Data.C;
+            cTranslator.printCounts();
             Console.WriteLine("astToC: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;
             var cLines = c.Accept(new C.Visitors.TreePrintVisitor());
