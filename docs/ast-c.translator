@@ -1,8 +1,8 @@
 ﻿-> := AST -> C
 ->:a := [AST C C C] -> [C C C]
 
-AST[GlobalStatement:gs eof] -> C[gd f <- Functions[Function[void main ( void ) { s }] Functions[EPSILON]]]
-    [gs %GlobalDeclarations[EPSILON] %Functions[EPSILON] %Statement[EPSILON]] ->:a [GlobalDeclarations:gd Functions:f Statement:s]
+AST[GlobalStatement:gs eof] -> C[GlobalDeclarations[GlobalDeclaration[FunctionPrototype[void main ( void )] ;] gd] Functions[Function[void main ( void ) { s }] f]]
+    [gs GlobalDeclarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [GlobalDeclarations:gd Functions:f Statement:s]
 
 [GlobalStatement[CompoundGlobalStatement:cgs] GlobalDeclarations:gd Functions:f Statement:s] ->:a [gd1 f1 s1]
     [cgs gd f s] ->:a [GlobalDeclarations:gd1 Functions:f1 Statement:s1]
@@ -21,32 +21,34 @@ AST[GlobalStatement:gs eof] -> C[gd f <- Functions[Function[void main ( void ) {
     [gs2 gd1 f1 s1] ->:a [GlobalDeclarations:gd2 Functions:f2 Statement:s2]
 
 [Interrupt[interrupt ( intLiteral:i ) indent Statement:s1 dedent] GlobalDeclarations:gd Functions:f Statement:s] 
-->:a [gd <- GlobalDeclarations[GlobalDeclaration[FunctionPrototype[void __vector_21 ( void ) ;]] %GlobalDeclarations[EPSILON]] f <- Functions[Function[void __vector_21 ( void ) { si2 }] %Functions[EPSILON]] s]
+->:a [GlobalDeclarations[GlobalDeclaration[FunctionPrototype[void __vector_21 ( void ) ;]] gd] Functions[Function[void __vector_21 ( void ) { si2 }] f] s]
     i -> intLiteral:i1
     [s1 gd f s] ->:a [GlobalDeclarations:gs1 Functions:f1 Statement:si2]
 
 [Statement[EPSILON] GlobalDeclarations:gd Functions:f Statement:s] ->:a [gd f s]
 [Statement[CompoundStatement:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd2 f2 si2]
     [s gd f si] ->:a [GlobalDeclarations:gd2 Functions:f2 Statement:si2]
-[Statement[IntegerDeclaration:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd <- GlobalDeclarations[GlobalDeclaration[s1 ;] %GlobalDeclarations[EPSILON]] f si]
+[Statement[IntegerDeclaration:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [GlobalDeclarations[GlobalDeclaration[s1 ;] gd] f si]
     s -> IntegerDeclaration:s1
-[Statement[BooleanDeclaration:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd <- GlobalDeclarations[GlobalDeclaration[s1 ;] %GlobalDeclarations[EPSILON]] f si]
+[Statement[BooleanDeclaration:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [GlobalDeclarations[GlobalDeclaration[s1 ;] gd] f si]
     s -> BooleanDeclaration:s1
-[Statement[RegisterDeclaration:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd <- GlobalDeclarations[GlobalDeclaration[s1 ;] %GlobalDeclarations[EPSILON]] f si]
+[Statement[RegisterDeclaration:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [GlobalDeclarations[GlobalDeclaration[s1 ;] gd] f si]
     s -> RegisterDeclaration:s1 
-[Statement[DirectBitAssignment:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[s1 ;] %Statement[EPSILON]]]]
+[Statement[DirectBitAssignment:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f Statement[CompoundStatement[Statement[s1 ;] si]]]
     s -> DirectBitAssignment:s1
-[Statement[IndirectBitAssignment:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[s1 ;] %Statement[EPSILON]]]]
+[Statement[IndirectBitAssignment:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f Statement[CompoundStatement[Statement[s1 ;] si]]]
     s -> IndirectBitAssignment:s1
-[Statement[IntegerAssignment:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[s1 ;] %Statement[EPSILON]]]]
+[Statement[IntegerAssignment:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f Statement[CompoundStatement[Statement[s1 ;] si]]]
     s -> IntegerAssignment:s1
-[Statement[BooleanAssignment:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[s1 ;] %Statement[EPSILON]]]]
+[Statement[BooleanAssignment:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f Statement[CompoundStatement[Statement[s1 ;] si]]]
     s -> BooleanAssignment:s1
-[Statement[RegisterAssignment:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[s1 ;] %Statement[EPSILON]]]]
+[Statement[RegisterAssignment:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f Statement[CompoundStatement[Statement[s1 ;] si]]]
     s -> RegisterAssignment:s1
 [Statement[IfStatement:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd2 f2 si2]
     [s gd f si] ->:a [GlobalDeclarations:gd2 Functions:f2 Statement:si2]
 [Statement[WhileStatement:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd2 f2 si2]
+    [s gd f si] ->:a [GlobalDeclarations:gd2 Functions:f2 Statement:si2]
+[Statement[ForStatement:s] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd2 f2 si2]
     [s gd f si] ->:a [GlobalDeclarations:gd2 Functions:f2 Statement:si2]
 [CompoundStatement[Statement:s1 newline Statement:s2] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd3 f3 si3]
     [s1 gd f si] ->:a [GlobalDeclarations:gd2 Functions:f2 Statement:si2]
@@ -97,13 +99,20 @@ RegisterLiteral[registerType ( IntegerExpression:iexpr )] -> RegisterLiteral[( v
 RegisterVariable[identifier:id] -> RegisterVariable[id1]
     id -> identifier:id1
 
-[IfStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[IfStatement[if ( bexpr1 ) { gd3 <- GlobalDeclarations[EPSILON] si3 <- Statement[EPSILON] }]] %Statement[EPSILON]]]]
+[IfStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f Statement[CompoundStatement[Statement[IfStatement[if ( bexpr1 ) { gd3 si3 }]] si]]]
     bexpr -> BooleanExpression:bexpr1
-    [s %GlobalDeclarations[EPSILON] %Functions[EPSILON] %Statement[EPSILON]] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
+    [s GlobalDeclarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
 
-[WhileStatement[while ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[WhileStatement[while ( bexpr1 ) { gd3 <- GlobalDeclarations[EPSILON] si3 <- Statement[EPSILON] }]] %Statement[EPSILON]]]]
+[WhileStatement[while ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f Statement[CompoundStatement[Statement[WhileStatement[while ( bexpr1 ) { gd3 si3 }]] si]]]
     bexpr -> BooleanExpression:bexpr1
-    [s %GlobalDeclarations[EPSILON] %Functions[EPSILON] %Statement[EPSILON]] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
+    [s GlobalDeclarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
+
+[ForStatement[for ( intType:t identifier:id from IntegerExpression:expr1 to IntegerExpression:expr2 ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] 
+->:a [gd f Statement[CompoundStatement[Statement[ForStatement[for ( long long int id1 = iexpr1 ; id1 <= iexpr2 ; id1 ++ ) { gd3 si3 }]] si]]]
+    id -> identifier:id1
+    expr1 -> IntegerExpression:iexpr1
+    expr2 -> IntegerExpression:iexpr2
+    [s GlobalDeclarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
 
 IntegerExpression[IntegerVariable:s] -> IntegerExpression[s1]
     s -> IntegerVariable:s1

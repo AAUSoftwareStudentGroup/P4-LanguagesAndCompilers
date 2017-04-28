@@ -19,6 +19,7 @@ Statement -> EPSILON
            | Assignment
            | IfStatement 
            | WhileStatement
+           | ForStatement
 
 IdentifierDeclaration -> intType identifier
                        | booleanType identifier
@@ -36,6 +37,8 @@ BitSelector -> { Expression }
 IfStatement -> if ( Expression ) indent Statements dedent 
            
 WhileStatement -> while ( Expression ) indent Statements dedent
+
+ForStatement -> for ( intType identifier from Expression to Expression ) indent Statements dedent
         
 Expression -> OrExpression
 

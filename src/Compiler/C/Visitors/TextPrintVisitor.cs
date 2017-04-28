@@ -154,5 +154,29 @@ namespace Compiler.C.Visitors
             }
             yield return "}";
         }
+
+        public override IEnumerable<string> Visit(ForStatement node)
+        {
+            StringBuilder first = new StringBuilder("for(");
+            foreach (var c in node.Skip(2).TakeWhile(t => t.Name != ")"))
+            {
+                foreach (var str in c.Accept(this))
+                {
+                    first.Append(" " + str);
+                }
+            }
+            first.Append(" )");
+            yield return first.ToString();
+            yield return "{";
+            foreach (var str in node.Nodes<GlobalDeclarations>()[0].Accept(this))
+            {
+                yield return $"    {str}";
+            }
+            foreach (var str in node.Nodes<Statement>()[0].Accept(this))
+            {
+                yield return $"    {str}";
+            }
+            yield return "}";
+        }
     }
 }

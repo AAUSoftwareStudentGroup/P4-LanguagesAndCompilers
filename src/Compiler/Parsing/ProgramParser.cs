@@ -36,6 +36,7 @@ namespace Compiler.Parsing
 			    case "identifier":
 			    case "if":
 			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			        node.Add(ParseGlobalStatements(tokens));
@@ -58,6 +59,7 @@ namespace Compiler.Parsing
 			    case "identifier":
 			    case "if":
 			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			        node.Add(ParseGlobalStatement(tokens));
@@ -100,6 +102,7 @@ namespace Compiler.Parsing
 			    case "identifier":
 			    case "if":
 			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			        node.Add(ParseStatement(tokens));
@@ -139,6 +142,7 @@ namespace Compiler.Parsing
 			    case "identifier":
 			    case "if":
 			    case "while":
+			    case "for":
 			    case "newline":
 			    case "dedent":
 			        node.Add(ParseStatement(tokens));
@@ -192,6 +196,9 @@ namespace Compiler.Parsing
 			        return node;
 			    case "while":
 			        node.Add(ParseWhileStatement(tokens));
+			        return node;
+			    case "for":
+			        node.Add(ParseForStatement(tokens));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -298,6 +305,7 @@ namespace Compiler.Parsing
 			    case "newline":
 			    case "eof":
 			    case "dedent":
+			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -332,6 +340,30 @@ namespace Compiler.Parsing
 			    case "while":
 			        node.Add(ParseTerminal(tokens, "while"));
 			        node.Add(ParseTerminal(tokens, "("));
+			        node.Add(ParseExpression(tokens));
+			        node.Add(ParseTerminal(tokens, ")"));
+			        node.Add(ParseTerminal(tokens, "indent"));
+			        node.Add(ParseStatements(tokens));
+			        node.Add(ParseTerminal(tokens, "dedent"));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.ForStatement ParseForStatement(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.ForStatement node = new Compiler.Parsing.Data.ForStatement(){ Name = "ForStatement" };
+			switch(tokens.Current.Name)
+			{
+			    case "for":
+			        node.Add(ParseTerminal(tokens, "for"));
+			        node.Add(ParseTerminal(tokens, "("));
+			        node.Add(ParseTerminal(tokens, "intType"));
+			        node.Add(ParseTerminal(tokens, "identifier"));
+			        node.Add(ParseTerminal(tokens, "from"));
+			        node.Add(ParseExpression(tokens));
+			        node.Add(ParseTerminal(tokens, "to"));
 			        node.Add(ParseExpression(tokens));
 			        node.Add(ParseTerminal(tokens, ")"));
 			        node.Add(ParseTerminal(tokens, "indent"));
@@ -399,6 +431,7 @@ namespace Compiler.Parsing
 			    case "newline":
 			    case "eof":
 			    case "dedent":
+			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -443,6 +476,7 @@ namespace Compiler.Parsing
 			    case "newline":
 			    case "eof":
 			    case "dedent":
+			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -493,6 +527,7 @@ namespace Compiler.Parsing
 			    case "newline":
 			    case "eof":
 			    case "dedent":
+			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -555,6 +590,7 @@ namespace Compiler.Parsing
 			    case "newline":
 			    case "eof":
 			    case "dedent":
+			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -611,6 +647,7 @@ namespace Compiler.Parsing
 			    case "newline":
 			    case "eof":
 			    case "dedent":
+			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -674,6 +711,7 @@ namespace Compiler.Parsing
 			    case "newline":
 			    case "eof":
 			    case "dedent":
+			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
@@ -730,6 +768,7 @@ namespace Compiler.Parsing
 			    case "newline":
 			    case "eof":
 			    case "dedent":
+			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:

@@ -97,6 +97,11 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.AST.Data.ForStatement node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.AST.Data.IntegerExpression node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);

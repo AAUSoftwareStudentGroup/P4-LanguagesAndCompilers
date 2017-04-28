@@ -107,6 +107,11 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.C.Data.ForStatement node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.C.Data.IntegerExpression node)
 		{
 			return Visit((Compiler.C.Data.Node)node);

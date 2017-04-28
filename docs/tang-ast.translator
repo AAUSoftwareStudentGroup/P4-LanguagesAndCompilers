@@ -81,10 +81,13 @@ Program:p ->:p ast
     [ass s] -> [*:assStm SymbolTable:s1]
 
 [Statement[IfStatement:ifStm] SymbolTable:s] -> [Statement[ifStm1] s]
-    [ifStm s] -> [*:ifStm1 SymbolTable:s1]
+    [ifStm s] -> [IfStatement:ifStm1 SymbolTable:s1]
 
 [Statement[WhileStatement:whileStm] SymbolTable:s] -> [Statement[whileStm1] s]
-    [whileStm s] -> [*:whileStm1 SymbolTable:s1]
+    [whileStm s] -> [WhileStatement:whileStm1 SymbolTable:s1]
+
+[Statement[ForStatement:forStm] SymbolTable:s] -> [Statement[forStm1] s]
+    [forStm s] -> [ForStatement:forStm1 SymbolTable:s]
 
 [Statement[RegisterStatement:regStm] SymbolTable:s] -> [Statement[regStm1] s1]
     [regStm s] -> [*:regStm1 SymbolTable:s1]
@@ -145,6 +148,17 @@ Program:p ->:p ast
 [WhileStatement[while ( Expression:expr ) indent Statements:stms dedent] SymbolTable:s] -> [WhileStatement[while ( boolExpr ) indent stm dedent] s]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]
     [stms s] -> [Statement:stm SymbolTable]
+
+[ForStatement[for ( intType:t identifier:id from Expression:expr1 to Expression:expr2 ) indent Statements:stms dedent] SymbolTable:s]
+-> [ForStatement[for ( t1 id1 from iexpr1 to iexpr2 ) indent stms1 dedent] s]
+    t ->:p intType:t1
+    t ->:q intType:t2
+    id ->:p identifier:id1
+    id ->:q identifier:id2
+    [expr1 s <- Declaration[Variable[Type[t2] id2] %Declaration[EPSILON]]] -> [IntegerExpression:iexpr1 SymbolTable]
+    [expr2 s <- Declaration[Variable[Type[t2] id2] %Declaration[EPSILON]]] -> [IntegerExpression:iexpr2 SymbolTable]
+    [stms s <- Declaration[Variable[Type[t2] id2] %Declaration[EPSILON]]] -> [Statement:stms1 SymbolTable]
+
 
 [Expression[OrExpression:orExpr] SymbolTable:s] -> [expr s]
     [orExpr s] -> [*:expr SymbolTable]

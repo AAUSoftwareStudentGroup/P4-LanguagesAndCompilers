@@ -77,6 +77,11 @@ namespace Compiler.Parsing.Visitors
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.Parsing.Data.ForStatement node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.Parsing.Data.Expression node)
 		{
 			return Visit((Compiler.Parsing.Data.Node)node);

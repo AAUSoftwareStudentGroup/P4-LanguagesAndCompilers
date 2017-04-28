@@ -56,7 +56,9 @@ RegisterVariable -> identifier
 IfStatement -> if ( BooleanExpression ) { GlobalDeclarations Statement } 
 		   
 WhileStatement -> while ( BooleanExpression ) { GlobalDeclarations Statement }
-		   
+
+ForStatement -> for ( long long int identifier = IntegerExpression ; identifier <= IntegerExpression ; identifier ++ ) { Statement }
+
 IntegerExpression -> IntegerVariable   
                    | IntegerParenthesisExpression
                    | AddExpression

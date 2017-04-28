@@ -21,6 +21,7 @@ Statement -> EPSILON
            | RegisterAssignment
            | IfStatement 
            | WhileStatement
+           | ForStatement
 
 CompoundStatement -> Statement newline Statement
 
@@ -50,7 +51,9 @@ RegisterVariable -> identifier
 IfStatement -> if ( BooleanExpression ) indent Statement dedent 
 		   
 WhileStatement -> while ( BooleanExpression ) indent Statement dedent
-		   
+
+ForStatement -> for ( intType identifier from IntegerExpression to IntegerExpression ) indent Statement dedent
+
 IntegerExpression -> IntegerVariable   
                    | IntegerParenthesisExpression
                    | AddExpression
