@@ -157,7 +157,6 @@ namespace Generator.Translation
                     {
                         Parameters = parameters
                     };
-
                     method.Body.Add($"if({string.Join(" && ", patternConditions)})");
                     method.Body.Add("{");
                     int indentLevel = 1;
@@ -312,8 +311,13 @@ namespace Generator.Translation
                 rules = rules.Nodes<RulesP>()[0];
             }
 
+            List<string> counterNames = new List<string>();
+
             foreach (MethodType method in translatorClass.Methods)
             {
+                string counterName = method.Identifier+"__" + string.Join("_", method.Parameters.Select(p => p.Identifier))+"";
+                counterNames.Add(counterName);
+                method.Body.Insert(0, $"{counterName}++;");
                 method.Body.Add("throw new System.Exception();");
             }
 
@@ -374,6 +378,15 @@ namespace Generator.Translation
                 translatorClass.Methods.Add(insertMethod);
             }
 
+            MethodType printCountsMethod = new MethodType("public", "void", "printCounts");
+            translatorClass.Methods.Add(printCountsMethod);
+            printCountsMethod.Body = new List<string>();
+            printCountsMethod.Body.Add("System.Console.WriteLine(\"___Translation methods calls___\");");
+            
+            foreach(var counterName in counterNames) {
+                translatorClass.Fields.Add(new FieldType("public", "int", counterName) {Expression = "= 0;"});
+                printCountsMethod.Body.Add($"System.Console.WriteLine(\"{counterName}: \"+{counterName});");
+            }
             return translatorClass;
         }
 

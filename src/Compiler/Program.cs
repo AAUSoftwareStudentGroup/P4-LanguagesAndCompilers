@@ -13,7 +13,7 @@ namespace Compiler
             DateTime t1 = DateTime.Now;
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
 
-            string file = "../../docs/samples/Pow.tang";
+            string file = "../../docs/samples/AllRegisters.tang";
 
             if(args.Length > 0)
             {
@@ -55,6 +55,7 @@ namespace Compiler
 
             var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
             AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
+            astTranslator.printCounts();
             Console.WriteLine("tangToAST: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;
             var astLines = ast.Accept(new AST.Visitors.TreePrintVisitor());
@@ -72,6 +73,7 @@ namespace Compiler
 
             var cTranslator = new Translation.ASTToC.ASTToCTranslator();
             C.Data.C c = cTranslator.Translate(ast) as C.Data.C;
+            cTranslator.printCounts();
             Console.WriteLine("astToC: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;
             var cLines = c.Accept(new C.Visitors.TreePrintVisitor());

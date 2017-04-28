@@ -1,61 +1,216 @@
-// using Compiler.Data;
-// using Compiler.Parsing;
-// using Microsoft.VisualStudio.TestTools.UnitTesting;
-// using System;
-// using System.Collections.Generic;
-// using System.Text;
-// using System.Linq;
-// using Compiler.Visitors;
-// using Compiler.Shared;
+using Compiler.Parsing;
+using Compiler.LexicalAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
+using System.IO;
 
-// namespace Compiler.Tests
-// {
-//     [TestClass]
-//     public class ParserTests
-//     {
-//         [TestMethod]
-//         public void ParseProgram() {
-//             //List<Token> tokenList = new List<Token>();
+namespace Compiler.Tests
+{
+    [TestClass]
+    public class ParserTests
+    {
+        [TestMethod]
+        public void ParseProgram()
+        {
 
-//             string[] tokens = { "simpleType", "identifier", "assign", "intLiteral", "eof" };
+            Lexer lexer = new Lexer("../docs/tang.tokens.json");
 
-//             var list = tokens.Select(t => new Token() { Name = t });
+            var tokens = lexer.Analyse(File.ReadAllText("../docs/samples/Alias.tang"));
 
-//             int i = 0;
-//             foreach(Token t in list)
-//             {
-//                 Assert.AreEqual(t.Name, tokens[i]);
-//                 i++;
-//             }
+            System.Diagnostics.Debug.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
 
-//             var tokenlist = list.GetEnumerator();
-//             Parser parser = new Parser();
-//             tokenlist.MoveNext();
+            string[] testtokens = { "intType", "identifier", "newline", "identifier", "=", "intLiteral", "newline", "intType", "identifier", "newline", "identifier", "=", "identifier", "eof" };
 
-//             PrintVisitor visitor = new PrintVisitor();
+            var list = testtokens.Select(t => new Parsing.Data.Token() { Name = t});
 
-//             try
-//             {
-//                 Node n = parser.ParseProgramNode(tokenlist);
+            var tokenlist = list.GetEnumerator();
+            tokenlist.MoveNext();
+            System.Diagnostics.Debug.WriteLine("test string \n and another");
 
-//                 string parserS = n.Accept(visitor);
-//                 System.Diagnostics.Debug.WriteLine(parserS);
+            var parseTreeTest = new Parsing.Data.Program(true) {
+                new Parsing.Data.GlobalStatements(true){
+                    new Parsing.Data.GlobalStatement(true){
+                        new Parsing.Data.Statement(true){
+                            new Parsing.Data.IdentifierDeclaration(true){
+                                new Parsing.Data.Token(){Name = "intType"},
+                                new Parsing.Data.Token(){Name = "identifier"},
+                            }
+                        }
+                    },
+                    new Parsing.Data.GlobalStatementsP(true){
+                        new Parsing.Data.Token(){ Name = "newline" },
+                        new Parsing.Data.GlobalStatement(true){
+                            new Parsing.Data.Statement(true){
+                                new Parsing.Data.Assignment(true){
+                                    new Parsing.Data.Token(){ Name = "identifier" },
+                                    new Parsing.Data.BitSelector(true){
+                                        new Parsing.Data.Token(){ Name = "EPSILON" }
+                                    },
+                                    new Parsing.Data.Token(){ Name = "=" },
+                                    new Parsing.Data.Expression(true){
+                                        new Parsing.Data.OrExpression(true){
+                                            new Parsing.Data.AndExpression(true){
+                                                new Parsing.Data.EqExpression(true){
+                                                    new Parsing.Data.RelationalExpression(true){
+                                                        new Parsing.Data.AddSubExpression(true){
+                                                            new Parsing.Data.MulDivExpression(true){
+                                                                new Parsing.Data.PrimaryExpression(true){
+                                                                    new Parsing.Data.Token(){ Name = "intLiteral" }
+                                                                },
+                                                                new Parsing.Data.MulDivExpressionP(true){
+                                                                    new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                                }
+                                                            },
+                                                            new Parsing.Data.AddSubExpressionP(true){
+                                                                new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                            }
+                                                        },
+                                                        new Parsing.Data.RelationalExpressionP(true){
+                                                            new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                        }
+                                                    },
+                                                    new Parsing.Data.EqExpressionP(true){
+                                                        new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                    }
+                                                },
+                                                new Parsing.Data.AndExpressionP(true){
+                                                    new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                }
+                                            },
+                                            new Parsing.Data.OrExpressionP(true){
+                                                new Parsing.Data.Token(){ Name = "EPSILON" }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        new Parsing.Data.GlobalStatementsP(true){
+                            new Parsing.Data.Token(){ Name = "newline" },
+                            new Parsing.Data.GlobalStatement(true){
+                                new Parsing.Data.Statement(true){
+                                    new Parsing.Data.IdentifierDeclaration(true){
+                                        new Parsing.Data.Token(){ Name = "intType" },
+                                        new Parsing.Data.Token(){ Name = "identifier" }
+                                    }
+                                }
+                            },
+                            new Parsing.Data.GlobalStatementsP(true){
+                                new Parsing.Data.Token(){ Name = "newline" },
+                                new Parsing.Data.GlobalStatement(true){
+                                    new Parsing.Data.Statement(true){
+                                        new Parsing.Data.Assignment(true){
+                                            new Parsing.Data.Token(){ Name = "identifier" },
+                                            new Parsing.Data.BitSelector(true){
+                                                new Parsing.Data.Token(){ Name = "EPSILON" }
+                                            },
+                                            new Parsing.Data.Token(){ Name = "=" },
+                                            new Parsing.Data.Expression(true){
+                                                new Parsing.Data.OrExpression(true){
+                                                    new Parsing.Data.AndExpression(true){
+                                                        new Parsing.Data.EqExpression(true){
+                                                            new Parsing.Data.RelationalExpression(true){
+                                                                new Parsing.Data.AddSubExpression(true){
+                                                                    new Parsing.Data.MulDivExpression(true){
+                                                                        new Parsing.Data.PrimaryExpression(true){
+                                                                            new Parsing.Data.Token(){ Name = "identifier" },
+                                                                            new Parsing.Data.BitSelector(true){
+                                                                                new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                                            }
+                                                                        },
+                                                                        new Parsing.Data.MulDivExpressionP(true){
+                                                                            new Parsing.Data.Token(){ Name = "EPSILON"}
+                                                                        }
+                                                                    },
+                                                                    new Parsing.Data.AddSubExpressionP(true){
+                                                                        new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                                    }
+                                                                },
+                                                                new Parsing.Data.RelationalExpressionP(true){
+                                                                    new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                                }
+                                                            },
+                                                            new Parsing.Data.EqExpressionP(true){
+                                                                new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                            }
+                                                        },
+                                                        new Parsing.Data.AndExpressionP(true){
+                                                            new Parsing.Data.Token(){Name = "EPSILON" }
+                                                        }
+                                                    },
+                                                    new Parsing.Data.OrExpressionP(true){
+                                                        new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                new Parsing.Data.GlobalStatementsP(true){
+                                    new Parsing.Data.Token(){ Name = "EPSILON" }
+                                }
+                            }
+                        }
+                    }
+                },
+                new Parsing.Data.Token(){ Name = "eof" }
+            };
 
-//                 string inputS = "";
-//                 foreach (string str in tokens)
-//                 {
-//                     inputS += str + " ";
-//                 }
+            try
+            {
+                ProgramParser parser = new ProgramParser();
 
-//                 Assert.AreEqual(parserS, inputS);
+                var parseTree = parser.ParseProgram(tokenlist);
 
-//             }
-//             catch (Exception e)
-//             {
-//                 Assert.Fail("Expected no exception, but got: " + e.Message);
-//             }
+                //var parseTreeLines = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
+                //foreach(var line in parseTreeLines)
+                //{
+                //    System.Diagnostics.Debug.WriteLine(line);
+                //}
 
+                //var parseTreeLinesTest = parseTreeTest.Accept(new Parsing.Visitors.TreePrintVisitor());
+                //foreach (var line in parseTreeLinesTest)
+                //{
+                //    System.Diagnostics.Debug.WriteLine(line);
+                //}
+
+
+                TreeAsserter(parseTree, parseTreeTest);
+
+                //var parseTreeLine = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
+
+
+                //foreach (var line in tokens)
+                //{
+                //    System.Diagnostics.Debug.WriteLine(line);
+                //}
+   
+            }
+            catch (Exception e)
+            {
+                Assert.Fail("Expected no exception, but got: " + e.Message);
+            }
+        }
+
+        public void TreeAsserter(Parsing.Data.Node node, Parsing.Data.Node nodeTest)
+        {
+            Assert.AreEqual(node.Name, nodeTest.Name);
+
+            if(node is Parsing.Data.Token){}
+            else
+            {
+                Parsing.Data.Node[] nodeChildren = node.Nodes<Parsing.Data.Node>();
+                Parsing.Data.Node[] nodeChildrenTest = nodeTest.Nodes<Parsing.Data.Node>();
+                Assert.AreEqual(nodeChildren, nodeChildrenTest);
+                for (int i = 0;i < nodeChildren.Length; i++)
+                {
+                    TreeAsserter(nodeChildren[i], nodeChildrenTest[i]);
+                }
+            }
+          
             
-//        }
-//    }
-// }
+
+        }
+    }
+}
