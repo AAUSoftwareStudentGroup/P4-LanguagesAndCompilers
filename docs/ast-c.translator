@@ -97,11 +97,11 @@ RegisterLiteral[registerType ( IntegerExpression:iexpr )] -> RegisterLiteral[( v
 RegisterVariable[identifier:id] -> RegisterVariable[id1]
     id -> identifier:id1
 
-[IfStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[IfStatement[if ( bexpr1 ) { gd3 si3 }]] %Statement[EPSILON]]]]
+[IfStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[IfStatement[if ( bexpr1 ) { gd3 <- GlobalDeclarations[EPSILON] si3 <- Statement[EPSILON] }]] %Statement[EPSILON]]]]
     bexpr -> BooleanExpression:bexpr1
     [s %GlobalDeclarations[EPSILON] %Functions[EPSILON] %Statement[EPSILON]] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
 
-[WhileStatement[while ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[WhileStatement[while ( bexpr1 ) { gd3 si3 }]] %Statement[EPSILON]]]]
+[WhileStatement[while ( BooleanExpression:bexpr ) indent Statement:s dedent] GlobalDeclarations:gd Functions:f Statement:si] ->:a [gd f si <- Statement[CompoundStatement[Statement[WhileStatement[while ( bexpr1 ) { gd3 <- GlobalDeclarations[EPSILON] si3 <- Statement[EPSILON] }]] %Statement[EPSILON]]]]
     bexpr -> BooleanExpression:bexpr1
     [s %GlobalDeclarations[EPSILON] %Functions[EPSILON] %Statement[EPSILON]] ->:a [GlobalDeclarations:gd3 Functions:f3 Statement:si3]
 
