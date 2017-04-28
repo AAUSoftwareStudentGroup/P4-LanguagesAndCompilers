@@ -14,7 +14,7 @@ void main ( void )
         {
             counter = 0;
             * portb = ( ( ! ( * portb & ( 1 << ( 5 ) ) ) ) ? ( ( * portb ) | 1 << ( 5 ) ) : ( ( * portb ) & ~ ( 1 << ( 5 ) ) ) );
+            counter = ( counter + 1 );
         }
-        counter = ( counter + 1 );
     }
 }
