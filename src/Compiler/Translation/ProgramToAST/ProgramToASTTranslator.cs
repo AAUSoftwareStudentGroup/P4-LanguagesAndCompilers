@@ -1256,19 +1256,28 @@ namespace Compiler.Translation.ProgramToAST
 
 		public Compiler.Parsing.Data.Node Insert(Compiler.Parsing.Data.Node left, Compiler.Parsing.Data.Node right)
 		{
-			if(left.IsPlaceholder && left.Name == right.Name)
-			{
+			if(left.IsPlaceholder && left.Name == right.Name) {
 			    return right.Accept(new Compiler.Parsing.Visitors.CloneVisitor());
 			}
+			var leftClone = left.Accept(new Compiler.Parsing.Visitors.CloneVisitor());
+			Compiler.Parsing.Data.Node Insertion = InsertAux(leftClone, right);
+			return (Insertion == null ? null : leftClone);
+		}
+
+		public Compiler.Parsing.Data.Node InsertAux(Compiler.Parsing.Data.Node left, Compiler.Parsing.Data.Node right)
+		{
 			for (int i = 0; i < left.Count;  i++)
 			{
-			    Compiler.Parsing.Data.Node child = Insert(left[i], right);
-			    if(child != null)
-			    {
-			        var leftClone = left.Accept(new Compiler.Parsing.Visitors.CloneVisitor());
-			        leftClone.RemoveAt(i);
-			        leftClone.Insert(i, child);
-			        return leftClone;
+			    if(left[i].IsPlaceholder && left[i].Name == right.Name) {
+			        left.RemoveAt(i);
+			        left.Insert(i, right);
+			        return left;
+			    }
+			    else {
+			        Compiler.Parsing.Data.Node leftUpdated = InsertAux(left[i], right);
+			        if(leftUpdated != null) {
+			            return leftUpdated;
+			        }
 			    }
 			}
 			return null;
@@ -1276,19 +1285,28 @@ namespace Compiler.Translation.ProgramToAST
 
 		public Compiler.AST.Data.Node Insert(Compiler.AST.Data.Node left, Compiler.AST.Data.Node right)
 		{
-			if(left.IsPlaceholder && left.Name == right.Name)
-			{
+			if(left.IsPlaceholder && left.Name == right.Name) {
 			    return right.Accept(new Compiler.AST.Visitors.CloneVisitor());
 			}
+			var leftClone = left.Accept(new Compiler.AST.Visitors.CloneVisitor());
+			Compiler.AST.Data.Node Insertion = InsertAux(leftClone, right);
+			return (Insertion == null ? null : leftClone);
+		}
+
+		public Compiler.AST.Data.Node InsertAux(Compiler.AST.Data.Node left, Compiler.AST.Data.Node right)
+		{
 			for (int i = 0; i < left.Count;  i++)
 			{
-			    Compiler.AST.Data.Node child = Insert(left[i], right);
-			    if(child != null)
-			    {
-			        var leftClone = left.Accept(new Compiler.AST.Visitors.CloneVisitor());
-			        leftClone.RemoveAt(i);
-			        leftClone.Insert(i, child);
-			        return leftClone;
+			    if(left[i].IsPlaceholder && left[i].Name == right.Name) {
+			        left.RemoveAt(i);
+			        left.Insert(i, right);
+			        return left;
+			    }
+			    else {
+			        Compiler.AST.Data.Node leftUpdated = InsertAux(left[i], right);
+			        if(leftUpdated != null) {
+			            return leftUpdated;
+			        }
 			    }
 			}
 			return null;
@@ -1296,19 +1314,28 @@ namespace Compiler.Translation.ProgramToAST
 
 		public Compiler.Translation.SymbolTable.Data.Node Insert(Compiler.Translation.SymbolTable.Data.Node left, Compiler.Translation.SymbolTable.Data.Node right)
 		{
-			if(left.IsPlaceholder && left.Name == right.Name)
-			{
+			if(left.IsPlaceholder && left.Name == right.Name) {
 			    return right.Accept(new Compiler.Translation.SymbolTable.Visitors.CloneVisitor());
 			}
+			var leftClone = left.Accept(new Compiler.Translation.SymbolTable.Visitors.CloneVisitor());
+			Compiler.Translation.SymbolTable.Data.Node Insertion = InsertAux(leftClone, right);
+			return (Insertion == null ? null : leftClone);
+		}
+
+		public Compiler.Translation.SymbolTable.Data.Node InsertAux(Compiler.Translation.SymbolTable.Data.Node left, Compiler.Translation.SymbolTable.Data.Node right)
+		{
 			for (int i = 0; i < left.Count;  i++)
 			{
-			    Compiler.Translation.SymbolTable.Data.Node child = Insert(left[i], right);
-			    if(child != null)
-			    {
-			        var leftClone = left.Accept(new Compiler.Translation.SymbolTable.Visitors.CloneVisitor());
-			        leftClone.RemoveAt(i);
-			        leftClone.Insert(i, child);
-			        return leftClone;
+			    if(left[i].IsPlaceholder && left[i].Name == right.Name) {
+			        left.RemoveAt(i);
+			        left.Insert(i, right);
+			        return left;
+			    }
+			    else {
+			        Compiler.Translation.SymbolTable.Data.Node leftUpdated = InsertAux(left[i], right);
+			        if(leftUpdated != null) {
+			            return leftUpdated;
+			        }
 			    }
 			}
 			return null;
