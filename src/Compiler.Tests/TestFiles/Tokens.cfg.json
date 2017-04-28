@@ -1,4 +1,4 @@
-[ //Dette er DEN RIGTIGE FIL, ikke den, der ligger under compileren.
+[ //Dette er IKKE DEN RIGTIGE FIL, den, der ligger under docs er den rigtige.
     {
         "Name": "lineComment",
         "PatternString": "//.*",
