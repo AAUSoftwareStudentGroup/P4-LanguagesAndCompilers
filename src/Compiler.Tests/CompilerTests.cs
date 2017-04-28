@@ -65,9 +65,42 @@ namespace Compiler.Tests
         }
 
         [TestMethod]
-        public void TangInputCOutputTest()
+        // All expressions are put inside parentheses
+        // This test fails until we've made equality test '==' in .tang instead of '='.
+        public void IfStmTest()
         {
-            Assert.AreNotEqual(42, 1337);
+            /*
+             * int16 a
+             * int16 b
+             * a = 20
+             * b = 40
+             * if ( a == b )
+             *     a = a + 1 (.tang)
+             * 
+             * long long int a;
+             * long long int b;
+             * void main ( void ) 
+             * {
+             *     a = 20;
+             *     b = 40;
+             *     if ( (a == b) )
+             *     {
+             *         a = (a + 1);
+             *     }
+             * }
+             */
+
+            string tang = "int16 a\nint16 b\na = 20\nb = 40\nif ( a == b )\n    a = a + 1\n";
+            string c = "long long int a;\nlong long int b;\nvoid main ( void )\n{\n    a = 20;\n    b = 40;\n    if ( (a == b) )\n    {\n        a = (a + 1);\n    }\n}";
+
+            TangCompiler tc = new TangCompiler();
+
+            string cOutput = tc.Compile(tang);
+
+            c = c.Replace(" ", String.Empty);
+            cOutput = cOutput.Replace(" ", String.Empty);
+
+            Assert.AreEqual(c, cOutput);
         }
     }
 }
