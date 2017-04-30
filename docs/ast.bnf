@@ -12,10 +12,13 @@ CompoundGlobalStatement -> GlobalStatement newline GlobalStatement
 Statement -> EPSILON 
            | CompoundStatement
            | IntegerDeclaration
+           | IntegerDeclarationInit
            | BooleanDeclaration
+           | BooleanDeclarationInit
            | DirectBitAssignment
            | IndirectBitAssignment
            | RegisterDeclaration 
+           | RegisterDeclarationInit
            | IntegerAssignment
            | BooleanAssignment
            | RegisterAssignment
@@ -26,10 +29,14 @@ Statement -> EPSILON
 CompoundStatement -> Statement newline Statement
 
 IntegerDeclaration -> IntType identifier
+
+IntegerDeclarationInit -> IntType identifier = IntegerExpression
 		   
 IntegerAssignment -> IntegerVariable = IntegerExpression
 
 BooleanDeclaration -> BooleanType identifier
+
+BooleanDeclarationInit -> BooleanType identifier = BooleanExpression
 
 BooleanType -> bool
 
@@ -40,6 +47,8 @@ DirectBitAssignment -> RegisterType ( numeral ) { IntegerExpression } = BooleanE
 IndirectBitAssignment -> RegisterVariable { IntegerExpression } = BooleanExpression
 
 RegisterDeclaration -> RegisterType identifier
+
+RegisterDeclarationInit -> RegisterType identifier = RegisterExpression
 
 RegisterAssignment -> RegisterVariable = RegisterExpression
 
@@ -118,9 +127,9 @@ IndirectBitValue -> RegisterVariable { IntegerExpression }
 
 BooleanParenthesisExpression -> ( BooleanExpression )
 
-IntegerEqExpression -> IntegerExpression = IntegerExpression
+IntegerEqExpression -> IntegerExpression == IntegerExpression
 
-BooleanEqExpression -> BooleanExpression = BooleanExpression
+BooleanEqExpression -> BooleanExpression == BooleanExpression
 
 IntegerNotEqExpression -> IntegerExpression != IntegerExpression
 

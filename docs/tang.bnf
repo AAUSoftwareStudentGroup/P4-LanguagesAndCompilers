@@ -21,8 +21,8 @@ Statement -> EPSILON
            | WhileStatement
            | ForStatement
 
-IdentifierDeclaration -> IntType identifier
-                       | BooleanType identifier
+IdentifierDeclaration -> IntType identifier Initialization
+                       | BooleanType identifier Initialization
 
 RegisterStatement -> RegisterType RegisterOperation
 
@@ -30,7 +30,10 @@ RegisterType -> register8
               | register16
 
 RegisterOperation -> ( Expression ) { Expression } = Expression
-                   | identifier
+                   | identifier Initialization
+
+Initialization -> = Expression
+                | EPSILON
 
 Assignment -> identifier BitSelector = Expression 
 
@@ -63,7 +66,7 @@ AndExpressionP -> and EqExpression AndExpressionP
                 | EPSILON
 
 EqExpression -> RelationalExpression EqExpressionP
-EqExpressionP -> = RelationalExpression EqExpressionP
+EqExpressionP -> == RelationalExpression EqExpressionP
                | != RelationalExpression EqExpressionP  
                | EPSILON
 

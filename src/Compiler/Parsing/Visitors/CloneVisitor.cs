@@ -122,6 +122,16 @@ namespace Compiler.Parsing.Visitors
 			return clone;
 		}
 
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.Initialization node)
+		{
+			var clone = new Compiler.Parsing.Data.Initialization() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.Assignment node)
 		{
 			var clone = new Compiler.Parsing.Data.Assignment() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };

@@ -72,6 +72,16 @@ namespace Compiler.AST.Visitors
 			return clone;
 		}
 
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.IntegerDeclarationInit node)
+		{
+			var clone = new Compiler.AST.Data.IntegerDeclarationInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.IntegerAssignment node)
 		{
 			var clone = new Compiler.AST.Data.IntegerAssignment() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -85,6 +95,16 @@ namespace Compiler.AST.Visitors
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.BooleanDeclaration node)
 		{
 			var clone = new Compiler.AST.Data.BooleanDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.BooleanDeclarationInit node)
+		{
+			var clone = new Compiler.AST.Data.BooleanDeclarationInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -135,6 +155,16 @@ namespace Compiler.AST.Visitors
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.RegisterDeclaration node)
 		{
 			var clone = new Compiler.AST.Data.RegisterDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.RegisterDeclarationInit node)
+		{
+			var clone = new Compiler.AST.Data.RegisterDeclarationInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

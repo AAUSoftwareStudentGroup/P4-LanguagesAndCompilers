@@ -92,11 +92,19 @@ Program:p ->:p ast
 [Statement[RegisterStatement:regStm] SymbolTable:s] -> [Statement[regStm1] s1]
     [regStm s] -> [*:regStm1 SymbolTable:s1]
 
-[IdentifierDeclaration[IntType:t identifier:id] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2] %Variables[EPSILON]]]
+[IdentifierDeclaration[IntType:t identifier:id Initialization[EPSILON]] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2] %Variables[EPSILON]]]
     t ->:p IntType:t1
     t ->:q IntType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
+    [id s] ->:s Variable[EPSILON]
+
+[IdentifierDeclaration[IntType:t identifier:id Initialization[= Expression:expr]] SymbolTable:s] -> [IntegerDeclarationInit[t1 id1 = iexpr] s <- Variables[Variable[Type[t2] id2] %Variables[EPSILON]]]
+    t ->:p IntType:t1
+    t ->:q IntType:t2
+    id ->:p identifier:id1
+    id ->:q identifier:id2
+    [expr s] -> [IntegerExpression:iexpr SymbolTable]
     [id s] ->:s Variable[EPSILON]
 
 IntType[uint8] ->:p IntType[uint8]  
@@ -113,11 +121,19 @@ IntType[int8] ->:q IntType[int8]
 IntType[int16] ->:q IntType[int16]  
 IntType[int32] ->:q IntType[int32]  
 
-[RegisterStatement[RegisterType:t RegisterOperation[identifier:id]] SymbolTable:s] -> [RegisterDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2] %Variables[EPSILON]]]
+[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Initialization[EPSILON]]] SymbolTable:s] -> [RegisterDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2] %Variables[EPSILON]]]
     t ->:p RegisterType:t1
     t ->:q RegisterType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
+    [id s] ->:s Variable[EPSILON]
+
+[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Initialization[= Expression:expr]]] SymbolTable:s] -> [RegisterDeclarationInit[t1 id1 = rexpr] s <- Variables[Variable[Type[t2] id2] %Variables[EPSILON]]]
+    t ->:p RegisterType:t1
+    t ->:q RegisterType:t2
+    id ->:p identifier:id1
+    id ->:q identifier:id2
+    [expr s] -> [RegisterExpression:rexpr SymbolTable]
     [id s] ->:s Variable[EPSILON]
 
 RegisterType[register8] ->:p RegisterType[register8]
@@ -126,11 +142,19 @@ RegisterType[register16] ->:p RegisterType[register16]
 RegisterType[register8] ->:q RegisterType[register8]
 RegisterType[register16] ->:q RegisterType[register16]
 
-[IdentifierDeclaration[BooleanType:t identifier:id] SymbolTable:s] -> [BooleanDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2] %Variables[EPSILON]]]
+[IdentifierDeclaration[BooleanType:t identifier:id Initialization[EPSILON]] SymbolTable:s] -> [BooleanDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2] %Variables[EPSILON]]]
     t ->:p BooleanType:t1
     t ->:q BooleanType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
+    [id s] ->:s Variable[EPSILON]
+
+[IdentifierDeclaration[BooleanType:t identifier:id Initialization[= Expression:expr]] SymbolTable:s] -> [BooleanDeclarationInit[t1 id1 = bexpr] s <- Variables[Variable[Type[t2] id2] %Variables[EPSILON]]]
+    t ->:p BooleanType:t1
+    t ->:q BooleanType:t2
+    id ->:p identifier:id1
+    id ->:q identifier:id2
+    [expr s] -> [BooleanExpression:bexpr SymbolTable]
     [id s] ->:s Variable[EPSILON]
 
 BooleanType[bool] ->:p BooleanType[bool]
@@ -223,17 +247,17 @@ BooleanType[bool] ->:q BooleanType[bool]
     [expr1 s] -> [IntegerExpression:intExpr SymbolTable]
     [expr2 s] -> [BooleanExpression:expr3 SymbolTable]    
 
-[EqExpressionP[= RelationalExpression:expr EqExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[IntegerEqExpression[%IntegerExpression = intExpr]] s]
+[EqExpressionP[== RelationalExpression:expr EqExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[IntegerEqExpression[%IntegerExpression == intExpr]] s]
     [expr s] -> [IntegerExpression:intExpr SymbolTable]
 
-[EqExpressionP[= RelationalExpression:expr EqExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[BooleanEqExpression[%BooleanExpression = boolExpr]] s]
+[EqExpressionP[== RelationalExpression:expr EqExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[BooleanEqExpression[%BooleanExpression == boolExpr]] s]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]
 
-[EqExpressionP[= RelationalExpression:expr1 EqExpressionP:expr2] SymbolTable:s] -> [expr3 <- BooleanExpression[IntegerEqExpression[%IntegerExpression = intExpr]] s]
+[EqExpressionP[== RelationalExpression:expr1 EqExpressionP:expr2] SymbolTable:s] -> [expr3 <- BooleanExpression[IntegerEqExpression[%IntegerExpression == intExpr]] s]
     [expr1 s] -> [IntegerExpression:intExpr SymbolTable]
     [expr2 s] -> [BooleanExpression:expr3 SymbolTable]
 
-[EqExpressionP[= RelationalExpression:expr1 EqExpressionP:expr2] SymbolTable:s] -> [expr3 <- BooleanExpression[BooleanEqExpression[%BooleanExpression = boolExpr]] s]
+[EqExpressionP[== RelationalExpression:expr1 EqExpressionP:expr2] SymbolTable:s] -> [expr3 <- BooleanExpression[BooleanEqExpression[%BooleanExpression == boolExpr]] s]
     [expr1 s] -> [BooleanExpression:boolExpr SymbolTable]
     [expr2 s] -> [BooleanExpression:expr3 SymbolTable]
 

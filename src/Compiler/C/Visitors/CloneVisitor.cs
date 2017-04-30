@@ -92,6 +92,16 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.IntegerDeclarationInit node)
+		{
+			var clone = new Compiler.C.Data.IntegerDeclarationInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.IntegerAssignment node)
 		{
 			var clone = new Compiler.C.Data.IntegerAssignment() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -105,6 +115,16 @@ namespace Compiler.C.Visitors
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.BooleanDeclaration node)
 		{
 			var clone = new Compiler.C.Data.BooleanDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.BooleanDeclarationInit node)
+		{
+			var clone = new Compiler.C.Data.BooleanDeclarationInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -155,6 +175,16 @@ namespace Compiler.C.Visitors
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.RegisterDeclaration node)
 		{
 			var clone = new Compiler.C.Data.RegisterDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.RegisterDeclarationInit node)
+		{
+			var clone = new Compiler.C.Data.RegisterDeclarationInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

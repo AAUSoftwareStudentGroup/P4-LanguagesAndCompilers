@@ -18,10 +18,13 @@ Function -> void symbol ( void ) { Statement }
 Statement -> EPSILON 
            | CompoundStatement
            | IntegerDeclaration ;
+           | IntegerDeclarationInit ;
            | BooleanDeclaration ;
+           | BooleanDeclarationInit ;
            | DirectBitAssignment ;
            | IndirectBitAssignment ;
            | RegisterDeclaration ;
+           | RegisterDeclarationInit ;
            | IntegerAssignment ;
            | BooleanAssignment ;
            | RegisterAssignment ;
@@ -31,10 +34,14 @@ Statement -> EPSILON
 CompoundStatement -> Statement Statement
 
 IntegerDeclaration -> IntType identifier
+
+IntegerDeclarationInit -> IntType identifier = IntegerExpression
 		   
 IntegerAssignment -> IntegerVariable = IntegerExpression
 
 BooleanDeclaration -> BooleanType identifier
+
+BooleanDeclarationInit -> BooleanType identifier = BooleanExpression
 
 BooleanType -> unsigned char
 
@@ -45,6 +52,8 @@ DirectBitAssignment -> * ( RegisterType ) ( numeral ) = ( BooleanExpression ? ( 
 IndirectBitAssignment -> * RegisterVariable = ( BooleanExpression ? ( ( * RegisterVariable ) | 1 << ( IntegerExpression ) ) : ( ( * RegisterVariable ) & ! ( 1 << ( IntegerExpression ) ) ) )
 
 RegisterDeclaration -> RegisterType identifier
+
+RegisterDeclarationInit -> RegisterType identifier = RegisterExpression
 
 RegisterType -> volatile unsigned char *
               | volatile unsigned short *

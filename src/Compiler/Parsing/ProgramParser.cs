@@ -248,10 +248,12 @@ namespace Compiler.Parsing
 			    case "uint32":
 			        node.Add(ParseIntType(tokens));
 			        node.Add(ParseTerminal(tokens, "identifier"));
+			        node.Add(ParseInitialization(tokens));
 			        return node;
 			    case "bool":
 			        node.Add(ParseBooleanType(tokens));
 			        node.Add(ParseTerminal(tokens, "identifier"));
+			        node.Add(ParseInitialization(tokens));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -306,6 +308,26 @@ namespace Compiler.Parsing
 			        return node;
 			    case "identifier":
 			        node.Add(ParseTerminal(tokens, "identifier"));
+			        node.Add(ParseInitialization(tokens));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.Initialization ParseInitialization(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.Initialization node = new Compiler.Parsing.Data.Initialization(){ Name = "Initialization" };
+			switch(tokens.Current.Name)
+			{
+			    case "=":
+			        node.Add(ParseTerminal(tokens, "="));
+			        node.Add(ParseExpression(tokens));
+			        return node;
+			    case "newline":
+			    case "eof":
+			    case "dedent":
+			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -349,6 +371,7 @@ namespace Compiler.Parsing
 			    case ">":
 			    case "<=":
 			    case ">=":
+			    case "==":
 			    case "!=":
 			    case "and":
 			    case "or":
@@ -603,8 +626,8 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.EqExpressionP node = new Compiler.Parsing.Data.EqExpressionP(){ Name = "EqExpressionP" };
 			switch(tokens.Current.Name)
 			{
-			    case "=":
-			        node.Add(ParseTerminal(tokens, "="));
+			    case "==":
+			        node.Add(ParseTerminal(tokens, "=="));
 			        node.Add(ParseRelationalExpression(tokens));
 			        node.Add(ParseEqExpressionP(tokens));
 			        return node;
@@ -674,7 +697,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseAddSubExpression(tokens));
 			        node.Add(ParseRelationalExpressionP(tokens));
 			        return node;
-			    case "=":
+			    case "==":
 			    case "!=":
 			    case "and":
 			    case "or":
@@ -731,7 +754,7 @@ namespace Compiler.Parsing
 			    case ">":
 			    case "<=":
 			    case ">=":
-			    case "=":
+			    case "==":
 			    case "!=":
 			    case "and":
 			    case "or":
@@ -795,7 +818,7 @@ namespace Compiler.Parsing
 			    case ">":
 			    case "<=":
 			    case ">=":
-			    case "=":
+			    case "==":
 			    case "!=":
 			    case "and":
 			    case "or":
@@ -852,7 +875,7 @@ namespace Compiler.Parsing
 			    case ">":
 			    case "<=":
 			    case ">=":
-			    case "=":
+			    case "==":
 			    case "!=":
 			    case "and":
 			    case "or":

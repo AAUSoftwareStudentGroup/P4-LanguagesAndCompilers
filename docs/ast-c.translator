@@ -30,10 +30,19 @@ AST[GlobalStatement:gs eof] -> C[Declarations[Declaration[FunctionPrototype[void
     [s dcl f si] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
 [Statement[IntegerDeclaration:s] Declarations:dcl Functions:f Statement:si] ->:a [Declarations[Declaration[s1 ;] dcl] f si]
     s -> IntegerDeclaration:s1
+[Statement[IntegerDeclarationInit[IntType:intType identifier:id = IntegerExpression:iexpr]] Declarations:dcl Functions:f Statement:si] ->:a [dcl2 f2 si2]
+    [Statement[IntegerDeclaration[intType id]] dcl f si] ->:a [Declarations:dcl1 Functions:f1 Statement:si1]
+    [Statement[IntegerAssignment[IntegerVariable[id] = iexpr]] dcl1 f1 si1] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
 [Statement[BooleanDeclaration:s] Declarations:dcl Functions:f Statement:si] ->:a [Declarations[Declaration[s1 ;] dcl] f si]
     s -> BooleanDeclaration:s1
+[Statement[BooleanDeclarationInit[BooleanType:boolType identifier:id = BooleanExpression:bexpr]] Declarations:dcl Functions:f Statement:si] ->:a [dcl2 f2 si2]
+    [Statement[BooleanDeclaration[boolType id]] dcl f si] ->:a [Declarations:dcl1 Functions:f1 Statement:si1]
+    [Statement[BooleanAssignment[BooleanVariable[id] = bexpr]] dcl1 f1 si1] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
 [Statement[RegisterDeclaration:s] Declarations:dcl Functions:f Statement:si] ->:a [Declarations[Declaration[s1 ;] dcl] f si]
     s -> RegisterDeclaration:s1 
+[Statement[RegisterDeclarationInit[RegisterType:regType identifier:id = RegisterExpression:rexpr]] Declarations:dcl Functions:f Statement:si] ->:a [dcl2 f2 si2]
+    [Statement[RegisterDeclaration[regType id]] dcl f si] ->:a [Declarations:dcl1 Functions:f1 Statement:si1]
+    [Statement[RegisterAssignment[RegisterVariable[id] = rexpr]] dcl1 f1 si1] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
 [Statement[DirectBitAssignment:s] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
     s -> DirectBitAssignment:s1
 [Statement[IndirectBitAssignment:s] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
@@ -58,6 +67,11 @@ IntegerDeclaration[IntType:intType identifier:id] -> IntegerDeclaration[intType1
     intType -> IntType:intType1
     id -> identifier:id1
 
+IntegerDeclarationInit[IntType:intType identifier:id = IntegerExpression:iexpr] -> IntegerDeclarationInit[intType1 id1 = iexpr1]
+    intType -> IntType:intType1
+    id -> identifier:id1
+    iexpr -> IntegerExpression:iexpr1
+
 IntegerAssignment[IntegerVariable:var = IntegerExpression:iexpr] -> IntegerAssignment[var1 = iexpr1] 
     var -> IntegerVariable:var1
     iexpr -> IntegerExpression:iexpr1
@@ -65,6 +79,11 @@ IntegerAssignment[IntegerVariable:var = IntegerExpression:iexpr] -> IntegerAssig
 BooleanDeclaration[BooleanType:boolType identifier:id] -> BooleanDeclaration[boolType1 id1]
     boolType -> BooleanType:boolType1
     id -> identifier:id1
+
+BooleanDeclarationInit[BooleanType:boolType identifier:id = BooleanExpression:bexpr] -> BooleanDeclarationInit[boolType1 id1 = bexpr1]
+    boolType -> BooleanType:boolType1
+    id -> identifier:id1
+    bexpr -> BooleanExpression:bexpr1
 
 BooleanType[bool] -> BooleanType[unsigned char]
 
@@ -89,6 +108,11 @@ IndirectBitAssignment[RegisterVariable:var { IntegerExpression:iexpr } = Boolean
     bexpr -> BooleanExpression:bexpr1
 
 RegisterDeclaration[RegisterType:regType identifier:id] -> RegisterDeclaration[regType1 id1]
+    regType -> RegisterType:regType1
+    id -> identifier:id1
+
+RegisterDeclarationInit[RegisterType:regType identifier:id = RegisterExpression:rexpr] -> RegisterDeclarationInit[regType1 id1 = rexpr1]
+    rexpr -> RegisterExpression:rexpr1
     regType -> RegisterType:regType1
     id -> identifier:id1
 
@@ -231,11 +255,11 @@ IndirectBitValue[RegisterVariable:rvar { IntegerExpression:iexpr }]
 BooleanParenthesisExpression[( BooleanExpression:bexpr )] -> BooleanParenthesisExpression[( bexpr1 )]
     bexpr -> BooleanExpression:bexpr1
 
-IntegerEqExpression[IntegerExpression:iexpr1 = IntegerExpression:iexpr2] -> IntegerEqExpression[( iexpr3 == iexpr4 )]
+IntegerEqExpression[IntegerExpression:iexpr1 == IntegerExpression:iexpr2] -> IntegerEqExpression[( iexpr3 == iexpr4 )]
     iexpr1 -> IntegerExpression:iexpr3
     iexpr2 -> IntegerExpression:iexpr4
 
-BooleanEqExpression[BooleanExpression:bexpr1 = BooleanExpression:bexpr2] -> BooleanEqExpression[( bexpr3 == bexpr4 )]
+BooleanEqExpression[BooleanExpression:bexpr1 == BooleanExpression:bexpr2] -> BooleanEqExpression[( bexpr3 == bexpr4 )]
     bexpr1 -> BooleanExpression:bexpr3
     bexpr2 -> BooleanExpression:bexpr4
 

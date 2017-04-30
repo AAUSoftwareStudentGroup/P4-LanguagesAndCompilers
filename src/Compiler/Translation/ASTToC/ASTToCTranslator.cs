@@ -9,14 +9,17 @@ namespace Compiler.Translation.ASTToC
 		public int Translatea__statement_declarations_functions_statement1 = 0;
 		public int Translatea__compoundStatement_declarations_functions_statement = 0;
 		public int Translate__integerDeclaration = 0;
+		public int Translate__integerDeclarationInit = 0;
 		public int Translate__integerAssignment = 0;
 		public int Translate__booleanDeclaration = 0;
+		public int Translate__booleanDeclarationInit = 0;
 		public int Translate__booleanType = 0;
 		public int Translate__booleanAssignment = 0;
 		public int Translate__directBitAssignment = 0;
 		public int Translate__registerType = 0;
 		public int Translate__indirectBitAssignment = 0;
 		public int Translate__registerDeclaration = 0;
+		public int Translate__registerDeclarationInit = 0;
 		public int Translate__registerAssignment = 0;
 		public int Translate__registerExpression = 0;
 		public int Translate__registerLiteral = 0;
@@ -161,6 +164,18 @@ namespace Compiler.Translation.ASTToC
 					return (new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.IntegerDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, declarations as Compiler.C.Data.Declarations }, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
 				}
 			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerDeclarationInit" && (statement[0].Count == 4 && statement[0][0] != null && statement[0][0].Name == "IntType" && true && statement[0][1] != null && statement[0][1].Name == "identifier" && true && statement[0][2] != null && statement[0][2].Name == "=" && true && statement[0][3] != null && statement[0][3].Name == "IntegerExpression" && true)) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si1) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.IntegerDeclaration(false) { statement[0][0] as Compiler.AST.Data.IntType, statement[0][1] as Compiler.AST.Data.Token } }, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+				if(dcl1 != null && dcl1.Name == "Declarations" && true && f1 != null && f1.Name == "Functions" && true && si1 != null && si1.Name == "Statement" && true)
+				{
+					(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.IntegerAssignment(false) { new Compiler.AST.Data.IntegerVariable(false) { statement[0][1] as Compiler.AST.Data.Token }, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, statement[0][3] as Compiler.AST.Data.IntegerExpression } }, dcl1 as Compiler.C.Data.Declarations, f1 as Compiler.C.Data.Functions, si1 as Compiler.C.Data.Statement);
+					if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+					{
+						return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+					}
+				}
+			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanDeclaration" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.BooleanDeclaration);
@@ -169,12 +184,36 @@ namespace Compiler.Translation.ASTToC
 					return (new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.BooleanDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, declarations as Compiler.C.Data.Declarations }, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
 				}
 			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanDeclarationInit" && (statement[0].Count == 4 && statement[0][0] != null && statement[0][0].Name == "BooleanType" && true && statement[0][1] != null && statement[0][1].Name == "identifier" && true && statement[0][2] != null && statement[0][2].Name == "=" && true && statement[0][3] != null && statement[0][3].Name == "BooleanExpression" && true)) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si1) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.BooleanDeclaration(false) { statement[0][0] as Compiler.AST.Data.BooleanType, statement[0][1] as Compiler.AST.Data.Token } }, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+				if(dcl1 != null && dcl1.Name == "Declarations" && true && f1 != null && f1.Name == "Functions" && true && si1 != null && si1.Name == "Statement" && true)
+				{
+					(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.BooleanAssignment(false) { new Compiler.AST.Data.BooleanVariable(false) { statement[0][1] as Compiler.AST.Data.Token }, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, statement[0][3] as Compiler.AST.Data.BooleanExpression } }, dcl1 as Compiler.C.Data.Declarations, f1 as Compiler.C.Data.Functions, si1 as Compiler.C.Data.Statement);
+					if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+					{
+						return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+					}
+				}
+			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterDeclaration" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.RegisterDeclaration);
 				if(s1 != null && s1.Name == "RegisterDeclaration" && true)
 				{
 					return (new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.RegisterDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, declarations as Compiler.C.Data.Declarations }, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterDeclarationInit" && (statement[0].Count == 4 && statement[0][0] != null && statement[0][0].Name == "RegisterType" && true && statement[0][1] != null && statement[0][1].Name == "identifier" && true && statement[0][2] != null && statement[0][2].Name == "=" && true && statement[0][3] != null && statement[0][3].Name == "RegisterExpression" && true)) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si1) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.RegisterDeclaration(false) { statement[0][0] as Compiler.AST.Data.RegisterType, statement[0][1] as Compiler.AST.Data.Token } }, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+				if(dcl1 != null && dcl1.Name == "Declarations" && true && f1 != null && f1.Name == "Functions" && true && si1 != null && si1.Name == "Statement" && true)
+				{
+					(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.RegisterAssignment(false) { new Compiler.AST.Data.RegisterVariable(false) { statement[0][1] as Compiler.AST.Data.Token }, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, statement[0][3] as Compiler.AST.Data.RegisterExpression } }, dcl1 as Compiler.C.Data.Declarations, f1 as Compiler.C.Data.Functions, si1 as Compiler.C.Data.Statement);
+					if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+					{
+						return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+					}
 				}
 			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "DirectBitAssignment" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
@@ -280,6 +319,28 @@ namespace Compiler.Translation.ASTToC
 			throw new System.Exception();
 		}
 
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.IntegerDeclarationInit integerDeclarationInit)
+		{
+			Translate__integerDeclarationInit++;
+			if(integerDeclarationInit != null && integerDeclarationInit.Name == "IntegerDeclarationInit" && (integerDeclarationInit.Count == 4 && integerDeclarationInit[0] != null && integerDeclarationInit[0].Name == "IntType" && true && integerDeclarationInit[1] != null && integerDeclarationInit[1].Name == "identifier" && true && integerDeclarationInit[2] != null && integerDeclarationInit[2].Name == "=" && true && integerDeclarationInit[3] != null && integerDeclarationInit[3].Name == "IntegerExpression" && true))
+			{
+				Compiler.C.Data.Node intType1 = Translate(integerDeclarationInit[0] as Compiler.AST.Data.IntType);
+				if(intType1 != null && intType1.Name == "IntType" && true)
+				{
+					Compiler.C.Data.Node id1 = Translate(integerDeclarationInit[1] as Compiler.AST.Data.Token);
+					if(id1 != null && id1.Name == "identifier" && true)
+					{
+						Compiler.C.Data.Node iexpr1 = Translate(integerDeclarationInit[3] as Compiler.AST.Data.IntegerExpression);
+						if(iexpr1 != null && iexpr1.Name == "IntegerExpression" && true)
+						{
+							return new Compiler.C.Data.IntegerDeclarationInit(false) { intType1 as Compiler.C.Data.IntType, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "=", Value = "=" }, iexpr1 as Compiler.C.Data.IntegerExpression };
+						}
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
 		public Compiler.C.Data.Node Translate(Compiler.AST.Data.IntegerAssignment integerAssignment)
 		{
 			Translate__integerAssignment++;
@@ -310,6 +371,28 @@ namespace Compiler.Translation.ASTToC
 					if(id1 != null && id1.Name == "identifier" && true)
 					{
 						return new Compiler.C.Data.BooleanDeclaration(false) { boolType1 as Compiler.C.Data.BooleanType, id1 as Compiler.C.Data.Token };
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.BooleanDeclarationInit booleanDeclarationInit)
+		{
+			Translate__booleanDeclarationInit++;
+			if(booleanDeclarationInit != null && booleanDeclarationInit.Name == "BooleanDeclarationInit" && (booleanDeclarationInit.Count == 4 && booleanDeclarationInit[0] != null && booleanDeclarationInit[0].Name == "BooleanType" && true && booleanDeclarationInit[1] != null && booleanDeclarationInit[1].Name == "identifier" && true && booleanDeclarationInit[2] != null && booleanDeclarationInit[2].Name == "=" && true && booleanDeclarationInit[3] != null && booleanDeclarationInit[3].Name == "BooleanExpression" && true))
+			{
+				Compiler.C.Data.Node boolType1 = Translate(booleanDeclarationInit[0] as Compiler.AST.Data.BooleanType);
+				if(boolType1 != null && boolType1.Name == "BooleanType" && true)
+				{
+					Compiler.C.Data.Node id1 = Translate(booleanDeclarationInit[1] as Compiler.AST.Data.Token);
+					if(id1 != null && id1.Name == "identifier" && true)
+					{
+						Compiler.C.Data.Node bexpr1 = Translate(booleanDeclarationInit[3] as Compiler.AST.Data.BooleanExpression);
+						if(bexpr1 != null && bexpr1.Name == "BooleanExpression" && true)
+						{
+							return new Compiler.C.Data.BooleanDeclarationInit(false) { boolType1 as Compiler.C.Data.BooleanType, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "=", Value = "=" }, bexpr1 as Compiler.C.Data.BooleanExpression };
+						}
 					}
 				}
 			}
@@ -418,6 +501,28 @@ namespace Compiler.Translation.ASTToC
 					if(id1 != null && id1.Name == "identifier" && true)
 					{
 						return new Compiler.C.Data.RegisterDeclaration(false) { regType1 as Compiler.C.Data.RegisterType, id1 as Compiler.C.Data.Token };
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.RegisterDeclarationInit registerDeclarationInit)
+		{
+			Translate__registerDeclarationInit++;
+			if(registerDeclarationInit != null && registerDeclarationInit.Name == "RegisterDeclarationInit" && (registerDeclarationInit.Count == 4 && registerDeclarationInit[0] != null && registerDeclarationInit[0].Name == "RegisterType" && true && registerDeclarationInit[1] != null && registerDeclarationInit[1].Name == "identifier" && true && registerDeclarationInit[2] != null && registerDeclarationInit[2].Name == "=" && true && registerDeclarationInit[3] != null && registerDeclarationInit[3].Name == "RegisterExpression" && true))
+			{
+				Compiler.C.Data.Node rexpr1 = Translate(registerDeclarationInit[3] as Compiler.AST.Data.RegisterExpression);
+				if(rexpr1 != null && rexpr1.Name == "RegisterExpression" && true)
+				{
+					Compiler.C.Data.Node regType1 = Translate(registerDeclarationInit[0] as Compiler.AST.Data.RegisterType);
+					if(regType1 != null && regType1.Name == "RegisterType" && true)
+					{
+						Compiler.C.Data.Node id1 = Translate(registerDeclarationInit[1] as Compiler.AST.Data.Token);
+						if(id1 != null && id1.Name == "identifier" && true)
+						{
+							return new Compiler.C.Data.RegisterDeclarationInit(false) { regType1 as Compiler.C.Data.RegisterType, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "=", Value = "=" }, rexpr1 as Compiler.C.Data.RegisterExpression };
+						}
 					}
 				}
 			}
@@ -1011,7 +1116,7 @@ namespace Compiler.Translation.ASTToC
 		public Compiler.C.Data.Node Translate(Compiler.AST.Data.IntegerEqExpression integerEqExpression)
 		{
 			Translate__integerEqExpression++;
-			if(integerEqExpression != null && integerEqExpression.Name == "IntegerEqExpression" && (integerEqExpression.Count == 3 && integerEqExpression[0] != null && integerEqExpression[0].Name == "IntegerExpression" && true && integerEqExpression[1] != null && integerEqExpression[1].Name == "=" && true && integerEqExpression[2] != null && integerEqExpression[2].Name == "IntegerExpression" && true))
+			if(integerEqExpression != null && integerEqExpression.Name == "IntegerEqExpression" && (integerEqExpression.Count == 3 && integerEqExpression[0] != null && integerEqExpression[0].Name == "IntegerExpression" && true && integerEqExpression[1] != null && integerEqExpression[1].Name == "==" && true && integerEqExpression[2] != null && integerEqExpression[2].Name == "IntegerExpression" && true))
 			{
 				Compiler.C.Data.Node iexpr3 = Translate(integerEqExpression[0] as Compiler.AST.Data.IntegerExpression);
 				if(iexpr3 != null && iexpr3.Name == "IntegerExpression" && true)
@@ -1029,7 +1134,7 @@ namespace Compiler.Translation.ASTToC
 		public Compiler.C.Data.Node Translate(Compiler.AST.Data.BooleanEqExpression booleanEqExpression)
 		{
 			Translate__booleanEqExpression++;
-			if(booleanEqExpression != null && booleanEqExpression.Name == "BooleanEqExpression" && (booleanEqExpression.Count == 3 && booleanEqExpression[0] != null && booleanEqExpression[0].Name == "BooleanExpression" && true && booleanEqExpression[1] != null && booleanEqExpression[1].Name == "=" && true && booleanEqExpression[2] != null && booleanEqExpression[2].Name == "BooleanExpression" && true))
+			if(booleanEqExpression != null && booleanEqExpression.Name == "BooleanEqExpression" && (booleanEqExpression.Count == 3 && booleanEqExpression[0] != null && booleanEqExpression[0].Name == "BooleanExpression" && true && booleanEqExpression[1] != null && booleanEqExpression[1].Name == "==" && true && booleanEqExpression[2] != null && booleanEqExpression[2].Name == "BooleanExpression" && true))
 			{
 				Compiler.C.Data.Node bexpr3 = Translate(booleanEqExpression[0] as Compiler.AST.Data.BooleanExpression);
 				if(bexpr3 != null && bexpr3.Name == "BooleanExpression" && true)
@@ -1257,14 +1362,17 @@ namespace Compiler.Translation.ASTToC
 			System.Console.WriteLine("Translatea__statement_declarations_functions_statement1: "+Translatea__statement_declarations_functions_statement1);
 			System.Console.WriteLine("Translatea__compoundStatement_declarations_functions_statement: "+Translatea__compoundStatement_declarations_functions_statement);
 			System.Console.WriteLine("Translate__integerDeclaration: "+Translate__integerDeclaration);
+			System.Console.WriteLine("Translate__integerDeclarationInit: "+Translate__integerDeclarationInit);
 			System.Console.WriteLine("Translate__integerAssignment: "+Translate__integerAssignment);
 			System.Console.WriteLine("Translate__booleanDeclaration: "+Translate__booleanDeclaration);
+			System.Console.WriteLine("Translate__booleanDeclarationInit: "+Translate__booleanDeclarationInit);
 			System.Console.WriteLine("Translate__booleanType: "+Translate__booleanType);
 			System.Console.WriteLine("Translate__booleanAssignment: "+Translate__booleanAssignment);
 			System.Console.WriteLine("Translate__directBitAssignment: "+Translate__directBitAssignment);
 			System.Console.WriteLine("Translate__registerType: "+Translate__registerType);
 			System.Console.WriteLine("Translate__indirectBitAssignment: "+Translate__indirectBitAssignment);
 			System.Console.WriteLine("Translate__registerDeclaration: "+Translate__registerDeclaration);
+			System.Console.WriteLine("Translate__registerDeclarationInit: "+Translate__registerDeclarationInit);
 			System.Console.WriteLine("Translate__registerAssignment: "+Translate__registerAssignment);
 			System.Console.WriteLine("Translate__registerExpression: "+Translate__registerExpression);
 			System.Console.WriteLine("Translate__registerLiteral: "+Translate__registerLiteral);
