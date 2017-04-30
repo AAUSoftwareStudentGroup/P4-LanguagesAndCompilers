@@ -68,7 +68,7 @@
         "SingleLine": true
     },
     {
-        "Name": "intLiteral",
+        "Name": "numeral",
         "PatternString": "([+-]?(0|([1-9][0-9]*)))"
     },
     {
@@ -78,14 +78,6 @@
     {
         "Name": "false",
         "PatternString": "false"
-    },
-    {
-        "Name": "strLiteral",
-        "PatternString": "\"((\\\\\\\\)|(\\\\n)|(\\\\r)|(\\\\')|(\\\\\")|!|[#-&]|[\\(-\\[]|[\\]-~])*\""
-    },
-    {
-        "Name": "charLiteral",
-        "PatternString": "'((\\\\\\\\)|(\\\\n)|(\\\\r)|(\\\\')|(\\\\\")|!|[#-&]|[\\(-\\[]|[\\]-~])'"
     },
     {
         "Name": "if",
@@ -120,15 +112,39 @@
         "PatternString": "return"
     },
     {
-        "Name": "intType",
-        "PatternString": "(u?int(8|16|32))"
+        "Name": "int8",
+        "PatternString": "int8"
     },
     {
-        "Name": "registerType",
-        "PatternString": "register8|register16"
+        "Name": "int16",
+        "PatternString": "int16"
     },
     {
-        "Name": "booleanType",
+        "Name": "int32",
+        "PatternString": "int32"
+    },
+    {
+        "Name": "uint8",
+        "PatternString": "uint8"
+    },
+    {
+        "Name": "uint16",
+        "PatternString": "uint16"
+    },
+    {
+        "Name": "uint32",
+        "PatternString": "uint32"
+    },
+    {
+        "Name": "register8",
+        "PatternString": "register8"
+    },
+    {
+        "Name": "register16",
+        "PatternString": "register16"
+    },
+    {
+        "Name": "bool",
         "PatternString": "bool"
     },
     {

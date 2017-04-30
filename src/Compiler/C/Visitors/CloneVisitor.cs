@@ -12,9 +12,9 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.GlobalDeclarations node)
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.Declarations node)
 		{
-			var clone = new Compiler.C.Data.GlobalDeclarations() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.C.Data.Declarations() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -22,9 +22,9 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.GlobalDeclaration node)
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.Declaration node)
 		{
-			var clone = new Compiler.C.Data.GlobalDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.C.Data.Declaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -112,6 +112,16 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.BooleanType node)
+		{
+			var clone = new Compiler.C.Data.BooleanType() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.BooleanAssignment node)
 		{
 			var clone = new Compiler.C.Data.BooleanAssignment() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -145,6 +155,16 @@ namespace Compiler.C.Visitors
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.RegisterDeclaration node)
 		{
 			var clone = new Compiler.C.Data.RegisterDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.RegisterType node)
+		{
+			var clone = new Compiler.C.Data.RegisterType() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -215,6 +235,16 @@ namespace Compiler.C.Visitors
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.ForStatement node)
 		{
 			var clone = new Compiler.C.Data.ForStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.IntType node)
+		{
+			var clone = new Compiler.C.Data.IntType() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

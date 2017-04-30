@@ -5,7 +5,7 @@ GlobalStatement -> Interrupt
                  | CompoundGlobalStatement
                  | Statement
 
-Interrupt -> interrupt ( intLiteral ) indent Statement dedent
+Interrupt -> interrupt ( numeral ) indent Statement dedent
 
 CompoundGlobalStatement -> GlobalStatement newline GlobalStatement
 
@@ -25,26 +25,28 @@ Statement -> EPSILON
 
 CompoundStatement -> Statement newline Statement
 
-IntegerDeclaration -> intType identifier
+IntegerDeclaration -> IntType identifier
 		   
-IntegerAssignment -> identifier = IntegerExpression
+IntegerAssignment -> IntegerVariable = IntegerExpression
 
-BooleanDeclaration -> booleanType identifier
+BooleanDeclaration -> BooleanType identifier
 
-BooleanAssignment -> identifier = BooleanExpression
+BooleanType -> bool
 
-DirectBitAssignment -> registerType ( intLiteral ) { IntegerExpression } = BooleanExpression
+BooleanAssignment -> BooleanVariable = BooleanExpression
 
-IndirectBitAssignment -> identifier { IntegerExpression } = BooleanExpression
+DirectBitAssignment -> RegisterType ( numeral ) { IntegerExpression } = BooleanExpression
 
-RegisterDeclaration -> registerType identifier
+IndirectBitAssignment -> RegisterVariable { IntegerExpression } = BooleanExpression
 
-RegisterAssignment -> identifier = RegisterExpression
+RegisterDeclaration -> RegisterType identifier
+
+RegisterAssignment -> RegisterVariable = RegisterExpression
 
 RegisterExpression -> RegisterLiteral
 					| RegisterVariable
 
-RegisterLiteral -> registerType ( intLiteral )
+RegisterLiteral -> RegisterType ( numeral )
 
 RegisterVariable -> identifier
 
@@ -52,7 +54,14 @@ IfStatement -> if ( BooleanExpression ) indent Statement dedent
 		   
 WhileStatement -> while ( BooleanExpression ) indent Statement dedent
 
-ForStatement -> for ( intType identifier from IntegerExpression to IntegerExpression ) indent Statement dedent
+ForStatement -> for ( IntType identifier from IntegerExpression to IntegerExpression ) indent Statement dedent
+
+IntType -> int8
+         | int16
+         | int32
+         | uint8
+         | uint16
+         | uint32
 
 IntegerExpression -> IntegerVariable   
                    | IntegerParenthesisExpression
@@ -62,7 +71,7 @@ IntegerExpression -> IntegerVariable
                    | DivExpression 
                    | ModExpression
                    | PowExpression
-                   | intLiteral
+                   | numeral
 
 IntegerVariable -> identifier
 
@@ -100,7 +109,10 @@ BooleanExpression -> true
 
 BooleanVariable -> identifier
 
-DirectBitValue -> registerType ( intLiteral ) { IntegerExpression }
+DirectBitValue -> RegisterType ( numeral ) { IntegerExpression }
+
+RegisterType -> register8
+              | register16
 
 IndirectBitValue -> RegisterVariable { IntegerExpression }
 

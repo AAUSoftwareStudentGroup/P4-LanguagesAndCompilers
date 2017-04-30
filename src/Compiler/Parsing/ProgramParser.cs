@@ -30,9 +30,15 @@ namespace Compiler.Parsing
 			switch(tokens.Current.Name)
 			{
 			    case "interrupt":
-			    case "intType":
-			    case "booleanType":
-			    case "registerType":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
 			    case "identifier":
 			    case "if":
 			    case "while":
@@ -53,9 +59,15 @@ namespace Compiler.Parsing
 			switch(tokens.Current.Name)
 			{
 			    case "interrupt":
-			    case "intType":
-			    case "booleanType":
-			    case "registerType":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
 			    case "identifier":
 			    case "if":
 			    case "while":
@@ -96,9 +108,15 @@ namespace Compiler.Parsing
 			    case "interrupt":
 			        node.Add(ParseInterrupt(tokens));
 			        return node;
-			    case "intType":
-			    case "booleanType":
-			    case "registerType":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
 			    case "identifier":
 			    case "if":
 			    case "while":
@@ -120,7 +138,7 @@ namespace Compiler.Parsing
 			    case "interrupt":
 			        node.Add(ParseTerminal(tokens, "interrupt"));
 			        node.Add(ParseTerminal(tokens, "("));
-			        node.Add(ParseTerminal(tokens, "intLiteral"));
+			        node.Add(ParseTerminal(tokens, "numeral"));
 			        node.Add(ParseTerminal(tokens, ")"));
 			        node.Add(ParseTerminal(tokens, "indent"));
 			        node.Add(ParseStatements(tokens));
@@ -136,9 +154,15 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.Statements node = new Compiler.Parsing.Data.Statements(){ Name = "Statements" };
 			switch(tokens.Current.Name)
 			{
-			    case "intType":
-			    case "booleanType":
-			    case "registerType":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
 			    case "identifier":
 			    case "if":
 			    case "while":
@@ -181,11 +205,17 @@ namespace Compiler.Parsing
 			    case "dedent":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
-			    case "intType":
-			    case "booleanType":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
 			        node.Add(ParseIdentifierDeclaration(tokens));
 			        return node;
-			    case "registerType":
+			    case "register8":
+			    case "register16":
 			        node.Add(ParseRegisterStatement(tokens));
 			        return node;
 			    case "identifier":
@@ -210,12 +240,17 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.IdentifierDeclaration node = new Compiler.Parsing.Data.IdentifierDeclaration(){ Name = "IdentifierDeclaration" };
 			switch(tokens.Current.Name)
 			{
-			    case "intType":
-			        node.Add(ParseTerminal(tokens, "intType"));
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			        node.Add(ParseIntType(tokens));
 			        node.Add(ParseTerminal(tokens, "identifier"));
 			        return node;
-			    case "booleanType":
-			        node.Add(ParseTerminal(tokens, "booleanType"));
+			    case "bool":
+			        node.Add(ParseBooleanType(tokens));
 			        node.Add(ParseTerminal(tokens, "identifier"));
 			        return node;
 			    default:
@@ -228,9 +263,26 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.RegisterStatement node = new Compiler.Parsing.Data.RegisterStatement(){ Name = "RegisterStatement" };
 			switch(tokens.Current.Name)
 			{
-			    case "registerType":
-			        node.Add(ParseTerminal(tokens, "registerType"));
+			    case "register8":
+			    case "register16":
+			        node.Add(ParseRegisterType(tokens));
 			        node.Add(ParseRegisterOperation(tokens));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.RegisterType ParseRegisterType(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.RegisterType node = new Compiler.Parsing.Data.RegisterType(){ Name = "RegisterType" };
+			switch(tokens.Current.Name)
+			{
+			    case "register8":
+			        node.Add(ParseTerminal(tokens, "register8"));
+			        return node;
+			    case "register16":
+			        node.Add(ParseTerminal(tokens, "register16"));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -359,7 +411,7 @@ namespace Compiler.Parsing
 			    case "for":
 			        node.Add(ParseTerminal(tokens, "for"));
 			        node.Add(ParseTerminal(tokens, "("));
-			        node.Add(ParseTerminal(tokens, "intType"));
+			        node.Add(ParseIntType(tokens));
 			        node.Add(ParseTerminal(tokens, "identifier"));
 			        node.Add(ParseTerminal(tokens, "from"));
 			        node.Add(ParseExpression(tokens));
@@ -375,17 +427,58 @@ namespace Compiler.Parsing
 			}
 		}
 
+		public Compiler.Parsing.Data.IntType ParseIntType(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.IntType node = new Compiler.Parsing.Data.IntType(){ Name = "IntType" };
+			switch(tokens.Current.Name)
+			{
+			    case "int8":
+			        node.Add(ParseTerminal(tokens, "int8"));
+			        return node;
+			    case "int16":
+			        node.Add(ParseTerminal(tokens, "int16"));
+			        return node;
+			    case "int32":
+			        node.Add(ParseTerminal(tokens, "int32"));
+			        return node;
+			    case "uint8":
+			        node.Add(ParseTerminal(tokens, "uint8"));
+			        return node;
+			    case "uint16":
+			        node.Add(ParseTerminal(tokens, "uint16"));
+			        return node;
+			    case "uint32":
+			        node.Add(ParseTerminal(tokens, "uint32"));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.BooleanType ParseBooleanType(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.BooleanType node = new Compiler.Parsing.Data.BooleanType(){ Name = "BooleanType" };
+			switch(tokens.Current.Name)
+			{
+			    case "bool":
+			        node.Add(ParseTerminal(tokens, "bool"));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
 		public Compiler.Parsing.Data.Expression ParseExpression(IEnumerator<Compiler.Parsing.Data.Token> tokens)
 		{
 			Compiler.Parsing.Data.Expression node = new Compiler.Parsing.Data.Expression(){ Name = "Expression" };
 			switch(tokens.Current.Name)
 			{
-			    case "intLiteral":
-			    case "boolLiteral":
+			    case "numeral":
 			    case "identifier":
 			    case "(":
 			    case "!":
-			    case "registerType":
+			    case "register8":
+			    case "register16":
 			    case "true":
 			    case "false":
 			        node.Add(ParseOrExpression(tokens));
@@ -400,12 +493,12 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.OrExpression node = new Compiler.Parsing.Data.OrExpression(){ Name = "OrExpression" };
 			switch(tokens.Current.Name)
 			{
-			    case "intLiteral":
-			    case "boolLiteral":
+			    case "numeral":
 			    case "identifier":
 			    case "(":
 			    case "!":
-			    case "registerType":
+			    case "register8":
+			    case "register16":
 			    case "true":
 			    case "false":
 			        node.Add(ParseAndExpression(tokens));
@@ -444,12 +537,12 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.AndExpression node = new Compiler.Parsing.Data.AndExpression(){ Name = "AndExpression" };
 			switch(tokens.Current.Name)
 			{
-			    case "intLiteral":
-			    case "boolLiteral":
+			    case "numeral":
 			    case "identifier":
 			    case "(":
 			    case "!":
-			    case "registerType":
+			    case "register8":
+			    case "register16":
 			    case "true":
 			    case "false":
 			        node.Add(ParseEqExpression(tokens));
@@ -489,12 +582,12 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.EqExpression node = new Compiler.Parsing.Data.EqExpression(){ Name = "EqExpression" };
 			switch(tokens.Current.Name)
 			{
-			    case "intLiteral":
-			    case "boolLiteral":
+			    case "numeral":
 			    case "identifier":
 			    case "(":
 			    case "!":
-			    case "registerType":
+			    case "register8":
+			    case "register16":
 			    case "true":
 			    case "false":
 			        node.Add(ParseRelationalExpression(tokens));
@@ -540,12 +633,12 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.RelationalExpression node = new Compiler.Parsing.Data.RelationalExpression(){ Name = "RelationalExpression" };
 			switch(tokens.Current.Name)
 			{
-			    case "intLiteral":
-			    case "boolLiteral":
+			    case "numeral":
 			    case "identifier":
 			    case "(":
 			    case "!":
-			    case "registerType":
+			    case "register8":
+			    case "register16":
 			    case "true":
 			    case "false":
 			        node.Add(ParseAddSubExpression(tokens));
@@ -603,12 +696,12 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.AddSubExpression node = new Compiler.Parsing.Data.AddSubExpression(){ Name = "AddSubExpression" };
 			switch(tokens.Current.Name)
 			{
-			    case "intLiteral":
-			    case "boolLiteral":
+			    case "numeral":
 			    case "identifier":
 			    case "(":
 			    case "!":
-			    case "registerType":
+			    case "register8":
+			    case "register16":
 			    case "true":
 			    case "false":
 			        node.Add(ParseMulDivExpression(tokens));
@@ -660,12 +753,12 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.MulDivExpression node = new Compiler.Parsing.Data.MulDivExpression(){ Name = "MulDivExpression" };
 			switch(tokens.Current.Name)
 			{
-			    case "intLiteral":
-			    case "boolLiteral":
+			    case "numeral":
 			    case "identifier":
 			    case "(":
 			    case "!":
-			    case "registerType":
+			    case "register8":
+			    case "register16":
 			    case "true":
 			    case "false":
 			        node.Add(ParsePowExpression(tokens));
@@ -724,12 +817,12 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.PowExpression node = new Compiler.Parsing.Data.PowExpression(){ Name = "PowExpression" };
 			switch(tokens.Current.Name)
 			{
-			    case "intLiteral":
-			    case "boolLiteral":
+			    case "numeral":
 			    case "identifier":
 			    case "(":
 			    case "!":
-			    case "registerType":
+			    case "register8":
+			    case "register16":
 			    case "true":
 			    case "false":
 			        node.Add(ParsePrimaryExpression(tokens));
@@ -781,11 +874,8 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.PrimaryExpression node = new Compiler.Parsing.Data.PrimaryExpression(){ Name = "PrimaryExpression" };
 			switch(tokens.Current.Name)
 			{
-			    case "intLiteral":
-			        node.Add(ParseTerminal(tokens, "intLiteral"));
-			        return node;
-			    case "boolLiteral":
-			        node.Add(ParseTerminal(tokens, "boolLiteral"));
+			    case "numeral":
+			        node.Add(ParseTerminal(tokens, "numeral"));
 			        return node;
 			    case "identifier":
 			        node.Add(ParseTerminal(tokens, "identifier"));
@@ -800,8 +890,9 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "!"));
 			        node.Add(ParsePrimaryExpression(tokens));
 			        return node;
-			    case "registerType":
-			        node.Add(ParseTerminal(tokens, "registerType"));
+			    case "register8":
+			    case "register16":
+			        node.Add(ParseRegisterType(tokens));
 			        node.Add(ParseTerminal(tokens, "("));
 			        node.Add(ParseExpression(tokens));
 			        node.Add(ParseTerminal(tokens, ")"));

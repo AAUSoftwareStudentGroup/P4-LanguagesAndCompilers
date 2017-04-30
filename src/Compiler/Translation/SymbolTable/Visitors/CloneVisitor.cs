@@ -12,9 +12,9 @@ namespace Compiler.Translation.SymbolTable.Visitors
 			return clone;
 		}
 
-		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.Declaration node)
+		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.Variables node)
 		{
-			var clone = new Compiler.Translation.SymbolTable.Data.Declaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.Translation.SymbolTable.Data.Variables() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -35,6 +35,36 @@ namespace Compiler.Translation.SymbolTable.Visitors
 		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.Type node)
 		{
 			var clone = new Compiler.Translation.SymbolTable.Data.Type() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.IntType node)
+		{
+			var clone = new Compiler.Translation.SymbolTable.Data.IntType() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.RegisterType node)
+		{
+			var clone = new Compiler.Translation.SymbolTable.Data.RegisterType() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.BooleanType node)
+		{
+			var clone = new Compiler.Translation.SymbolTable.Data.BooleanType() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

@@ -47,6 +47,11 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.AST.Data.BooleanType node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.AST.Data.BooleanAssignment node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
@@ -98,6 +103,11 @@ namespace Compiler.AST.Visitors
 		}
 
 		public virtual T Visit(Compiler.AST.Data.ForStatement node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.IntType node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
@@ -158,6 +168,11 @@ namespace Compiler.AST.Visitors
 		}
 
 		public virtual T Visit(Compiler.AST.Data.DirectBitValue node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.RegisterType node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}

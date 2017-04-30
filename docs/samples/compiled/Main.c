@@ -1,6 +1,7 @@
-volatile unsigned char * ddrb ;
+void main ( void ) ;
+unsigned char counter ;
 volatile unsigned char * portb ;
-long long int counter ;
+volatile unsigned char * ddrb ;
 void main ( void )
 {
     ddrb = ( volatile unsigned char * ) ( 36 );
@@ -14,7 +15,7 @@ void main ( void )
         {
             counter = 0;
             * portb = ( ( ! ( * portb & ( 1 << ( 5 ) ) ) ) ? ( ( * portb ) | 1 << ( 5 ) ) : ( ( * portb ) & ~ ( 1 << ( 5 ) ) ) );
-            counter = ( counter + 1 );
         }
+        counter = ( counter + 1 );
     }
 }

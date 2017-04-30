@@ -7,7 +7,7 @@ GlobalStatementsP -> newline GlobalStatement GlobalStatementsP
 GlobalStatement -> Interrupt
                  | Statement
 
-Interrupt -> interrupt ( intLiteral ) indent Statements dedent
+Interrupt -> interrupt ( numeral ) indent Statements dedent
 
 Statements -> Statement StatementsP
 StatementsP -> newline Statement StatementsP
@@ -21,10 +21,13 @@ Statement -> EPSILON
            | WhileStatement
            | ForStatement
 
-IdentifierDeclaration -> intType identifier
-                       | booleanType identifier
+IdentifierDeclaration -> IntType identifier
+                       | BooleanType identifier
 
-RegisterStatement -> registerType RegisterOperation
+RegisterStatement -> RegisterType RegisterOperation
+
+RegisterType -> register8
+              | register16
 
 RegisterOperation -> ( Expression ) { Expression } = Expression
                    | identifier
@@ -38,8 +41,17 @@ IfStatement -> if ( Expression ) indent Statements dedent
            
 WhileStatement -> while ( Expression ) indent Statements dedent
 
-ForStatement -> for ( intType identifier from Expression to Expression ) indent Statements dedent
-        
+ForStatement -> for ( IntType identifier from Expression to Expression ) indent Statements dedent
+
+IntType -> int8
+         | int16
+         | int32
+         | uint8
+         | uint16
+         | uint32
+
+BooleanType -> bool
+
 Expression -> OrExpression
 
 OrExpression -> AndExpression OrExpressionP
@@ -77,11 +89,10 @@ PowExpression -> PrimaryExpression PowExpressionP
 PowExpressionP -> ^ PrimaryExpression PowExpressionP
                 | EPSILON
 
-PrimaryExpression -> intLiteral
-                   | boolLiteral
+PrimaryExpression -> numeral
                    | identifier BitSelector
                    | ( Expression )
                    | ! PrimaryExpression
-                   | registerType ( Expression ) BitSelector
+                   | RegisterType ( Expression ) BitSelector
                    | true
                    | false

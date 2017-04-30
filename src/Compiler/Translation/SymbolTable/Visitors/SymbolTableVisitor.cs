@@ -7,7 +7,7 @@ namespace Compiler.Translation.SymbolTable.Visitors
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Declaration node)
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Variables node)
 		{
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
 		}
@@ -18,6 +18,21 @@ namespace Compiler.Translation.SymbolTable.Visitors
 		}
 
 		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Type node)
+		{
+			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.IntType node)
+		{
+			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.RegisterType node)
+		{
+			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.BooleanType node)
 		{
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
 		}
