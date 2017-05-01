@@ -3,12 +3,15 @@ SymbolTable -> Variables
 Variables -> Variable Variables
            | EPSILON
 
-Variable -> Type identifier
+Variable -> Type identifier ParameterTypes
           | EPSILON
 
 Type -> IntType
       | RegisterType
       | BooleanType
+
+ParameterTypes -> Type ParameterTypes
+                | EPSILON
 
 IntType -> int8
          | int16

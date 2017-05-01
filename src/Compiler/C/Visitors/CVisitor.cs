@@ -7,12 +7,12 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.Declarations node)
+		public virtual T Visit(Compiler.C.Data.Declaration node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.Declaration node)
+		public virtual T Visit(Compiler.C.Data.CompoundDeclaration node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
@@ -22,12 +22,17 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.Functions node)
+		public virtual T Visit(Compiler.C.Data.Function node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.Function node)
+		public virtual T Visit(Compiler.C.Data.Type node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.CompoundFunction node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}

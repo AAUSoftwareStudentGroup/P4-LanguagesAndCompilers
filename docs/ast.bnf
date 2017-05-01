@@ -9,7 +9,8 @@ Interrupt -> interrupt ( numeral ) indent Statement dedent
 
 CompoundGlobalStatement -> GlobalStatement newline GlobalStatement
 
-Statement -> EPSILON 
+Statement -> newline 
+           | EPSILON
            | CompoundStatement
            | IntegerDeclaration
            | IntegerDeclarationInit

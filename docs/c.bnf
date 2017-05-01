@@ -1,19 +1,26 @@
 C -> Declarations Functions
 
-Declarations -> Declaration Declarations
-              | EPSILON
-
-Declaration -> IntegerDeclaration ;
+Declaration -> CompoundDeclaration
+             | IntegerDeclaration ;
              | BooleanDeclaration ;
              | RegisterDeclaration ;
              | FunctionPrototype ;
+             | EPSILON
 
-FunctionPrototype -> void symbol ( void )
+CompoundDeclaration -> Declaration Declaration
 
-Functions -> Function Functions
-           | EPSILON
+FunctionPrototype -> Type symbol ( void )
 
-Function -> void symbol ( void ) { Statement }
+Function -> CompoundFunction
+          | Type symbol ( ) { Statement }
+          | EPSILON
+
+Type -> IntType
+      | RegisterType
+      | BooleanType
+      | void
+
+CompoundFunction -> Function Function
 
 Statement -> EPSILON 
            | CompoundStatement

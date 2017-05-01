@@ -1,67 +1,72 @@
 ﻿-> := AST -> C
 ->:a := [AST C C C] -> [C C C]
 
-AST[GlobalStatement:gs eof] -> C[Declarations[Declaration[FunctionPrototype[void main ( void )] ;] dcl] Functions[Function[void main ( void ) { s }] f]]
-    [gs Declarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [Declarations:dcl Functions:f Statement:s]
+AST[eof] -> C[Declaration[EPSILON] Function[EPSILON]]
 
-[GlobalStatement[CompoundGlobalStatement:cgs] Declarations:dcl Functions:f Statement:s] ->:a [dcl1 f1 s1]
-    [cgs dcl f s] ->:a [Declarations:dcl1 Functions:f1 Statement:s1]
+AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[Type[void] main ( )] ;]]] Function[CompoundFunction[f Function[Type[void] main ( ) { s }]]]]
+    [gs Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl Function:f Statement:s]
 
-[GlobalStatement[Interrupt:i] Declarations:dcl Functions:f Statement:s] ->:a [dcl1 f1 s1]
-    [i dcl f s] ->:a [Declarations:dcl1 Functions:f1 Statement:s1]
+[GlobalStatement[CompoundGlobalStatement:cgs] Declaration:dcl Function:f Statement:s] ->:a [dcl1 f1 s1]
+    [cgs dcl f s] ->:a [Declaration:dcl1 Function:f1 Statement:s1]
 
-[GlobalStatement[Statement:s] Declarations:dcl Functions:f Statement:s1] ->:a [dcl2 f2 s2]
-    [s dcl f s1] ->:a [Declarations:dcl2 Functions:f2 Statement:s2]
+[GlobalStatement[Interrupt:i] Declaration:dcl Function:f Statement:s] ->:a [dcl1 f1 s1]
+    [i dcl f s] ->:a [Declaration:dcl1 Function:f1 Statement:s1]
 
-[GlobalStatement[CompoundGlobalStatement:cgs] Declarations:dcl Functions:f Statement:s] ->:a [dcl1 f1 s1]
-    [cgs dcl f s] ->:a [Declarations:dcl1 Functions:f1 Statement:s1]
+[GlobalStatement[Statement:s] Declaration:dcl Function:f Statement:s1] ->:a [dcl2 f2 s2]
+    [s dcl f s1] ->:a [Declaration:dcl2 Function:f2 Statement:s2]
 
-[CompoundGlobalStatement[GlobalStatement:gs1 newline GlobalStatement:gs2] Declarations:dcl Functions:f Statement:s] ->:a [dcl2 f2 s2]
-    [gs1 dcl f s] ->:a [Declarations:dcl1 Functions:f1 Statement:s1]
-    [gs2 dcl1 f1 s1] ->:a [Declarations:dcl2 Functions:f2 Statement:s2]
+[GlobalStatement[CompoundGlobalStatement:cgs] Declaration:dcl Function:f Statement:s] ->:a [dcl1 f1 s1]
+    [cgs dcl f s] ->:a [Declaration:dcl1 Function:f1 Statement:s1]
 
-[Interrupt[interrupt ( numeral:i ) indent Statement:s1 dedent] Declarations:dcl Functions:f Statement:s] 
-->:a [Declarations[Declaration[FunctionPrototype[void __vector_21 ( void ) ;]] dcl] Functions[Function[void __vector_21 ( void ) { si2 }] f] s]
+[CompoundGlobalStatement[GlobalStatement:gs1 newline GlobalStatement:gs2] Declaration:dcl Function:f Statement:s] ->:a [dcl2 f2 s2]
+    [gs1 dcl f s] ->:a [Declaration:dcl1 Function:f1 Statement:s1]
+    [gs2 dcl1 f1 s1] ->:a [Declaration:dcl2 Function:f2 Statement:s2]
+
+[Interrupt[interrupt ( numeral:i ) indent Statement:s1 dedent] Declaration:dcl Function:f Statement:s] 
+->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[void __vector_21 ( void ) ;]]]] Function[CompoundFunction[f Function[Type[void] __vector_21 ( ) { si2 }]]] s]
     i -> numeral:i1
-    [s1 dcl f s] ->:a [Declarations:gs1 Functions:f1 Statement:si2]
+    [s1 dcl f Statement[EPSILON]] ->:a [Declaration:gs1 Function:f1 Statement:si2]
 
-[Statement[EPSILON] Declarations:dcl Functions:f Statement:s] ->:a [dcl f s]
-[Statement[CompoundStatement:s] Declarations:dcl Functions:f Statement:si] ->:a [dcl2 f2 si2]
-    [s dcl f si] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
-[Statement[IntegerDeclaration:s] Declarations:dcl Functions:f Statement:si] ->:a [Declarations[Declaration[s1 ;] dcl] f si]
+[Statement[EPSILON] Declaration:dcl Function:f Statement:s] ->:a [dcl f s]
+[Statement[newline] Declaration:dcl Function:f Statement:s] ->:a [dcl f s]
+[Statement[CompoundStatement:s] Declaration:dcl Function:f Statement:si] ->:a [dcl2 f2 si2]
+    [s dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
+[Statement[IntegerDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
     s -> IntegerDeclaration:s1
-[Statement[IntegerDeclarationInit[IntType:intType identifier:id = IntegerExpression:iexpr]] Declarations:dcl Functions:f Statement:si] ->:a [dcl2 f2 si2]
-    [Statement[IntegerDeclaration[intType id]] dcl f si] ->:a [Declarations:dcl1 Functions:f1 Statement:si1]
-    [Statement[IntegerAssignment[IntegerVariable[id] = iexpr]] dcl1 f1 si1] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
-[Statement[BooleanDeclaration:s] Declarations:dcl Functions:f Statement:si] ->:a [Declarations[Declaration[s1 ;] dcl] f si]
+[Statement[IntegerDeclarationInit[IntType:intType identifier:id = IntegerExpression:iexpr]] Declaration:dcl Function:f Statement:si] ->:a [dcl2 f2 si2]
+    [Statement[IntegerDeclaration[intType id]] dcl f si] ->:a [Declaration:dcl1 Function:f1 Statement:si1]
+    [Statement[IntegerAssignment[IntegerVariable[id] = iexpr]] dcl1 f1 si1] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
+[Statement[BooleanDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
     s -> BooleanDeclaration:s1
-[Statement[BooleanDeclarationInit[BooleanType:boolType identifier:id = BooleanExpression:bexpr]] Declarations:dcl Functions:f Statement:si] ->:a [dcl2 f2 si2]
-    [Statement[BooleanDeclaration[boolType id]] dcl f si] ->:a [Declarations:dcl1 Functions:f1 Statement:si1]
-    [Statement[BooleanAssignment[BooleanVariable[id] = bexpr]] dcl1 f1 si1] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
-[Statement[RegisterDeclaration:s] Declarations:dcl Functions:f Statement:si] ->:a [Declarations[Declaration[s1 ;] dcl] f si]
+[Statement[BooleanDeclarationInit[BooleanType:boolType identifier:id = BooleanExpression:bexpr]] Declaration:dcl Function:f Statement:si] ->:a [dcl2 f2 si2]
+    [Statement[BooleanDeclaration[boolType id]] dcl f si] ->:a [Declaration:dcl1 Function:f1 Statement:si1]
+    [Statement[BooleanAssignment[BooleanVariable[id] = bexpr]] dcl1 f1 si1] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
+[Statement[RegisterDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
     s -> RegisterDeclaration:s1 
-[Statement[RegisterDeclarationInit[RegisterType:regType identifier:id = RegisterExpression:rexpr]] Declarations:dcl Functions:f Statement:si] ->:a [dcl2 f2 si2]
-    [Statement[RegisterDeclaration[regType id]] dcl f si] ->:a [Declarations:dcl1 Functions:f1 Statement:si1]
-    [Statement[RegisterAssignment[RegisterVariable[id] = rexpr]] dcl1 f1 si1] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
-[Statement[DirectBitAssignment:s] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
+[Statement[RegisterDeclarationInit[RegisterType:regType identifier:id = RegisterExpression:rexpr]] Declaration:dcl Function:f Statement:si] ->:a [dcl2 f2 si2]
+    [Statement[RegisterDeclaration[regType id]] dcl f si] ->:a [Declaration:dcl1 Function:f1 Statement:si1]
+    [Statement[RegisterAssignment[RegisterVariable[id] = rexpr]] dcl1 f1 si1] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
+[Statement[DirectBitAssignment:s] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
     s -> DirectBitAssignment:s1
-[Statement[IndirectBitAssignment:s] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
+[Statement[IndirectBitAssignment:s] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
     s -> IndirectBitAssignment:s1
-[Statement[IntegerAssignment:s] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
+[Statement[IntegerAssignment:s] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
     s -> IntegerAssignment:s1
-[Statement[BooleanAssignment:s] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
+[Statement[BooleanAssignment:s] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
     s -> BooleanAssignment:s1
-[Statement[RegisterAssignment:s] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
+[Statement[RegisterAssignment:s] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[s1 ;]]]]
     s -> RegisterAssignment:s1
-[Statement[IfStatement:s] Declarations:dcl Functions:f Statement:si] ->:a [dcl2 f2 si2]
-    [s dcl f si] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
-[Statement[WhileStatement:s] Declarations:dcl Functions:f Statement:si] ->:a [dcl2 f2 si2]
-    [s dcl f si] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
-[Statement[ForStatement:s] Declarations:dcl Functions:f Statement:si] ->:a [dcl2 f2 si2]
-    [s dcl f si] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
-[CompoundStatement[Statement:s1 newline Statement:s2] Declarations:dcl Functions:f Statement:si] ->:a [dcl3 f3 si3]
-    [s1 dcl f si] ->:a [Declarations:dcl2 Functions:f2 Statement:si2]
-    [s2 dcl2 f2 si2] ->:a [Declarations:dcl3 Functions:f3 Statement:si3]
+[Statement[IfStatement:s] Declaration:dcl Function:f Statement:si] ->:a [dcl2 f2 si2]
+    [s dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
+[Statement[IfElseStatement:s] Declaration:dcl Function:f Statement:si] ->:a [dcl2 f2 si2]
+    [s dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
+[Statement[WhileStatement:s] Declaration:dcl Function:f Statement:si] ->:a [dcl2 f2 si2]
+    [s dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
+[Statement[ForStatement:s] Declaration:dcl Function:f Statement:si] ->:a [dcl2 f2 si2]
+    [s dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
+[CompoundStatement[Statement:s1 newline Statement:s2] Declaration:dcl Function:f Statement:si] ->:a [dcl3 f3 si3]
+    [s1 dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
+    [s2 dcl2 f2 si2] ->:a [Declaration:dcl3 Function:f3 Statement:si3]
 
 IntegerDeclaration[IntType:intType identifier:id] -> IntegerDeclaration[intType1 id1]
     intType -> IntType:intType1
@@ -133,26 +138,26 @@ RegisterLiteral[RegisterType:regType ( IntegerExpression:iexpr )] -> RegisterLit
 RegisterVariable[identifier:id] -> RegisterVariable[id1]
     id -> identifier:id1
 
-[IfStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[IfStatement[if ( bexpr1 ) { dcl3 si3 }]]]]]
+[IfStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[IfStatement[if ( bexpr1 ) { dcl3 si3 }]]]]]
     bexpr -> BooleanExpression:bexpr1
-    [s Declarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [Declarations:dcl3 Functions:f3 Statement:si3]
+    [s Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl3 Function:f3 Statement:si3]
 
-[IfElseStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent else indent Statement:s1 dedent] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[IfElseStatement[ if ( bexpr1 ) { dcl3 si3 } else { dcl4 si4 }]]]]]
+[IfElseStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent else indent Statement:s1 dedent] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[IfElseStatement[ if ( bexpr1 ) { dcl3 si3 } else { dcl4 si4 }]]]]]
     bexpr -> BooleanExpression:bexpr1
-    [s Declarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [Declarations:dcl3 Functions:f3 Statement:si3]
-    [s1 Declarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [Declarations:dcl4 Functions:f4 Statement:si4]
+    [s Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl3 Function:f3 Statement:si3]
+    [s1 Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl4 Function:f4 Statement:si4]
 
-[WhileStatement[while ( BooleanExpression:bexpr ) indent Statement:s dedent] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[WhileStatement[while ( bexpr1 ) { dcl3 si3 }]]]]]
+[WhileStatement[while ( BooleanExpression:bexpr ) indent Statement:s dedent] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[WhileStatement[while ( bexpr1 ) { dcl3 si3 }]]]]]
     bexpr -> BooleanExpression:bexpr1
-    [s Declarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [Declarations:dcl3 Functions:f3 Statement:si3]
+    [s Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl3 Function:f3 Statement:si3]
 
-[ForStatement[for ( IntType:intType identifier:id from IntegerExpression:expr1 to IntegerExpression:expr2 ) indent Statement:s dedent] Declarations:dcl Functions:f Statement:si] 
+[ForStatement[for ( IntType:intType identifier:id from IntegerExpression:expr1 to IntegerExpression:expr2 ) indent Statement:s dedent] Declaration:dcl Function:f Statement:si] 
 ->:a [dcl f Statement[CompoundStatement[si Statement[ForStatement[for ( intType1 id1 = iexpr1 ; id1 <= iexpr2 ; id1 ++ ) { dcl3 si3 }]]]]]
     intType -> IntType:intType1
     id -> identifier:id1
     expr1 -> IntegerExpression:iexpr1
     expr2 -> IntegerExpression:iexpr2
-    [s Declarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [Declarations:dcl3 Functions:f3 Statement:si3]
+    [s Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl3 Function:f3 Statement:si3]
 
 IntType[uint8] -> IntType[unsigned char]  
 IntType[uint16] -> IntType[unsigned int]  

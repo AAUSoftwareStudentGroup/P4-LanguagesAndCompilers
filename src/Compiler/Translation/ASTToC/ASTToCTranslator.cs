@@ -3,11 +3,11 @@ namespace Compiler.Translation.ASTToC
 	public class ASTToCTranslator 
 	{
 		public int Translate__aST = 0;
-		public int Translatea__globalStatement_declarations_functions_statement = 0;
-		public int Translatea__compoundGlobalStatement_declarations_functions_statement = 0;
-		public int Translatea__interrupt_declarations_functions_statement = 0;
-		public int Translatea__statement_declarations_functions_statement1 = 0;
-		public int Translatea__compoundStatement_declarations_functions_statement = 0;
+		public int Translatea__globalStatement_declaration_function_statement = 0;
+		public int Translatea__compoundGlobalStatement_declaration_function_statement = 0;
+		public int Translatea__interrupt_declaration_function_statement = 0;
+		public int Translatea__statement_declaration_function_statement1 = 0;
+		public int Translatea__compoundStatement_declaration_function_statement = 0;
 		public int Translate__integerDeclaration = 0;
 		public int Translate__integerDeclarationInit = 0;
 		public int Translate__integerAssignment = 0;
@@ -24,10 +24,10 @@ namespace Compiler.Translation.ASTToC
 		public int Translate__registerExpression = 0;
 		public int Translate__registerLiteral = 0;
 		public int Translate__registerVariable = 0;
-		public int Translatea__ifStatement_declarations_functions_statement = 0;
-		public int Translatea__ifElseStatement_declarations_functions_statement = 0;
-		public int Translatea__whileStatement_declarations_functions_statement = 0;
-		public int Translatea__forStatement_declarations_functions_statement = 0;
+		public int Translatea__ifStatement_declaration_function_statement = 0;
+		public int Translatea__ifElseStatement_declaration_function_statement = 0;
+		public int Translatea__whileStatement_declaration_function_statement = 0;
+		public int Translatea__forStatement_declaration_function_statement = 0;
 		public int Translate__intType = 0;
 		public int Translate__integerExpression = 0;
 		public int Translate__integerVariable = 0;
@@ -57,245 +57,261 @@ namespace Compiler.Translation.ASTToC
 		public Compiler.C.Data.Node Translate(Compiler.AST.Data.AST aST)
 		{
 			Translate__aST++;
+			if(aST != null && aST.Name == "AST" && (aST.Count == 1 && aST[0] != null && aST[0].Name == "eof" && true))
+			{
+				return new Compiler.C.Data.C(false) { new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } };
+			}
 			if(aST != null && aST.Name == "AST" && (aST.Count == 2 && aST[0] != null && aST[0].Name == "GlobalStatement" && true && aST[1] != null && aST[1].Name == "eof" && true))
 			{
-				(Compiler.C.Data.Node dcl, Compiler.C.Data.Node f, Compiler.C.Data.Node s) = Translatea(aST[0] as Compiler.AST.Data.GlobalStatement, new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
-				if(dcl != null && dcl.Name == "Declarations" && true && f != null && f.Name == "Functions" && true && s != null && s.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl, Compiler.C.Data.Node f, Compiler.C.Data.Node s) = Translatea(aST[0] as Compiler.AST.Data.GlobalStatement, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+				if(dcl != null && dcl.Name == "Declaration" && true && f != null && f.Name == "Function" && true && s != null && s.Name == "Statement" && true)
 				{
-					return new Compiler.C.Data.C(false) { new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.FunctionPrototype(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = "main", Value = "main" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" } }, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, dcl as Compiler.C.Data.Declarations }, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = "main", Value = "main" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, s as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } }, f as Compiler.C.Data.Functions } };
+					return new Compiler.C.Data.C(false) { new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { dcl as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.FunctionPrototype(false) { new Compiler.C.Data.Type(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" } }, new Compiler.C.Data.Token() { Name = "main", Value = "main" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" } }, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.CompoundFunction(false) { f as Compiler.C.Data.Function, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Type(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" } }, new Compiler.C.Data.Token() { Name = "main", Value = "main" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, s as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } };
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.GlobalStatement globalStatement, Compiler.C.Data.Declarations declarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.GlobalStatement globalStatement, Compiler.C.Data.Declaration declaration, Compiler.C.Data.Function function, Compiler.C.Data.Statement statement)
 		{
-			Translatea__globalStatement_declarations_functions_statement++;
-			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "CompoundGlobalStatement" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			Translatea__globalStatement_declaration_function_statement++;
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "CompoundGlobalStatement" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(globalStatement[0] as Compiler.AST.Data.CompoundGlobalStatement, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
-				if(dcl1 != null && dcl1.Name == "Declarations" && true && f1 != null && f1.Name == "Functions" && true && s1 != null && s1.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(globalStatement[0] as Compiler.AST.Data.CompoundGlobalStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement as Compiler.C.Data.Statement);
+				if(dcl1 != null && dcl1.Name == "Declaration" && true && f1 != null && f1.Name == "Function" && true && s1 != null && s1.Name == "Statement" && true)
 				{
-					return (dcl1 as Compiler.C.Data.Declarations, f1 as Compiler.C.Data.Functions, s1 as Compiler.C.Data.Statement);
+					return (dcl1 as Compiler.C.Data.Declaration, f1 as Compiler.C.Data.Function, s1 as Compiler.C.Data.Statement);
 				}
 			}
-			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Interrupt" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Interrupt" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(globalStatement[0] as Compiler.AST.Data.Interrupt, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
-				if(dcl1 != null && dcl1.Name == "Declarations" && true && f1 != null && f1.Name == "Functions" && true && s1 != null && s1.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(globalStatement[0] as Compiler.AST.Data.Interrupt, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement as Compiler.C.Data.Statement);
+				if(dcl1 != null && dcl1.Name == "Declaration" && true && f1 != null && f1.Name == "Function" && true && s1 != null && s1.Name == "Statement" && true)
 				{
-					return (dcl1 as Compiler.C.Data.Declarations, f1 as Compiler.C.Data.Functions, s1 as Compiler.C.Data.Statement);
+					return (dcl1 as Compiler.C.Data.Declaration, f1 as Compiler.C.Data.Function, s1 as Compiler.C.Data.Statement);
 				}
 			}
-			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Statement" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Statement" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node s2) = Translatea(globalStatement[0] as Compiler.AST.Data.Statement, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
-				if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && s2 != null && s2.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node s2) = Translatea(globalStatement[0] as Compiler.AST.Data.Statement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement as Compiler.C.Data.Statement);
+				if(dcl2 != null && dcl2.Name == "Declaration" && true && f2 != null && f2.Name == "Function" && true && s2 != null && s2.Name == "Statement" && true)
 				{
-					return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, s2 as Compiler.C.Data.Statement);
+					return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, s2 as Compiler.C.Data.Statement);
 				}
 			}
-			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "CompoundGlobalStatement" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "CompoundGlobalStatement" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(globalStatement[0] as Compiler.AST.Data.CompoundGlobalStatement, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
-				if(dcl1 != null && dcl1.Name == "Declarations" && true && f1 != null && f1.Name == "Functions" && true && s1 != null && s1.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(globalStatement[0] as Compiler.AST.Data.CompoundGlobalStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement as Compiler.C.Data.Statement);
+				if(dcl1 != null && dcl1.Name == "Declaration" && true && f1 != null && f1.Name == "Function" && true && s1 != null && s1.Name == "Statement" && true)
 				{
-					return (dcl1 as Compiler.C.Data.Declarations, f1 as Compiler.C.Data.Functions, s1 as Compiler.C.Data.Statement);
+					return (dcl1 as Compiler.C.Data.Declaration, f1 as Compiler.C.Data.Function, s1 as Compiler.C.Data.Statement);
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.CompoundGlobalStatement compoundGlobalStatement, Compiler.C.Data.Declarations declarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.CompoundGlobalStatement compoundGlobalStatement, Compiler.C.Data.Declaration declaration, Compiler.C.Data.Function function, Compiler.C.Data.Statement statement)
 		{
-			Translatea__compoundGlobalStatement_declarations_functions_statement++;
-			if(compoundGlobalStatement != null && compoundGlobalStatement.Name == "CompoundGlobalStatement" && (compoundGlobalStatement.Count == 3 && compoundGlobalStatement[0] != null && compoundGlobalStatement[0].Name == "GlobalStatement" && true && compoundGlobalStatement[1] != null && compoundGlobalStatement[1].Name == "newline" && true && compoundGlobalStatement[2] != null && compoundGlobalStatement[2].Name == "GlobalStatement" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			Translatea__compoundGlobalStatement_declaration_function_statement++;
+			if(compoundGlobalStatement != null && compoundGlobalStatement.Name == "CompoundGlobalStatement" && (compoundGlobalStatement.Count == 3 && compoundGlobalStatement[0] != null && compoundGlobalStatement[0].Name == "GlobalStatement" && true && compoundGlobalStatement[1] != null && compoundGlobalStatement[1].Name == "newline" && true && compoundGlobalStatement[2] != null && compoundGlobalStatement[2].Name == "GlobalStatement" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(compoundGlobalStatement[0] as Compiler.AST.Data.GlobalStatement, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
-				if(dcl1 != null && dcl1.Name == "Declarations" && true && f1 != null && f1.Name == "Functions" && true && s1 != null && s1.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(compoundGlobalStatement[0] as Compiler.AST.Data.GlobalStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement as Compiler.C.Data.Statement);
+				if(dcl1 != null && dcl1.Name == "Declaration" && true && f1 != null && f1.Name == "Function" && true && s1 != null && s1.Name == "Statement" && true)
 				{
-					(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node s2) = Translatea(compoundGlobalStatement[2] as Compiler.AST.Data.GlobalStatement, dcl1 as Compiler.C.Data.Declarations, f1 as Compiler.C.Data.Functions, s1 as Compiler.C.Data.Statement);
-					if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && s2 != null && s2.Name == "Statement" && true)
+					(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node s2) = Translatea(compoundGlobalStatement[2] as Compiler.AST.Data.GlobalStatement, dcl1 as Compiler.C.Data.Declaration, f1 as Compiler.C.Data.Function, s1 as Compiler.C.Data.Statement);
+					if(dcl2 != null && dcl2.Name == "Declaration" && true && f2 != null && f2.Name == "Function" && true && s2 != null && s2.Name == "Statement" && true)
 					{
-						return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, s2 as Compiler.C.Data.Statement);
+						return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, s2 as Compiler.C.Data.Statement);
 					}
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.Interrupt interrupt, Compiler.C.Data.Declarations declarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.Interrupt interrupt, Compiler.C.Data.Declaration declaration, Compiler.C.Data.Function function, Compiler.C.Data.Statement statement)
 		{
-			Translatea__interrupt_declarations_functions_statement++;
-			if(interrupt != null && interrupt.Name == "Interrupt" && (interrupt.Count == 7 && interrupt[0] != null && interrupt[0].Name == "interrupt" && true && interrupt[1] != null && interrupt[1].Name == "(" && true && interrupt[2] != null && interrupt[2].Name == "numeral" && true && interrupt[3] != null && interrupt[3].Name == ")" && true && interrupt[4] != null && interrupt[4].Name == "indent" && true && interrupt[5] != null && interrupt[5].Name == "Statement" && true && interrupt[6] != null && interrupt[6].Name == "dedent" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			Translatea__interrupt_declaration_function_statement++;
+			if(interrupt != null && interrupt.Name == "Interrupt" && (interrupt.Count == 7 && interrupt[0] != null && interrupt[0].Name == "interrupt" && true && interrupt[1] != null && interrupt[1].Name == "(" && true && interrupt[2] != null && interrupt[2].Name == "numeral" && true && interrupt[3] != null && interrupt[3].Name == ")" && true && interrupt[4] != null && interrupt[4].Name == "indent" && true && interrupt[5] != null && interrupt[5].Name == "Statement" && true && interrupt[6] != null && interrupt[6].Name == "dedent" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node i1 = Translate(interrupt[2] as Compiler.AST.Data.Token);
 				if(i1 != null && i1.Name == "numeral" && true)
 				{
-					(Compiler.C.Data.Node gs1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si2) = Translatea(interrupt[5] as Compiler.AST.Data.Statement, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
-					if(gs1 != null && gs1.Name == "Declarations" && true && f1 != null && f1.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+					(Compiler.C.Data.Node gs1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si2) = Translatea(interrupt[5] as Compiler.AST.Data.Statement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+					if(gs1 != null && gs1.Name == "Declaration" && true && f1 != null && f1.Name == "Function" && true && si2 != null && si2.Name == "Statement" && true)
 					{
-						return (new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.FunctionPrototype(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } }, declarations as Compiler.C.Data.Declarations }, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, si2 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } }, functions as Compiler.C.Data.Functions }, statement as Compiler.C.Data.Statement);
+						return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.FunctionPrototype(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.CompoundFunction(false) { function as Compiler.C.Data.Function, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Type(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" } }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, si2 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } }, statement as Compiler.C.Data.Statement);
 					}
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.Statement statement, Compiler.C.Data.Declarations declarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement1)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.Statement statement, Compiler.C.Data.Declaration declaration, Compiler.C.Data.Function function, Compiler.C.Data.Statement statement1)
 		{
-			Translatea__statement_declarations_functions_statement1++;
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "EPSILON" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			Translatea__statement_declaration_function_statement1++;
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "EPSILON" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
-				return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+				return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "CompoundStatement" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "newline" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.CompoundStatement, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
-				if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+				return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "CompoundStatement" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.CompoundStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				if(dcl2 != null && dcl2.Name == "Declaration" && true && f2 != null && f2.Name == "Function" && true && si2 != null && si2.Name == "Statement" && true)
 				{
-					return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+					return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, si2 as Compiler.C.Data.Statement);
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerDeclaration" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerDeclaration" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IntegerDeclaration);
 				if(s1 != null && s1.Name == "IntegerDeclaration" && true)
 				{
-					return (new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.IntegerDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, declarations as Compiler.C.Data.Declarations }, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+					return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.IntegerDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerDeclarationInit" && (statement[0].Count == 4 && statement[0][0] != null && statement[0][0].Name == "IntType" && true && statement[0][1] != null && statement[0][1].Name == "identifier" && true && statement[0][2] != null && statement[0][2].Name == "=" && true && statement[0][3] != null && statement[0][3].Name == "IntegerExpression" && true)) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerDeclarationInit" && (statement[0].Count == 4 && statement[0][0] != null && statement[0][0].Name == "IntType" && true && statement[0][1] != null && statement[0][1].Name == "identifier" && true && statement[0][2] != null && statement[0][2].Name == "=" && true && statement[0][3] != null && statement[0][3].Name == "IntegerExpression" && true)) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si1) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.IntegerDeclaration(false) { statement[0][0] as Compiler.AST.Data.IntType, statement[0][1] as Compiler.AST.Data.Token } }, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
-				if(dcl1 != null && dcl1.Name == "Declarations" && true && f1 != null && f1.Name == "Functions" && true && si1 != null && si1.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si1) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.IntegerDeclaration(false) { statement[0][0] as Compiler.AST.Data.IntType, statement[0][1] as Compiler.AST.Data.Token } }, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				if(dcl1 != null && dcl1.Name == "Declaration" && true && f1 != null && f1.Name == "Function" && true && si1 != null && si1.Name == "Statement" && true)
 				{
-					(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.IntegerAssignment(false) { new Compiler.AST.Data.IntegerVariable(false) { statement[0][1] as Compiler.AST.Data.Token }, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, statement[0][3] as Compiler.AST.Data.IntegerExpression } }, dcl1 as Compiler.C.Data.Declarations, f1 as Compiler.C.Data.Functions, si1 as Compiler.C.Data.Statement);
-					if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+					(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.IntegerAssignment(false) { new Compiler.AST.Data.IntegerVariable(false) { statement[0][1] as Compiler.AST.Data.Token }, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, statement[0][3] as Compiler.AST.Data.IntegerExpression } }, dcl1 as Compiler.C.Data.Declaration, f1 as Compiler.C.Data.Function, si1 as Compiler.C.Data.Statement);
+					if(dcl2 != null && dcl2.Name == "Declaration" && true && f2 != null && f2.Name == "Function" && true && si2 != null && si2.Name == "Statement" && true)
 					{
-						return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+						return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, si2 as Compiler.C.Data.Statement);
 					}
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanDeclaration" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanDeclaration" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.BooleanDeclaration);
 				if(s1 != null && s1.Name == "BooleanDeclaration" && true)
 				{
-					return (new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.BooleanDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, declarations as Compiler.C.Data.Declarations }, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+					return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.BooleanDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanDeclarationInit" && (statement[0].Count == 4 && statement[0][0] != null && statement[0][0].Name == "BooleanType" && true && statement[0][1] != null && statement[0][1].Name == "identifier" && true && statement[0][2] != null && statement[0][2].Name == "=" && true && statement[0][3] != null && statement[0][3].Name == "BooleanExpression" && true)) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanDeclarationInit" && (statement[0].Count == 4 && statement[0][0] != null && statement[0][0].Name == "BooleanType" && true && statement[0][1] != null && statement[0][1].Name == "identifier" && true && statement[0][2] != null && statement[0][2].Name == "=" && true && statement[0][3] != null && statement[0][3].Name == "BooleanExpression" && true)) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si1) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.BooleanDeclaration(false) { statement[0][0] as Compiler.AST.Data.BooleanType, statement[0][1] as Compiler.AST.Data.Token } }, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
-				if(dcl1 != null && dcl1.Name == "Declarations" && true && f1 != null && f1.Name == "Functions" && true && si1 != null && si1.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si1) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.BooleanDeclaration(false) { statement[0][0] as Compiler.AST.Data.BooleanType, statement[0][1] as Compiler.AST.Data.Token } }, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				if(dcl1 != null && dcl1.Name == "Declaration" && true && f1 != null && f1.Name == "Function" && true && si1 != null && si1.Name == "Statement" && true)
 				{
-					(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.BooleanAssignment(false) { new Compiler.AST.Data.BooleanVariable(false) { statement[0][1] as Compiler.AST.Data.Token }, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, statement[0][3] as Compiler.AST.Data.BooleanExpression } }, dcl1 as Compiler.C.Data.Declarations, f1 as Compiler.C.Data.Functions, si1 as Compiler.C.Data.Statement);
-					if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+					(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.BooleanAssignment(false) { new Compiler.AST.Data.BooleanVariable(false) { statement[0][1] as Compiler.AST.Data.Token }, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, statement[0][3] as Compiler.AST.Data.BooleanExpression } }, dcl1 as Compiler.C.Data.Declaration, f1 as Compiler.C.Data.Function, si1 as Compiler.C.Data.Statement);
+					if(dcl2 != null && dcl2.Name == "Declaration" && true && f2 != null && f2.Name == "Function" && true && si2 != null && si2.Name == "Statement" && true)
 					{
-						return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+						return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, si2 as Compiler.C.Data.Statement);
 					}
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterDeclaration" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterDeclaration" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.RegisterDeclaration);
 				if(s1 != null && s1.Name == "RegisterDeclaration" && true)
 				{
-					return (new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.RegisterDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } }, declarations as Compiler.C.Data.Declarations }, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
+					return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.RegisterDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterDeclarationInit" && (statement[0].Count == 4 && statement[0][0] != null && statement[0][0].Name == "RegisterType" && true && statement[0][1] != null && statement[0][1].Name == "identifier" && true && statement[0][2] != null && statement[0][2].Name == "=" && true && statement[0][3] != null && statement[0][3].Name == "RegisterExpression" && true)) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterDeclarationInit" && (statement[0].Count == 4 && statement[0][0] != null && statement[0][0].Name == "RegisterType" && true && statement[0][1] != null && statement[0][1].Name == "identifier" && true && statement[0][2] != null && statement[0][2].Name == "=" && true && statement[0][3] != null && statement[0][3].Name == "RegisterExpression" && true)) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si1) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.RegisterDeclaration(false) { statement[0][0] as Compiler.AST.Data.RegisterType, statement[0][1] as Compiler.AST.Data.Token } }, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
-				if(dcl1 != null && dcl1.Name == "Declarations" && true && f1 != null && f1.Name == "Functions" && true && si1 != null && si1.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si1) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.RegisterDeclaration(false) { statement[0][0] as Compiler.AST.Data.RegisterType, statement[0][1] as Compiler.AST.Data.Token } }, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				if(dcl1 != null && dcl1.Name == "Declaration" && true && f1 != null && f1.Name == "Function" && true && si1 != null && si1.Name == "Statement" && true)
 				{
-					(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.RegisterAssignment(false) { new Compiler.AST.Data.RegisterVariable(false) { statement[0][1] as Compiler.AST.Data.Token }, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, statement[0][3] as Compiler.AST.Data.RegisterExpression } }, dcl1 as Compiler.C.Data.Declarations, f1 as Compiler.C.Data.Functions, si1 as Compiler.C.Data.Statement);
-					if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+					(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.RegisterAssignment(false) { new Compiler.AST.Data.RegisterVariable(false) { statement[0][1] as Compiler.AST.Data.Token }, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, statement[0][3] as Compiler.AST.Data.RegisterExpression } }, dcl1 as Compiler.C.Data.Declaration, f1 as Compiler.C.Data.Function, si1 as Compiler.C.Data.Statement);
+					if(dcl2 != null && dcl2.Name == "Declaration" && true && f2 != null && f2.Name == "Function" && true && si2 != null && si2.Name == "Statement" && true)
 					{
-						return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+						return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, si2 as Compiler.C.Data.Statement);
 					}
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "DirectBitAssignment" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "DirectBitAssignment" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.DirectBitAssignment);
 				if(s1 != null && s1.Name == "DirectBitAssignment" && true)
 				{
-					return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.DirectBitAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
+					return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.DirectBitAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IndirectBitAssignment" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IndirectBitAssignment" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IndirectBitAssignment);
 				if(s1 != null && s1.Name == "IndirectBitAssignment" && true)
 				{
-					return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.IndirectBitAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
+					return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.IndirectBitAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerAssignment" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerAssignment" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IntegerAssignment);
 				if(s1 != null && s1.Name == "IntegerAssignment" && true)
 				{
-					return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.IntegerAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
+					return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.IntegerAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanAssignment" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanAssignment" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.BooleanAssignment);
 				if(s1 != null && s1.Name == "BooleanAssignment" && true)
 				{
-					return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.BooleanAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
+					return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.BooleanAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterAssignment" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterAssignment" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.RegisterAssignment);
 				if(s1 != null && s1.Name == "RegisterAssignment" && true)
 				{
-					return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.RegisterAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
+					return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { s1 as Compiler.C.Data.RegisterAssignment, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IfStatement" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IfStatement" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.IfStatement, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
-				if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.IfStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				if(dcl2 != null && dcl2.Name == "Declaration" && true && f2 != null && f2.Name == "Function" && true && si2 != null && si2.Name == "Statement" && true)
 				{
-					return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+					return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, si2 as Compiler.C.Data.Statement);
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "WhileStatement" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IfElseStatement" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.WhileStatement, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
-				if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.IfElseStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				if(dcl2 != null && dcl2.Name == "Declaration" && true && f2 != null && f2.Name == "Function" && true && si2 != null && si2.Name == "Statement" && true)
 				{
-					return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+					return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, si2 as Compiler.C.Data.Statement);
 				}
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "ForStatement" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement1 != null && statement1.Name == "Statement" && true)
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "WhileStatement" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.ForStatement, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement1 as Compiler.C.Data.Statement);
-				if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.WhileStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				if(dcl2 != null && dcl2.Name == "Declaration" && true && f2 != null && f2.Name == "Function" && true && si2 != null && si2.Name == "Statement" && true)
 				{
-					return (dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
+					return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, si2 as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "ForStatement" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.ForStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				if(dcl2 != null && dcl2.Name == "Declaration" && true && f2 != null && f2.Name == "Function" && true && si2 != null && si2.Name == "Statement" && true)
+				{
+					return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, si2 as Compiler.C.Data.Statement);
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.CompoundStatement compoundStatement, Compiler.C.Data.Declarations declarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.CompoundStatement compoundStatement, Compiler.C.Data.Declaration declaration, Compiler.C.Data.Function function, Compiler.C.Data.Statement statement)
 		{
-			Translatea__compoundStatement_declarations_functions_statement++;
-			if(compoundStatement != null && compoundStatement.Name == "CompoundStatement" && (compoundStatement.Count == 3 && compoundStatement[0] != null && compoundStatement[0].Name == "Statement" && true && compoundStatement[1] != null && compoundStatement[1].Name == "newline" && true && compoundStatement[2] != null && compoundStatement[2].Name == "Statement" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			Translatea__compoundStatement_declaration_function_statement++;
+			if(compoundStatement != null && compoundStatement.Name == "CompoundStatement" && (compoundStatement.Count == 3 && compoundStatement[0] != null && compoundStatement[0].Name == "Statement" && true && compoundStatement[1] != null && compoundStatement[1].Name == "newline" && true && compoundStatement[2] != null && compoundStatement[2].Name == "Statement" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
-				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(compoundStatement[0] as Compiler.AST.Data.Statement, declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, statement as Compiler.C.Data.Statement);
-				if(dcl2 != null && dcl2.Name == "Declarations" && true && f2 != null && f2.Name == "Functions" && true && si2 != null && si2.Name == "Statement" && true)
+				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(compoundStatement[0] as Compiler.AST.Data.Statement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement as Compiler.C.Data.Statement);
+				if(dcl2 != null && dcl2.Name == "Declaration" && true && f2 != null && f2.Name == "Function" && true && si2 != null && si2.Name == "Statement" && true)
 				{
-					(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(compoundStatement[2] as Compiler.AST.Data.Statement, dcl2 as Compiler.C.Data.Declarations, f2 as Compiler.C.Data.Functions, si2 as Compiler.C.Data.Statement);
-					if(dcl3 != null && dcl3.Name == "Declarations" && true && f3 != null && f3.Name == "Functions" && true && si3 != null && si3.Name == "Statement" && true)
+					(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(compoundStatement[2] as Compiler.AST.Data.Statement, dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, si2 as Compiler.C.Data.Statement);
+					if(dcl3 != null && dcl3.Name == "Declaration" && true && f3 != null && f3.Name == "Function" && true && si3 != null && si3.Name == "Statement" && true)
 					{
-						return (dcl3 as Compiler.C.Data.Declarations, f3 as Compiler.C.Data.Functions, si3 as Compiler.C.Data.Statement);
+						return (dcl3 as Compiler.C.Data.Declaration, f3 as Compiler.C.Data.Function, si3 as Compiler.C.Data.Statement);
 					}
 				}
 			}
@@ -602,39 +618,39 @@ namespace Compiler.Translation.ASTToC
 			throw new System.Exception();
 		}
 
-		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.IfStatement ifStatement, Compiler.C.Data.Declarations declarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.IfStatement ifStatement, Compiler.C.Data.Declaration declaration, Compiler.C.Data.Function function, Compiler.C.Data.Statement statement)
 		{
-			Translatea__ifStatement_declarations_functions_statement++;
-			if(ifStatement != null && ifStatement.Name == "IfStatement" && (ifStatement.Count == 7 && ifStatement[0] != null && ifStatement[0].Name == "if" && true && ifStatement[1] != null && ifStatement[1].Name == "(" && true && ifStatement[2] != null && ifStatement[2].Name == "BooleanExpression" && true && ifStatement[3] != null && ifStatement[3].Name == ")" && true && ifStatement[4] != null && ifStatement[4].Name == "indent" && true && ifStatement[5] != null && ifStatement[5].Name == "Statement" && true && ifStatement[6] != null && ifStatement[6].Name == "dedent" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			Translatea__ifStatement_declaration_function_statement++;
+			if(ifStatement != null && ifStatement.Name == "IfStatement" && (ifStatement.Count == 7 && ifStatement[0] != null && ifStatement[0].Name == "if" && true && ifStatement[1] != null && ifStatement[1].Name == "(" && true && ifStatement[2] != null && ifStatement[2].Name == "BooleanExpression" && true && ifStatement[3] != null && ifStatement[3].Name == ")" && true && ifStatement[4] != null && ifStatement[4].Name == "indent" && true && ifStatement[5] != null && ifStatement[5].Name == "Statement" && true && ifStatement[6] != null && ifStatement[6].Name == "dedent" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node bexpr1 = Translate(ifStatement[2] as Compiler.AST.Data.BooleanExpression);
 				if(bexpr1 != null && bexpr1.Name == "BooleanExpression" && true)
 				{
-					(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(ifStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
-					if(dcl3 != null && dcl3.Name == "Declarations" && true && f3 != null && f3.Name == "Functions" && true && si3 != null && si3.Name == "Statement" && true)
+					(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(ifStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+					if(dcl3 != null && dcl3.Name == "Declaration" && true && f3 != null && f3.Name == "Function" && true && si3 != null && si3.Name == "Statement" && true)
 					{
-						return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declarations, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } });
+						return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declaration, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } });
 					}
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.IfElseStatement ifElseStatement, Compiler.C.Data.Declarations declarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.IfElseStatement ifElseStatement, Compiler.C.Data.Declaration declaration, Compiler.C.Data.Function function, Compiler.C.Data.Statement statement)
 		{
-			Translatea__ifElseStatement_declarations_functions_statement++;
-			if(ifElseStatement != null && ifElseStatement.Name == "IfElseStatement" && (ifElseStatement.Count == 11 && ifElseStatement[0] != null && ifElseStatement[0].Name == "if" && true && ifElseStatement[1] != null && ifElseStatement[1].Name == "(" && true && ifElseStatement[2] != null && ifElseStatement[2].Name == "BooleanExpression" && true && ifElseStatement[3] != null && ifElseStatement[3].Name == ")" && true && ifElseStatement[4] != null && ifElseStatement[4].Name == "indent" && true && ifElseStatement[5] != null && ifElseStatement[5].Name == "Statement" && true && ifElseStatement[6] != null && ifElseStatement[6].Name == "dedent" && true && ifElseStatement[7] != null && ifElseStatement[7].Name == "else" && true && ifElseStatement[8] != null && ifElseStatement[8].Name == "indent" && true && ifElseStatement[9] != null && ifElseStatement[9].Name == "Statement" && true && ifElseStatement[10] != null && ifElseStatement[10].Name == "dedent" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			Translatea__ifElseStatement_declaration_function_statement++;
+			if(ifElseStatement != null && ifElseStatement.Name == "IfElseStatement" && (ifElseStatement.Count == 11 && ifElseStatement[0] != null && ifElseStatement[0].Name == "if" && true && ifElseStatement[1] != null && ifElseStatement[1].Name == "(" && true && ifElseStatement[2] != null && ifElseStatement[2].Name == "BooleanExpression" && true && ifElseStatement[3] != null && ifElseStatement[3].Name == ")" && true && ifElseStatement[4] != null && ifElseStatement[4].Name == "indent" && true && ifElseStatement[5] != null && ifElseStatement[5].Name == "Statement" && true && ifElseStatement[6] != null && ifElseStatement[6].Name == "dedent" && true && ifElseStatement[7] != null && ifElseStatement[7].Name == "else" && true && ifElseStatement[8] != null && ifElseStatement[8].Name == "indent" && true && ifElseStatement[9] != null && ifElseStatement[9].Name == "Statement" && true && ifElseStatement[10] != null && ifElseStatement[10].Name == "dedent" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node bexpr1 = Translate(ifElseStatement[2] as Compiler.AST.Data.BooleanExpression);
 				if(bexpr1 != null && bexpr1.Name == "BooleanExpression" && true)
 				{
-					(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(ifElseStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
-					if(dcl3 != null && dcl3.Name == "Declarations" && true && f3 != null && f3.Name == "Functions" && true && si3 != null && si3.Name == "Statement" && true)
+					(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(ifElseStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+					if(dcl3 != null && dcl3.Name == "Declaration" && true && f3 != null && f3.Name == "Function" && true && si3 != null && si3.Name == "Statement" && true)
 					{
-						(Compiler.C.Data.Node dcl4, Compiler.C.Data.Node f4, Compiler.C.Data.Node si4) = Translatea(ifElseStatement[9] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
-						if(dcl4 != null && dcl4.Name == "Declarations" && true && f4 != null && f4.Name == "Functions" && true && si4 != null && si4.Name == "Statement" && true)
+						(Compiler.C.Data.Node dcl4, Compiler.C.Data.Node f4, Compiler.C.Data.Node si4) = Translatea(ifElseStatement[9] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+						if(dcl4 != null && dcl4.Name == "Declaration" && true && f4 != null && f4.Name == "Function" && true && si4 != null && si4.Name == "Statement" && true)
 						{
-							return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfElseStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declarations, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" }, new Compiler.C.Data.Token() { Name = "else", Value = "else" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl4 as Compiler.C.Data.Declarations, si4 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } });
+							return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfElseStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declaration, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" }, new Compiler.C.Data.Token() { Name = "else", Value = "else" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl4 as Compiler.C.Data.Declaration, si4 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } });
 						}
 					}
 				}
@@ -642,28 +658,28 @@ namespace Compiler.Translation.ASTToC
 			throw new System.Exception();
 		}
 
-		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.WhileStatement whileStatement, Compiler.C.Data.Declarations declarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.WhileStatement whileStatement, Compiler.C.Data.Declaration declaration, Compiler.C.Data.Function function, Compiler.C.Data.Statement statement)
 		{
-			Translatea__whileStatement_declarations_functions_statement++;
-			if(whileStatement != null && whileStatement.Name == "WhileStatement" && (whileStatement.Count == 7 && whileStatement[0] != null && whileStatement[0].Name == "while" && true && whileStatement[1] != null && whileStatement[1].Name == "(" && true && whileStatement[2] != null && whileStatement[2].Name == "BooleanExpression" && true && whileStatement[3] != null && whileStatement[3].Name == ")" && true && whileStatement[4] != null && whileStatement[4].Name == "indent" && true && whileStatement[5] != null && whileStatement[5].Name == "Statement" && true && whileStatement[6] != null && whileStatement[6].Name == "dedent" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			Translatea__whileStatement_declaration_function_statement++;
+			if(whileStatement != null && whileStatement.Name == "WhileStatement" && (whileStatement.Count == 7 && whileStatement[0] != null && whileStatement[0].Name == "while" && true && whileStatement[1] != null && whileStatement[1].Name == "(" && true && whileStatement[2] != null && whileStatement[2].Name == "BooleanExpression" && true && whileStatement[3] != null && whileStatement[3].Name == ")" && true && whileStatement[4] != null && whileStatement[4].Name == "indent" && true && whileStatement[5] != null && whileStatement[5].Name == "Statement" && true && whileStatement[6] != null && whileStatement[6].Name == "dedent" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node bexpr1 = Translate(whileStatement[2] as Compiler.AST.Data.BooleanExpression);
 				if(bexpr1 != null && bexpr1.Name == "BooleanExpression" && true)
 				{
-					(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(whileStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
-					if(dcl3 != null && dcl3.Name == "Declarations" && true && f3 != null && f3.Name == "Functions" && true && si3 != null && si3.Name == "Statement" && true)
+					(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(whileStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+					if(dcl3 != null && dcl3.Name == "Declaration" && true && f3 != null && f3.Name == "Function" && true && si3 != null && si3.Name == "Statement" && true)
 					{
-						return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.WhileStatement(false) { new Compiler.C.Data.Token() { Name = "while", Value = "while" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declarations, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } });
+						return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.WhileStatement(false) { new Compiler.C.Data.Token() { Name = "while", Value = "while" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declaration, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } });
 					}
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.ForStatement forStatement, Compiler.C.Data.Declarations declarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.ForStatement forStatement, Compiler.C.Data.Declaration declaration, Compiler.C.Data.Function function, Compiler.C.Data.Statement statement)
 		{
-			Translatea__forStatement_declarations_functions_statement++;
-			if(forStatement != null && forStatement.Name == "ForStatement" && (forStatement.Count == 12 && forStatement[0] != null && forStatement[0].Name == "for" && true && forStatement[1] != null && forStatement[1].Name == "(" && true && forStatement[2] != null && forStatement[2].Name == "IntType" && true && forStatement[3] != null && forStatement[3].Name == "identifier" && true && forStatement[4] != null && forStatement[4].Name == "from" && true && forStatement[5] != null && forStatement[5].Name == "IntegerExpression" && true && forStatement[6] != null && forStatement[6].Name == "to" && true && forStatement[7] != null && forStatement[7].Name == "IntegerExpression" && true && forStatement[8] != null && forStatement[8].Name == ")" && true && forStatement[9] != null && forStatement[9].Name == "indent" && true && forStatement[10] != null && forStatement[10].Name == "Statement" && true && forStatement[11] != null && forStatement[11].Name == "dedent" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			Translatea__forStatement_declaration_function_statement++;
+			if(forStatement != null && forStatement.Name == "ForStatement" && (forStatement.Count == 12 && forStatement[0] != null && forStatement[0].Name == "for" && true && forStatement[1] != null && forStatement[1].Name == "(" && true && forStatement[2] != null && forStatement[2].Name == "IntType" && true && forStatement[3] != null && forStatement[3].Name == "identifier" && true && forStatement[4] != null && forStatement[4].Name == "from" && true && forStatement[5] != null && forStatement[5].Name == "IntegerExpression" && true && forStatement[6] != null && forStatement[6].Name == "to" && true && forStatement[7] != null && forStatement[7].Name == "IntegerExpression" && true && forStatement[8] != null && forStatement[8].Name == ")" && true && forStatement[9] != null && forStatement[9].Name == "indent" && true && forStatement[10] != null && forStatement[10].Name == "Statement" && true && forStatement[11] != null && forStatement[11].Name == "dedent" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node intType1 = Translate(forStatement[2] as Compiler.AST.Data.IntType);
 				if(intType1 != null && intType1.Name == "IntType" && true)
@@ -677,10 +693,10 @@ namespace Compiler.Translation.ASTToC
 							Compiler.C.Data.Node iexpr2 = Translate(forStatement[7] as Compiler.AST.Data.IntegerExpression);
 							if(iexpr2 != null && iexpr2.Name == "IntegerExpression" && true)
 							{
-								(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(forStatement[10] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
-								if(dcl3 != null && dcl3.Name == "Declarations" && true && f3 != null && f3.Name == "Functions" && true && si3 != null && si3.Name == "Statement" && true)
+								(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(forStatement[10] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+								if(dcl3 != null && dcl3.Name == "Declaration" && true && f3 != null && f3.Name == "Function" && true && si3 != null && si3.Name == "Statement" && true)
 								{
-									return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.ForStatement(false) { new Compiler.C.Data.Token() { Name = "for", Value = "for" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, intType1 as Compiler.C.Data.IntType, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "=", Value = "=" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ";", Value = ";" }, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "<=", Value = "<=" }, iexpr2 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ";", Value = ";" }, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "++", Value = "++" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declarations, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } });
+									return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.ForStatement(false) { new Compiler.C.Data.Token() { Name = "for", Value = "for" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, intType1 as Compiler.C.Data.IntType, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "=", Value = "=" }, iexpr1 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ";", Value = ";" }, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "<=", Value = "<=" }, iexpr2 as Compiler.C.Data.IntegerExpression, new Compiler.C.Data.Token() { Name = ";", Value = ";" }, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "++", Value = "++" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declaration, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } });
 								}
 							}
 						}
@@ -1379,11 +1395,11 @@ namespace Compiler.Translation.ASTToC
 		{
 			System.Console.WriteLine("___Translation methods calls___");
 			System.Console.WriteLine("Translate__aST: "+Translate__aST);
-			System.Console.WriteLine("Translatea__globalStatement_declarations_functions_statement: "+Translatea__globalStatement_declarations_functions_statement);
-			System.Console.WriteLine("Translatea__compoundGlobalStatement_declarations_functions_statement: "+Translatea__compoundGlobalStatement_declarations_functions_statement);
-			System.Console.WriteLine("Translatea__interrupt_declarations_functions_statement: "+Translatea__interrupt_declarations_functions_statement);
-			System.Console.WriteLine("Translatea__statement_declarations_functions_statement1: "+Translatea__statement_declarations_functions_statement1);
-			System.Console.WriteLine("Translatea__compoundStatement_declarations_functions_statement: "+Translatea__compoundStatement_declarations_functions_statement);
+			System.Console.WriteLine("Translatea__globalStatement_declaration_function_statement: "+Translatea__globalStatement_declaration_function_statement);
+			System.Console.WriteLine("Translatea__compoundGlobalStatement_declaration_function_statement: "+Translatea__compoundGlobalStatement_declaration_function_statement);
+			System.Console.WriteLine("Translatea__interrupt_declaration_function_statement: "+Translatea__interrupt_declaration_function_statement);
+			System.Console.WriteLine("Translatea__statement_declaration_function_statement1: "+Translatea__statement_declaration_function_statement1);
+			System.Console.WriteLine("Translatea__compoundStatement_declaration_function_statement: "+Translatea__compoundStatement_declaration_function_statement);
 			System.Console.WriteLine("Translate__integerDeclaration: "+Translate__integerDeclaration);
 			System.Console.WriteLine("Translate__integerDeclarationInit: "+Translate__integerDeclarationInit);
 			System.Console.WriteLine("Translate__integerAssignment: "+Translate__integerAssignment);
@@ -1400,10 +1416,10 @@ namespace Compiler.Translation.ASTToC
 			System.Console.WriteLine("Translate__registerExpression: "+Translate__registerExpression);
 			System.Console.WriteLine("Translate__registerLiteral: "+Translate__registerLiteral);
 			System.Console.WriteLine("Translate__registerVariable: "+Translate__registerVariable);
-			System.Console.WriteLine("Translatea__ifStatement_declarations_functions_statement: "+Translatea__ifStatement_declarations_functions_statement);
-			System.Console.WriteLine("Translatea__ifElseStatement_declarations_functions_statement: "+Translatea__ifElseStatement_declarations_functions_statement);
-			System.Console.WriteLine("Translatea__whileStatement_declarations_functions_statement: "+Translatea__whileStatement_declarations_functions_statement);
-			System.Console.WriteLine("Translatea__forStatement_declarations_functions_statement: "+Translatea__forStatement_declarations_functions_statement);
+			System.Console.WriteLine("Translatea__ifStatement_declaration_function_statement: "+Translatea__ifStatement_declaration_function_statement);
+			System.Console.WriteLine("Translatea__ifElseStatement_declaration_function_statement: "+Translatea__ifElseStatement_declaration_function_statement);
+			System.Console.WriteLine("Translatea__whileStatement_declaration_function_statement: "+Translatea__whileStatement_declaration_function_statement);
+			System.Console.WriteLine("Translatea__forStatement_declaration_function_statement: "+Translatea__forStatement_declaration_function_statement);
 			System.Console.WriteLine("Translate__intType: "+Translate__intType);
 			System.Console.WriteLine("Translate__integerExpression: "+Translate__integerExpression);
 			System.Console.WriteLine("Translate__integerVariable: "+Translate__integerVariable);

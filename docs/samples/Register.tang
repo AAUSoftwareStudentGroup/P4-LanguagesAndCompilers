@@ -3,7 +3,7 @@ register8(37){5} = false
 uint32 c
 c = 0
 while(true)
-    if(c = 300000)
+    if(c == 300000)
         register8(37){5} = !register8(37){5}
         c = 0
     c = c + 1

@@ -42,7 +42,7 @@ namespace Compiler.C.Visitors
 
         public override IEnumerable<string> Visit(Token node)
         {
-            if(node.Value != "EPSILON")
+            if(node.Value != "EPSILON" && node.Value != "eof")
             {
                 yield return node.Value;
             }
@@ -50,21 +50,34 @@ namespace Compiler.C.Visitors
 
         public override IEnumerable<string> Visit(Function node)
         {
-            List<string> res = new List<string>();
-            foreach (var child in node.TakeWhile(n => n.Name != "{"))
+            if (node[0].Name != "EPSILON")
             {
-                foreach (var str in child.Accept(this))
+                if(node.Nodes<Statement>().Count() == 0)
                 {
-                    res.Add(str);
+                    foreach (var item in node[0].Accept(this))
+                    {
+                        yield return item;
+                    }
+                }
+                else
+                {
+                    List<string> res = new List<string>();
+                    foreach (var child in node.TakeWhile(n => n.Name != "{"))
+                    {
+                        foreach (var str in child.Accept(this))
+                        {
+                            res.Add(str);
+                        }
+                    }
+                    yield return string.Join(" ", res);
+                    yield return "{";
+                    foreach (var item in node.Nodes<Statement>()[0].Accept(this))
+                    {
+                        yield return $"    {item}";
+                    }
+                    yield return "}";
                 }
             }
-            yield return string.Join(" ", res);
-            yield return "{";
-            foreach (var item in node.Nodes<Statement>()[0].Accept(this))
-            {
-                yield return $"    {item}";
-            }
-            yield return "}";
         }
 
         public override IEnumerable<string> Visit(CompoundStatement node)
@@ -87,11 +100,11 @@ namespace Compiler.C.Visitors
             }
             else
             {
-                return node.First().Accept(this).Select(s => s + ";");
+                return node.First().Accept(this).Select(s => s + " ;");
             }
         }
 
-        public override IEnumerable<string> Visit(Functions node)
+        public override IEnumerable<string> Visit(CompoundFunction node)
         {
             foreach (var item in node)
             {
@@ -102,28 +115,41 @@ namespace Compiler.C.Visitors
             }
         }
 
-        public override IEnumerable<string> Visit(Declarations node)
+        public override IEnumerable<string> Visit(Declaration node)
         {
-            foreach (var item in node)
+            if (node.Count == 1)
             {
-                foreach (var item2 in item.Accept(this))
-                {
-                    yield return item2;
-                }
+                return node.First().Accept(this);
+            }
+            else
+            {
+                return node.First().Accept(this).Select(s => s + " ;");
+            }
+        }
+
+        public override IEnumerable<string> Visit(CompoundDeclaration node)
+        {
+            foreach (var item in node.Nodes<Declaration>()[0].Accept(this))
+            {
+                yield return item;
+            }
+            foreach (var item in node.Nodes<Declaration>()[1].Accept(this))
+            {
+                yield return item;
             }
         }
 
         public override IEnumerable<string> Visit(IfStatement node)
         {
-            StringBuilder first = new StringBuilder("if(");
+            StringBuilder first = new StringBuilder("if ( ");
             foreach (var str in node.Nodes<BooleanExpression>()[0].Accept(this))
             {
                 first.Append(str);
             }
-            first.Append(")");
+            first.Append(" )");
             yield return first.ToString();
             yield return "{";
-            foreach (var str in node.Nodes<Declarations>()[0].Accept(this))
+            foreach (var str in node.Nodes<Declaration>()[0].Accept(this))
             {
                 yield return $"    {str}";
             }
@@ -136,15 +162,15 @@ namespace Compiler.C.Visitors
 
         public override IEnumerable<string> Visit(WhileStatement node)
         {
-            StringBuilder first = new StringBuilder("while(");
+            StringBuilder first = new StringBuilder("while ( ");
             foreach (var str in node.Nodes<BooleanExpression>()[0].Accept(this))
             {
                 first.Append(str);
             }
-            first.Append(")");
+            first.Append(" )");
             yield return first.ToString();
             yield return "{";
-            foreach (var str in node.Nodes<Declarations>()[0].Accept(this))
+            foreach (var str in node.Nodes<Declaration>()[0].Accept(this))
             {
                 yield return $"    {str}";
             }
@@ -157,7 +183,7 @@ namespace Compiler.C.Visitors
 
         public override IEnumerable<string> Visit(ForStatement node)
         {
-            StringBuilder first = new StringBuilder("for(");
+            StringBuilder first = new StringBuilder("for ( ");
             foreach (var c in node.Skip(2).TakeWhile(t => t.Name != ")"))
             {
                 foreach (var str in c.Accept(this))
@@ -168,11 +194,43 @@ namespace Compiler.C.Visitors
             first.Append(" )");
             yield return first.ToString();
             yield return "{";
-            foreach (var str in node.Nodes<Declarations>()[0].Accept(this))
+            foreach (var str in node.Nodes<Declaration>()[0].Accept(this))
             {
                 yield return $"    {str}";
             }
             foreach (var str in node.Nodes<Statement>()[0].Accept(this))
+            {
+                yield return $"    {str}";
+            }
+            yield return "}";
+        }
+
+        public override IEnumerable<string> Visit(IfElseStatement node)
+        {
+            StringBuilder first = new StringBuilder("if ( ");
+            foreach (var str in node.Nodes<BooleanExpression>()[0].Accept(this))
+            {
+                first.Append(str);
+            }
+            first.Append(" )");
+            yield return first.ToString();
+            yield return "{";
+            foreach (var str in node.Nodes<Declaration>()[0].Accept(this))
+            {
+                yield return $"    {str}";
+            }
+            foreach (var str in node.Nodes<Statement>()[0].Accept(this))
+            {
+                yield return $"    {str}";
+            }
+            yield return "}";
+            yield return "else";
+            yield return "{";
+            foreach (var str in node.Nodes<Declaration>()[1].Accept(this))
+            {
+                yield return $"    {str}";
+            }
+            foreach (var str in node.Nodes<Statement>()[1].Accept(this))
             {
                 yield return $"    {str}";
             }

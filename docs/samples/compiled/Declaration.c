@@ -1,6 +1,6 @@
 void main ( void ) ;
-unsigned char b ;
+unsigned char a ;
 void main ( void )
 {
-    b = ( 4 % 5 ) ;
+    a = 2 ;
 }

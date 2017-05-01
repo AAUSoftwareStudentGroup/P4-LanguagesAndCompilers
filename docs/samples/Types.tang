@@ -7,3 +7,6 @@ int16 i32 = 32
 bool b = true
 register8 r8 = register8(8)
 register16 r16 = register16(16)
+
+interrupt(10)
+    ui8 = 10
