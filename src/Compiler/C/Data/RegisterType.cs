@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.C.Data
 {
-	public class Interrupt : Compiler.C.Data.Node
+	public class RegisterType : Compiler.C.Data.Node
 	{
-		public  Interrupt()
+		public  RegisterType()
 		{
 		}
 
-		public  Interrupt(bool isPlaceholder)
+		public  RegisterType(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "Interrupt";
+			Name = "RegisterType";
 		}
 
 		public override T Accept<T>(Compiler.C.Visitors.CVisitor<T> visitor)

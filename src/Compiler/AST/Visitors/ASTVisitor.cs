@@ -37,12 +37,27 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.AST.Data.IntegerDeclarationInit node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.AST.Data.IntegerAssignment node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
 		public virtual T Visit(Compiler.AST.Data.BooleanDeclaration node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.BooleanDeclarationInit node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.BooleanType node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
@@ -63,6 +78,11 @@ namespace Compiler.AST.Visitors
 		}
 
 		public virtual T Visit(Compiler.AST.Data.RegisterDeclaration node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.RegisterDeclarationInit node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
@@ -93,6 +113,16 @@ namespace Compiler.AST.Visitors
 		}
 
 		public virtual T Visit(Compiler.AST.Data.WhileStatement node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.ForStatement node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.IntType node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
@@ -153,6 +183,11 @@ namespace Compiler.AST.Visitors
 		}
 
 		public virtual T Visit(Compiler.AST.Data.DirectBitValue node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.RegisterType node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}

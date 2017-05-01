@@ -7,7 +7,7 @@ GlobalStatementsP -> newline GlobalStatement GlobalStatementsP
 GlobalStatement -> Interrupt
                  | Statement
 
-Interrupt -> interrupt ( intLiteral ) indent Statements dedent
+Interrupt -> interrupt ( numeral ) indent Statements dedent
 
 Statements -> Statement StatementsP
 StatementsP -> newline Statement StatementsP
@@ -19,14 +19,21 @@ Statement -> EPSILON
            | Assignment
            | IfStatement 
            | WhileStatement
+           | ForStatement
 
-IdentifierDeclaration -> intType identifier
-                       | booleanType identifier
+IdentifierDeclaration -> IntType identifier Initialization
+                       | BooleanType identifier Initialization
 
-RegisterStatement -> registerType RegisterOperation
+RegisterStatement -> RegisterType RegisterOperation
+
+RegisterType -> register8
+              | register16
 
 RegisterOperation -> ( Expression ) { Expression } = Expression
-                   | identifier
+                   | identifier Initialization
+
+Initialization -> = Expression
+                | EPSILON
 
 Assignment -> identifier BitSelector = Expression 
 
@@ -36,7 +43,18 @@ BitSelector -> { Expression }
 IfStatement -> if ( Expression ) indent Statements dedent 
            
 WhileStatement -> while ( Expression ) indent Statements dedent
-        
+
+ForStatement -> for ( IntType identifier from Expression to Expression ) indent Statements dedent
+
+IntType -> int8
+         | int16
+         | int32
+         | uint8
+         | uint16
+         | uint32
+
+BooleanType -> bool
+
 Expression -> OrExpression
 
 OrExpression -> AndExpression OrExpressionP
@@ -48,7 +66,7 @@ AndExpressionP -> and EqExpression AndExpressionP
                 | EPSILON
 
 EqExpression -> RelationalExpression EqExpressionP
-EqExpressionP -> = RelationalExpression EqExpressionP
+EqExpressionP -> == RelationalExpression EqExpressionP
                | != RelationalExpression EqExpressionP  
                | EPSILON
 
@@ -74,11 +92,10 @@ PowExpression -> PrimaryExpression PowExpressionP
 PowExpressionP -> ^ PrimaryExpression PowExpressionP
                 | EPSILON
 
-PrimaryExpression -> intLiteral
-                   | boolLiteral
+PrimaryExpression -> numeral
                    | identifier BitSelector
                    | ( Expression )
                    | ! PrimaryExpression
-                   | registerType ( Expression ) BitSelector
+                   | RegisterType ( Expression ) BitSelector
                    | true
                    | false

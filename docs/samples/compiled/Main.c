@@ -1,6 +1,7 @@
-volatile unsigned char * ddrb ;
+void main ( void ) ;
+unsigned char counter ;
 volatile unsigned char * portb ;
-long long int counter ;
+volatile unsigned char * ddrb ;
 void main ( void )
 {
     ddrb = ( volatile unsigned char * ) ( 36 );

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.C.Data
 {
-	public class CompoundGlobalStatement : Compiler.C.Data.Node
+	public class BooleanType : Compiler.C.Data.Node
 	{
-		public  CompoundGlobalStatement()
+		public  BooleanType()
 		{
 		}
 
-		public  CompoundGlobalStatement(bool isPlaceholder)
+		public  BooleanType(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "CompoundGlobalStatement";
+			Name = "BooleanType";
 		}
 
 		public override T Accept<T>(Compiler.C.Visitors.CVisitor<T> visitor)

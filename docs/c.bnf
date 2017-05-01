@@ -1,12 +1,12 @@
-C -> GlobalDeclarations Functions
+C -> Declarations Functions
 
-GlobalDeclarations -> GlobalDeclaration GlobalDeclarations
-                    | EPSILON
+Declarations -> Declaration Declarations
+              | EPSILON
 
-GlobalDeclaration -> IntegerDeclaration ;
-                   | BooleanDeclaration ;
-                   | RegisterDeclaration ;
-                   | FunctionPrototype ;
+Declaration -> IntegerDeclaration ;
+             | BooleanDeclaration ;
+             | RegisterDeclaration ;
+             | FunctionPrototype ;
 
 FunctionPrototype -> void symbol ( void )
 
@@ -18,10 +18,13 @@ Function -> void symbol ( void ) { Statement }
 Statement -> EPSILON 
            | CompoundStatement
            | IntegerDeclaration ;
+           | IntegerDeclarationInit ;
            | BooleanDeclaration ;
+           | BooleanDeclarationInit ;
            | DirectBitAssignment ;
            | IndirectBitAssignment ;
            | RegisterDeclaration ;
+           | RegisterDeclarationInit ;
            | IntegerAssignment ;
            | BooleanAssignment ;
            | RegisterAssignment ;
@@ -30,33 +33,53 @@ Statement -> EPSILON
 
 CompoundStatement -> Statement Statement
 
-IntegerDeclaration -> long int identifier
+IntegerDeclaration -> IntType identifier
+
+IntegerDeclarationInit -> IntType identifier = IntegerExpression
 		   
-IntegerAssignment -> identifier = IntegerExpression
+IntegerAssignment -> IntegerVariable = IntegerExpression
 
-BooleanDeclaration -> booleanType identifier
+BooleanDeclaration -> BooleanType identifier
 
-BooleanAssignment -> identifier = BooleanExpression
+BooleanDeclarationInit -> BooleanType identifier = BooleanExpression
 
-DirectBitAssignment -> ( * ( volatile unsigned char * ) ( intLiteral ) ) = ( BooleanExpression ? ( ( * ( volatile unsigned char * ) ( intLiteral ) ) | 1 << ( IntegerExpression ) ) : ( ( * ( volatile unsigned char * ) ( intLiteral ) ) & ! ( 1 << ( IntegerExpression ) ) ) )
+BooleanType -> unsigned char
 
-IndirectBitAssignment -> * identifier = ( BooleanExpression ? ( ( * identifier ) | 1 << ( IntegerExpression ) ) : ( ( * identifier ) & ! ( 1 << ( IntegerExpression ) ) ) )
+BooleanAssignment -> BooleanVariable = BooleanExpression
 
-RegisterDeclaration -> volatile unsigned char * identifier
+DirectBitAssignment -> * ( RegisterType ) ( numeral ) = ( BooleanExpression ? ( ( * ( RegisterType ) ( numeral ) ) | 1 << ( IntegerExpression ) ) : ( ( * ( RegisterType ) ( numeral ) ) & ! ( 1 << ( IntegerExpression ) ) ) )
 
-RegisterAssignment -> identifier = RegisterExpression
+IndirectBitAssignment -> * RegisterVariable = ( BooleanExpression ? ( ( * RegisterVariable ) | 1 << ( IntegerExpression ) ) : ( ( * RegisterVariable ) & ! ( 1 << ( IntegerExpression ) ) ) )
+
+RegisterDeclaration -> RegisterType identifier
+
+RegisterDeclarationInit -> RegisterType identifier = RegisterExpression
+
+RegisterType -> volatile unsigned char *
+              | volatile unsigned short *
+
+RegisterAssignment -> RegisterVariable = RegisterExpression
 
 RegisterExpression -> RegisterLiteral
 					| RegisterVariable
 
-RegisterLiteral -> * ( volatile unsigned char * ) ( intLiteral )
+RegisterLiteral -> * ( RegisterType ) ( numeral )
 
 RegisterVariable -> identifier
 
-IfStatement -> if ( BooleanExpression ) { GlobalDeclarations Statement } 
+IfStatement -> if ( BooleanExpression ) { Declarations Statement } 
 		   
-WhileStatement -> while ( BooleanExpression ) { GlobalDeclarations Statement }
-		   
+WhileStatement -> while ( BooleanExpression ) { Declarations Statement }
+
+ForStatement -> for ( IntType identifier = IntegerExpression ; identifier <= IntegerExpression ; identifier ++ ) { Statement }
+
+IntType -> signed char
+         | signed int
+         | signed long
+         | unsigned char
+         | unsigned int
+         | unsigned long
+
 IntegerExpression -> IntegerVariable   
                    | IntegerParenthesisExpression
                    | AddExpression
@@ -65,7 +88,7 @@ IntegerExpression -> IntegerVariable
                    | DivExpression 
                    | ModExpression
                    | PowExpression
-                   | IntLiteral
+                   | numeral
 
 IntegerVariable -> identifier
 
@@ -104,7 +127,7 @@ BooleanExpression -> 1
 
 BooleanVariable -> identifier
 
-DirectBitValue -> ( ( * ( volatile unsigned char * ) ( intLiteral ) ) & ( 1 << ( IntegerExpression ) ) )
+DirectBitValue -> ( ( * ( RegisterType ) ( numeral ) ) & ( 1 << ( IntegerExpression ) ) )
 
 IndirectBitValue -> ( * RegisterVariable & ( 1 << ( IntegerExpression ) ) )
 

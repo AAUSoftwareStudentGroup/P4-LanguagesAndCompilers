@@ -102,7 +102,7 @@ namespace Compiler.C.Visitors
             }
         }
 
-        public override IEnumerable<string> Visit(GlobalDeclarations node)
+        public override IEnumerable<string> Visit(Declarations node)
         {
             foreach (var item in node)
             {
@@ -123,7 +123,7 @@ namespace Compiler.C.Visitors
             first.Append(")");
             yield return first.ToString();
             yield return "{";
-            foreach (var str in node.Nodes<GlobalDeclarations>()[0].Accept(this))
+            foreach (var str in node.Nodes<Declarations>()[0].Accept(this))
             {
                 yield return $"    {str}";
             }
@@ -144,7 +144,31 @@ namespace Compiler.C.Visitors
             first.Append(")");
             yield return first.ToString();
             yield return "{";
-            foreach (var str in node.Nodes<GlobalDeclarations>()[0].Accept(this))
+            foreach (var str in node.Nodes<Declarations>()[0].Accept(this))
+            {
+                yield return $"    {str}";
+            }
+            foreach (var str in node.Nodes<Statement>()[0].Accept(this))
+            {
+                yield return $"    {str}";
+            }
+            yield return "}";
+        }
+
+        public override IEnumerable<string> Visit(ForStatement node)
+        {
+            StringBuilder first = new StringBuilder("for(");
+            foreach (var c in node.Skip(2).TakeWhile(t => t.Name != ")"))
+            {
+                foreach (var str in c.Accept(this))
+                {
+                    first.Append(" " + str);
+                }
+            }
+            first.Append(" )");
+            yield return first.ToString();
+            yield return "{";
+            foreach (var str in node.Nodes<Declarations>()[0].Accept(this))
             {
                 yield return $"    {str}";
             }

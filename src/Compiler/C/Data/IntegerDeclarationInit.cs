@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.C.Data
 {
-	public class Main : Compiler.C.Data.Node
+	public class IntegerDeclarationInit : Compiler.C.Data.Node
 	{
-		public  Main()
+		public  IntegerDeclarationInit()
 		{
 		}
 
-		public  Main(bool isPlaceholder)
+		public  IntegerDeclarationInit(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "Main";
+			Name = "IntegerDeclarationInit";
 		}
 
 		public override T Accept<T>(Compiler.C.Visitors.CVisitor<T> visitor)

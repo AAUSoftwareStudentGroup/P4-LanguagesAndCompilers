@@ -7,12 +7,12 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.GlobalDeclarations node)
+		public virtual T Visit(Compiler.C.Data.Declarations node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.GlobalDeclaration node)
+		public virtual T Visit(Compiler.C.Data.Declaration node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
@@ -47,12 +47,27 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.C.Data.IntegerDeclarationInit node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.C.Data.IntegerAssignment node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
 		public virtual T Visit(Compiler.C.Data.BooleanDeclaration node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.BooleanDeclarationInit node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.BooleanType node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
@@ -73,6 +88,16 @@ namespace Compiler.C.Visitors
 		}
 
 		public virtual T Visit(Compiler.C.Data.RegisterDeclaration node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.RegisterDeclarationInit node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.RegisterType node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
@@ -103,6 +128,16 @@ namespace Compiler.C.Visitors
 		}
 
 		public virtual T Visit(Compiler.C.Data.WhileStatement node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.ForStatement node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.IntType node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.C.Data
 {
-	public class GlobalStatement : Compiler.C.Data.Node
+	public class ForStatement : Compiler.C.Data.Node
 	{
-		public  GlobalStatement()
+		public  ForStatement()
 		{
 		}
 
-		public  GlobalStatement(bool isPlaceholder)
+		public  ForStatement(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "GlobalStatement";
+			Name = "ForStatement";
 		}
 
 		public override T Accept<T>(Compiler.C.Visitors.CVisitor<T> visitor)
