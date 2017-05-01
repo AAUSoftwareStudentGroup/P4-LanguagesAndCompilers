@@ -30,21 +30,13 @@ Program:p ->:p ast
 [Program[GlobalStatements:stms eof] SymbolTable:s] -> [AST[stm eof] s1]
     [stms s] -> [GlobalStatement:stm SymbolTable:s1]
 
-[GlobalStatements[GlobalStatement:stm GlobalStatementsP[EPSILON]] SymbolTable:s] -> [stm1 s1]
+[GlobalStatements[GlobalStatement:stm GlobalStatements[EPSILON]] SymbolTable:s] -> [stm1 s1]
     [stm s] -> [GlobalStatement:stm1 SymbolTable:s1]
 
-[GlobalStatements[GlobalStatement:stm GlobalStatementsP:stmsp] SymbolTable:s] -> [stm2 <- stm1 s2]
+[GlobalStatements[GlobalStatement:stm GlobalStatements:stmsp] SymbolTable:s] -> [stm2 <- stm1 s2]
     [stm s] -> [GlobalStatement:stm1 SymbolTable:s1]
     [stmsp s1] -> [GlobalStatement:stm2 SymbolTable:s2]
 
-[GlobalStatementsP[newline:nl GlobalStatement:stm GlobalStatementsP[EPSILON]] SymbolTable:s] 
--> [GlobalStatement[CompoundGlobalStatement[%GlobalStatement newline stm1]] s1]
-    [stm s] -> [GlobalStatement:stm1 SymbolTable:s1]
-
-[GlobalStatementsP[newline GlobalStatement:stm GlobalStatementsP:stmsp] SymbolTable:s]
--> [stm2 <- GlobalStatement[CompoundGlobalStatement[%GlobalStatement newline stm1]] s2]
-    [stm s] -> [GlobalStatement:stm1 SymbolTable:s1]
-    [stmsp s1] -> [GlobalStatement:stm2 SymbolTable:s2]
 
 [GlobalStatement[Interrupt:inter] SymbolTable:s] -> [GlobalStatement[inter1] s]
     [inter s] -> [Interrupt:inter1 SymbolTable]
@@ -56,19 +48,10 @@ Program:p ->:p ast
     i ->:p numeral:i1
     [stms s] -> [Statement:stm SymbolTable]
 
-[Statements[Statement:stm StatementsP[EPSILON]] SymbolTable:s] -> [stm1 s1]
+[Statements[Statement:stm Statements[EPSILON]] SymbolTable:s] -> [stm1 s1]
     [stm s] -> [Statement:stm1 SymbolTable:s1]
 
-[Statements[Statement:stm StatementsP:stmsp] SymbolTable:s] -> [stm2 <- stm1 s2]
-    [stm s] -> [Statement:stm1 SymbolTable:s1]
-    [stmsp s1] -> [Statement:stm2 SymbolTable:s2]
-
-[StatementsP[newline:nl Statement:stm StatementsP[EPSILON]] SymbolTable:s] 
--> [Statement[CompoundStatement[%Statement newline stm1]] s1]
-    [stm s] -> [Statement:stm1 SymbolTable:s1]
-
-[StatementsP[newline Statement:stm StatementsP:stmsp] SymbolTable:s]
--> [stm2 <- Statement[CompoundStatement[%Statement newline stm1]] s2]
+[Statements[Statement:stm Statements:stmsp] SymbolTable:s] -> [stm2 <- stm1 s2]
     [stm s] -> [Statement:stm1 SymbolTable:s1]
     [stmsp s1] -> [Statement:stm2 SymbolTable:s2]
 
@@ -81,7 +64,7 @@ Program:p ->:p ast
     [ass s] -> [*:assStm SymbolTable:s1]
 
 [Statement[IfStatement:ifStm] SymbolTable:s] -> [Statement[ifStm1] s]
-    [ifStm s] -> [IfStatement:ifStm1 SymbolTable:s1]
+    [ifStm s] -> [IfStatement:ifStm1 SymbolTable]
 
 [Statement[WhileStatement:whileStm] SymbolTable:s] -> [Statement[whileStm1] s]
     [whileStm s] -> [WhileStatement:whileStm1 SymbolTable:s1]
@@ -189,9 +172,14 @@ BooleanType[bool] ->:q BooleanType[bool]
     [id s] ->:s Variable[Type[BooleanType] identifier]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]
 
-[IfStatement[if ( Expression:expr ) indent Statements:stms dedent] SymbolTable:s] -> [IfStatement[if ( boolExpr ) indent stm dedent] s]
+[IfStatement[if ( Expression:expr ) indent Statements:stms dedent ElseStatement[EPSILON]] SymbolTable:s] -> [IfStatement[if ( boolExpr ) indent stm dedent] s]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]
     [stms s] -> [Statement:stm SymbolTable]
+
+[IfStatement[if ( Expression:expr ) indent Statements:stms dedent ElseStatement[else indent Statements:stms1 dedent]] SymbolTable:s] -> [IfElseStatement[if ( boolExpr ) indent stm dedent else indent stm1 dedent ] s]
+    [expr s] -> [BooleanExpression:boolExpr SymbolTable]
+    [stms s] -> [Statement:stm SymbolTable]
+    [stms1 s] -> [Statement:stm1 SymbolTable]
 
 [WhileStatement[while ( Expression:expr ) indent Statements:stms dedent] SymbolTable:s] -> [WhileStatement[while ( boolExpr ) indent stm dedent] s]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]

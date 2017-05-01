@@ -25,6 +25,7 @@ namespace Compiler.Translation.ASTToC
 		public int Translate__registerLiteral = 0;
 		public int Translate__registerVariable = 0;
 		public int Translatea__ifStatement_declarations_functions_statement = 0;
+		public int Translatea__ifElseStatement_declarations_functions_statement = 0;
 		public int Translatea__whileStatement_declarations_functions_statement = 0;
 		public int Translatea__forStatement_declarations_functions_statement = 0;
 		public int Translate__intType = 0;
@@ -613,6 +614,28 @@ namespace Compiler.Translation.ASTToC
 					if(dcl3 != null && dcl3.Name == "Declarations" && true && f3 != null && f3.Name == "Functions" && true && si3 != null && si3.Name == "Statement" && true)
 					{
 						return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declarations, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } });
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.IfElseStatement ifElseStatement, Compiler.C.Data.Declarations declarations, Compiler.C.Data.Functions functions, Compiler.C.Data.Statement statement)
+		{
+			Translatea__ifElseStatement_declarations_functions_statement++;
+			if(ifElseStatement != null && ifElseStatement.Name == "IfElseStatement" && (ifElseStatement.Count == 11 && ifElseStatement[0] != null && ifElseStatement[0].Name == "if" && true && ifElseStatement[1] != null && ifElseStatement[1].Name == "(" && true && ifElseStatement[2] != null && ifElseStatement[2].Name == "BooleanExpression" && true && ifElseStatement[3] != null && ifElseStatement[3].Name == ")" && true && ifElseStatement[4] != null && ifElseStatement[4].Name == "indent" && true && ifElseStatement[5] != null && ifElseStatement[5].Name == "Statement" && true && ifElseStatement[6] != null && ifElseStatement[6].Name == "dedent" && true && ifElseStatement[7] != null && ifElseStatement[7].Name == "else" && true && ifElseStatement[8] != null && ifElseStatement[8].Name == "indent" && true && ifElseStatement[9] != null && ifElseStatement[9].Name == "Statement" && true && ifElseStatement[10] != null && ifElseStatement[10].Name == "dedent" && true) && declarations != null && declarations.Name == "Declarations" && true && functions != null && functions.Name == "Functions" && true && statement != null && statement.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node bexpr1 = Translate(ifElseStatement[2] as Compiler.AST.Data.BooleanExpression);
+				if(bexpr1 != null && bexpr1.Name == "BooleanExpression" && true)
+				{
+					(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(ifElseStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+					if(dcl3 != null && dcl3.Name == "Declarations" && true && f3 != null && f3.Name == "Functions" && true && si3 != null && si3.Name == "Statement" && true)
+					{
+						(Compiler.C.Data.Node dcl4, Compiler.C.Data.Node f4, Compiler.C.Data.Node si4) = Translatea(ifElseStatement[9] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declarations(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Functions(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+						if(dcl4 != null && dcl4.Name == "Declarations" && true && f4 != null && f4.Name == "Functions" && true && si4 != null && si4.Name == "Statement" && true)
+						{
+							return (declarations as Compiler.C.Data.Declarations, functions as Compiler.C.Data.Functions, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfElseStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declarations, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" }, new Compiler.C.Data.Token() { Name = "else", Value = "else" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl4 as Compiler.C.Data.Declarations, si4 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } });
+						}
 					}
 				}
 			}
@@ -1378,6 +1401,7 @@ namespace Compiler.Translation.ASTToC
 			System.Console.WriteLine("Translate__registerLiteral: "+Translate__registerLiteral);
 			System.Console.WriteLine("Translate__registerVariable: "+Translate__registerVariable);
 			System.Console.WriteLine("Translatea__ifStatement_declarations_functions_statement: "+Translatea__ifStatement_declarations_functions_statement);
+			System.Console.WriteLine("Translatea__ifElseStatement_declarations_functions_statement: "+Translatea__ifElseStatement_declarations_functions_statement);
 			System.Console.WriteLine("Translatea__whileStatement_declarations_functions_statement: "+Translatea__whileStatement_declarations_functions_statement);
 			System.Console.WriteLine("Translatea__forStatement_declarations_functions_statement: "+Translatea__forStatement_declarations_functions_statement);
 			System.Console.WriteLine("Translate__intType: "+Translate__intType);

@@ -137,6 +137,11 @@ RegisterVariable[identifier:id] -> RegisterVariable[id1]
     bexpr -> BooleanExpression:bexpr1
     [s Declarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [Declarations:dcl3 Functions:f3 Statement:si3]
 
+[IfElseStatement[if ( BooleanExpression:bexpr ) indent Statement:s dedent else indent Statement:s1 dedent] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[IfElseStatement[ if ( bexpr1 ) { dcl3 si3 } else { dcl4 si4 }]]]]]
+    bexpr -> BooleanExpression:bexpr1
+    [s Declarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [Declarations:dcl3 Functions:f3 Statement:si3]
+    [s1 Declarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [Declarations:dcl4 Functions:f4 Statement:si4]
+
 [WhileStatement[while ( BooleanExpression:bexpr ) indent Statement:s dedent] Declarations:dcl Functions:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[WhileStatement[while ( bexpr1 ) { dcl3 si3 }]]]]]
     bexpr -> BooleanExpression:bexpr1
     [s Declarations[EPSILON] Functions[EPSILON] Statement[EPSILON]] ->:a [Declarations:dcl3 Functions:f3 Statement:si3]

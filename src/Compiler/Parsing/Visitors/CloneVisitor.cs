@@ -22,16 +22,6 @@ namespace Compiler.Parsing.Visitors
 			return clone;
 		}
 
-		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.GlobalStatementsP node)
-		{
-			var clone = new Compiler.Parsing.Data.GlobalStatementsP() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.GlobalStatement node)
 		{
 			var clone = new Compiler.Parsing.Data.GlobalStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -55,16 +45,6 @@ namespace Compiler.Parsing.Visitors
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.Statements node)
 		{
 			var clone = new Compiler.Parsing.Data.Statements() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
-		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.StatementsP node)
-		{
-			var clone = new Compiler.Parsing.Data.StatementsP() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -155,6 +135,16 @@ namespace Compiler.Parsing.Visitors
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.IfStatement node)
 		{
 			var clone = new Compiler.Parsing.Data.IfStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.ElseStatement node)
+		{
+			var clone = new Compiler.Parsing.Data.ElseStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

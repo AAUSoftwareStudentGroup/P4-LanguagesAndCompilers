@@ -22,7 +22,8 @@ Statement -> EPSILON
            | IntegerAssignment
            | BooleanAssignment
            | RegisterAssignment
-           | IfStatement 
+           | IfStatement
+           | IfElseStatement 
            | WhileStatement
            | ForStatement
 
@@ -60,6 +61,8 @@ RegisterLiteral -> RegisterType ( numeral )
 RegisterVariable -> identifier
 
 IfStatement -> if ( BooleanExpression ) indent Statement dedent 
+
+IfElseStatement -> if ( BooleanExpression ) indent Statement dedent else indent Statement dedent
 		   
 WhileStatement -> while ( BooleanExpression ) indent Statement dedent
 

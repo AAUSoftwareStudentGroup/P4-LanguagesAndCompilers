@@ -252,6 +252,16 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.IfElseStatement node)
+		{
+			var clone = new Compiler.C.Data.IfElseStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.WhileStatement node)
 		{
 			var clone = new Compiler.C.Data.WhileStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };

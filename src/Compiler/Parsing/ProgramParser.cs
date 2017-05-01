@@ -73,24 +73,8 @@ namespace Compiler.Parsing
 			    case "while":
 			    case "for":
 			    case "newline":
-			    case "eof":
 			        node.Add(ParseGlobalStatement(tokens));
-			        node.Add(ParseGlobalStatementsP(tokens));
-			        return node;
-			    default:
-			        throw new Exception();
-			}
-		}
-
-		public Compiler.Parsing.Data.GlobalStatementsP ParseGlobalStatementsP(IEnumerator<Compiler.Parsing.Data.Token> tokens)
-		{
-			Compiler.Parsing.Data.GlobalStatementsP node = new Compiler.Parsing.Data.GlobalStatementsP(){ Name = "GlobalStatementsP" };
-			switch(tokens.Current.Name)
-			{
-			    case "newline":
-			        node.Add(ParseTerminal(tokens, "newline"));
-			        node.Add(ParseGlobalStatement(tokens));
-			        node.Add(ParseGlobalStatementsP(tokens));
+			        node.Add(ParseGlobalStatements(tokens));
 			        return node;
 			    case "eof":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
@@ -122,7 +106,6 @@ namespace Compiler.Parsing
 			    case "while":
 			    case "for":
 			    case "newline":
-			    case "eof":
 			        node.Add(ParseStatement(tokens));
 			        return node;
 			    default:
@@ -168,24 +151,8 @@ namespace Compiler.Parsing
 			    case "while":
 			    case "for":
 			    case "newline":
-			    case "dedent":
 			        node.Add(ParseStatement(tokens));
-			        node.Add(ParseStatementsP(tokens));
-			        return node;
-			    default:
-			        throw new Exception();
-			}
-		}
-
-		public Compiler.Parsing.Data.StatementsP ParseStatementsP(IEnumerator<Compiler.Parsing.Data.Token> tokens)
-		{
-			Compiler.Parsing.Data.StatementsP node = new Compiler.Parsing.Data.StatementsP(){ Name = "StatementsP" };
-			switch(tokens.Current.Name)
-			{
-			    case "newline":
-			        node.Add(ParseTerminal(tokens, "newline"));
-			        node.Add(ParseStatement(tokens));
-			        node.Add(ParseStatementsP(tokens));
+			        node.Add(ParseStatements(tokens));
 			        return node;
 			    case "dedent":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
@@ -200,11 +167,6 @@ namespace Compiler.Parsing
 			Compiler.Parsing.Data.Statement node = new Compiler.Parsing.Data.Statement(){ Name = "Statement" };
 			switch(tokens.Current.Name)
 			{
-			    case "newline":
-			    case "eof":
-			    case "dedent":
-			        node.Add(ParseTerminal(tokens, "EPSILON"));
-			        return node;
 			    case "int8":
 			    case "int16":
 			    case "int32":
@@ -229,6 +191,9 @@ namespace Compiler.Parsing
 			        return node;
 			    case "for":
 			        node.Add(ParseForStatement(tokens));
+			        return node;
+			    case "newline":
+			        node.Add(ParseTerminal(tokens, "newline"));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -324,6 +289,20 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "="));
 			        node.Add(ParseExpression(tokens));
 			        return node;
+			    case "interrupt":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
+			    case "identifier":
+			    case "if":
+			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
@@ -377,6 +356,20 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
+			    case "interrupt":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
+			    case "identifier":
+			    case "if":
+			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
@@ -401,6 +394,42 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "indent"));
 			        node.Add(ParseStatements(tokens));
 			        node.Add(ParseTerminal(tokens, "dedent"));
+			        node.Add(ParseElseStatement(tokens));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.ElseStatement ParseElseStatement(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.ElseStatement node = new Compiler.Parsing.Data.ElseStatement(){ Name = "ElseStatement" };
+			switch(tokens.Current.Name)
+			{
+			    case "else":
+			        node.Add(ParseTerminal(tokens, "else"));
+			        node.Add(ParseTerminal(tokens, "indent"));
+			        node.Add(ParseStatements(tokens));
+			        node.Add(ParseTerminal(tokens, "dedent"));
+			        return node;
+			    case "interrupt":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
+			    case "identifier":
+			    case "if":
+			    case "while":
+			    case "for":
+			    case "newline":
+			    case "eof":
+			    case "dedent":
+			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -544,6 +573,20 @@ namespace Compiler.Parsing
 			        return node;
 			    case ")":
 			    case "}":
+			    case "interrupt":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
+			    case "identifier":
+			    case "if":
+			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
@@ -589,6 +632,20 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
+			    case "interrupt":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
+			    case "identifier":
+			    case "if":
+			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
@@ -640,6 +697,20 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
+			    case "interrupt":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
+			    case "identifier":
+			    case "if":
+			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
@@ -703,6 +774,20 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
+			    case "interrupt":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
+			    case "identifier":
+			    case "if":
+			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
@@ -760,6 +845,20 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
+			    case "interrupt":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
+			    case "identifier":
+			    case "if":
+			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
@@ -824,6 +923,20 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
+			    case "interrupt":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
+			    case "identifier":
+			    case "if":
+			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			    case "dedent":
@@ -881,6 +994,20 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
+			    case "interrupt":
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "bool":
+			    case "register8":
+			    case "register16":
+			    case "identifier":
+			    case "if":
+			    case "while":
+			    case "for":
 			    case "newline":
 			    case "eof":
 			    case "dedent":

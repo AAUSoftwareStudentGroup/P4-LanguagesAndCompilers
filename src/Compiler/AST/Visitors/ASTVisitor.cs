@@ -112,6 +112,11 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.AST.Data.IfElseStatement node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.AST.Data.WhileStatement node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);

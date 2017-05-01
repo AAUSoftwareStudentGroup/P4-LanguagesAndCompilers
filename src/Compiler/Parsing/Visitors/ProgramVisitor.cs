@@ -12,11 +12,6 @@ namespace Compiler.Parsing.Visitors
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.Parsing.Data.GlobalStatementsP node)
-		{
-			return Visit((Compiler.Parsing.Data.Node)node);
-		}
-
 		public virtual T Visit(Compiler.Parsing.Data.GlobalStatement node)
 		{
 			return Visit((Compiler.Parsing.Data.Node)node);
@@ -28,11 +23,6 @@ namespace Compiler.Parsing.Visitors
 		}
 
 		public virtual T Visit(Compiler.Parsing.Data.Statements node)
-		{
-			return Visit((Compiler.Parsing.Data.Node)node);
-		}
-
-		public virtual T Visit(Compiler.Parsing.Data.StatementsP node)
 		{
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}
@@ -78,6 +68,11 @@ namespace Compiler.Parsing.Visitors
 		}
 
 		public virtual T Visit(Compiler.Parsing.Data.IfStatement node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Parsing.Data.ElseStatement node)
 		{
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}

@@ -1,25 +1,23 @@
 Program -> GlobalStatements eof
 
-GlobalStatements -> GlobalStatement GlobalStatementsP
-GlobalStatementsP -> newline GlobalStatement GlobalStatementsP
-                   | EPSILON
+GlobalStatements -> GlobalStatement GlobalStatements
+                    | EPSILON
 
 GlobalStatement -> Interrupt
                  | Statement
 
 Interrupt -> interrupt ( numeral ) indent Statements dedent
 
-Statements -> Statement StatementsP
-StatementsP -> newline Statement StatementsP
-             | EPSILON
+Statements -> Statement Statements
+            | EPSILON
 
-Statement -> EPSILON
-           | IdentifierDeclaration 
+Statement -> IdentifierDeclaration
            | RegisterStatement
            | Assignment
-           | IfStatement 
+           | IfStatement
            | WhileStatement
            | ForStatement
+           | newline
 
 IdentifierDeclaration -> IntType identifier Initialization
                        | BooleanType identifier Initialization
@@ -40,7 +38,11 @@ Assignment -> identifier BitSelector = Expression
 BitSelector -> { Expression }
              | EPSILON
 
-IfStatement -> if ( Expression ) indent Statements dedent 
+IfStatement -> if ( Expression ) indent Statements dedent ElseStatement
+
+
+ElseStatement -> else indent Statements dedent 
+                | EPSILON
            
 WhileStatement -> while ( Expression ) indent Statements dedent
 

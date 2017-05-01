@@ -87,20 +87,10 @@ namespace Compiler.LexicalAnalysis
                             token = new Token {
                                 Name = "dedent",
                                 Value = match.Value,
-                                Row = row,
+                                Row = row++,
                                 Column = column
                             };
                             column += token.Value.Length;
-                            yield return token;
-
-                            token = new Token {
-                                Name = "newline",
-                                Value = match.Value,
-                                Row = row,
-                                Column = column
-                            };
-                            row++;
-                            column = 0;
                             yield return token;
                         }
                     }

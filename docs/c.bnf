@@ -29,6 +29,7 @@ Statement -> EPSILON
            | BooleanAssignment ;
            | RegisterAssignment ;
            | IfStatement 
+           | IfElseStatement
            | WhileStatement
 
 CompoundStatement -> Statement Statement
@@ -68,6 +69,8 @@ RegisterLiteral -> * ( RegisterType ) ( numeral )
 RegisterVariable -> identifier
 
 IfStatement -> if ( BooleanExpression ) { Declarations Statement } 
+
+IfElseStatement ->  if ( BooleanExpression ) { Declarations Statement } else { Declarations Statement }
 		   
 WhileStatement -> while ( BooleanExpression ) { Declarations Statement }
 
