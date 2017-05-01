@@ -356,19 +356,36 @@ namespace Generator.Translation
                     },
                     Body = new List<string>()
                     {
-                        "if(left.IsPlaceholder && left.Name == right.Name)",
-                        "{",
+                        "if(left.IsPlaceholder && left.Name == right.Name) {",
                        $"    return right.Accept(new {translationDomain.VisitorNamespace}.CloneVisitor());",
                         "}",
+                       $"var leftClone = left.Accept(new {translationDomain.VisitorNamespace}.CloneVisitor());",
+                       $"{translationDomain.DataNamespace}.Node Insertion = InsertAux(leftClone, right);",
+                        "return (Insertion == null ? null : leftClone);"
+                    }
+                };
+
+                MethodType insertAuxMethod = new MethodType("public", $"{translationDomain.DataNamespace}.Node", "InsertAux")
+                {
+                    Parameters = new List<ParameterType>()
+                    {
+                        new ParameterType($"{translationDomain.DataNamespace}.Node", "left"),
+                        new ParameterType($"{translationDomain.DataNamespace}.Node", "right")
+                    },
+                    Body = new List<string>()
+                    {
                         "for (int i = 0; i < left.Count;  i++)",
                         "{",
-                       $"    {translationDomain.DataNamespace}.Node child = Insert(left[i], right);",
-                        "    if(child != null)",
-                        "    {",
-                       $"        var leftClone = left.Accept(new {translationDomain.VisitorNamespace}.CloneVisitor());",
-                        "        leftClone.RemoveAt(i);",
-                        "        leftClone.Insert(i, child);",
-                        "        return leftClone;",
+                        "    if(left[i].IsPlaceholder && left[i].Name == right.Name) {",
+                        "        left.RemoveAt(i);",
+                        "        left.Insert(i, right);",
+                        "        return left;",
+                        "    }",
+                        "    else {",
+                       $"        {translationDomain.DataNamespace}.Node leftUpdated = InsertAux(left[i], right);",
+                        "        if(leftUpdated != null) {",
+                        "            return leftUpdated;",
+                        "        }",
                         "    }",
                         "}",
                         "return null;"
@@ -376,6 +393,7 @@ namespace Generator.Translation
                 };
 
                 translatorClass.Methods.Add(insertMethod);
+                translatorClass.Methods.Add(insertAuxMethod);
             }
 
             MethodType printCountsMethod = new MethodType("public", "void", "printCounts");
