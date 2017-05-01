@@ -11,12 +11,8 @@ namespace Compiler.Tests
     [TestClass]
     public class CompilerTests
     {
-        // Write .tang program, examine if output C-code is correct. This tests the entire compiler. After testing .tang programs that should work, functionality such as functions, which is not yet implemented should be tested. If errors are found when pattern matching the expected C-code outcome, try to eliminate white space and newlines.
-        // Use c.bnf in docs to understand how the corresponding C-program should look like.
-        // Begin with very small tests 
-
-        // When translating to .c there will always be a main method as so: void main ( void )\n{\n}
-        // This main method will be initialised as a prototype in the beginning of the file, e.g. void main ( void );
+        // Notes: when translating to C, there will always be a main method void main ( void )\n{\n} 
+        // This main method will be initialised as a prototype in the beginning of the file: void main ( void );
         // If a variable is declared seperately from its assignment, the declaration is done in global scope before main, while the assignment is done inside main
         // All expressions are put inside parentheses, e.g. a = a + 1 -> a = (a + 1)
 
@@ -24,7 +20,6 @@ namespace Compiler.Tests
 
         [TestMethod]
         // Test that a variable declared and assigned in same line is compiled correctly
-        // When translating, the statement will be split up, the declaration will be outside main and the assignment inside main
         public void VarDeclAndAssInOneLine()
         {
             /* 
@@ -128,13 +123,8 @@ void main (void)
         public void ReservedKeywordIdentifier()
         {
             string tang = @"uint32 return = 42";
-            string c = @"void main ( void );
-unsigned long return;
-void main ( void )
-{
-    return = 42;
-}";
             string cOutput;
+
             TangCompiler tc = new TangCompiler();
 
             // An exception should be thrown when using a reserved keyword as an identifier. This will be caught by the generic exception and if it is caught, then the test passes. If it is not caught, we make use of Assert.Fail to indicate that the test failed.
