@@ -20,10 +20,6 @@
         "PatternString": "interrupt"
     },
     {
-        "Name": "identifier",
-        "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*" //exclude keywords
-    },
-    {
         "Name": "+",
         "PatternString": "\\+"
     },
@@ -206,5 +202,9 @@
     {
         "Name": "to",
         "PatternString": "to"
+    },
+    {
+        "Name": "identifier",
+        "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
     }
 ]

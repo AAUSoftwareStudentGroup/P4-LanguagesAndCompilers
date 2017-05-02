@@ -65,7 +65,7 @@ void main ( )
         }
 
         [TestMethod]
-        // Does not work yet, throws exception
+        // Does not work yet, throws exception, as falseStatements goes into 2 tokens (false, identifier) instead of just (identifier)
         public void Operators()
         {
             string tang = @"bool off = (true or false) and !true
