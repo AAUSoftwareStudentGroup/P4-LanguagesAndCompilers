@@ -1,20 +1,28 @@
-SymbolTable -> Variables
+SymbolTable -> Declarations
 
-Variables -> Variable Variables
-              | Function Variables
+Declarations -> Declaration Declarations
               | EPSILON
 
-Variable -> Type identifier ParameterTypes
-          | EPSILON
+Declaration -> Variable
+             | Function
+             | EPSILON
 
-Function -> Type identifier ( Parameters )
+Variable -> Type identifier
 
-Parameters -> none
+Function -> ReturnType identifier ( Parameter )
+
+ReturnType -> nothing
+            | Type
+
+Parameter -> Type identifier
+           | CompoundParameter
+           | EPSILON
+
+CompoundParameter -> Parameter , Parameter
 
 Type -> IntType
       | RegisterType
       | BooleanType
-      | none
 
 ParameterTypes -> Type ParameterTypes
                 | EPSILON

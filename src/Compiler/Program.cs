@@ -8,12 +8,13 @@ namespace Compiler
 {
     public class Program
     {
+        string[] args;
         public static void Main(string[] args)
         {
             DateTime t1 = DateTime.Now;
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
 
-            string file = "../../docs/samples/Blink.tang";
+            string file = "../../docs/samples/Function.tang";
 
             if(args.Length > 0)
             {
@@ -46,7 +47,6 @@ namespace Compiler
                 {
                     Console.WriteLine(line);
                 }
-
 
                 Console.WriteLine("");
                 Console.WriteLine("--------------------------------------");

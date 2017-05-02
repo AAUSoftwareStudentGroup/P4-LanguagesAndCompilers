@@ -22,6 +22,11 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.AST.Data.Type node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.AST.Data.FormalParameter node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);

@@ -37,6 +37,7 @@ namespace Compiler.Parsing
 			    case "uint16":
 			    case "uint32":
 			    case "bool":
+			    case "nothing":
 			    case "register8":
 			    case "register16":
 			    case "identifier":
@@ -66,6 +67,7 @@ namespace Compiler.Parsing
 			    case "uint16":
 			    case "uint32":
 			    case "bool":
+			    case "nothing":
 			    case "register8":
 			    case "register16":
 			    case "identifier":
@@ -99,6 +101,7 @@ namespace Compiler.Parsing
 			    case "uint16":
 			    case "uint32":
 			    case "bool":
+			    case "nothing":
 			    case "register8":
 			    case "register16":
 			    case "identifier":
@@ -144,6 +147,7 @@ namespace Compiler.Parsing
 			    case "uint16":
 			    case "uint32":
 			    case "bool":
+			    case "nothing":
 			    case "register8":
 			    case "register16":
 			    case "identifier":
@@ -174,6 +178,7 @@ namespace Compiler.Parsing
 			    case "uint16":
 			    case "uint32":
 			    case "bool":
+			    case "nothing":
 			        node.Add(ParseIdentifierDeclaration(tokens));
 			        return node;
 			    case "register8":
@@ -219,6 +224,16 @@ namespace Compiler.Parsing
 			        node.Add(ParseBooleanType(tokens));
 			        node.Add(ParseTerminal(tokens, "identifier"));
 			        node.Add(ParseDefinition(tokens));
+			        return node;
+			    case "nothing":
+			        node.Add(ParseTerminal(tokens, "nothing"));
+			        node.Add(ParseTerminal(tokens, "identifier"));
+			        node.Add(ParseTerminal(tokens, "("));
+			        node.Add(ParseFormalParameters(tokens));
+			        node.Add(ParseTerminal(tokens, ")"));
+			        node.Add(ParseTerminal(tokens, "indent"));
+			        node.Add(ParseStatements(tokens));
+			        node.Add(ParseTerminal(tokens, "dedent"));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -324,6 +339,9 @@ namespace Compiler.Parsing
 			    case "none":
 			        node.Add(ParseFormalParameter(tokens));
 			        node.Add(ParseFormalParametersP(tokens));
+			        return node;
+			    case ")":
+			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -491,6 +509,7 @@ namespace Compiler.Parsing
 			    case "uint16":
 			    case "uint32":
 			    case "bool":
+			    case "nothing":
 			    case "register8":
 			    case "register16":
 			    case "identifier":

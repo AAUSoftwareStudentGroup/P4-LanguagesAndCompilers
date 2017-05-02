@@ -21,6 +21,7 @@ Statement -> IdentifierDeclaration
 
 IdentifierDeclaration -> IntType identifier Definition
                        | BooleanType identifier Definition
+                       | nothing identifier ( FormalParameters ) indent Statements dedent
 
 RegisterStatement -> RegisterType RegisterOperation
 
@@ -35,6 +36,7 @@ Definition -> = Expression newline
             | newline
 
 FormalParameters -> FormalParameter FormalParametersP
+                  | EPSILON
 
 FormalParametersP -> , FormalParameter FormalParametersP
                    | EPSILON
@@ -54,7 +56,7 @@ BitSelector -> { Expression }
 IfStatement -> if ( Expression ) indent Statements dedent ElseStatement
 
 ElseStatement -> else indent Statements dedent 
-                | EPSILON
+               | EPSILON
            
 WhileStatement -> while ( Expression ) indent Statements dedent
 

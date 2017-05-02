@@ -7,9 +7,9 @@ signed int i32 ;
 unsigned char b ;
 volatile unsigned char * r8 ;
 volatile unsigned short * r16 ;
-void __vector_21 ( void ) ;
+void __vector_21 (  ) ;
 void main ( ) ;
-void __vector_21 ( )
+void __vector_21 (  )
 {
     ui8 = 10 ;
 }

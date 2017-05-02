@@ -10,6 +10,11 @@ Interrupt -> interrupt ( numeral ) indent Statement dedent
 
 Function -> Type identifier ( FormalParameter ) indent Statement dedent
 
+Type -> IntType
+      | RegisterType
+      | BooleanType
+      | nothing
+
 FormalParameter -> Type identifier
                  | CompoundFormalParameter
 

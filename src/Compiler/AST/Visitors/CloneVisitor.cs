@@ -42,6 +42,16 @@ namespace Compiler.AST.Visitors
 			return clone;
 		}
 
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.Type node)
+		{
+			var clone = new Compiler.AST.Data.Type() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.FormalParameter node)
 		{
 			var clone = new Compiler.AST.Data.FormalParameter() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };

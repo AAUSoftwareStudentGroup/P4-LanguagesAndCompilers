@@ -12,6 +12,9 @@ AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration
 [GlobalStatement[Interrupt:i] Declaration:dcl Function:f Statement:s] ->:a [dcl1 f1 s1]
     [i dcl f s] ->:a [Declaration:dcl1 Function:f1 Statement:s1]
 
+[GlobalStatement[Function:func] Declaration:dcl Function:f Statement:s] ->:a [dcl1 f1 s1]
+    [func dcl f s] ->:a [Declaration:dcl1 Function:f1 Statement:s1]
+
 [GlobalStatement[Statement:s] Declaration:dcl Function:f Statement:s1] ->:a [dcl2 f2 s2]
     [s dcl f s1] ->:a [Declaration:dcl2 Function:f2 Statement:s2]
 
@@ -23,9 +26,29 @@ AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration
     [gs2 dcl1 f1 s1] ->:a [Declaration:dcl2 Function:f2 Statement:s2]
 
 [Interrupt[interrupt ( numeral:i ) indent Statement:s1 dedent] Declaration:dcl Function:f Statement:s] 
-->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[void __vector_21 ( void ) ;]]]] Function[CompoundFunction[f Function[Type[void] __vector_21 ( ) { si2 }]]] s]
+->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[Type[void] __vector_21 ( FormalParameter[EPSILON] ) ;]]]] Function[CompoundFunction[f Function[Type[void] __vector_21 ( FormalParameter[EPSILON] ) { gs1 si2 }]]] s]
     i -> numeral:i1
-    [s1 dcl f Statement[EPSILON]] ->:a [Declaration:gs1 Function:f1 Statement:si2]
+    [s1 dcl Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:gs1 Function[EPSILON] Statement:si2]
+
+[Function[Type:t identifier:id ( FormalParameter:p ) indent Statement:stm dedent] Declaration:dcl Function:f Statement:s]
+->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[t1 id1 ( p1 ) ;]]]] Function[CompoundFunction[f Function[t1 id1 ( p1 ) { dcl1 s1 }]]] s]
+    t -> Type:t1
+    id -> identifier:id1
+    p -> FormalParameter:p1
+    [stm dcl Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl1 Function[EPSILON] Statement:s1]
+
+FormalParameter[EPSILON] -> FormalParameter[EPSILON]
+
+FormalParameter[Type:t identifier:id] -> FormalParameter[t1 id1]
+    t -> Type:t1
+    id -> identifier:id1
+
+FormalParameter[CompoundFormalParameter:cpar] -> FormalParameter[cpar1]
+    cpar -> CompoundFormalParameter:cpar1
+
+CompoundFormalParameter[FormalParameter:p1 , FormalParameter:p2] -> CompoundFormalParameter[p3 , p4]
+    p1 -> FormalParameter:p3
+    p2 -> FormalParameter:p4
 
 [Statement[EPSILON] Declaration:dcl Function:f Statement:s] ->:a [dcl f s]
 [Statement[newline] Declaration:dcl Function:f Statement:s] ->:a [dcl f s]
@@ -158,6 +181,15 @@ RegisterVariable[identifier:id] -> RegisterVariable[id1]
     expr1 -> IntegerExpression:iexpr1
     expr2 -> IntegerExpression:iexpr2
     [s Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl3 Function:f3 Statement:si3]
+
+Type[IntType:t] -> Type[t1]
+    t -> IntType:t1
+Type[RegisterType:t] -> Type[t1]
+    t -> RegisterType:t1
+Type[BooleanType:t] -> Type[t1]
+    t -> BooleanType:t1
+Type[nothing] -> Type[nothing]
+
 
 IntType[uint8] -> IntType[unsigned char]  
 IntType[uint16] -> IntType[unsigned int]  

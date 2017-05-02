@@ -1,11 +1,12 @@
-long long int a ;
+unsigned char a ;
 void __vector_21 ( void ) ;
-void __vector_21 ( void )
+void main ( ) ;
+void __vector_21 ( )
 {
-    a = 5;
-    a = 6;
+    a = 5 ;
+    a = 6 ;
 }
-void main ( void )
+void main ( )
 {
-    a = 4;
+    a = 4 ;
 }

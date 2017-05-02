@@ -27,12 +27,22 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.Type node)
+		public virtual T Visit(Compiler.C.Data.CompoundFunction node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.CompoundFunction node)
+		public virtual T Visit(Compiler.C.Data.FormalParameter node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.CompoundFormalParameter node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.Type node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}

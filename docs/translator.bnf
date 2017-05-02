@@ -59,7 +59,7 @@ TreePattern -> Name Alias ChildrenPattern
 
 Name -> Symbol
 
-Alias -> : Symbol
+Alias -> : symbol
        | EPSILON
 
 ChildrenPattern -> [ Patterns ]
@@ -76,7 +76,7 @@ ListStructure -> [ Structures ]
 TreeStructure -> Placeholder Name ChildrenStructure Insertion
 
 Placeholder -> %
-			 | EPSILON
+	     | EPSILON
 
 Insertion -> insert TreeStructure
            | EPSILON

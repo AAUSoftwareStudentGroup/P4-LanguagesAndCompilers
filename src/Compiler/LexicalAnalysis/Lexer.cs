@@ -91,8 +91,6 @@ namespace Compiler.LexicalAnalysis
                                 Row = row,
                                 Column = column
                             };
-                            row++;
-                            column = 0;
                             yield return token;
 
                             indentationLevel.Pop();
@@ -143,8 +141,6 @@ namespace Compiler.LexicalAnalysis
                     Row = row,
                     Column = column
                 };
-                row++;
-                column = 0;
                 yield return token;
 
                 indentationLevel.Pop();
@@ -165,7 +161,6 @@ namespace Compiler.LexicalAnalysis
                 Row = row,
                 Column = column
             };
-            row++;
             column = 0;
             yield return token;
 

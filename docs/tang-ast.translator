@@ -1,6 +1,7 @@
 ->:p := Program -> AST
 ->:q := Program -> SymbolTable
 ->:s := [Program SymbolTable] -> SymbolTable
+->:f := [Program SymbolTable] -> SymbolTable
 -> := [Program SymbolTable] -> [AST SymbolTable]
 <=> := Program <=> SymbolTable
 </> := Program </> SymbolTable
@@ -8,21 +9,143 @@
 //Program to AST translation initialization
 
 Program:p ->:p ast
-    [p SymbolTable[%Variables[EPSILON]]] -> [AST:ast SymbolTable]
+    [p SymbolTable[%Declarations[EPSILON]]] ->:f SymbolTable:s
+    [p s] -> [AST:ast SymbolTable]
 
 //SymbolTable lookup
 
-[identifier:id SymbolTable[Variables:vars]] ->:s var
-    [id vars] ->:s Variable:var
+[identifier:id SymbolTable[Declarations:vars]] ->:s dcl
+    [id vars] ->:s Declaration:dcl
 
-[identifier:id1 Variables:vars1[Variable:var[Type identifier:id2 ParameterTypes] Variables:vars2]] ->:s var
+[identifier:id1 Declarations[Declaration:dcl[Variable[Type identifier:id2]] Declarations]] ->:s dcl
     id1 <=> id2
 
-[identifier:id1 Variables:vars1[Variable[Type identifier:id2 ParameterTypes] Variables:vars2]] ->:s var
+[identifier:id1 Declarations[Declaration[Variable[Type identifier:id2]] Declarations:dcls]] ->:s dcl
     id1 </> id2
-    [id1 vars2] ->:s Variable:var
+    [id1 dcls] ->:s Declaration:dcl
 
-[identifier:id Variables[EPSILON]] ->:s Variable[EPSILON]
+[identifier:id1 Declarations[Declaration:dcl[Function[ReturnType identifier:id2 Parameter]] Declarations]] ->:s dcl
+    id1 <=> id2
+
+[identifier:id1 Declarations[Declaration[Function[ReturnType identifier:id2 Parameter]] Declarations:dcls]] ->:s dcl
+    id1 </> id2
+    [id1 dcls] ->:s Declaration:dcl
+
+[identifier:id Declarations[EPSILON]] ->:s Declaration[EPSILON]
+
+//Fill all functions into SymbolTable
+
+[Program[GlobalStatements[EPSILON] eof] SymbolTable:s] ->:f s
+[Program[GlobalStatements:stms eof] SymbolTable:s] ->:f s1
+    [stms s] ->:f SymbolTable:s1
+
+[GlobalStatements[GlobalStatement:stm GlobalStatements[EPSILON]] SymbolTable:s] ->:f s1
+    [stm s] ->:f SymbolTable:s1
+
+[GlobalStatements[GlobalStatement:stm GlobalStatements:stmsp] SymbolTable:s] ->:f s2
+    [stm s] ->:f SymbolTable:s1
+    [stmsp s1] ->:f SymbolTable:s2
+
+[GlobalStatement[Interrupt:inter] SymbolTable:s] ->:f s
+
+[GlobalStatement[Statement:stm] SymbolTable:s] ->:f s1
+    [stm s] ->:f SymbolTable:s1
+
+[Interrupt[interrupt ( numeral:i ) indent Statements:stms dedent] SymbolTable:s] ->:f s
+
+[Statements[Statement:stm Statements[EPSILON]] SymbolTable:s] ->:f s1
+    [stm s] ->:f SymbolTable:s1
+
+[Statements[Statement:stm Statements:stmsp] SymbolTable:s] ->:f s2
+    [stm s] ->:f SymbolTable:s1
+    [stmsp s1] ->:f SymbolTable:s2
+
+[Statement[newline] SymbolTable:s] ->:f s
+
+[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] ->:f s1
+    [idDcl s] ->:f SymbolTable:s1
+
+[IdentifierDeclaration[IntType identifier Definition[= Expression newline]] SymbolTable:s] ->:f s
+
+[IdentifierDeclaration[IntType:intType identifier:id Definition[( FormalParameters:params ) indent Statements dedent]] SymbolTable:s] 
+->:f s <- Declarations[Declaration[Function[ReturnType[Type[wat]] id1 p]] %Declarations[EPSILON]]
+    [id s] ->:s Declaration[EPSILON]
+    intType ->:q IntType:wat
+    id ->:q identifier:id1
+    params ->:q Parameter:p
+
+FormalParameters[EPSILON] ->:q Parameter[EPSILON]
+
+FormalParameters[FormalParameter:p FormalParametersP[EPSILON]] ->:q p1
+    p ->:q Parameter:p1
+
+FormalParameters[FormalParameter:p FormalParametersP:pp] ->:q Parameter[CompoundParameter[p1 , p2]]
+    p ->:q Parameter:p1
+    pp ->:q Parameter:p2
+
+FormalParametersP[, FormalParameter:p FormalParametersP[EPSILON]] ->:q p1
+    p ->:q Parameter:p1
+
+FormalParametersP[, FormalParameter:p FormalParametersP:pp] ->:q Parameter[CompoundParameter[p1 , p2]]
+    p ->:q Parameter:p1
+    pp ->:q Parameter:p2
+
+FormalParameter[Type:type identifier:id] ->:q Parameter[t id1]
+    type ->:q Type:t
+    id ->:q identifier:id1
+
+Type[IntType:t] ->:q Type[t1]
+    t ->:q IntType:t1
+
+Type[BooleanType:t] ->:q Type[t1]
+    t ->:q BooleanType:t1
+
+Type[RegisterType:t] ->:q Type[t1]
+    t ->:q RegisterType:t1
+
+[IdentifierDeclaration[IntType identifier Definition[newline]] SymbolTable:s] ->:f s
+
+[IdentifierDeclaration[BooleanType identifier Definition[= Expression newline]] SymbolTable:s] ->:f s
+
+[IdentifierDeclaration[BooleanType:boolType identifier:id Definition[( FormalParameters:params ) indent Statements dedent]] SymbolTable:s] 
+->:f s <- Declarations[Declaration[Function[ReturnType[Type[t]] id1 p]] %Declarations[EPSILON]]
+    [id s] ->:s Declaration[EPSILON]
+    boolType ->:q BooleanType:t
+    id ->:q identifier:id1
+    params ->:q Parameter:p
+
+[IdentifierDeclaration[BooleanType identifier Definition[newline]] SymbolTable:s] ->:f s
+
+[IdentifierDeclaration[nothing:n identifier:id Definition[( FormalParameters:params ) indent Statements dedent]] SymbolTable:s] 
+->:f s <- Declarations[Declaration[Function[ReturnType[t] id1 p]] %Declarations[EPSILON]]
+    [id s] ->:s Declaration[EPSILON]
+    n ->:q nothing:t
+    id ->:q identifier:id1
+    params ->:q Parameter:p
+
+[Statement[Assignment:ass] SymbolTable:s] ->:f s
+
+[Statement[IfStatement:ifStm] SymbolTable:s] ->:f s
+
+[Statement[WhileStatement:whileStm] SymbolTable:s] ->:f s
+
+[Statement[ForStatement:forStm] SymbolTable:s] ->:f s
+
+[Statement[RegisterStatement:regStm] SymbolTable:s] ->:f s1
+    [regStm s] ->:f SymbolTable:s1
+
+[RegisterStatement[RegisterType RegisterOperation[( Expression ) { Expression } = Expression newline]] SymbolTable:s] ->:f s
+
+[RegisterStatement[RegisterType RegisterOperation[identifier Definition[= Expression newline]]] SymbolTable:s] ->:f s
+
+[RegisterStatement[RegisterType RegisterOperation[identifier Definition[newline]]] SymbolTable:s] ->:f s
+
+[RegisterStatement[RegisterType:regType RegisterOperation[identifier:id Definition[( FormalParameters:params ) indent Statements dedent]]] SymbolTable:s] 
+->:f s <- Declarations[Declaration[Function[ReturnType[Type[t]] id1 p]] %Declarations[EPSILON]]
+    [id s] ->:s Declaration[EPSILON]
+    regType ->:q RegisterType:t
+    id ->:q identifier:id1
+    params ->:q Parameter:p
 
 //Program to AST translation
 
@@ -43,6 +166,12 @@ Program:p ->:p ast
 [GlobalStatement[Statement:stm] SymbolTable:s] -> [GlobalStatement[stm1] s1]
     [stm s] -> [Statement:stm1 SymbolTable:s1]
 
+[GlobalStatement[Statement:stm] SymbolTable:s] -> [stm1 s1]
+    [stm s] -> [GlobalStatement:stm1 SymbolTable:s1]
+
+[GlobalStatement[Statement:stm] SymbolTable:s] -> [GlobalStatement[func] s1]
+    [stm s] -> [Function:func SymbolTable:s1]
+
 [Interrupt[interrupt ( numeral:i ) indent Statements:stms dedent] SymbolTable:s] -> [Interrupt[interrupt ( i1 ) indent stm dedent] s]
     i ->:p numeral:i1
     [stms s] -> [Statement:stm SymbolTable]
@@ -50,14 +179,39 @@ Program:p ->:p ast
 [Statements[Statement:stm Statements[EPSILON]] SymbolTable:s] -> [stm1 s1]
     [stm s] -> [Statement:stm1 SymbolTable:s1]
 
+[Statements[Statement:stm Statements[EPSILON]] SymbolTable:s] -> [GlobalStatement[func] s1]
+    [stm s] -> [Function:func SymbolTable:s1]
+
 [Statements[Statement:stm Statements:stmsp] SymbolTable:s] -> [Statement[CompoundStatement[stm1 newline stm2]] s2]
     [stm s] -> [Statement:stm1 SymbolTable:s1]
     [stmsp s1] -> [Statement:stm2 SymbolTable:s2]
 
+[Statements[Statement:stm Statements:stmsp] SymbolTable:s] 
+-> [GlobalStatement[CompoundGlobalStatement[GlobalStatement[func] newline GlobalStatement[stm2]]] s2]
+    [stm s] -> [Function:func SymbolTable:s1]
+    [stmsp s1] -> [Statement:stm2 SymbolTable:s2]
+
+[Statements[Statement:stm Statements:stmsp] SymbolTable:s] 
+-> [GlobalStatement[CompoundGlobalStatement[GlobalStatement[func] newline stm2]] s2]
+    [stm s] -> [Function:func SymbolTable:s1]
+    [stmsp s1] -> [GlobalStatement:stm2 SymbolTable:s2]
+
 [Statement[newline] SymbolTable:s] -> [Statement[newline] s]
 
 [Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
-    [idDcl s] -> [*:dclStm SymbolTable:s1]
+    [idDcl s] -> [IntegerDeclaration:dclStm SymbolTable:s1]
+
+[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
+    [idDcl s] -> [IntegerDeclarationInit:dclStm SymbolTable:s1]
+
+[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
+    [idDcl s] -> [BooleanDeclaration:dclStm SymbolTable:s1]
+
+[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
+    [idDcl s] -> [BooleanDeclarationInit:dclStm SymbolTable:s1]
+
+[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [f s1]
+    [idDcl s] -> [Function:f SymbolTable:s1]
 
 [Statement[Assignment:ass] SymbolTable:s] -> [Statement[assStm] s1]
     [ass s] -> [*:assStm SymbolTable:s1]
@@ -74,20 +228,65 @@ Program:p ->:p ast
 [Statement[RegisterStatement:regStm] SymbolTable:s] -> [Statement[regStm1] s1]
     [regStm s] -> [*:regStm1 SymbolTable:s1]
 
-[IdentifierDeclaration[IntType:t identifier:id Definition[newline]] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[IdentifierDeclaration[IntType:t identifier:id Definition[newline]] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p IntType:t1
     t ->:q IntType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
-    [id s] ->:s Variable[EPSILON]
+    [id s] ->:s Declaration[EPSILON]
 
-[IdentifierDeclaration[IntType:t identifier:id Definition[= Expression:expr newline]] SymbolTable:s] -> [IntegerDeclarationInit[t1 id1 = iexpr] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[IdentifierDeclaration[IntType:t identifier:id Definition[( FormalParameters:params ) indent Statements:stms dedent]] SymbolTable:s] 
+-> [Function[Type[t1] id1 ( p ) indent stm1 dedent] s]
+    t ->:p IntType:t1
+    id ->:p identifier:id1
+    [params s] -> [FormalParameter:p SymbolTable:s1]
+    [stms s1] -> [Statement:stm1 SymbolTable]
+
+[FormalParameters[EPSILON] SymbolTable:s] -> [FormalParameter[EPSILON] s]
+
+[FormalParameters[FormalParameter:p FormalParametersP[EPSILON]] SymbolTable:s] -> [p1 s1]
+    [p s] -> [FormalParameter:p1 SymbolTable:s1]
+
+[FormalParameters[FormalParameter:p FormalParametersP:pp] SymbolTable:s] -> [FormalParameter[CompoundFormalParameter[p1 , p2]] s2]
+    [p s] -> [FormalParameter:p1 SymbolTable:s1]
+    [pp s1] -> [FormalParameter:p2 SymbolTable:s2]
+
+[FormalParametersP[, FormalParameter:p FormalParametersP[EPSILON]] SymbolTable:s] -> [p1 s1]
+    [p s] -> [FormalParameter:p1 SymbolTable:s1]
+
+[FormalParametersP[, FormalParameter:p FormalParametersP:pp] SymbolTable:s] -> [FormalParameter[CompoundFormalParameter[p1 , p2]] s2]
+    [p s] -> [FormalParameter:p1 SymbolTable:s1]
+    [pp s1] -> [FormalParameter:p2 SymbolTable:s2]
+
+[FormalParameter[Type:type identifier:id] SymbolTable:s] -> [FormalParameter[t id1] s <- Declarations[Declaration[Variable[t2 id2]] %Declarations[EPSILON]]]
+    type ->:p Type:t
+    type ->:q Type:t2
+    id ->:p identifier:id1
+    id ->:q identifier:id2
+
+Type[IntType:t] ->:p Type[t1]
+    t ->:p IntType:t1
+
+Type[BooleanType:t] ->:p Type[t1]
+    t ->:p BooleanType:t1
+
+Type[RegisterType:t] ->:p Type[t1]
+    t ->:p RegisterType:t1
+
+[IdentifierDeclaration[IntType:t identifier:id Definition[= Expression:expr newline]] SymbolTable:s] -> [IntegerDeclarationInit[t1 id1 = iexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p IntType:t1
     t ->:q IntType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
     [expr s] -> [IntegerExpression:iexpr SymbolTable]
-    [id s] ->:s Variable[EPSILON]
+    [id s] ->:s Declaration[EPSILON]
+
+[IdentifierDeclaration[nothing:t identifier:id Definition[( FormalParameters:params ) indent Statements:stms dedent]] SymbolTable:s] 
+-> [Function[Type[t1] id1 ( p ) indent stm1 dedent] s]
+    t ->:p nothing:t1
+    id ->:p identifier:id1
+    [params s] -> [FormalParameter:p SymbolTable:s1]
+    [stms s1] -> [Statement:stm1 SymbolTable]
 
 IntType[uint8] ->:p IntType[uint8]  
 IntType[uint16] ->:p IntType[uint16]  
@@ -103,20 +302,27 @@ IntType[int8] ->:q IntType[int8]
 IntType[int16] ->:q IntType[int16]  
 IntType[int32] ->:q IntType[int32]  
 
-[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Definition[newline]]] SymbolTable:s] -> [RegisterDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Definition[newline]]] SymbolTable:s] -> [RegisterDeclaration[t1 id1] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p RegisterType:t1
     t ->:q RegisterType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
-    [id s] ->:s Variable[EPSILON]
+    [id s] ->:s Declaration[EPSILON]
 
-[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Definition[= Expression:expr newline]]] SymbolTable:s] -> [RegisterDeclarationInit[t1 id1 = rexpr] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[IdentifierDeclaration[RegisterType:t identifier:id Definition[( FormalParameters:params ) indent Statements:stms dedent]] SymbolTable:s] 
+-> [Function[Type[t1] id1 ( p ) indent stm1 dedent] s]
+    t ->:p RegisterType:t1
+    id ->:p identifier:id1
+    [params s] -> [FormalParameter:p SymbolTable:s1]
+    [stms s1] -> [Statement:stm1 SymbolTable]
+
+[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Definition[= Expression:expr newline]]] SymbolTable:s] -> [RegisterDeclarationInit[t1 id1 = rexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p RegisterType:t1
     t ->:q RegisterType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
     [expr s] -> [RegisterExpression:rexpr SymbolTable]
-    [id s] ->:s Variable[EPSILON]
+    [id s] ->:s Declaration[EPSILON]
 
 RegisterType[register8] ->:p RegisterType[register8]
 RegisterType[register16] ->:p RegisterType[register16]
@@ -124,20 +330,27 @@ RegisterType[register16] ->:p RegisterType[register16]
 RegisterType[register8] ->:q RegisterType[register8]
 RegisterType[register16] ->:q RegisterType[register16]
 
-[IdentifierDeclaration[BooleanType:t identifier:id Definition[newline]] SymbolTable:s] -> [BooleanDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[IdentifierDeclaration[BooleanType:t identifier:id Definition[newline]] SymbolTable:s] -> [BooleanDeclaration[t1 id1] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p BooleanType:t1
     t ->:q BooleanType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
-    [id s] ->:s Variable[EPSILON]
+    [id s] ->:s Declaration[EPSILON]
 
-[IdentifierDeclaration[BooleanType:t identifier:id Definition[= Expression:expr newline]] SymbolTable:s] -> [BooleanDeclarationInit[t1 id1 = bexpr] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[IdentifierDeclaration[BooleanType:t identifier:id Definition[( FormalParameters:params ) indent Statements:stms dedent]] SymbolTable:s] 
+-> [Function[Type[t1] id1 ( p ) indent stm1 dedent] s]
+    t ->:p BooleanType:t1
+    id ->:p identifier:id1
+    [params s] -> [FormalParameter:p SymbolTable:s1]
+    [stms s1] -> [Statement:stm1 SymbolTable]
+
+[IdentifierDeclaration[BooleanType:t identifier:id Definition[= Expression:expr newline]] SymbolTable:s] -> [BooleanDeclarationInit[t1 id1 = bexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p BooleanType:t1
     t ->:q BooleanType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
     [expr s] -> [BooleanExpression:bexpr SymbolTable]
-    [id s] ->:s Variable[EPSILON]
+    [id s] ->:s Declaration[EPSILON]
 
 BooleanType[bool] ->:p BooleanType[bool]
 
@@ -152,23 +365,23 @@ BooleanType[bool] ->:q BooleanType[bool]
 
 [Assignment[identifier:id BitSelector[{ Expression:expr1 }] = Expression:expr2 newline] SymbolTable:s] -> [IndirectBitAssignment[RegisterVariable[id1] { intExpr } = boolExpr] s]
     id ->:p identifier:id1
-    [id s] ->:s Variable[Type[RegisterType] identifier ParameterTypes]
+    [id s] ->:s Declaration[Variable[Type[RegisterType] identifier]]
     [expr1 s] -> [IntegerExpression:intExpr SymbolTable:s1]
     [expr2 s] -> [BooleanExpression:boolExpr SymbolTable:s2]
 
 [Assignment[identifier:id BitSelector[EPSILON] = Expression:expr newline] SymbolTable:s] -> [IntegerAssignment[IntegerVariable[id1] = intExpr] s]
     id ->:p identifier:id1
-    [id s] ->:s Variable[Type[IntType] identifier ParameterTypes]
+    [id s] ->:s Declaration[Variable[Type[IntType] identifier]]
     [expr s] -> [IntegerExpression:intExpr SymbolTable:s1]
 
 [Assignment[identifier:id BitSelector[EPSILON] = Expression:expr newline] SymbolTable:s] -> [RegisterAssignment[RegisterVariable[id1] = registerExpr] s]
     id ->:p identifier:id1
-    [id s] ->:s Variable[Type[RegisterType] identifier ParameterTypes]
+    [id s] ->:s Declaration[Variable[Type[RegisterType] identifier]]
     [expr s] -> [RegisterExpression:registerExpr SymbolTable]
 
 [Assignment[identifier:id BitSelector[EPSILON] = Expression:expr newline] SymbolTable:s] -> [BooleanAssignment[BooleanVariable[id1] = boolExpr] s]
     id ->:p identifier:id1
-    [id s] ->:s Variable[Type[BooleanType] identifier ParameterTypes]
+    [id s] ->:s Declaration[Variable[Type[BooleanType] identifier]]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]
 
 [IfStatement[if ( Expression:expr ) indent Statements:stms dedent ElseStatement[EPSILON]] SymbolTable:s] -> [IfStatement[if ( boolExpr ) indent stm dedent] s]
@@ -190,9 +403,9 @@ BooleanType[bool] ->:q BooleanType[bool]
     t ->:q IntType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
-    [expr1 s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]] -> [IntegerExpression:iexpr1 SymbolTable]
-    [expr2 s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]] -> [IntegerExpression:iexpr2 SymbolTable]
-    [stms s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]] -> [Statement:stms1 SymbolTable]
+    [expr1 s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]] -> [IntegerExpression:iexpr1 SymbolTable]
+    [expr2 s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]] -> [IntegerExpression:iexpr2 SymbolTable]
+    [stms s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]] -> [Statement:stms1 SymbolTable]
 
 [Expression[OrExpression:orExpr] SymbolTable:s] -> [expr s]
     [orExpr s] -> [*:expr SymbolTable]
@@ -346,16 +559,16 @@ BooleanType[bool] ->:q BooleanType[bool]
     i ->:p numeral:i1
 [PrimaryExpression[identifier:id BitSelector[EPSILON]] SymbolTable:s] -> [IntegerExpression[IntegerVariable[id1]] s]
     id ->:p identifier:id1
-    [id s] ->:s Variable[Type[IntType] identifier ParameterTypes[EPSILON]]
+    [id s] ->:s Declaration[Variable[Type[IntType] identifier]]
 [PrimaryExpression[identifier:id BitSelector[EPSILON]] SymbolTable:s] -> [RegisterExpression[RegisterVariable[id1]] s]
     id ->:p identifier:id1
-    [id s] ->:s Variable[Type[RegisterType] identifier ParameterTypes[EPSILON]]
+    [id s] ->:s Declaration[Variable[Type[RegisterType] identifier]]
 [PrimaryExpression[identifier:id BitSelector[EPSILON]] SymbolTable:s] -> [BooleanExpression[BooleanVariable[id1]] s]
     id ->:p identifier:id1
-    [id s] ->:s Variable[Type[BooleanType] identifier ParameterTypes[EPSILON]]
+    [id s] ->:s Declaration[Variable[Type[BooleanType] identifier]]
 [PrimaryExpression[identifier:id BitSelector[{ Expression:expr }]] SymbolTable:s] -> [BooleanExpression[IndirectBitValue[RegisterVariable[id1] { intExpr }]] s]
     id ->:p identifier:id1
-    [id s] ->:s Variable[Type[RegisterType] identifier ParameterTypes[EPSILON]]
+    [id s] ->:s Declaration[Variable[Type[RegisterType] identifier]]
     [expr s] -> [IntegerExpression:intExpr SymbolTable]
 [PrimaryExpression[( Expression:expr )] SymbolTable:s] -> [IntegerExpression[( intExpr )] s]
     [expr s] -> [IntegerExpression:intExpr SymbolTable]

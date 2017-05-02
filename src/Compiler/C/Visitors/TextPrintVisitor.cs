@@ -64,7 +64,7 @@ namespace Compiler.C.Visitors
                     List<string> res = new List<string>();
                     foreach (var child in node.TakeWhile(n => n.Name != "{"))
                     {
-                        foreach (var str in child.Accept(this))
+                        foreach (var str in child.Accept(this).Where(s => !string.IsNullOrWhiteSpace(s)))
                         {
                             res.Add(str);
                         }
@@ -142,7 +142,7 @@ namespace Compiler.C.Visitors
         public override IEnumerable<string> Visit(IfStatement node)
         {
             StringBuilder first = new StringBuilder("if ( ");
-            foreach (var str in node.Nodes<BooleanExpression>()[0].Accept(this))
+            foreach (var str in node.Nodes<BooleanExpression>()[0].Accept(this).Where(s => !string.IsNullOrWhiteSpace(s)))
             {
                 first.Append(str);
             }
@@ -163,7 +163,7 @@ namespace Compiler.C.Visitors
         public override IEnumerable<string> Visit(WhileStatement node)
         {
             StringBuilder first = new StringBuilder("while ( ");
-            foreach (var str in node.Nodes<BooleanExpression>()[0].Accept(this))
+            foreach (var str in node.Nodes<BooleanExpression>()[0].Accept(this).Where(s => !string.IsNullOrWhiteSpace(s)))
             {
                 first.Append(str);
             }
@@ -186,7 +186,7 @@ namespace Compiler.C.Visitors
             StringBuilder first = new StringBuilder("for ( ");
             foreach (var c in node.Skip(2).TakeWhile(t => t.Name != ")"))
             {
-                foreach (var str in c.Accept(this))
+                foreach (var str in c.Accept(this).Where(s => !string.IsNullOrWhiteSpace(s)))
                 {
                     first.Append(" " + str);
                 }
@@ -208,7 +208,7 @@ namespace Compiler.C.Visitors
         public override IEnumerable<string> Visit(IfElseStatement node)
         {
             StringBuilder first = new StringBuilder("if ( ");
-            foreach (var str in node.Nodes<BooleanExpression>()[0].Accept(this))
+            foreach (var str in node.Nodes<BooleanExpression>()[0].Accept(this).Where(s => !string.IsNullOrWhiteSpace(s)))
             {
                 first.Append(str);
             }

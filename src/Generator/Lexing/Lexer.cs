@@ -39,7 +39,7 @@ namespace Generator.Lexing
             int row = 0;
             int column = 0;
 
-            Regex BeforeIndent = new Regex(@"[\\t ]*[\n\r]+", RegexOptions.Singleline);
+            Regex BeforeIndent = new Regex(@"[\t ]*[\n\r]+", RegexOptions.Singleline);
             Regex Indentation = new Regex(@" *");
             Stack<int> indentationLevel = new Stack<int>();
             indentationLevel.Push(0);

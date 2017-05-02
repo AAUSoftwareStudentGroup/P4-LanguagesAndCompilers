@@ -5,6 +5,7 @@ port{5} = true
 uint8 counter = 0
 while(true)
     if(counter == 100000)
+        uint8 a = 0
         counter = 0
         port{5} = !port{5}
     else

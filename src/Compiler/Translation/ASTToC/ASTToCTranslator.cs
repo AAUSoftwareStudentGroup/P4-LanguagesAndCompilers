@@ -6,6 +6,9 @@ namespace Compiler.Translation.ASTToC
 		public int Translatea__globalStatement_declaration_function_statement = 0;
 		public int Translatea__compoundGlobalStatement_declaration_function_statement = 0;
 		public int Translatea__interrupt_declaration_function_statement = 0;
+		public int Translatea__function_declaration_function1_statement = 0;
+		public int Translate__formalParameter = 0;
+		public int Translate__compoundFormalParameter = 0;
 		public int Translatea__statement_declaration_function_statement1 = 0;
 		public int Translatea__compoundStatement_declaration_function_statement = 0;
 		public int Translate__integerDeclaration = 0;
@@ -28,6 +31,7 @@ namespace Compiler.Translation.ASTToC
 		public int Translatea__ifElseStatement_declaration_function_statement = 0;
 		public int Translatea__whileStatement_declaration_function_statement = 0;
 		public int Translatea__forStatement_declaration_function_statement = 0;
+		public int Translate__type = 0;
 		public int Translate__intType = 0;
 		public int Translate__integerExpression = 0;
 		public int Translate__integerVariable = 0;
@@ -91,6 +95,14 @@ namespace Compiler.Translation.ASTToC
 					return (dcl1 as Compiler.C.Data.Declaration, f1 as Compiler.C.Data.Function, s1 as Compiler.C.Data.Statement);
 				}
 			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Function" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
+			{
+				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node s1) = Translatea(globalStatement[0] as Compiler.AST.Data.Function, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement as Compiler.C.Data.Statement);
+				if(dcl1 != null && dcl1.Name == "Declaration" && true && f1 != null && f1.Name == "Function" && true && s1 != null && s1.Name == "Statement" && true)
+				{
+					return (dcl1 as Compiler.C.Data.Declaration, f1 as Compiler.C.Data.Function, s1 as Compiler.C.Data.Statement);
+				}
+			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Statement" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
 			{
 				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node s2) = Translatea(globalStatement[0] as Compiler.AST.Data.Statement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement as Compiler.C.Data.Statement);
@@ -136,10 +148,84 @@ namespace Compiler.Translation.ASTToC
 				Compiler.C.Data.Node i1 = Translate(interrupt[2] as Compiler.AST.Data.Token);
 				if(i1 != null && i1.Name == "numeral" && true)
 				{
-					(Compiler.C.Data.Node gs1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si2) = Translatea(interrupt[5] as Compiler.AST.Data.Statement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
-					if(gs1 != null && gs1.Name == "Declaration" && true && f1 != null && f1.Name == "Function" && true && si2 != null && si2.Name == "Statement" && true)
+					(Compiler.C.Data.Node gs1, Compiler.C.Data.Node function1, Compiler.C.Data.Node si2) = Translatea(interrupt[5] as Compiler.AST.Data.Statement, declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+					if(gs1 != null && gs1.Name == "Declaration" && true && function1 != null && function1.Name == "Function" && (function1.Count == 1 && function1[0] != null && function1[0].Name == "EPSILON" && true) && si2 != null && si2.Name == "Statement" && true)
 					{
-						return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.FunctionPrototype(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = "void", Value = "void" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.CompoundFunction(false) { function as Compiler.C.Data.Function, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Type(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" } }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, si2 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } }, statement as Compiler.C.Data.Statement);
+						return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.FunctionPrototype(false) { new Compiler.C.Data.Type(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" } }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.FormalParameter(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.CompoundFunction(false) { function as Compiler.C.Data.Function, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Type(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" } }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.FormalParameter(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, gs1 as Compiler.C.Data.Declaration, si2 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } }, statement as Compiler.C.Data.Statement);
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.Function function, Compiler.C.Data.Declaration declaration, Compiler.C.Data.Function function1, Compiler.C.Data.Statement statement)
+		{
+			Translatea__function_declaration_function1_statement++;
+			if(function != null && function.Name == "Function" && (function.Count == 8 && function[0] != null && function[0].Name == "Type" && true && function[1] != null && function[1].Name == "identifier" && true && function[2] != null && function[2].Name == "(" && true && function[3] != null && function[3].Name == "FormalParameter" && true && function[4] != null && function[4].Name == ")" && true && function[5] != null && function[5].Name == "indent" && true && function[6] != null && function[6].Name == "Statement" && true && function[7] != null && function[7].Name == "dedent" && true) && declaration != null && declaration.Name == "Declaration" && true && function1 != null && function1.Name == "Function" && true && statement != null && statement.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node t1 = Translate(function[0] as Compiler.AST.Data.Type);
+				if(t1 != null && t1.Name == "Type" && true)
+				{
+					Compiler.C.Data.Node id1 = Translate(function[1] as Compiler.AST.Data.Token);
+					if(id1 != null && id1.Name == "identifier" && true)
+					{
+						Compiler.C.Data.Node p1 = Translate(function[3] as Compiler.AST.Data.FormalParameter);
+						if(p1 != null && p1.Name == "FormalParameter" && true)
+						{
+							(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node function2, Compiler.C.Data.Node s1) = Translatea(function[6] as Compiler.AST.Data.Statement, declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+							if(dcl1 != null && dcl1.Name == "Declaration" && true && function2 != null && function2.Name == "Function" && (function2.Count == 1 && function2[0] != null && function2[0].Name == "EPSILON" && true) && s1 != null && s1.Name == "Statement" && true)
+							{
+								return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.FunctionPrototype(false) { t1 as Compiler.C.Data.Type, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, p1 as Compiler.C.Data.FormalParameter, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.CompoundFunction(false) { function1 as Compiler.C.Data.Function, new Compiler.C.Data.Function(false) { t1 as Compiler.C.Data.Type, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, p1 as Compiler.C.Data.FormalParameter, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl1 as Compiler.C.Data.Declaration, s1 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } }, statement as Compiler.C.Data.Statement);
+							}
+						}
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.FormalParameter formalParameter)
+		{
+			Translate__formalParameter++;
+			if(formalParameter != null && formalParameter.Name == "FormalParameter" && (formalParameter.Count == 1 && formalParameter[0] != null && formalParameter[0].Name == "EPSILON" && true))
+			{
+				return new Compiler.C.Data.FormalParameter(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
+			}
+			if(formalParameter != null && formalParameter.Name == "FormalParameter" && (formalParameter.Count == 2 && formalParameter[0] != null && formalParameter[0].Name == "Type" && true && formalParameter[1] != null && formalParameter[1].Name == "identifier" && true))
+			{
+				Compiler.C.Data.Node t1 = Translate(formalParameter[0] as Compiler.AST.Data.Type);
+				if(t1 != null && t1.Name == "Type" && true)
+				{
+					Compiler.C.Data.Node id1 = Translate(formalParameter[1] as Compiler.AST.Data.Token);
+					if(id1 != null && id1.Name == "identifier" && true)
+					{
+						return new Compiler.C.Data.FormalParameter(false) { t1 as Compiler.C.Data.Type, id1 as Compiler.C.Data.Token };
+					}
+				}
+			}
+			if(formalParameter != null && formalParameter.Name == "FormalParameter" && (formalParameter.Count == 1 && formalParameter[0] != null && formalParameter[0].Name == "CompoundFormalParameter" && true))
+			{
+				Compiler.C.Data.Node cpar1 = Translate(formalParameter[0] as Compiler.AST.Data.CompoundFormalParameter);
+				if(cpar1 != null && cpar1.Name == "CompoundFormalParameter" && true)
+				{
+					return new Compiler.C.Data.FormalParameter(false) { cpar1 as Compiler.C.Data.CompoundFormalParameter };
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.CompoundFormalParameter compoundFormalParameter)
+		{
+			Translate__compoundFormalParameter++;
+			if(compoundFormalParameter != null && compoundFormalParameter.Name == "CompoundFormalParameter" && (compoundFormalParameter.Count == 3 && compoundFormalParameter[0] != null && compoundFormalParameter[0].Name == "FormalParameter" && true && compoundFormalParameter[1] != null && compoundFormalParameter[1].Name == "," && true && compoundFormalParameter[2] != null && compoundFormalParameter[2].Name == "FormalParameter" && true))
+			{
+				Compiler.C.Data.Node p3 = Translate(compoundFormalParameter[0] as Compiler.AST.Data.FormalParameter);
+				if(p3 != null && p3.Name == "FormalParameter" && true)
+				{
+					Compiler.C.Data.Node p4 = Translate(compoundFormalParameter[2] as Compiler.AST.Data.FormalParameter);
+					if(p4 != null && p4.Name == "FormalParameter" && true)
+					{
+						return new Compiler.C.Data.CompoundFormalParameter(false) { p3 as Compiler.C.Data.FormalParameter, new Compiler.C.Data.Token() { Name = ",", Value = "," }, p4 as Compiler.C.Data.FormalParameter };
 					}
 				}
 			}
@@ -702,6 +788,40 @@ namespace Compiler.Translation.ASTToC
 						}
 					}
 				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.Type type)
+		{
+			Translate__type++;
+			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "IntType" && true))
+			{
+				Compiler.C.Data.Node t1 = Translate(type[0] as Compiler.AST.Data.IntType);
+				if(t1 != null && t1.Name == "IntType" && true)
+				{
+					return new Compiler.C.Data.Type(false) { t1 as Compiler.C.Data.IntType };
+				}
+			}
+			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "RegisterType" && true))
+			{
+				Compiler.C.Data.Node t1 = Translate(type[0] as Compiler.AST.Data.RegisterType);
+				if(t1 != null && t1.Name == "RegisterType" && true)
+				{
+					return new Compiler.C.Data.Type(false) { t1 as Compiler.C.Data.RegisterType };
+				}
+			}
+			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "BooleanType" && true))
+			{
+				Compiler.C.Data.Node t1 = Translate(type[0] as Compiler.AST.Data.BooleanType);
+				if(t1 != null && t1.Name == "BooleanType" && true)
+				{
+					return new Compiler.C.Data.Type(false) { t1 as Compiler.C.Data.BooleanType };
+				}
+			}
+			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "nothing" && true))
+			{
+				return new Compiler.C.Data.Type(false) { new Compiler.C.Data.Token() { Name = "nothing", Value = "nothing" } };
 			}
 			throw new System.Exception();
 		}
@@ -1416,6 +1536,9 @@ namespace Compiler.Translation.ASTToC
 			System.Console.WriteLine("Translatea__globalStatement_declaration_function_statement: "+Translatea__globalStatement_declaration_function_statement);
 			System.Console.WriteLine("Translatea__compoundGlobalStatement_declaration_function_statement: "+Translatea__compoundGlobalStatement_declaration_function_statement);
 			System.Console.WriteLine("Translatea__interrupt_declaration_function_statement: "+Translatea__interrupt_declaration_function_statement);
+			System.Console.WriteLine("Translatea__function_declaration_function1_statement: "+Translatea__function_declaration_function1_statement);
+			System.Console.WriteLine("Translate__formalParameter: "+Translate__formalParameter);
+			System.Console.WriteLine("Translate__compoundFormalParameter: "+Translate__compoundFormalParameter);
 			System.Console.WriteLine("Translatea__statement_declaration_function_statement1: "+Translatea__statement_declaration_function_statement1);
 			System.Console.WriteLine("Translatea__compoundStatement_declaration_function_statement: "+Translatea__compoundStatement_declaration_function_statement);
 			System.Console.WriteLine("Translate__integerDeclaration: "+Translate__integerDeclaration);
@@ -1438,6 +1561,7 @@ namespace Compiler.Translation.ASTToC
 			System.Console.WriteLine("Translatea__ifElseStatement_declaration_function_statement: "+Translatea__ifElseStatement_declaration_function_statement);
 			System.Console.WriteLine("Translatea__whileStatement_declaration_function_statement: "+Translatea__whileStatement_declaration_function_statement);
 			System.Console.WriteLine("Translatea__forStatement_declaration_function_statement: "+Translatea__forStatement_declaration_function_statement);
+			System.Console.WriteLine("Translate__type: "+Translate__type);
 			System.Console.WriteLine("Translate__intType: "+Translate__intType);
 			System.Console.WriteLine("Translate__integerExpression: "+Translate__integerExpression);
 			System.Console.WriteLine("Translate__integerVariable: "+Translate__integerVariable);

@@ -60,15 +60,18 @@ namespace Generator.Translation
         {
             string aliasName = "";
 
-            if (alias.Count == 2 && alias[1] is Symbol)
+            if (alias.Count == 2 && alias[1] is Token)
             {
-                Token symbol = alias[1][0] as Token;
-                if(symbol.Name == "escapedSymbol")
+                Token symbol = alias[1] as Token;
+                if(symbol.Name == "symbol")
                 {
-                    aliasName = symbol.Value.Substring(1);
-                }
-                else
-                {
+                    foreach (var c in symbol.Value)
+                    {
+                        if(!"abcdefghijklmnopqrstuvwxyz0123456789".Contains((c + "").ToLower()))
+                        {
+                            throw new Exception();
+                        }
+                    }
                     aliasName = symbol.Value;
                 }
             }
@@ -551,7 +554,7 @@ namespace Generator.Translation
 
             string fullType = "";
 
-            if (type[0] == type.ToLower()[0])
+            if (!domain.Grammar.ContainsKey(type))
             {
                 type = "Token";
                 fullType = $"{domain.DataNamespace}.Token";
@@ -567,11 +570,10 @@ namespace Generator.Translation
             {
                 identifier = aliasStr;
             }
-
-            else if (symbols.Values.Any(d => d.name == identifier))
+            else if (symbols.Values.Any(d => d.name == (identifier)))
             {
                 int i = 1;
-                while (symbols.Values.Any(d => d.name == $"{identifier}{i}"))
+                while (symbols.Values.Any(d => d.name == ($"{identifier}{i}")))
                 {
                     i++;
                 }
@@ -584,7 +586,7 @@ namespace Generator.Translation
             if(pp != null)
             {
                 int i = 1;
-                while (symbols.Values.Any(d => d.name == $"{identifier}{i}"))
+                while (symbols.Values.Any(d => d.name == ($"{identifier}{i}")))
                 {
                     i++;
                 }
@@ -595,6 +597,11 @@ namespace Generator.Translation
                 {
                     symbols.Add(aliasStr, (fullType, identifier));
                 }
+            }
+
+            if(!symbols.ContainsKey("$" + identifier))
+            {
+                symbols.Add("$" + identifier, (fullType, identifier));
             }
 
             patternConditions.Add(CreateTreePatternCondition(identifier, domain, treePattern, symbols));

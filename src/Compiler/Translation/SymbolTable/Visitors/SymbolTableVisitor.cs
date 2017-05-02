@@ -7,7 +7,12 @@ namespace Compiler.Translation.SymbolTable.Visitors
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Variables node)
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Declarations node)
+		{
+			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Declaration node)
 		{
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
 		}
@@ -22,7 +27,17 @@ namespace Compiler.Translation.SymbolTable.Visitors
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Parameters node)
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.ReturnType node)
+		{
+			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Parameter node)
+		{
+			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.CompoundParameter node)
 		{
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
 		}

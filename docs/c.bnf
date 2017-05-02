@@ -1,4 +1,4 @@
-C -> Declarations Functions
+C -> Declaration Function
 
 Declaration -> CompoundDeclaration
              | IntegerDeclaration ;
@@ -9,18 +9,23 @@ Declaration -> CompoundDeclaration
 
 CompoundDeclaration -> Declaration Declaration
 
-FunctionPrototype -> Type symbol ( void )
+FunctionPrototype -> Type symbol ( FormalParameter )
 
 Function -> CompoundFunction
-          | Type symbol ( ) { Statement }
+          | Type symbol ( FormalParameter ) { Declaration Statement }
           | EPSILON
+
+CompoundFunction -> Function Function
+
+FormalParameter -> Type identifier
+                 | CompoundFormalParameter
+
+CompoundFormalParameter -> FormalParameter , FormalParameter
 
 Type -> IntType
       | RegisterType
       | BooleanType
       | void
-
-CompoundFunction -> Function Function
 
 Statement -> EPSILON 
            | CompoundStatement

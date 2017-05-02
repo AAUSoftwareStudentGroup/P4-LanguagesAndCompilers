@@ -52,9 +52,9 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.Type node)
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.CompoundFunction node)
 		{
-			var clone = new Compiler.C.Data.Type() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.C.Data.CompoundFunction() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -62,9 +62,29 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.CompoundFunction node)
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.FormalParameter node)
 		{
-			var clone = new Compiler.C.Data.CompoundFunction() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.C.Data.FormalParameter() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.CompoundFormalParameter node)
+		{
+			var clone = new Compiler.C.Data.CompoundFormalParameter() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.Type node)
+		{
+			var clone = new Compiler.C.Data.Type() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

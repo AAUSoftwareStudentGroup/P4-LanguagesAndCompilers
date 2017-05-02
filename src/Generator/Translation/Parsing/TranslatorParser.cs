@@ -467,7 +467,7 @@ namespace Generator.Translation.Parsing
 			{
 			    case ":":
 			        node.Add(ParseTerminal(tokens, ":"));
-			        node.Add(ParseSymbol(tokens));
+			        node.Add(ParseTerminal(tokens, "symbol"));
 			        return node;
 			    case ":=":
 			    case "[":
