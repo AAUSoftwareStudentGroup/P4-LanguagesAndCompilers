@@ -2,10 +2,18 @@ AST -> GlobalStatement eof
 	 | eof
 
 GlobalStatement -> Interrupt
+                 | Function
                  | CompoundGlobalStatement
                  | Statement
 
 Interrupt -> interrupt ( numeral ) indent Statement dedent
+
+Function -> Type identifier ( FormalParameter ) indent Statement dedent
+
+FormalParameter -> Type identifier
+                 | CompoundFormalParameter
+
+CompoundFormalParameter -> FormalParameter , FormalParameter
 
 CompoundGlobalStatement -> GlobalStatement newline GlobalStatement
 

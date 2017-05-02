@@ -32,6 +32,36 @@ namespace Compiler.AST.Visitors
 			return clone;
 		}
 
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.Function node)
+		{
+			var clone = new Compiler.AST.Data.Function() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.FormalParameter node)
+		{
+			var clone = new Compiler.AST.Data.FormalParameter() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.CompoundFormalParameter node)
+		{
+			var clone = new Compiler.AST.Data.CompoundFormalParameter() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.CompoundGlobalStatement node)
 		{
 			var clone = new Compiler.AST.Data.CompoundGlobalStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };

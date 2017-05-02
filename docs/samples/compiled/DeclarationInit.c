@@ -1,6 +1,6 @@
-void main ( void ) ;
 unsigned char a ;
-void main ( void )
+void main ( ) ;
+void main ( )
 {
-    a = 4;
+    a = 4 ;
 }

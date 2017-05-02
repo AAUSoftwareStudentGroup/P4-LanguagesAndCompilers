@@ -1,21 +1,20 @@
-void main ( void ) ;
 unsigned char counter ;
-volatile unsigned char * portb ;
-volatile unsigned char * ddrb ;
-void main ( void )
+void main ( ) ;
+void main ( )
 {
-    ddrb = ( volatile unsigned char * ) ( 36 );
-    portb = ( volatile unsigned char * ) ( 37 );
-    * ddrb = ( 1 ? ( ( * ddrb ) | 1 << ( 5 ) ) : ( ( * ddrb ) & ~ ( 1 << ( 5 ) ) ) );
-    * portb = ( 1 ? ( ( * portb ) | 1 << ( 5 ) ) : ( ( * portb ) & ~ ( 1 << ( 5 ) ) ) );
-    counter = 0;
-    while(1)
+    ( * ( volatile unsigned char * ) ( 36 ) ) = ( 1 ? ( ( * ( volatile unsigned char * ) ( 36 ) ) | 1 << ( 5 ) ) : ( ( * ( volatile unsigned char * ) ( 36 ) ) & ~ ( 1 << ( 5 ) ) ) ) ;
+    ( * ( volatile unsigned char * ) ( 37 ) ) = ( 1 ? ( ( * ( volatile unsigned char * ) ( 37 ) ) | 1 << ( 5 ) ) : ( ( * ( volatile unsigned char * ) ( 37 ) ) & ~ ( 1 << ( 5 ) ) ) ) ;
+    counter = 0 ;
+    while ( 1 )
     {
-        if(( counter == 100000 ))
+        if ( ( counter == 100000 ) )
         {
-            counter = 0;
-            * portb = ( ( ! ( * portb & ( 1 << ( 5 ) ) ) ) ? ( ( * portb ) | 1 << ( 5 ) ) : ( ( * portb ) & ~ ( 1 << ( 5 ) ) ) );
+            counter = 0 ;
+            ( * ( volatile unsigned char * ) ( 37 ) ) = ( ( ! ( ( * ( volatile unsigned char * ) ( 37 ) ) & ( 1 << ( 5 ) ) ) ) ? ( ( * ( volatile unsigned char * ) ( 37 ) ) | 1 << ( 5 ) ) : ( ( * ( volatile unsigned char * ) ( 37 ) ) & ~ ( 1 << ( 5 ) ) ) ) ;
         }
-        counter = ( counter + 1 );
+        else
+        {
+            counter = ( counter + 1 ) ;
+        }
     }
 }

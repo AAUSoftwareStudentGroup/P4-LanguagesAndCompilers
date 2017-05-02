@@ -266,7 +266,7 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.IdentifierDeclaration identifierDeclaration, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			Translate__identifierDeclaration_symbolTable++;
-			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Initialization" && (identifierDeclaration[2].Count == 1 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "EPSILON" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 1 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "newline" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
 				if(t1 != null && t1.Name == "IntType" && true)
@@ -290,7 +290,7 @@ namespace Compiler.Translation.ProgramToAST
 					}
 				}
 			}
-			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Initialization" && (identifierDeclaration[2].Count == 2 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && true && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 3 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && true && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && true && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == "newline" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
 				if(t1 != null && t1.Name == "IntType" && true)
@@ -318,7 +318,7 @@ namespace Compiler.Translation.ProgramToAST
 					}
 				}
 			}
-			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Initialization" && (identifierDeclaration[2].Count == 1 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "EPSILON" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 1 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "newline" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
 				if(t1 != null && t1.Name == "BooleanType" && true)
@@ -342,7 +342,7 @@ namespace Compiler.Translation.ProgramToAST
 					}
 				}
 			}
-			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Initialization" && (identifierDeclaration[2].Count == 2 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && true && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 3 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && true && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && true && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == "newline" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
 				if(t1 != null && t1.Name == "BooleanType" && true)
@@ -436,7 +436,7 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.RegisterStatement registerStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			Translate__registerStatement_symbolTable++;
-			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && true && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && true && registerStatement[1][1] != null && registerStatement[1][1].Name == "Initialization" && (registerStatement[1][1].Count == 1 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "EPSILON" && true))) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && true && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && true && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 1 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "newline" && true))) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node t1 = Translatep(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 				if(t1 != null && t1.Name == "RegisterType" && true)
@@ -460,7 +460,7 @@ namespace Compiler.Translation.ProgramToAST
 					}
 				}
 			}
-			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && true && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && true && registerStatement[1][1] != null && registerStatement[1][1].Name == "Initialization" && (registerStatement[1][1].Count == 2 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "=" && true && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "Expression" && true))) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && true && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && true && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 3 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "=" && true && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "Expression" && true && registerStatement[1][1][2] != null && registerStatement[1][1][2].Name == "newline" && true))) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node t1 = Translatep(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 				if(t1 != null && t1.Name == "RegisterType" && true)
@@ -488,7 +488,7 @@ namespace Compiler.Translation.ProgramToAST
 					}
 				}
 			}
-			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && true && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 8 && registerStatement[1][0] != null && registerStatement[1][0].Name == "(" && true && registerStatement[1][1] != null && registerStatement[1][1].Name == "Expression" && true && registerStatement[1][2] != null && registerStatement[1][2].Name == ")" && true && registerStatement[1][3] != null && registerStatement[1][3].Name == "{" && true && registerStatement[1][4] != null && registerStatement[1][4].Name == "Expression" && true && registerStatement[1][5] != null && registerStatement[1][5].Name == "}" && true && registerStatement[1][6] != null && registerStatement[1][6].Name == "=" && true && registerStatement[1][7] != null && registerStatement[1][7].Name == "Expression" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && true && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 9 && registerStatement[1][0] != null && registerStatement[1][0].Name == "(" && true && registerStatement[1][1] != null && registerStatement[1][1].Name == "Expression" && true && registerStatement[1][2] != null && registerStatement[1][2].Name == ")" && true && registerStatement[1][3] != null && registerStatement[1][3].Name == "{" && true && registerStatement[1][4] != null && registerStatement[1][4].Name == "Expression" && true && registerStatement[1][5] != null && registerStatement[1][5].Name == "}" && true && registerStatement[1][6] != null && registerStatement[1][6].Name == "=" && true && registerStatement[1][7] != null && registerStatement[1][7].Name == "Expression" && true && registerStatement[1][8] != null && registerStatement[1][8].Name == "newline" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node regType = Translatep(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 				if(regType != null && regType.Name == "RegisterType" && true)
@@ -562,7 +562,7 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.Assignment assignment, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			Translate__assignment_symbolTable++;
-			if(assignment != null && assignment.Name == "Assignment" && (assignment.Count == 4 && assignment[0] != null && assignment[0].Name == "identifier" && true && assignment[1] != null && assignment[1].Name == "BitSelector" && (assignment[1].Count == 3 && assignment[1][0] != null && assignment[1][0].Name == "{" && true && assignment[1][1] != null && assignment[1][1].Name == "Expression" && true && assignment[1][2] != null && assignment[1][2].Name == "}" && true) && assignment[2] != null && assignment[2].Name == "=" && true && assignment[3] != null && assignment[3].Name == "Expression" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(assignment != null && assignment.Name == "Assignment" && (assignment.Count == 5 && assignment[0] != null && assignment[0].Name == "identifier" && true && assignment[1] != null && assignment[1].Name == "BitSelector" && (assignment[1].Count == 3 && assignment[1][0] != null && assignment[1][0].Name == "{" && true && assignment[1][1] != null && assignment[1][1].Name == "Expression" && true && assignment[1][2] != null && assignment[1][2].Name == "}" && true) && assignment[2] != null && assignment[2].Name == "=" && true && assignment[3] != null && assignment[3].Name == "Expression" && true && assignment[4] != null && assignment[4].Name == "newline" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node id1 = Translatep(assignment[0] as Compiler.Parsing.Data.Token);
 				if(id1 != null && id1.Name == "identifier" && true)
@@ -582,7 +582,7 @@ namespace Compiler.Translation.ProgramToAST
 					}
 				}
 			}
-			if(assignment != null && assignment.Name == "Assignment" && (assignment.Count == 4 && assignment[0] != null && assignment[0].Name == "identifier" && true && assignment[1] != null && assignment[1].Name == "BitSelector" && (assignment[1].Count == 1 && assignment[1][0] != null && assignment[1][0].Name == "EPSILON" && true) && assignment[2] != null && assignment[2].Name == "=" && true && assignment[3] != null && assignment[3].Name == "Expression" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(assignment != null && assignment.Name == "Assignment" && (assignment.Count == 5 && assignment[0] != null && assignment[0].Name == "identifier" && true && assignment[1] != null && assignment[1].Name == "BitSelector" && (assignment[1].Count == 1 && assignment[1][0] != null && assignment[1][0].Name == "EPSILON" && true) && assignment[2] != null && assignment[2].Name == "=" && true && assignment[3] != null && assignment[3].Name == "Expression" && true && assignment[4] != null && assignment[4].Name == "newline" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node id1 = Translatep(assignment[0] as Compiler.Parsing.Data.Token);
 				if(id1 != null && id1.Name == "identifier" && true)
@@ -598,7 +598,7 @@ namespace Compiler.Translation.ProgramToAST
 					}
 				}
 			}
-			if(assignment != null && assignment.Name == "Assignment" && (assignment.Count == 4 && assignment[0] != null && assignment[0].Name == "identifier" && true && assignment[1] != null && assignment[1].Name == "BitSelector" && (assignment[1].Count == 1 && assignment[1][0] != null && assignment[1][0].Name == "EPSILON" && true) && assignment[2] != null && assignment[2].Name == "=" && true && assignment[3] != null && assignment[3].Name == "Expression" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(assignment != null && assignment.Name == "Assignment" && (assignment.Count == 5 && assignment[0] != null && assignment[0].Name == "identifier" && true && assignment[1] != null && assignment[1].Name == "BitSelector" && (assignment[1].Count == 1 && assignment[1][0] != null && assignment[1][0].Name == "EPSILON" && true) && assignment[2] != null && assignment[2].Name == "=" && true && assignment[3] != null && assignment[3].Name == "Expression" && true && assignment[4] != null && assignment[4].Name == "newline" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node id1 = Translatep(assignment[0] as Compiler.Parsing.Data.Token);
 				if(id1 != null && id1.Name == "identifier" && true)
@@ -614,7 +614,7 @@ namespace Compiler.Translation.ProgramToAST
 					}
 				}
 			}
-			if(assignment != null && assignment.Name == "Assignment" && (assignment.Count == 4 && assignment[0] != null && assignment[0].Name == "identifier" && true && assignment[1] != null && assignment[1].Name == "BitSelector" && (assignment[1].Count == 1 && assignment[1][0] != null && assignment[1][0].Name == "EPSILON" && true) && assignment[2] != null && assignment[2].Name == "=" && true && assignment[3] != null && assignment[3].Name == "Expression" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(assignment != null && assignment.Name == "Assignment" && (assignment.Count == 5 && assignment[0] != null && assignment[0].Name == "identifier" && true && assignment[1] != null && assignment[1].Name == "BitSelector" && (assignment[1].Count == 1 && assignment[1][0] != null && assignment[1][0].Name == "EPSILON" && true) && assignment[2] != null && assignment[2].Name == "=" && true && assignment[3] != null && assignment[3].Name == "Expression" && true && assignment[4] != null && assignment[4].Name == "newline" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node id1 = Translatep(assignment[0] as Compiler.Parsing.Data.Token);
 				if(id1 != null && id1.Name == "identifier" && true)

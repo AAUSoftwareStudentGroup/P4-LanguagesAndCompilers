@@ -81,8 +81,20 @@ namespace Compiler.LexicalAnalysis
                             column = 0;
                             yield return token;
                         }
-                        while(indentSize < indentationLevel.Peek())
+
+                        while (indentSize < indentationLevel.Peek())
                         {
+                            token = new Token
+                            {
+                                Name = "newline",
+                                Value = match.Value,
+                                Row = row,
+                                Column = column
+                            };
+                            row++;
+                            column = 0;
+                            yield return token;
+
                             indentationLevel.Pop();
                             token = new Token {
                                 Name = "dedent",
@@ -121,8 +133,22 @@ namespace Compiler.LexicalAnalysis
                     throw new Exception("Error before: ..."+source.Substring(currentIndex, 10));
                 }
             }
-            while(indentationLevel.Peek() > 0)
+
+            
+
+            while (indentationLevel.Peek() > 0)
             {
+                token = new Token
+                {
+                    Name = "newline",
+                    Value = match.Value,
+                    Row = row,
+                    Column = column
+                };
+                row++;
+                column = 0;
+                yield return token;
+
                 indentationLevel.Pop();
                 token = new Token {
                     Name = "dedent",
@@ -131,16 +157,6 @@ namespace Compiler.LexicalAnalysis
                     Column = column
                 };
                 column += token.Value.Length;
-                yield return token;
-
-                token = new Token {
-                    Name = "newline",
-                    Value = match.Value,
-                    Row = row,
-                    Column = column
-                };
-                row++;
-                column = 0;
                 yield return token;
             }
             yield return new Token {Name = "eof", Value = "", Row = row, Column = column};

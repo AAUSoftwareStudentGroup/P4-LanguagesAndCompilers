@@ -52,7 +52,27 @@ namespace Compiler.Parsing.Visitors
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.Parsing.Data.Initialization node)
+		public virtual T Visit(Compiler.Parsing.Data.Definition node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Parsing.Data.FormalParameters node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Parsing.Data.FormalParametersP node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Parsing.Data.FormalParameter node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Parsing.Data.Type node)
 		{
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}

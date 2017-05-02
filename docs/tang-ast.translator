@@ -1,6 +1,6 @@
 ->:p := Program -> AST
 ->:q := Program -> SymbolTable
-->:s := [Program SymbolTable] -> [SymbolTable]
+->:s := [Program SymbolTable] -> SymbolTable
 -> := [Program SymbolTable] -> [AST SymbolTable]
 <=> := Program <=> SymbolTable
 </> := Program </> SymbolTable
@@ -74,14 +74,14 @@ Program:p ->:p ast
 [Statement[RegisterStatement:regStm] SymbolTable:s] -> [Statement[regStm1] s1]
     [regStm s] -> [*:regStm1 SymbolTable:s1]
 
-[IdentifierDeclaration[IntType:t identifier:id Initialization[EPSILON]] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[IdentifierDeclaration[IntType:t identifier:id Definition[newline]] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
     t ->:p IntType:t1
     t ->:q IntType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
     [id s] ->:s Variable[EPSILON]
 
-[IdentifierDeclaration[IntType:t identifier:id Initialization[= Expression:expr]] SymbolTable:s] -> [IntegerDeclarationInit[t1 id1 = iexpr] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[IdentifierDeclaration[IntType:t identifier:id Definition[= Expression:expr newline]] SymbolTable:s] -> [IntegerDeclarationInit[t1 id1 = iexpr] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
     t ->:p IntType:t1
     t ->:q IntType:t2
     id ->:p identifier:id1
@@ -103,14 +103,14 @@ IntType[int8] ->:q IntType[int8]
 IntType[int16] ->:q IntType[int16]  
 IntType[int32] ->:q IntType[int32]  
 
-[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Initialization[EPSILON]]] SymbolTable:s] -> [RegisterDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Definition[newline]]] SymbolTable:s] -> [RegisterDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
     t ->:p RegisterType:t1
     t ->:q RegisterType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
     [id s] ->:s Variable[EPSILON]
 
-[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Initialization[= Expression:expr]]] SymbolTable:s] -> [RegisterDeclarationInit[t1 id1 = rexpr] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Definition[= Expression:expr newline]]] SymbolTable:s] -> [RegisterDeclarationInit[t1 id1 = rexpr] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
     t ->:p RegisterType:t1
     t ->:q RegisterType:t2
     id ->:p identifier:id1
@@ -124,14 +124,14 @@ RegisterType[register16] ->:p RegisterType[register16]
 RegisterType[register8] ->:q RegisterType[register8]
 RegisterType[register16] ->:q RegisterType[register16]
 
-[IdentifierDeclaration[BooleanType:t identifier:id Initialization[EPSILON]] SymbolTable:s] -> [BooleanDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[IdentifierDeclaration[BooleanType:t identifier:id Definition[newline]] SymbolTable:s] -> [BooleanDeclaration[t1 id1] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
     t ->:p BooleanType:t1
     t ->:q BooleanType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
     [id s] ->:s Variable[EPSILON]
 
-[IdentifierDeclaration[BooleanType:t identifier:id Initialization[= Expression:expr]] SymbolTable:s] -> [BooleanDeclarationInit[t1 id1 = bexpr] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
+[IdentifierDeclaration[BooleanType:t identifier:id Definition[= Expression:expr newline]] SymbolTable:s] -> [BooleanDeclarationInit[t1 id1 = bexpr] s <- Variables[Variable[Type[t2] id2 ParameterTypes[EPSILON]] %Variables[EPSILON]]]
     t ->:p BooleanType:t1
     t ->:q BooleanType:t2
     id ->:p identifier:id1
@@ -143,30 +143,30 @@ BooleanType[bool] ->:p BooleanType[bool]
 
 BooleanType[bool] ->:q BooleanType[bool]
 
-[RegisterStatement[RegisterType:t RegisterOperation[( Expression:expr1 ) { Expression:expr2 } = Expression:expr3]] SymbolTable:s] 
+[RegisterStatement[RegisterType:t RegisterOperation[( Expression:expr1 ) { Expression:expr2 } = Expression:expr3 newline]] SymbolTable:s] 
 -> [DirectBitAssignment[regType ( intExpr1 ) { intExpr2 } = boolExpr] s]
     t ->:p RegisterType:regType
     [expr1 s] -> [IntegerExpression:intExpr1 SymbolTable:s1]
     [expr2 s] -> [IntegerExpression:intExpr2 SymbolTable:s2]
     [expr3 s] -> [BooleanExpression:boolExpr SymbolTable:s3]
 
-[Assignment[identifier:id BitSelector[{ Expression:expr1 }] = Expression:expr2] SymbolTable:s] -> [IndirectBitAssignment[RegisterVariable[id1] { intExpr } = boolExpr] s]
+[Assignment[identifier:id BitSelector[{ Expression:expr1 }] = Expression:expr2 newline] SymbolTable:s] -> [IndirectBitAssignment[RegisterVariable[id1] { intExpr } = boolExpr] s]
     id ->:p identifier:id1
     [id s] ->:s Variable[Type[RegisterType] identifier ParameterTypes]
     [expr1 s] -> [IntegerExpression:intExpr SymbolTable:s1]
     [expr2 s] -> [BooleanExpression:boolExpr SymbolTable:s2]
 
-[Assignment[identifier:id BitSelector[EPSILON] = Expression:expr] SymbolTable:s] -> [IntegerAssignment[IntegerVariable[id1] = intExpr] s]
+[Assignment[identifier:id BitSelector[EPSILON] = Expression:expr newline] SymbolTable:s] -> [IntegerAssignment[IntegerVariable[id1] = intExpr] s]
     id ->:p identifier:id1
     [id s] ->:s Variable[Type[IntType] identifier ParameterTypes]
     [expr s] -> [IntegerExpression:intExpr SymbolTable:s1]
 
-[Assignment[identifier:id BitSelector[EPSILON] = Expression:expr] SymbolTable:s] -> [RegisterAssignment[RegisterVariable[id1] = registerExpr] s]
+[Assignment[identifier:id BitSelector[EPSILON] = Expression:expr newline] SymbolTable:s] -> [RegisterAssignment[RegisterVariable[id1] = registerExpr] s]
     id ->:p identifier:id1
     [id s] ->:s Variable[Type[RegisterType] identifier ParameterTypes]
     [expr s] -> [RegisterExpression:registerExpr SymbolTable]
 
-[Assignment[identifier:id BitSelector[EPSILON] = Expression:expr] SymbolTable:s] -> [BooleanAssignment[BooleanVariable[id1] = boolExpr] s]
+[Assignment[identifier:id BitSelector[EPSILON] = Expression:expr newline] SymbolTable:s] -> [BooleanAssignment[BooleanVariable[id1] = boolExpr] s]
     id ->:p identifier:id1
     [id s] ->:s Variable[Type[BooleanType] identifier ParameterTypes]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]

@@ -1,7 +1,7 @@
 Program -> GlobalStatements eof
 
 GlobalStatements -> GlobalStatement GlobalStatements
-                    | EPSILON
+                  | EPSILON
 
 GlobalStatement -> Interrupt
                  | Statement
@@ -19,27 +19,39 @@ Statement -> IdentifierDeclaration
            | ForStatement
            | newline
 
-IdentifierDeclaration -> IntType identifier Initialization
-                       | BooleanType identifier Initialization
+IdentifierDeclaration -> IntType identifier Definition
+                       | BooleanType identifier Definition
 
 RegisterStatement -> RegisterType RegisterOperation
 
 RegisterType -> register8
               | register16
 
-RegisterOperation -> ( Expression ) { Expression } = Expression
-                   | identifier Initialization
+RegisterOperation -> ( Expression ) { Expression } = Expression newline
+                   | identifier Definition
 
-Initialization -> = Expression
-                | EPSILON
+Definition -> = Expression newline
+            | ( FormalParameters ) indent Statements dedent
+            | newline
 
-Assignment -> identifier BitSelector = Expression 
+FormalParameters -> FormalParameter FormalParametersP
+
+FormalParametersP -> , FormalParameter FormalParametersP
+                   | EPSILON
+
+FormalParameter -> Type identifier
+
+Type -> IntType
+      | RegisterType
+      | BooleanType
+      | none
+
+Assignment -> identifier BitSelector = Expression newline
 
 BitSelector -> { Expression }
              | EPSILON
 
 IfStatement -> if ( Expression ) indent Statements dedent ElseStatement
-
 
 ElseStatement -> else indent Statements dedent 
                 | EPSILON

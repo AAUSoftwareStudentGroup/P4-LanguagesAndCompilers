@@ -213,12 +213,12 @@ namespace Compiler.Parsing
 			    case "uint32":
 			        node.Add(ParseIntType(tokens));
 			        node.Add(ParseTerminal(tokens, "identifier"));
-			        node.Add(ParseInitialization(tokens));
+			        node.Add(ParseDefinition(tokens));
 			        return node;
 			    case "bool":
 			        node.Add(ParseBooleanType(tokens));
 			        node.Add(ParseTerminal(tokens, "identifier"));
-			        node.Add(ParseInitialization(tokens));
+			        node.Add(ParseDefinition(tokens));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -270,43 +270,129 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "}"));
 			        node.Add(ParseTerminal(tokens, "="));
 			        node.Add(ParseExpression(tokens));
+			        node.Add(ParseTerminal(tokens, "newline"));
 			        return node;
 			    case "identifier":
 			        node.Add(ParseTerminal(tokens, "identifier"));
-			        node.Add(ParseInitialization(tokens));
+			        node.Add(ParseDefinition(tokens));
 			        return node;
 			    default:
 			        throw new Exception();
 			}
 		}
 
-		public Compiler.Parsing.Data.Initialization ParseInitialization(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		public Compiler.Parsing.Data.Definition ParseDefinition(IEnumerator<Compiler.Parsing.Data.Token> tokens)
 		{
-			Compiler.Parsing.Data.Initialization node = new Compiler.Parsing.Data.Initialization(){ Name = "Initialization" };
+			Compiler.Parsing.Data.Definition node = new Compiler.Parsing.Data.Definition(){ Name = "Definition" };
 			switch(tokens.Current.Name)
 			{
 			    case "=":
 			        node.Add(ParseTerminal(tokens, "="));
 			        node.Add(ParseExpression(tokens));
+			        node.Add(ParseTerminal(tokens, "newline"));
 			        return node;
-			    case "interrupt":
+			    case "(":
+			        node.Add(ParseTerminal(tokens, "("));
+			        node.Add(ParseFormalParameters(tokens));
+			        node.Add(ParseTerminal(tokens, ")"));
+			        node.Add(ParseTerminal(tokens, "indent"));
+			        node.Add(ParseStatements(tokens));
+			        node.Add(ParseTerminal(tokens, "dedent"));
+			        return node;
+			    case "newline":
+			        node.Add(ParseTerminal(tokens, "newline"));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.FormalParameters ParseFormalParameters(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.FormalParameters node = new Compiler.Parsing.Data.FormalParameters(){ Name = "FormalParameters" };
+			switch(tokens.Current.Name)
+			{
 			    case "int8":
 			    case "int16":
 			    case "int32":
 			    case "uint8":
 			    case "uint16":
 			    case "uint32":
-			    case "bool":
 			    case "register8":
 			    case "register16":
-			    case "identifier":
-			    case "if":
-			    case "while":
-			    case "for":
-			    case "newline":
-			    case "eof":
-			    case "dedent":
+			    case "bool":
+			    case "none":
+			        node.Add(ParseFormalParameter(tokens));
+			        node.Add(ParseFormalParametersP(tokens));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.FormalParametersP ParseFormalParametersP(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.FormalParametersP node = new Compiler.Parsing.Data.FormalParametersP(){ Name = "FormalParametersP" };
+			switch(tokens.Current.Name)
+			{
+			    case ",":
+			        node.Add(ParseTerminal(tokens, ","));
+			        node.Add(ParseFormalParameter(tokens));
+			        node.Add(ParseFormalParametersP(tokens));
+			        return node;
+			    case ")":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.FormalParameter ParseFormalParameter(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.FormalParameter node = new Compiler.Parsing.Data.FormalParameter(){ Name = "FormalParameter" };
+			switch(tokens.Current.Name)
+			{
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			    case "register8":
+			    case "register16":
+			    case "bool":
+			    case "none":
+			        node.Add(ParseType(tokens));
+			        node.Add(ParseTerminal(tokens, "identifier"));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.Type ParseType(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.Type node = new Compiler.Parsing.Data.Type(){ Name = "Type" };
+			switch(tokens.Current.Name)
+			{
+			    case "int8":
+			    case "int16":
+			    case "int32":
+			    case "uint8":
+			    case "uint16":
+			    case "uint32":
+			        node.Add(ParseIntType(tokens));
+			        return node;
+			    case "register8":
+			    case "register16":
+			        node.Add(ParseRegisterType(tokens));
+			        return node;
+			    case "bool":
+			        node.Add(ParseBooleanType(tokens));
+			        return node;
+			    case "none":
+			        node.Add(ParseTerminal(tokens, "none"));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -323,6 +409,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseBitSelector(tokens));
 			        node.Add(ParseTerminal(tokens, "="));
 			        node.Add(ParseExpression(tokens));
+			        node.Add(ParseTerminal(tokens, "newline"));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -356,23 +443,7 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
-			    case "interrupt":
-			    case "int8":
-			    case "int16":
-			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
-			    case "bool":
-			    case "register8":
-			    case "register16":
-			    case "identifier":
-			    case "if":
-			    case "while":
-			    case "for":
 			    case "newline":
-			    case "eof":
-			    case "dedent":
 			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
@@ -573,23 +644,7 @@ namespace Compiler.Parsing
 			        return node;
 			    case ")":
 			    case "}":
-			    case "interrupt":
-			    case "int8":
-			    case "int16":
-			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
-			    case "bool":
-			    case "register8":
-			    case "register16":
-			    case "identifier":
-			    case "if":
-			    case "while":
-			    case "for":
 			    case "newline":
-			    case "eof":
-			    case "dedent":
 			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
@@ -632,23 +687,7 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
-			    case "interrupt":
-			    case "int8":
-			    case "int16":
-			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
-			    case "bool":
-			    case "register8":
-			    case "register16":
-			    case "identifier":
-			    case "if":
-			    case "while":
-			    case "for":
 			    case "newline":
-			    case "eof":
-			    case "dedent":
 			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
@@ -697,23 +736,7 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
-			    case "interrupt":
-			    case "int8":
-			    case "int16":
-			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
-			    case "bool":
-			    case "register8":
-			    case "register16":
-			    case "identifier":
-			    case "if":
-			    case "while":
-			    case "for":
 			    case "newline":
-			    case "eof":
-			    case "dedent":
 			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
@@ -774,23 +797,7 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
-			    case "interrupt":
-			    case "int8":
-			    case "int16":
-			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
-			    case "bool":
-			    case "register8":
-			    case "register16":
-			    case "identifier":
-			    case "if":
-			    case "while":
-			    case "for":
 			    case "newline":
-			    case "eof":
-			    case "dedent":
 			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
@@ -845,23 +852,7 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
-			    case "interrupt":
-			    case "int8":
-			    case "int16":
-			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
-			    case "bool":
-			    case "register8":
-			    case "register16":
-			    case "identifier":
-			    case "if":
-			    case "while":
-			    case "for":
 			    case "newline":
-			    case "eof":
-			    case "dedent":
 			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
@@ -923,23 +914,7 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
-			    case "interrupt":
-			    case "int8":
-			    case "int16":
-			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
-			    case "bool":
-			    case "register8":
-			    case "register16":
-			    case "identifier":
-			    case "if":
-			    case "while":
-			    case "for":
 			    case "newline":
-			    case "eof":
-			    case "dedent":
 			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
@@ -994,23 +969,7 @@ namespace Compiler.Parsing
 			    case "or":
 			    case ")":
 			    case "}":
-			    case "interrupt":
-			    case "int8":
-			    case "int16":
-			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
-			    case "bool":
-			    case "register8":
-			    case "register16":
-			    case "identifier":
-			    case "if":
-			    case "while":
-			    case "for":
 			    case "newline":
-			    case "eof":
-			    case "dedent":
 			    case "to":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
