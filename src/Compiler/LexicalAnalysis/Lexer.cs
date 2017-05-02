@@ -134,8 +134,6 @@ namespace Compiler.LexicalAnalysis
                 }
             }
 
-            
-
             while (indentationLevel.Peek() > 0)
             {
                 token = new Token
@@ -159,6 +157,18 @@ namespace Compiler.LexicalAnalysis
                 column += token.Value.Length;
                 yield return token;
             }
+
+            token = new Token
+            {
+                Name = "newline",
+                Value = match.Value,
+                Row = row,
+                Column = column
+            };
+            row++;
+            column = 0;
+            yield return token;
+
             yield return new Token {Name = "eof", Value = "", Row = row, Column = column};
         }
     }
