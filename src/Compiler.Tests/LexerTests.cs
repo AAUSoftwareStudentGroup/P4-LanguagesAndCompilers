@@ -18,6 +18,7 @@ namespace Compiler.Tests
 
         [TestMethod]
         // Test if each token generated from a test file generates tokens with correct names
+        // A newline is inserted after each scope
         public void TestForCorrectTokenGeneration()
         {
             // Initialise Lexer
@@ -27,16 +28,16 @@ namespace Compiler.Tests
             IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\testSourceFile.tang"));
 
             /*
-             * Assert that we have 25 tokens in testSourceFile.tang
+             * Assert that we have 26 tokens in testSourceFile.tang
              * intType identifier = IntLiteral
              * newLine
              * boolType identifier = boolLiteral
              * newLine
              * while ( identifier == boolLiteral )
-             * indent identifier = identifier + intLiteral
+             * indent identifier = identifier + intLiteral newLine
              * dedent newLine eof
              */
-            Assert.AreEqual(tokens.Count(), 25);
+            Assert.AreEqual(tokens.Count(), 26);
 
             // For safety measures, test at random places that the token is of correct name
             Assert.AreEqual(tokens.ElementAt(0).Name, "intType");

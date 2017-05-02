@@ -2035,7 +2035,7 @@ namespace Compiler.Translation.ProgramToAST
 				(Compiler.AST.Data.Node intExpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(primaryExpression[1] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 				if(intExpr != null && intExpr.Name == "IntegerExpression" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
 				{
-					return (new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, intExpr as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+					return (new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.IntegerParenthesisExpression(false) { new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, intExpr as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 				}
 			}
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 3 && primaryExpression[0] != null && primaryExpression[0].Name == "(" && true && primaryExpression[1] != null && primaryExpression[1].Name == "Expression" && true && primaryExpression[2] != null && primaryExpression[2].Name == ")" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
@@ -2043,7 +2043,7 @@ namespace Compiler.Translation.ProgramToAST
 				(Compiler.AST.Data.Node boolExpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(primaryExpression[1] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 				if(boolExpr != null && boolExpr.Name == "BooleanExpression" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
 				{
-					return (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, boolExpr as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+					return (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.BooleanParenthesisExpression(false) { new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, boolExpr as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 				}
 			}
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 2 && primaryExpression[0] != null && primaryExpression[0].Name == "!" && true && primaryExpression[1] != null && primaryExpression[1].Name == "PrimaryExpression" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
