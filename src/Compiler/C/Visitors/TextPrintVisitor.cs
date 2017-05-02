@@ -183,7 +183,7 @@ namespace Compiler.C.Visitors
 
         public override IEnumerable<string> Visit(ForStatement node)
         {
-            StringBuilder first = new StringBuilder("for ( ");
+            StringBuilder first = new StringBuilder("for (");
             foreach (var c in node.Skip(2).TakeWhile(t => t.Name != ")"))
             {
                 foreach (var str in c.Accept(this))
