@@ -17,6 +17,16 @@ namespace Compiler.Translation.SymbolTable.Visitors
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Function node)
+		{
+			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Parameters node)
+		{
+			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Type node)
 		{
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
