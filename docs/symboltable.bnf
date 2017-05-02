@@ -1,14 +1,20 @@
 SymbolTable -> Variables
 
 Variables -> Variable Variables
-           | EPSILON
+              | Function Variables
+              | EPSILON
 
 Variable -> Type identifier ParameterTypes
           | EPSILON
 
+Function -> Type identifier ( Parameters )
+
+Parameters -> none
+
 Type -> IntType
       | RegisterType
       | BooleanType
+      | none
 
 ParameterTypes -> Type ParameterTypes
                 | EPSILON
