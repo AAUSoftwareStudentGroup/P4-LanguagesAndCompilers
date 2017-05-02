@@ -16,7 +16,7 @@ namespace Compiler.C.Visitors
 
             foreach (var child in node)
             {
-                foreach (var str in child.Accept(this))
+                foreach (var str in child.Accept(this).Where(s => !string.IsNullOrWhiteSpace(s)))
                 {
                     if(!first)
                     {

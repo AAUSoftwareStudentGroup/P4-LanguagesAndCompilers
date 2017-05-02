@@ -1,7 +1,13 @@
-int8 i(int8 b2)
-    b2 = 7
+int8 b = 5
 
-int8 a
+int8 foo()
+    if(b == 10)
+        b = 0
+    int8 bar2 = 0
 
-int8 b(int8 q)
-    a = 0
+bool q = false
+
+int8 bar()
+    while(b > 0)
+        q = !(true or false)
+        b = b - 1

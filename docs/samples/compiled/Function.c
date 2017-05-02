@@ -1,15 +1,26 @@
-signed char i ( signed char b2 ) ;
-signed char a ;
-signed char b ( signed char q ) ;
+signed char b ;
+signed char foo ( ) ;
+unsigned char q ;
+signed char bar ( ) ;
 void main ( ) ;
-signed char i ( signed char b2 )
+signed char foo ( )
 {
-    b2 = 7 ;
+    if ( ( b == 10 ) )
+    {
+        b = 0 ;
+    }
+    bar2 = 0 ;
 }
-signed char b ( signed char q )
+signed char bar ( )
 {
-    a = 0 ;
+    while ( ( b > 0 ) )
+    {
+        q = ( ! ( ( 1 || 0 ) ) ) ;
+        b = ( b - 1 ) ;
+    }
 }
 void main ( )
 {
+    b = 5 ;
+    q = 0 ;
 }
