@@ -65,7 +65,7 @@ void main ( )
         }
 
         [TestMethod]
-        // Does not work yet, throws exception, as falseStatements goes into 2 tokens (false, identifier) instead of just (identifier)
+        // Does not work yet, since pow is not yet implemented
         public void Operators()
         {
             string tang = @"bool off = (true or false) and !true
@@ -83,9 +83,9 @@ void main ( )
 {
     off = ( ( ( 1 || 0 ) ) && ( ! 1 ) ) ;
     on = ( ( ( ( 43 - 1 ) ) == 42 ) ) ;
-    zero = ( ( ( ( 42 + 18 ) ) * ( ( 10 / 2 ) ) ) % 5 ) ;
-    hunna = ( 10 ^ 2 ) ;
-    falseStatements = ( ( ( hunna <= 101 ) ) && ( ( hunna >= 99) ) ) ;
+    zero = ( ( ( ( ( 42 + 18 ) ) * ( ( 10 / 2 ) ) ) ) % 5 ) ;
+    hunna = ( pow ( 2 , 2 ) );
+    falseStatements = ( ( ( hunna <= 101 ) ) && ( ( hunna >= 99 ) ) ) ;
 }";
 
             TangCompiler tc = new TangCompiler();

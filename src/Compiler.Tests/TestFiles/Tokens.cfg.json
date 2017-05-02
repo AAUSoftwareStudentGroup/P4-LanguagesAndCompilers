@@ -1,4 +1,4 @@
-[ //Dette er IKKE DEN RIGTIGE FIL, den, der ligger under docs er den rigtige.
+[ // Opdateret til, hvordan den anden .json-fil så ud 02/05
     {
         "Name": "lineComment",
         "PatternString": "//.*",
@@ -16,25 +16,68 @@
         "Ignore": true
     },
     {
-        "Name": "newLine",
+        "Name": "interrupt",
+        "PatternString": "interrupt"
+    },
+    {
+        "Name": "+",
+        "PatternString": "\\+"
+    },
+    {
+        "Name": "!=",
+        "PatternString": "!="
+    },
+    {
+        "Name": "!",
+        "PatternString": "\\!"
+    },
+
+    {
+        "Name": "%",
+        "PatternString": "\\%"
+    },
+
+    {
+        "Name": "^",
+        "PatternString": "\\^"
+    },
+
+    {
+        "Name": "-",
+        "PatternString": "\\-"
+    },
+    {
+        "Name": "*",
+        "PatternString": "\\*"
+    },
+    {
+        "Name": "/",
+        "PatternString": "\\/"
+    },
+    {
+        "Name": "(",
+        "PatternString": "\\("
+    },
+    {
+        "Name": ")",
+        "PatternString": "\\)"
+    },
+    {
+        "Name": "newline",
         "PatternString": "\\r?\\n[\\r\\n\\t ]+",
         "SingleLine": true
     },
     {
-        "Name": "intLiteral",
+        "Name": "numeral",
         "PatternString": "([+-]?(0|([1-9][0-9]*)))"
     },
     {
-        "Name": "boolLiteral",
-        "PatternString": "(true)|(false)"
+        "Name": "true",
+        "PatternString": "true"
     },
     {
-        "Name": "strLiteral",
-        "PatternString": "\"((\\\\\\\\)|(\\\\n)|(\\\\r)|(\\\\')|(\\\\\")|!|[#-&]|[\\(-\\[]|[\\]-~])*\""
-    },
-    {
-        "Name": "charLiteral",
-        "PatternString": "'((\\\\\\\\)|(\\\\n)|(\\\\r)|(\\\\')|(\\\\\")|!|[#-&]|[\\(-\\[]|[\\]-~])'"
+        "Name": "false",
+        "PatternString": "false"
     },
     {
         "Name": "if",
@@ -69,24 +112,44 @@
         "PatternString": "return"
     },
     {
-        "Name": "intType",
-        "PatternString": "(u?int(8|16|32))"
+        "Name": "int8",
+        "PatternString": "int8"
     },
     {
-        "Name": "registerType",
-        "PatternString": "register"
+        "Name": "int16",
+        "PatternString": "int16"
     },
     {
-        "Name": "booleanType",
+        "Name": "int32",
+        "PatternString": "int32"
+    },
+    {
+        "Name": "uint8",
+        "PatternString": "uint8"
+    },
+    {
+        "Name": "uint16",
+        "PatternString": "uint16"
+    },
+    {
+        "Name": "uint32",
+        "PatternString": "uint32"
+    },
+    {
+        "Name": "register8",
+        "PatternString": "register8"
+    },
+    {
+        "Name": "register16",
+        "PatternString": "register16"
+    },
+    {
+        "Name": "bool",
         "PatternString": "bool"
     },
     {
         "Name": "==",
         "PatternString": "=="
-    },
-    {
-        "Name": "!=",
-        "PatternString": "!="
     },
     {
         "Name": "<=",
@@ -109,36 +172,8 @@
         "PatternString": "="
     },
     {
-        "Name": "+",
-        "PatternString": "[\\+]"
-    },
-    {
-        "Name": "-",
-        "PatternString": "[\\-]"
-    },
-    {
-        "Name": "*",
-        "PatternString": "[\\*]"
-    },
-    {
-        "Name": "/",
-        "PatternString": "[\\/]"
-    },
-    {
-        "Name": "(",
-        "PatternString": "\\("
-    },
-    {
-        "Name": ")",
-        "PatternString": "\\)"
-    },
-    {
         "Name": ",",
         "PatternString": ","
-    },
-    {
-        "Name": "identifier",
-        "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
     },
     {
         "Name": "[",
@@ -167,26 +202,9 @@
     {
         "Name": "to",
         "PatternString": "to"
+    },
+    {
+        "Name": "identifier",
+        "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
     }
-    /*
--Number     -> Digit
--Digit      -> 1 | true | false
--If         -> if
--While      -> while
--And        -> and
--Or         -> or
--Compare    -> eq | != | < | > | <= | >=
--Identifier -> Char
--Char       -> a|f
--Indent     -> {
--Dedent     -> }
--NewLine    -> nl
--AddSubOpp  -> + | -
--MulDivOpp  -> * | /
--Assign     -> =
-SimpleType -> int | nothing
--StartDel   -> (
--EndDel     -> )
--SepOp      -> ,
-    */
 ]

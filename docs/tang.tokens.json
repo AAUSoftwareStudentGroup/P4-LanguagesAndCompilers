@@ -17,7 +17,7 @@
     },
     {
         "Name": "interrupt",
-        "PatternString": "interrupt"
+        "PatternString": "interrupt(?![a-zA-Z_0-9])"
     },
     {
         "Name": "+",
@@ -73,79 +73,79 @@
     },
     {
         "Name": "true",
-        "PatternString": "true"
+        "PatternString": "true(?![a-zA-Z_0-9])"
     },
     {
         "Name": "false",
-        "PatternString": "false"
+        "PatternString": "false(?![a-zA-Z_0-9])"
     },
     {
         "Name": "if",
-        "PatternString": "if"
+        "PatternString": "if(?![a-zA-Z_0-9])"
     },
     {
         "Name": "else",
-        "PatternString": "else"
+        "PatternString": "else(?![a-zA-Z_0-9])"
     },
     {
         "Name": "for",
-        "PatternString": "for"
+        "PatternString": "for(?![a-zA-Z_0-9])"
     },
     {
         "Name": "while",
-        "PatternString": "while"
+        "PatternString": "while(?![a-zA-Z_0-9])"
     },
     {
         "Name": "and",
-        "PatternString": "and"
+        "PatternString": "and(?![a-zA-Z_0-9])"
     },
     {
         "Name": "or",
-        "PatternString": "or"
+        "PatternString": "or(?![a-zA-Z_0-9])"
     },
     {
         "Name": "class",
-        "PatternString": "class"
+        "PatternString": "class(?![a-zA-Z_0-9])"
     },
     {
         "Name": "return",
-        "PatternString": "return"
+        "PatternString": "return(?![a-zA-Z_0-9])"
     },
     {
         "Name": "int8",
-        "PatternString": "int8"
+        "PatternString": "int8(?![a-zA-Z_0-9])"
     },
     {
         "Name": "int16",
-        "PatternString": "int16"
+        "PatternString": "int16(?![a-zA-Z_0-9])"
     },
     {
         "Name": "int32",
-        "PatternString": "int32"
+        "PatternString": "int32(?![a-zA-Z_0-9])"
     },
     {
         "Name": "uint8",
-        "PatternString": "uint8"
+        "PatternString": "uint8(?![a-zA-Z_0-9])"
     },
     {
         "Name": "uint16",
-        "PatternString": "uint16"
+        "PatternString": "uint16(?![a-zA-Z_0-9])"
     },
     {
         "Name": "uint32",
-        "PatternString": "uint32"
+        "PatternString": "uint32(?![a-zA-Z_0-9])"
     },
     {
         "Name": "register8",
-        "PatternString": "register8"
+        "PatternString": "register8(?![a-zA-Z_0-9])"
     },
     {
         "Name": "register16",
-        "PatternString": "register16"
+        "PatternString": "register16(?![a-zA-Z_0-9])"
     },
     {
         "Name": "bool",
-        "PatternString": "bool"
+        "PatternString": "bool(?![a-zA-Z_0-9])"
     },
     {
         "Name": "==",
@@ -197,11 +197,11 @@
     },
     {
         "Name": "from",
-        "PatternString": "from"
+        "PatternString": "from(?![a-zA-Z_0-9])"
     },
     {
         "Name": "to",
-        "PatternString": "to"
+        "PatternString": "to(?![a-zA-Z_0-9])"
     },
     {
         "Name": "identifier",
