@@ -27,25 +27,30 @@ namespace Compiler.Tests
             // Read from test file
             IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\testSourceFile.tang"));
 
+            foreach (var item in tokens)
+            {
+                Debug.WriteLine(item.Name);
+            }
+
             /*
              * Assert that we have 26 tokens in testSourceFile.tang
-             * intType identifier = IntLiteral
-             * newLine
-             * boolType identifier = boolLiteral
-             * newLine
-             * while ( identifier == boolLiteral )
-             * indent identifier = identifier + intLiteral newLine
+             * int16 identifier = numeral
+             * newline
+             * bool identifier = true
+             * newline
+             * while ( identifier == true )
+             * indent identifier = identifier + numeral newline
              * dedent newLine eof
              */
             Assert.AreEqual(tokens.Count(), 26);
 
             // For safety measures, test at random places that the token is of correct name
-            Assert.AreEqual(tokens.ElementAt(0).Name, "intType");
+            Assert.AreEqual(tokens.ElementAt(0).Name, "int16");
             Assert.AreEqual(tokens.ElementAt(4).Name, "newline");
             Assert.AreEqual(tokens.ElementAt(10).Name, "while");
             Assert.AreEqual(tokens.ElementAt(13).Name, "==");
             Assert.AreEqual(tokens.ElementAt(16).Name, "indent");
-            Assert.AreEqual(tokens.ElementAt(24).Name, "eof");
+            Assert.AreEqual(tokens.ElementAt(25).Name, "eof");
         }
 
         [TestMethod]
@@ -59,8 +64,11 @@ namespace Compiler.Tests
 
             Assert.AreEqual(tokens.ElementAt(0).Name, "==");
             Assert.AreEqual(tokens.ElementAt(1).Name, "=");
-            Assert.AreEqual(tokens.ElementAt(2).Name, "intLiteral");
+            Assert.AreEqual(tokens.ElementAt(2).Name, "numeral");
             Assert.AreEqual(tokens.ElementAt(3).Name, "identifier");
+            // All programs have a newline and eof token inserted at the end
+            Assert.AreEqual(tokens.ElementAt(4).Name, "newline");
+            Assert.AreEqual(tokens.ElementAt(5).Name, "eof");
         }
 
 
