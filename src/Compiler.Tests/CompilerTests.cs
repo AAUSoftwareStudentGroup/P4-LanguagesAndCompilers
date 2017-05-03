@@ -16,13 +16,6 @@ namespace Compiler.Tests
         // All expressions are put inside parentheses, e.g. a = a + 1 -> a = (a + 1)
         // Assume a space between each token
 
-
-        // Classes, functions, arrays
-        // no return or functions yet
-        // try to stop removing whitespace
-
-
-
         [TestMethod]
         // Method to test that each type is correctly translated from .tang to .c
         // bool in tang = unsigned char in c

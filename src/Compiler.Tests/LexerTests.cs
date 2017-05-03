@@ -27,11 +27,6 @@ namespace Compiler.Tests
             // Read from test file
             IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\testSourceFile.tang"));
 
-            foreach (var item in tokens)
-            {
-                Debug.WriteLine(item.Name);
-            }
-
             /*
              * Assert that we have 26 tokens in testSourceFile.tang
              * int16 identifier = numeral
