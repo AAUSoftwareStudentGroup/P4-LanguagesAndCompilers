@@ -71,6 +71,10 @@ namespace Compiler.C.Visitors
                     }
                     yield return string.Join(" ", res);
                     yield return "{";
+                    foreach (var item in node.Nodes<Declaration>()[0].Accept(this))
+                    {
+                        yield return $"    {item}";
+                    }
                     foreach (var item in node.Nodes<Statement>()[0].Accept(this))
                     {
                         yield return $"    {item}";

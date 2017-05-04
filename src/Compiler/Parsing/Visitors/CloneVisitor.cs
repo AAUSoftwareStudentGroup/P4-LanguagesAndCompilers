@@ -152,9 +152,19 @@ namespace Compiler.Parsing.Visitors
 			return clone;
 		}
 
-		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.Assignment node)
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.IdentifierStatement node)
 		{
-			var clone = new Compiler.Parsing.Data.Assignment() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.Parsing.Data.IdentifierStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.IdentifierStatementP node)
+		{
+			var clone = new Compiler.Parsing.Data.IdentifierStatementP() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -385,6 +395,36 @@ namespace Compiler.Parsing.Visitors
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.PrimaryExpression node)
 		{
 			var clone = new Compiler.Parsing.Data.PrimaryExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.IdentifierOperation node)
+		{
+			var clone = new Compiler.Parsing.Data.IdentifierOperation() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.ActualParameters node)
+		{
+			var clone = new Compiler.Parsing.Data.ActualParameters() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.ActualParametersP node)
+		{
+			var clone = new Compiler.Parsing.Data.ActualParametersP() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

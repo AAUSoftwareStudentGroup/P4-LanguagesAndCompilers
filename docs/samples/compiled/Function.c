@@ -1,26 +1,14 @@
-signed char b ;
-signed char foo ( ) ;
-unsigned char q ;
-signed char bar ( ) ;
+signed long fac ( signed char n ) ;
 void main ( ) ;
-signed char foo ( )
+signed long fac ( signed char n )
 {
-    if ( ( b == 10 ) )
+    unsigned long res ;
+    res = 1 ;
+    if ( ( n > 1 ) )
     {
-        b = 0 ;
-    }
-    bar2 = 0 ;
-}
-signed char bar ( )
-{
-    while ( ( b > 0 ) )
-    {
-        q = ( ! ( ( 1 || 0 ) ) ) ;
-        b = ( b - 1 ) ;
+        res = ( n * fac ( ( n - 1 ) ) ) ;
     }
 }
 void main ( )
 {
-    b = 5 ;
-    q = 0 ;
 }

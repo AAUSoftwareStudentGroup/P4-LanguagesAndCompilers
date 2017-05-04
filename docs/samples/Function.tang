@@ -1,13 +1,4 @@
-int8 b = 5
-
-int8 foo()
-    if(b == 10)
-        b = 0
-    int8 bar2 = 0
-
-bool q = false
-
-int8 bar()
-    while(b > 0)
-        q = !(true or false)
-        b = b - 1
+int32 fac(int8 n)
+    uint32 res = 1
+    if(n > 1)
+        res = n * fac(n - 1)

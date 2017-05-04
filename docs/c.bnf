@@ -9,13 +9,16 @@ Declaration -> CompoundDeclaration
 
 CompoundDeclaration -> Declaration Declaration
 
-FunctionPrototype -> Type symbol ( FormalParameter )
+FunctionPrototype -> Type identifier ( FormalParameter )
 
 Function -> CompoundFunction
-          | Type symbol ( FormalParameter ) { Declaration Statement }
+          | Type identifier ( FormalParameters ) { Declaration Statement }
           | EPSILON
 
 CompoundFunction -> Function Function
+
+FormalParameters -> FormalParameter
+                  | EPSILON
 
 FormalParameter -> Type identifier
                  | CompoundFormalParameter
@@ -43,6 +46,8 @@ Statement -> EPSILON
            | IfStatement 
            | IfElseStatement
            | WhileStatement
+           | ForStatement
+           | Call ;
 
 CompoundStatement -> Statement Statement
 
@@ -50,7 +55,7 @@ IntegerDeclaration -> IntType identifier
 
 IntegerDeclarationInit -> IntType identifier = IntegerExpression
 		   
-IntegerAssignment -> IntegerVariable = IntegerExpression
+IntegerAssignment -> identifier = IntegerExpression
 
 BooleanDeclaration -> BooleanType identifier
 
@@ -58,11 +63,11 @@ BooleanDeclarationInit -> BooleanType identifier = BooleanExpression
 
 BooleanType -> unsigned char
 
-BooleanAssignment -> BooleanVariable = BooleanExpression
+BooleanAssignment -> identifier = BooleanExpression
 
 DirectBitAssignment -> * ( RegisterType ) ( numeral ) = ( BooleanExpression ? ( ( * ( RegisterType ) ( numeral ) ) | 1 << ( IntegerExpression ) ) : ( ( * ( RegisterType ) ( numeral ) ) & ! ( 1 << ( IntegerExpression ) ) ) )
 
-IndirectBitAssignment -> * RegisterVariable = ( BooleanExpression ? ( ( * RegisterVariable ) | 1 << ( IntegerExpression ) ) : ( ( * RegisterVariable ) & ! ( 1 << ( IntegerExpression ) ) ) )
+IndirectBitAssignment -> * identifier = ( BooleanExpression ? ( ( * identifier ) | 1 << ( IntegerExpression ) ) : ( ( * identifier ) & ! ( 1 << ( IntegerExpression ) ) ) )
 
 RegisterDeclaration -> RegisterType identifier
 
@@ -71,14 +76,13 @@ RegisterDeclarationInit -> RegisterType identifier = RegisterExpression
 RegisterType -> volatile unsigned char *
               | volatile unsigned short *
 
-RegisterAssignment -> RegisterVariable = RegisterExpression
+RegisterAssignment -> identifier = RegisterExpression
 
 RegisterExpression -> RegisterLiteral
-					| RegisterVariable
+			  | identifier
+                    | Call
 
 RegisterLiteral -> * ( RegisterType ) ( numeral )
-
-RegisterVariable -> identifier
 
 IfStatement -> if ( BooleanExpression ) { Declarations Statement } 
 
@@ -88,6 +92,16 @@ WhileStatement -> while ( BooleanExpression ) { Declarations Statement }
 
 ForStatement -> for ( IntType identifier = IntegerExpression ; identifier <= IntegerExpression ; identifier ++ ) { Statement }
 
+Call -> identifier ( ActualParameters )
+
+ActualParameters -> ActualParameter
+                  | EPSILON
+
+ActualParameter -> IntegerExpression
+                 | BooleanExpression
+                 | RegisterExpression
+                 | CompoundActualParameter
+
 IntType -> signed char
          | signed int
          | signed long
@@ -95,7 +109,7 @@ IntType -> signed char
          | unsigned int
          | unsigned long
 
-IntegerExpression -> IntegerVariable   
+IntegerExpression -> identifier
                    | IntegerParenthesisExpression
                    | AddExpression
                    | SubExpression
@@ -104,8 +118,7 @@ IntegerExpression -> IntegerVariable
                    | ModExpression
                    | PowExpression
                    | numeral
-
-IntegerVariable -> identifier
+                   | Call
 
 IntegerParenthesisExpression -> ( IntegerExpression )        
 
@@ -124,7 +137,7 @@ PowExpression -> ( IntegerExpression * IntegerExpression )
 
 BooleanExpression -> 1 
                    | 0 
-				   | BooleanVariable
+			 | identifier
                    | DirectBitValue
                    | IndirectBitValue
                    | BooleanParenthesisExpression
@@ -139,12 +152,11 @@ BooleanExpression -> 1
                    | NotExpression 
                    | AndExpression 
                    | OrExpression
-
-BooleanVariable -> identifier
+                   | Call
 
 DirectBitValue -> ( ( * ( RegisterType ) ( numeral ) ) & ( 1 << ( IntegerExpression ) ) )
 
-IndirectBitValue -> ( * RegisterVariable & ( 1 << ( IntegerExpression ) ) )
+IndirectBitValue -> ( * identifier & ( 1 << ( IntegerExpression ) ) )
 
 BooleanParenthesisExpression -> ( BooleanExpression )
 
