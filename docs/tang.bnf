@@ -50,7 +50,6 @@ FormalParameter -> Type identifier
 Type -> IntType
       | RegisterType
       | BooleanType
-      | none
 
 IdentifierStatement -> identifier IdentifierStatementP
 

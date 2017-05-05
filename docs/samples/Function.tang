@@ -1,7 +1,11 @@
-fac(fac(3))
+int8 t(bool h)
+    if(h and bob())
+        return 2
 
-int32 fac(int8 n)
-    uint32 res = 1
-    if(n > 1)
-        res = n * fac(n - 1)
-    return res
+bool bob()
+    return true
+
+bool bob2()
+    return true
+
+t(bob() and !bob())

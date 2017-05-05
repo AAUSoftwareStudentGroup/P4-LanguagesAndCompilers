@@ -1,16 +1,23 @@
-signed long fac ( signed char n ) ;
+signed char t ( unsigned char h ) ;
+unsigned char bob ( ) ;
+unsigned char bob2 ( ) ;
 void main ( ) ;
-signed long fac ( signed char n )
+signed char t ( unsigned char h )
 {
-    unsigned long res ;
-    res = 1 ;
-    if ( ( n > 1 ) )
+    if ( ( h && bob ( ) ) )
     {
-        res = ( n * fac ( ( n - 1 ) ) ) ;
+        return 2 ;
     }
-    return res ;
+}
+unsigned char bob ( )
+{
+    return 1 ;
+}
+unsigned char bob2 ( )
+{
+    return 1 ;
 }
 void main ( )
 {
-    fac ( fac ( 3 ) ) ;
+    t ( ( bob ( ) && ( ! bob ( ) ) ) ) ;
 }

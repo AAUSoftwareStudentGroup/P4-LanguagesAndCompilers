@@ -365,7 +365,6 @@ namespace Compiler.Parsing
 			    case "register8":
 			    case "register16":
 			    case "bool":
-			    case "none":
 			        node.Add(ParseFormalParameter(tokens));
 			        node.Add(ParseFormalParametersP(tokens));
 			        return node;
@@ -409,7 +408,6 @@ namespace Compiler.Parsing
 			    case "register8":
 			    case "register16":
 			    case "bool":
-			    case "none":
 			        node.Add(ParseType(tokens));
 			        node.Add(ParseTerminal(tokens, "identifier"));
 			        return node;
@@ -437,9 +435,6 @@ namespace Compiler.Parsing
 			        return node;
 			    case "bool":
 			        node.Add(ParseBooleanType(tokens));
-			        return node;
-			    case "none":
-			        node.Add(ParseTerminal(tokens, "none"));
 			        return node;
 			    default:
 			        throw new Exception();

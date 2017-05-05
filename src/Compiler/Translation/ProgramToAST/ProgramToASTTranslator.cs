@@ -4,7 +4,7 @@ namespace Compiler.Translation.ProgramToAST
 	{
 		public int Translatep__program = 0;
 		public int Translates__identifier_symbolTable = 0;
-		public int Translates__identifier_declarations = 0;
+		public int Translates___return_declarations = 0;
 		public int Translatef__program_symbolTable = 0;
 		public int Translatef__globalStatements_symbolTable = 0;
 		public int Translatef__globalStatement_symbolTable = 0;
@@ -88,51 +88,93 @@ namespace Compiler.Translation.ProgramToAST
 					return dcl as Compiler.Translation.SymbolTable.Data.Declaration;
 				}
 			}
+			Compiler.Parsing.Data.Token _return = identifier;
+			if(_return != null && _return.Name == "return" && true && symbolTable != null && symbolTable.Name == "SymbolTable" && (symbolTable.Count == 1 && symbolTable[0] != null && symbolTable[0].Name == "Declarations" && true))
+			{
+				Compiler.Translation.SymbolTable.Data.Node dcl = Translates(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable[0] as Compiler.Translation.SymbolTable.Data.Declarations);
+				if(dcl != null && dcl.Name == "Declaration" && true)
+				{
+					return dcl as Compiler.Translation.SymbolTable.Data.Declaration;
+				}
+			}
 			throw new System.Exception();
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translates(Compiler.Parsing.Data.Token identifier, Compiler.Translation.SymbolTable.Data.Declarations declarations)
+		public Compiler.Translation.SymbolTable.Data.Node Translates(Compiler.Parsing.Data.Token _return, Compiler.Translation.SymbolTable.Data.Declarations declarations)
 		{
-			Translates__identifier_declarations++;
-			if(identifier != null && identifier.Name == "identifier" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
+			Translates___return_declarations++;
+			if(_return != null && _return.Name == "return" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 1 && declarations[0] != null && declarations[0].Name == "EPSILON" && true))
 			{
-				if(AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
-				{
-					return declarations[0] as Compiler.Translation.SymbolTable.Data.Declaration;
-				}
+				return new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
 			}
-			if(identifier != null && identifier.Name == "identifier" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
-			{
-				if(!AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
-				{
-					Compiler.Translation.SymbolTable.Data.Node dcl = Translates(identifier as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
-					if(dcl != null && dcl.Name == "Declaration" && true)
-					{
-						return dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-					}
-				}
-			}
-			if(identifier != null && identifier.Name == "identifier" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Function" && (declarations[0][0].Count == 3 && declarations[0][0][0] != null && declarations[0][0][0].Name == "ReturnType" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && true && declarations[0][0][2] != null && declarations[0][0][2].Name == "Parameters" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
-			{
-				if(AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
-				{
-					return declarations[0] as Compiler.Translation.SymbolTable.Data.Declaration;
-				}
-			}
-			if(identifier != null && identifier.Name == "identifier" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Function" && (declarations[0][0].Count == 3 && declarations[0][0][0] != null && declarations[0][0][0].Name == "ReturnType" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && true && declarations[0][0][2] != null && declarations[0][0][2].Name == "Parameters" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
-			{
-				if(!AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
-				{
-					Compiler.Translation.SymbolTable.Data.Node dcl = Translates(identifier as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
-					if(dcl != null && dcl.Name == "Declaration" && true)
-					{
-						return dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-					}
-				}
-			}
+			Compiler.Parsing.Data.Token identifier = _return;
 			if(identifier != null && identifier.Name == "identifier" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 1 && declarations[0] != null && declarations[0].Name == "EPSILON" && true))
 			{
 				return new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
+			}
+			if(identifier != null && identifier.Name == "identifier" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
+			{
+				if(AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
+				{
+					return declarations[0] as Compiler.Translation.SymbolTable.Data.Declaration;
+				}
+			}
+			if(identifier != null && identifier.Name == "identifier" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
+			{
+				if(!AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
+				{
+					Compiler.Translation.SymbolTable.Data.Node dcl = Translates(identifier as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
+					if(dcl != null && dcl.Name == "Declaration" && true)
+					{
+						return dcl as Compiler.Translation.SymbolTable.Data.Declaration;
+					}
+				}
+			}
+			if(identifier != null && identifier.Name == "identifier" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "return" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
+			{
+				Compiler.Translation.SymbolTable.Data.Node dcl = Translates(identifier as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
+				if(dcl != null && dcl.Name == "Declaration" && true)
+				{
+					return dcl as Compiler.Translation.SymbolTable.Data.Declaration;
+				}
+			}
+			if(identifier != null && identifier.Name == "identifier" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Function" && (declarations[0][0].Count == 3 && declarations[0][0][0] != null && declarations[0][0][0].Name == "ReturnType" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && true && declarations[0][0][2] != null && declarations[0][0][2].Name == "Parameters" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
+			{
+				if(AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
+				{
+					return declarations[0] as Compiler.Translation.SymbolTable.Data.Declaration;
+				}
+			}
+			if(identifier != null && identifier.Name == "identifier" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Function" && (declarations[0][0].Count == 3 && declarations[0][0][0] != null && declarations[0][0][0].Name == "ReturnType" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && true && declarations[0][0][2] != null && declarations[0][0][2].Name == "Parameters" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
+			{
+				if(!AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
+				{
+					Compiler.Translation.SymbolTable.Data.Node dcl = Translates(identifier as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
+					if(dcl != null && dcl.Name == "Declaration" && true)
+					{
+						return dcl as Compiler.Translation.SymbolTable.Data.Declaration;
+					}
+				}
+			}
+			if(_return != null && _return.Name == "return" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "return" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
+			{
+				return declarations[0] as Compiler.Translation.SymbolTable.Data.Declaration;
+			}
+			if(_return != null && _return.Name == "return" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
+			{
+				Compiler.Translation.SymbolTable.Data.Node dcl = Translates(_return as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
+				if(dcl != null && dcl.Name == "Declaration" && true)
+				{
+					return dcl as Compiler.Translation.SymbolTable.Data.Declaration;
+				}
+			}
+			if(_return != null && _return.Name == "return" && true && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Function" && (declarations[0][0].Count == 3 && declarations[0][0][0] != null && declarations[0][0][0].Name == "ReturnType" && true && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && true && declarations[0][0][2] != null && declarations[0][0][2].Name == "Parameters" && true)) && declarations[1] != null && declarations[1].Name == "Declarations" && true))
+			{
+				Compiler.Translation.SymbolTable.Data.Node dcl = Translates(_return as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
+				if(dcl != null && dcl.Name == "Declaration" && true)
+				{
+					return dcl as Compiler.Translation.SymbolTable.Data.Declaration;
+				}
 			}
 			throw new System.Exception();
 		}
@@ -293,8 +335,8 @@ namespace Compiler.Translation.ProgramToAST
 				Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 				if(declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON" && true))
 				{
-					Compiler.Translation.SymbolTable.Data.Node wat = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
-					if(wat != null && wat.Name == "IntType" && true)
+					Compiler.Translation.SymbolTable.Data.Node it = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
+					if(it != null && it.Name == "IntType" && true)
 					{
 						Compiler.Translation.SymbolTable.Data.Node id1 = Translateq(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 						if(id1 != null && id1.Name == "identifier" && true)
@@ -302,7 +344,7 @@ namespace Compiler.Translation.ProgramToAST
 							Compiler.Translation.SymbolTable.Data.Node p = Translateq(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters);
 							if(p != null && p.Name == "Parameters" && true)
 							{
-								return Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Function(false) { new Compiler.Translation.SymbolTable.Data.ReturnType(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { wat as Compiler.Translation.SymbolTable.Data.IntType } }, id1 as Compiler.Translation.SymbolTable.Data.Token, p as Compiler.Translation.SymbolTable.Data.Parameters } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable;
+								return Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Function(false) { new Compiler.Translation.SymbolTable.Data.ReturnType(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { it as Compiler.Translation.SymbolTable.Data.IntType } }, id1 as Compiler.Translation.SymbolTable.Data.Token, p as Compiler.Translation.SymbolTable.Data.Parameters } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable;
 							}
 						}
 					}
@@ -340,7 +382,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 				return symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
 			}
-			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "nothing" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 6 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "(" && true && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "FormalParameters" && true && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == ")" && true && identifierDeclaration[2][3] != null && identifierDeclaration[2][3].Name == "indent" && true && identifierDeclaration[2][4] != null && identifierDeclaration[2][4].Name == "Statements" && true && identifierDeclaration[2][5] != null && identifierDeclaration[2][5].Name == "dedent" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 8 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "nothing" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "(" && true && identifierDeclaration[3] != null && identifierDeclaration[3].Name == "FormalParameters" && true && identifierDeclaration[4] != null && identifierDeclaration[4].Name == ")" && true && identifierDeclaration[5] != null && identifierDeclaration[5].Name == "indent" && true && identifierDeclaration[6] != null && identifierDeclaration[6].Name == "Statements" && true && identifierDeclaration[7] != null && identifierDeclaration[7].Name == "dedent" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 				if(declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON" && true))
@@ -351,7 +393,7 @@ namespace Compiler.Translation.ProgramToAST
 						Compiler.Translation.SymbolTable.Data.Node id1 = Translateq(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 						if(id1 != null && id1.Name == "identifier" && true)
 						{
-							Compiler.Translation.SymbolTable.Data.Node p = Translateq(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters);
+							Compiler.Translation.SymbolTable.Data.Node p = Translateq(identifierDeclaration[3] as Compiler.Parsing.Data.FormalParameters);
 							if(p != null && p.Name == "Parameters" && true)
 							{
 								return Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Function(false) { new Compiler.Translation.SymbolTable.Data.ReturnType(false) { t as Compiler.Translation.SymbolTable.Data.Token }, id1 as Compiler.Translation.SymbolTable.Data.Token, p as Compiler.Translation.SymbolTable.Data.Parameters } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable;
@@ -754,8 +796,8 @@ namespace Compiler.Translation.ProgramToAST
 			Translate__returnStatement_symbolTable++;
 			if(returnStatement != null && returnStatement.Name == "ReturnStatement" && (returnStatement.Count == 3 && returnStatement[0] != null && returnStatement[0].Name == "return" && true && returnStatement[1] != null && returnStatement[1].Name == "Expression" && true && returnStatement[2] != null && returnStatement[2].Name == "newline" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
-				Compiler.Translation.SymbolTable.Data.Node declaration = Translates(new Compiler.Parsing.Data.Token() { Name = "identifier", Value = "identifier" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-				if(declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "IntType" && true) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && true)))
+				Compiler.Translation.SymbolTable.Data.Node declaration = Translates(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				if(declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "IntType" && true) && declaration[0][1] != null && declaration[0][1].Name == "return" && true)))
 				{
 					(Compiler.AST.Data.Node iret, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(returnStatement[1] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 					if(iret != null && iret.Name == "IntegerExpression" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
@@ -766,8 +808,8 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			if(returnStatement != null && returnStatement.Name == "ReturnStatement" && (returnStatement.Count == 3 && returnStatement[0] != null && returnStatement[0].Name == "return" && true && returnStatement[1] != null && returnStatement[1].Name == "Expression" && true && returnStatement[2] != null && returnStatement[2].Name == "newline" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
-				Compiler.Translation.SymbolTable.Data.Node declaration = Translates(new Compiler.Parsing.Data.Token() { Name = "identifier", Value = "identifier" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-				if(declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "BooleanType" && true) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && true)))
+				Compiler.Translation.SymbolTable.Data.Node declaration = Translates(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				if(declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "BooleanType" && true) && declaration[0][1] != null && declaration[0][1].Name == "return" && true)))
 				{
 					(Compiler.AST.Data.Node bret, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(returnStatement[1] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 					if(bret != null && bret.Name == "BooleanExpression" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
@@ -778,8 +820,8 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			if(returnStatement != null && returnStatement.Name == "ReturnStatement" && (returnStatement.Count == 3 && returnStatement[0] != null && returnStatement[0].Name == "return" && true && returnStatement[1] != null && returnStatement[1].Name == "Expression" && true && returnStatement[2] != null && returnStatement[2].Name == "newline" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
-				Compiler.Translation.SymbolTable.Data.Node declaration = Translates(new Compiler.Parsing.Data.Token() { Name = "identifier", Value = "identifier" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-				if(declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "RegisterType" && true) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && true)))
+				Compiler.Translation.SymbolTable.Data.Node declaration = Translates(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				if(declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "RegisterType" && true) && declaration[0][1] != null && declaration[0][1].Name == "return" && true)))
 				{
 					(Compiler.AST.Data.Node rret, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(returnStatement[1] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 					if(rret != null && rret.Name == "RegisterExpression" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
@@ -832,7 +874,7 @@ namespace Compiler.Translation.ProgramToAST
 							(Compiler.AST.Data.Node p, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 							if(p != null && p.Name == "FormalParameters" && true && s1 != null && s1.Name == "SymbolTable" && true)
 							{
-								(Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][4] as Compiler.Parsing.Data.Statements, Insert(s1 as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, new Compiler.Translation.SymbolTable.Data.Token() { Name = "identifier", Value = "identifier" } } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
+								(Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][4] as Compiler.Parsing.Data.Statements, Insert(s1 as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, new Compiler.Translation.SymbolTable.Data.Token() { Name = "return", Value = "return" } } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
 								if(stm1 != null && stm1.Name == "Statement" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
 								{
 									return (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.IntType }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
@@ -870,7 +912,7 @@ namespace Compiler.Translation.ProgramToAST
 					}
 				}
 			}
-			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "nothing" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 6 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "(" && true && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "FormalParameters" && true && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == ")" && true && identifierDeclaration[2][3] != null && identifierDeclaration[2][3].Name == "indent" && true && identifierDeclaration[2][4] != null && identifierDeclaration[2][4].Name == "Statements" && true && identifierDeclaration[2][5] != null && identifierDeclaration[2][5].Name == "dedent" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 8 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "nothing" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && true && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "(" && true && identifierDeclaration[3] != null && identifierDeclaration[3].Name == "FormalParameters" && true && identifierDeclaration[4] != null && identifierDeclaration[4].Name == ")" && true && identifierDeclaration[5] != null && identifierDeclaration[5].Name == "indent" && true && identifierDeclaration[6] != null && identifierDeclaration[6].Name == "Statements" && true && identifierDeclaration[7] != null && identifierDeclaration[7].Name == "dedent" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.Token);
 				if(t1 != null && t1.Name == "nothing" && true)
@@ -881,17 +923,13 @@ namespace Compiler.Translation.ProgramToAST
 						Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 						if(id1 != null && id1.Name == "identifier" && true)
 						{
-							Compiler.Translation.SymbolTable.Data.Node ret = Translateq(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" });
-							if(ret != null && ret.Name == "identifier" && true)
+							(Compiler.AST.Data.Node p, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(identifierDeclaration[3] as Compiler.Parsing.Data.FormalParameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+							if(p != null && p.Name == "FormalParameters" && true && s1 != null && s1.Name == "SymbolTable" && true)
 							{
-								(Compiler.AST.Data.Node p, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-								if(p != null && p.Name == "FormalParameters" && true && s1 != null && s1.Name == "SymbolTable" && true)
+								(Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[6] as Compiler.Parsing.Data.Statements, Insert(s1 as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.Token }, new Compiler.Translation.SymbolTable.Data.Token() { Name = "return", Value = "return" } } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
+								if(stm1 != null && stm1.Name == "Statement" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
 								{
-									(Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][4] as Compiler.Parsing.Data.Statements, Insert(s1 as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.Token }, ret as Compiler.Translation.SymbolTable.Data.Token }, new Compiler.Translation.SymbolTable.Data.Declarations(true) } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-									if(stm1 != null && stm1.Name == "Statement" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
-									{
-										return (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.Token }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-									}
+									return (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.Token }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 								}
 							}
 						}
@@ -906,17 +944,13 @@ namespace Compiler.Translation.ProgramToAST
 					Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 					if(id1 != null && id1.Name == "identifier" && true)
 					{
-						Compiler.Translation.SymbolTable.Data.Node ret = Translateq(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" });
-						if(ret != null && ret.Name == "identifier" && true)
+						(Compiler.AST.Data.Node p, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+						if(p != null && p.Name == "FormalParameters" && true && s1 != null && s1.Name == "SymbolTable" && true)
 						{
-							(Compiler.AST.Data.Node p, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-							if(p != null && p.Name == "FormalParameters" && true && s1 != null && s1.Name == "SymbolTable" && true)
+							(Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][4] as Compiler.Parsing.Data.Statements, Insert(s1 as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "t2", Value = "t2" } }, new Compiler.Translation.SymbolTable.Data.Token() { Name = "return", Value = "return" } } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
+							if(stm1 != null && stm1.Name == "Statement" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
 							{
-								(Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][4] as Compiler.Parsing.Data.Statements, Insert(s1 as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "t2", Value = "t2" } }, ret as Compiler.Translation.SymbolTable.Data.Token }, new Compiler.Translation.SymbolTable.Data.Declarations(true) } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-								if(stm1 != null && stm1.Name == "Statement" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
-								{
-									return (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.RegisterType }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-								}
+								return (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.RegisterType }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 							}
 						}
 					}
@@ -951,19 +985,23 @@ namespace Compiler.Translation.ProgramToAST
 				Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
 				if(t1 != null && t1.Name == "BooleanType" && true)
 				{
-					Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
-					if(id1 != null && id1.Name == "identifier" && true)
+					Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
+					if(t2 != null && t2.Name == "BooleanType" && true)
 					{
-						Compiler.Translation.SymbolTable.Data.Node ret = Translateq(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" });
-						if(ret != null && ret.Name == "identifier" && true)
+						Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+						if(id1 != null && id1.Name == "identifier" && true)
 						{
-							(Compiler.AST.Data.Node p, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-							if(p != null && p.Name == "FormalParameters" && true && s1 != null && s1.Name == "SymbolTable" && true)
+							Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+							if(id2 != null && id2.Name == "identifier" && true)
 							{
-								(Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][4] as Compiler.Parsing.Data.Statements, Insert(s1 as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "t2", Value = "t2" } }, ret as Compiler.Translation.SymbolTable.Data.Token }, new Compiler.Translation.SymbolTable.Data.Declarations(true) } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-								if(stm1 != null && stm1.Name == "Statement" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
+								(Compiler.AST.Data.Node p, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+								if(p != null && p.Name == "FormalParameters" && true && s1 != null && s1.Name == "SymbolTable" && true)
 								{
-									return (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.BooleanType }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+									(Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][4] as Compiler.Parsing.Data.Statements, Insert(s1 as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.BooleanType }, new Compiler.Translation.SymbolTable.Data.Token() { Name = "return", Value = "return" } } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
+									if(stm1 != null && stm1.Name == "Statement" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
+									{
+										return (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.BooleanType }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+									}
 								}
 							}
 						}
@@ -1409,6 +1447,22 @@ namespace Compiler.Translation.ProgramToAST
 				{
 					Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 					if(declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "Type" && (declaration[0][0][0].Count == 1 && declaration[0][0][0][0] != null && declaration[0][0][0][0].Name == "RegisterType" && true)) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && true && declaration[0][2] != null && declaration[0][2].Name == "Parameters" && true)))
+					{
+						Compiler.AST.Data.Node p2 = Translatet(identifierStatement[1][1] as Compiler.Parsing.Data.ActualParameters, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+						if(p2 != null && p2.Name == "ActualParameters" && true)
+						{
+							return (new Compiler.AST.Data.Call(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p2 as Compiler.AST.Data.ActualParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+						}
+					}
+				}
+			}
+			if(identifierStatement != null && identifierStatement.Name == "IdentifierStatement" && (identifierStatement.Count == 2 && identifierStatement[0] != null && identifierStatement[0].Name == "identifier" && true && identifierStatement[1] != null && identifierStatement[1].Name == "IdentifierStatementP" && (identifierStatement[1].Count == 3 && identifierStatement[1][0] != null && identifierStatement[1][0].Name == "(" && true && identifierStatement[1][1] != null && identifierStatement[1][1].Name == "ActualParameters" && true && identifierStatement[1][2] != null && identifierStatement[1][2].Name == ")" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			{
+				Compiler.AST.Data.Node id1 = Translatep(identifierStatement[0] as Compiler.Parsing.Data.Token);
+				if(id1 != null && id1.Name == "identifier" && true)
+				{
+					Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+					if(declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "nothing" && true) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && true && declaration[0][2] != null && declaration[0][2].Name == "Parameters" && true)))
 					{
 						Compiler.AST.Data.Node p2 = Translatet(identifierStatement[1][1] as Compiler.Parsing.Data.ActualParameters, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 						if(p2 != null && p2.Name == "ActualParameters" && true)
@@ -2480,7 +2534,7 @@ namespace Compiler.Translation.ProgramToAST
 			System.Console.WriteLine("___Translation methods calls___");
 			System.Console.WriteLine("Translatep__program: "+Translatep__program);
 			System.Console.WriteLine("Translates__identifier_symbolTable: "+Translates__identifier_symbolTable);
-			System.Console.WriteLine("Translates__identifier_declarations: "+Translates__identifier_declarations);
+			System.Console.WriteLine("Translates___return_declarations: "+Translates___return_declarations);
 			System.Console.WriteLine("Translatef__program_symbolTable: "+Translatef__program_symbolTable);
 			System.Console.WriteLine("Translatef__globalStatements_symbolTable: "+Translatef__globalStatements_symbolTable);
 			System.Console.WriteLine("Translatef__globalStatement_symbolTable: "+Translatef__globalStatement_symbolTable);

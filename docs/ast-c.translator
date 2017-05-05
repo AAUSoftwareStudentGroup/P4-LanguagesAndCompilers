@@ -35,7 +35,7 @@ AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration
     t -> Type:t1
     id -> identifier:id1
     p -> FormalParameters:p1
-    [stm dcl Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl1 Function[EPSILON] Statement:s1]
+    [stm Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl1 Function[EPSILON] Statement:s1]
 
 FormalParameters[EPSILON] -> FormalParameters[EPSILON]
 
@@ -93,9 +93,9 @@ CompoundFormalParameter[FormalParameter:p1 , FormalParameter:p2] -> CompoundForm
 [Statement[IntegerReturn:iret] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[iret1 ;]]]]
     iret -> IntegerReturn:iret1
 [Statement[BooleanReturn:bret] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[bret1 ;]]]]
-    iret -> BooleanReturn:bret1
+    bret -> BooleanReturn:bret1
 [Statement[RegisterReturn:rret] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[rret1 ;]]]]
-    iret -> RegisterReturn:rret1
+    rret -> RegisterReturn:rret1
 [Statement[Call:c] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[c1 ;]]]]
     c -> Call:c1
 
@@ -231,7 +231,7 @@ Type[RegisterType:t] -> Type[t1]
     t -> RegisterType:t1
 Type[BooleanType:t] -> Type[t1]
     t -> BooleanType:t1
-Type[nothing] -> Type[nothing]
+Type[nothing] -> Type[void]
 
 
 IntType[uint8] -> IntType[unsigned char]  
