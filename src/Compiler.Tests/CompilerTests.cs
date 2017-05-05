@@ -277,5 +277,15 @@ void main ( )
 
             Assert.AreEqual(c, cOutput);
         }
+
+        [TestMethod]
+        public void FuncReturnAndCallTest()
+        {
+
+        }
+
+        //test return, functions, and call of functions
+
+
     }
 }

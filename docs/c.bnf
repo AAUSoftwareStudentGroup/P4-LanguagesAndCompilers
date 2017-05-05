@@ -169,3 +169,20 @@ NotExpression -> ( ! BooleanExpression )
 AndExpression -> ( BooleanExpression && BooleanExpression )
 
 OrExpression -> ( BooleanExpression || BooleanExpression )
+
+ArrayEmpty -> Type identifier [ IntegerExpression ]
+
+ArrayNonEmptyNoSize -> Type identifier [ ] = [ Expressions ]
+
+Expressions -> IntExpressions
+            |  BoolExpressions
+
+IntExpressions -> IntegerExpression
+                | IntegerList
+
+BoolExpressions -> BooleanExpression
+                |  BooleanList
+
+IntegerList -> IntExpressions , IntExpressions
+
+BooleanList -> BoolExpressions , BoolExpressions

@@ -1,5 +1,5 @@
 AST -> GlobalStatement eof
-	 | eof
+   | eof
 
 GlobalStatement -> Interrupt
                  | Function
@@ -9,11 +9,6 @@ GlobalStatement -> Interrupt
 Interrupt -> interrupt ( numeral ) indent Statement dedent
 
 Function -> Type identifier ( FormalParameter ) indent Statement dedent
-
-Type -> IntType
-      | RegisterType
-      | BooleanType
-      | nothing
 
 FormalParameter -> Type identifier
                  | CompoundFormalParameter
@@ -26,6 +21,8 @@ Statement -> newline
            | EPSILON
            | CompoundStatement
            | IntegerDeclaration
+           | ArrayDeclaration
+           | ArrayDeclarationInit 
            | IntegerDeclarationInit
            | BooleanDeclaration
            | BooleanDeclarationInit
@@ -41,12 +38,30 @@ Statement -> newline
            | WhileStatement
            | ForStatement
 
+ArrayDeclaration -> Type [ numeral ] indentifier 
+
+ArrayDeclarationInit -> Type [ ] identifier = [ ExpressionList ]
+
+ExpressionList | IntegerExpressionList
+                | BooleanExpressionList
+
+IntegerExpressionList -> IntegerExpression 
+                | IntegerCompoundExpressionList
+
+BooleanExpressionList -> BooleanExpression 
+                | CompoundExpressionList
+
+IntegerCompoundExpressionList -> IntegerExpressionList , IntegerExpressionList
+
+BooleanCompoundExpressionList -> BooleanExpressionList , BooleanExpressionList
+
+
 CompoundStatement -> Statement newline Statement
 
 IntegerDeclaration -> IntType identifier
 
 IntegerDeclarationInit -> IntType identifier = IntegerExpression
-		   
+       
 IntegerAssignment -> IntegerVariable = IntegerExpression
 
 BooleanDeclaration -> BooleanType identifier
@@ -68,7 +83,7 @@ RegisterDeclarationInit -> RegisterType identifier = RegisterExpression
 RegisterAssignment -> RegisterVariable = RegisterExpression
 
 RegisterExpression -> RegisterLiteral
-					| RegisterVariable
+          | RegisterVariable
 
 RegisterLiteral -> RegisterType ( numeral )
 
@@ -77,7 +92,7 @@ RegisterVariable -> identifier
 IfStatement -> if ( BooleanExpression ) indent Statement dedent 
 
 IfElseStatement -> if ( BooleanExpression ) indent Statement dedent else indent Statement dedent
-		   
+       
 WhileStatement -> while ( BooleanExpression ) indent Statement dedent
 
 ForStatement -> for ( IntType identifier from IntegerExpression to IntegerExpression ) indent Statement dedent
@@ -117,7 +132,7 @@ PowExpression -> IntegerExpression ^ IntegerExpression
 
 BooleanExpression -> true 
                    | false 
-				   | BooleanVariable
+           | BooleanVariable
                    | DirectBitValue
                    | IndirectBitValue
                    | BooleanParenthesisExpression
