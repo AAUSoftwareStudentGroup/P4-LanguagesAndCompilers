@@ -1,26 +1,23 @@
-signed char b ;
-signed char foo ( ) ;
-unsigned char q ;
-signed char bar ( ) ;
+signed char t ( unsigned char h ) ;
+unsigned char bob ( ) ;
+unsigned char bob2 ( ) ;
 void main ( ) ;
-signed char foo ( )
+signed char t ( unsigned char h )
 {
-    if ( ( b == 10 ) )
+    if ( ( h && bob ( ) ) )
     {
-        b = 0 ;
+        return 2 ;
     }
-    bar2 = 0 ;
 }
-signed char bar ( )
+unsigned char bob ( )
 {
-    while ( ( b > 0 ) )
-    {
-        q = ( ! ( ( 1 || 0 ) ) ) ;
-        b = ( b - 1 ) ;
-    }
+    return 1 ;
+}
+unsigned char bob2 ( )
+{
+    return 1 ;
 }
 void main ( )
 {
-    b = 5 ;
-    q = 0 ;
+    t ( ( bob ( ) && ( ! bob ( ) ) ) ) ;
 }

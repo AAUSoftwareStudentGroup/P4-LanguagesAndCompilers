@@ -8,7 +8,15 @@ GlobalStatement -> Interrupt
 
 Interrupt -> interrupt ( numeral ) indent Statement dedent
 
-Function -> Type identifier ( FormalParameter ) indent Statement dedent
+Function -> Type identifier ( FormalParameters ) indent Statement dedent
+
+Type -> IntType
+      | RegisterType
+      | BooleanType
+      | nothing
+
+FormalParameters -> FormalParameter
+                  | EPSILON
 
 FormalParameter -> Type identifier
                  | CompoundFormalParameter
@@ -37,6 +45,10 @@ Statement -> newline
            | IfElseStatement 
            | WhileStatement
            | ForStatement
+           | Call
+           | IntegerReturn
+           | BooleanReturn
+           | RegisterReturn
 
 ArrayDeclaration -> Type [ numeral ] indentifier 
 
@@ -61,8 +73,8 @@ CompoundStatement -> Statement newline Statement
 IntegerDeclaration -> IntType identifier
 
 IntegerDeclarationInit -> IntType identifier = IntegerExpression
-       
-IntegerAssignment -> IntegerVariable = IntegerExpression
+
+IntegerAssignment -> identifier = IntegerExpression
 
 BooleanDeclaration -> BooleanType identifier
 
@@ -70,24 +82,23 @@ BooleanDeclarationInit -> BooleanType identifier = BooleanExpression
 
 BooleanType -> bool
 
-BooleanAssignment -> BooleanVariable = BooleanExpression
+BooleanAssignment -> identifier = BooleanExpression
 
 DirectBitAssignment -> RegisterType ( numeral ) { IntegerExpression } = BooleanExpression
 
-IndirectBitAssignment -> RegisterVariable { IntegerExpression } = BooleanExpression
+IndirectBitAssignment -> identifier { IntegerExpression } = BooleanExpression
 
 RegisterDeclaration -> RegisterType identifier
 
 RegisterDeclarationInit -> RegisterType identifier = RegisterExpression
 
-RegisterAssignment -> RegisterVariable = RegisterExpression
+RegisterAssignment -> identifier = RegisterExpression
 
 RegisterExpression -> RegisterLiteral
-          | RegisterVariable
+			              | identifier
+                    | Call
 
 RegisterLiteral -> RegisterType ( numeral )
-
-RegisterVariable -> identifier
 
 IfStatement -> if ( BooleanExpression ) indent Statement dedent 
 
@@ -97,6 +108,24 @@ WhileStatement -> while ( BooleanExpression ) indent Statement dedent
 
 ForStatement -> for ( IntType identifier from IntegerExpression to IntegerExpression ) indent Statement dedent
 
+Call -> identifier ( ActualParameters )
+
+IntegerReturn -> return IntegerExpression
+
+BooleanReturn -> return BooleanExpression
+
+RegisterReturn -> return RegisterExpression
+
+ActualParameters -> ActualParameter
+                  | EPSILON
+
+ActualParameter -> IntegerExpression
+                 | BooleanExpression
+                 | RegisterExpression
+                 | CompoundActualParameter
+
+CompoundActualParameter -> ActualParameter , ActualParameter
+
 IntType -> int8
          | int16
          | int32
@@ -104,7 +133,8 @@ IntType -> int8
          | uint16
          | uint32
 
-IntegerExpression -> IntegerVariable   
+IntegerExpression -> identifier 
+                   | numeral
                    | IntegerParenthesisExpression
                    | AddExpression
                    | SubExpression
@@ -112,9 +142,7 @@ IntegerExpression -> IntegerVariable
                    | DivExpression 
                    | ModExpression
                    | PowExpression
-                   | numeral
-
-IntegerVariable -> identifier
+                   | Call
 
 IntegerParenthesisExpression -> ( IntegerExpression )        
 
@@ -132,7 +160,7 @@ PowExpression -> IntegerExpression ^ IntegerExpression
 
 BooleanExpression -> true 
                    | false 
-           | BooleanVariable
+			             | identifier
                    | DirectBitValue
                    | IndirectBitValue
                    | BooleanParenthesisExpression
@@ -147,15 +175,14 @@ BooleanExpression -> true
                    | NotExpression 
                    | AndExpression 
                    | OrExpression
-
-BooleanVariable -> identifier
+                   | Call
 
 DirectBitValue -> RegisterType ( numeral ) { IntegerExpression }
 
 RegisterType -> register8
               | register16
 
-IndirectBitValue -> RegisterVariable { IntegerExpression }
+IndirectBitValue -> identifier { IntegerExpression }
 
 BooleanParenthesisExpression -> ( BooleanExpression )
 

@@ -27,6 +27,11 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.AST.Data.FormalParameters node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.AST.Data.FormalParameter node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
@@ -122,11 +127,6 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.AST.Data.RegisterVariable node)
-		{
-			return Visit((Compiler.AST.Data.Node)node);
-		}
-
 		public virtual T Visit(Compiler.AST.Data.IfStatement node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
@@ -147,17 +147,47 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.AST.Data.Call node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.IntegerReturn node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.BooleanReturn node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.RegisterReturn node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.ActualParameters node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.ActualParameter node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.CompoundActualParameter node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.AST.Data.IntType node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
 		public virtual T Visit(Compiler.AST.Data.IntegerExpression node)
-		{
-			return Visit((Compiler.AST.Data.Node)node);
-		}
-
-		public virtual T Visit(Compiler.AST.Data.IntegerVariable node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
@@ -198,11 +228,6 @@ namespace Compiler.AST.Visitors
 		}
 
 		public virtual T Visit(Compiler.AST.Data.BooleanExpression node)
-		{
-			return Visit((Compiler.AST.Data.Node)node);
-		}
-
-		public virtual T Visit(Compiler.AST.Data.BooleanVariable node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}

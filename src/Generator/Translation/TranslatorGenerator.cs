@@ -300,6 +300,15 @@ namespace Generator.Translation
 
                     if (exisitingMethod != null)
                     {
+                        for (int i = 0; i < exisitingMethod.Parameters.Count; i++)
+                        {
+                            ParameterType p1 = exisitingMethod.Parameters[i];
+                            ParameterType p2 = method.Parameters[i];
+                            if (p1.Type.Contains("Token") && p1.Identifier != p2.Identifier && !exisitingMethod.Body.Contains($"{p2.Type} {p2.Identifier} = {p1.Identifier};"))
+                            {
+                                exisitingMethod.Body.Add($"{p2.Type} {p2.Identifier} = {p1.Identifier};");
+                            }
+                        }
                         foreach (var statement in method.Body)
                         {
                             exisitingMethod.Body.Add(statement);
@@ -549,6 +558,10 @@ namespace Generator.Translation
             Name name = treePattern.Nodes<Name>()[0];
             string type = GetName(name);
             string identifier = string.Join("", type.Take(1)).ToLower() + string.Join("", type.Skip(1));
+            if(identifier == "return")
+            {
+                identifier = "_" + identifier;
+            }
             var alias = treePattern.Nodes<Alias>()[0];
             string aliasStr = "";
 

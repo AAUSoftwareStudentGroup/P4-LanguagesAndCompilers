@@ -8,17 +8,20 @@ Declaration -> Variable
              | EPSILON
 
 Variable -> Type identifier
+          | Type returnId
 
-Function -> ReturnType identifier ( Parameter )
+Function -> ReturnType identifier ( Parameters )
 
 ReturnType -> nothing
             | Type
 
-Parameter -> Type identifier
-           | CompoundParameter
-           | EPSILON
+Parameters -> Parameter ParametersP
+            | EPSILON
 
-CompoundParameter -> Parameter , Parameter
+ParametersP -> , Parameter ParametersP
+             | EPSILON
+
+Parameter -> Type identifier
 
 Type -> IntType
       | RegisterType

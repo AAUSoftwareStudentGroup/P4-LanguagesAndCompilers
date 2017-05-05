@@ -32,12 +32,17 @@ namespace Compiler.Translation.SymbolTable.Visitors
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Parameter node)
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Parameters node)
 		{
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.Translation.SymbolTable.Data.CompoundParameter node)
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.ParametersP node)
+		{
+			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Translation.SymbolTable.Data.Parameter node)
 		{
 			return Visit((Compiler.Translation.SymbolTable.Data.Node)node);
 		}

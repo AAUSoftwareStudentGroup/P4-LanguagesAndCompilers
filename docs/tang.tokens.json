@@ -108,6 +108,10 @@
         "PatternString": "class(?![a-zA-Z_0-9])"
     },
     {
+        "Name": "nothing",
+        "PatternString": "nothing"
+    },
+    {
         "Name": "return",
         "PatternString": "return(?![a-zA-Z_0-9])"
     },

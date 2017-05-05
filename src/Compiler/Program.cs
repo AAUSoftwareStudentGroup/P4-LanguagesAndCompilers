@@ -8,7 +8,6 @@ namespace Compiler
 {
     public class Program
     {
-        string[] args;
         public static void Main(string[] args)
         {
             DateTime t1 = DateTime.Now;

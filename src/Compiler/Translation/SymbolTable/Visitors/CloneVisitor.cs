@@ -62,9 +62,9 @@ namespace Compiler.Translation.SymbolTable.Visitors
 			return clone;
 		}
 
-		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.Parameter node)
+		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.Parameters node)
 		{
-			var clone = new Compiler.Translation.SymbolTable.Data.Parameter() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.Translation.SymbolTable.Data.Parameters() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -72,9 +72,19 @@ namespace Compiler.Translation.SymbolTable.Visitors
 			return clone;
 		}
 
-		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.CompoundParameter node)
+		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.ParametersP node)
 		{
-			var clone = new Compiler.Translation.SymbolTable.Data.CompoundParameter() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			var clone = new Compiler.Translation.SymbolTable.Data.ParametersP() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.Parameter node)
+		{
+			var clone = new Compiler.Translation.SymbolTable.Data.Parameter() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

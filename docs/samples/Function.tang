@@ -1,13 +1,11 @@
-int8 b = 5
+int8 t(bool h)
+    if(h and bob())
+        return 2
 
-int8 foo()
-    if(b == 10)
-        b = 0
-    int8 bar2 = 0
+bool bob()
+    return true
 
-bool q = false
+bool bob2()
+    return true
 
-int8 bar()
-    while(b > 0)
-        q = !(true or false)
-        b = b - 1
+t(bob() and !bob())

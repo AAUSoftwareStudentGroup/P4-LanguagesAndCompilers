@@ -46,7 +46,7 @@ DefinitionAssign -> Expression newline
                  | [ ExpressionList ]
  
 ReturnStatement -> return Expression newline
- 
+
 FormalParameters -> FormalParameter FormalParametersP
                   | EPSILON
  
@@ -58,13 +58,12 @@ FormalParameter -> Type identifier
 Type -> IntType
       | RegisterType
       | BooleanType
-      | none
- 
+
 IdentifierStatement -> identifier IdentifierStatementP
  
 IdentifierStatementP -> BitSelector = Expression newline
                       | ( ExpressionList )
- 
+
 BitSelector -> { Expression }
              | EPSILON
  
@@ -130,7 +129,7 @@ PrimaryExpression -> numeral
                    | RegisterType ( Expression ) BitSelector
                    | true
                    | false
- 
+
 IdentifierOperation -> BitSelector
                      | ( ExpressionList )
 ExpressionList -> Expression ExpressionListP
