@@ -44,6 +44,9 @@ Statement -> newline
            | WhileStatement
            | ForStatement
            | Call
+           | IntegerReturn
+           | BooleanReturn
+           | RegisterReturn
 
 CompoundStatement -> Statement newline Statement
 
@@ -86,6 +89,12 @@ WhileStatement -> while ( BooleanExpression ) indent Statement dedent
 ForStatement -> for ( IntType identifier from IntegerExpression to IntegerExpression ) indent Statement dedent
 
 Call -> identifier ( ActualParameters )
+
+IntegerReturn -> return IntegerExpression
+
+BooleanReturn -> return BooleanExpression
+
+RegisterReturn -> return RegisterExpression
 
 ActualParameters -> ActualParameter
                   | EPSILON

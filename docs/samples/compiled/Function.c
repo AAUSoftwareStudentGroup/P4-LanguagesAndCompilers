@@ -8,7 +8,9 @@ signed long fac ( signed char n )
     {
         res = ( n * fac ( ( n - 1 ) ) ) ;
     }
+    return res ;
 }
 void main ( )
 {
+    fac ( fac ( 3 ) ) ;
 }

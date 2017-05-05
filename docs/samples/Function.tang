@@ -1,4 +1,7 @@
+fac(fac(3))
+
 int32 fac(int8 n)
     uint32 res = 1
     if(n > 1)
         res = n * fac(n - 1)
+    return res

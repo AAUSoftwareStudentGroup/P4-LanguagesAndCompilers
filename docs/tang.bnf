@@ -18,6 +18,7 @@ Statement -> IdentifierDeclaration
            | IfStatement
            | WhileStatement
            | ForStatement
+           | ReturnStatement
            | newline
 
 IdentifierDeclaration -> IntType identifier Definition
@@ -35,6 +36,8 @@ RegisterOperation -> ( Expression ) { Expression } = Expression newline
 Definition -> = Expression newline
             | ( FormalParameters ) indent Statements dedent
             | newline
+
+ReturnStatement -> return Expression newline
 
 FormalParameters -> FormalParameter FormalParametersP
                   | EPSILON

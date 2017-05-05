@@ -45,6 +45,7 @@ namespace Compiler.Parsing
 			    case "if":
 			    case "while":
 			    case "for":
+			    case "return":
 			    case "newline":
 			    case "eof":
 			        node.Add(ParseGlobalStatements(tokens));
@@ -76,6 +77,7 @@ namespace Compiler.Parsing
 			    case "if":
 			    case "while":
 			    case "for":
+			    case "return":
 			    case "newline":
 			        node.Add(ParseGlobalStatement(tokens));
 			        node.Add(ParseGlobalStatements(tokens));
@@ -111,6 +113,7 @@ namespace Compiler.Parsing
 			    case "if":
 			    case "while":
 			    case "for":
+			    case "return":
 			    case "newline":
 			        node.Add(ParseStatement(tokens));
 			        return node;
@@ -158,6 +161,7 @@ namespace Compiler.Parsing
 			    case "if":
 			    case "while":
 			    case "for":
+			    case "return":
 			    case "newline":
 			        node.Add(ParseStatement(tokens));
 			        node.Add(ParseStatements(tokens));
@@ -203,6 +207,9 @@ namespace Compiler.Parsing
 			        return node;
 			    case "for":
 			        node.Add(ParseForStatement(tokens));
+			        return node;
+			    case "return":
+			        node.Add(ParseReturnStatement(tokens));
 			        return node;
 			    case "newline":
 			        node.Add(ParseTerminal(tokens, "newline"));
@@ -322,6 +329,21 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "dedent"));
 			        return node;
 			    case "newline":
+			        node.Add(ParseTerminal(tokens, "newline"));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.ReturnStatement ParseReturnStatement(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.ReturnStatement node = new Compiler.Parsing.Data.ReturnStatement(){ Name = "ReturnStatement" };
+			switch(tokens.Current.Name)
+			{
+			    case "return":
+			        node.Add(ParseTerminal(tokens, "return"));
+			        node.Add(ParseExpression(tokens));
 			        node.Add(ParseTerminal(tokens, "newline"));
 			        return node;
 			    default:
@@ -544,6 +566,7 @@ namespace Compiler.Parsing
 			    case "if":
 			    case "while":
 			    case "for":
+			    case "return":
 			    case "newline":
 			    case "eof":
 			    case "dedent":

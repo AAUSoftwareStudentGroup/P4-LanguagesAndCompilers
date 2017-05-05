@@ -162,6 +162,21 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.C.Data.IntegerReturn node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.BooleanReturn node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.RegisterReturn node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.C.Data.ActualParameters node)
 		{
 			return Visit((Compiler.C.Data.Node)node);

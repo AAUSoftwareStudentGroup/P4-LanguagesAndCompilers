@@ -48,6 +48,9 @@ Statement -> EPSILON
            | WhileStatement
            | ForStatement
            | Call ;
+           | IntegerReturn ;
+           | BooleanReturn ;
+           | RegisterReturn ;
 
 CompoundStatement -> Statement Statement
 
@@ -93,6 +96,12 @@ WhileStatement -> while ( BooleanExpression ) { Declarations Statement }
 ForStatement -> for ( IntType identifier = IntegerExpression ; identifier <= IntegerExpression ; identifier ++ ) { Statement }
 
 Call -> identifier ( ActualParameters )
+
+IntegerReturn -> return IntegerExpression
+
+BooleanReturn -> return BooleanExpression
+
+RegisterReturn -> return RegisterExpression
 
 ActualParameters -> ActualParameter
                   | EPSILON

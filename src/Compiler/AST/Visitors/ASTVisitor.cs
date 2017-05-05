@@ -152,6 +152,21 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.AST.Data.IntegerReturn node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.BooleanReturn node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.RegisterReturn node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.AST.Data.ActualParameters node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);

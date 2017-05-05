@@ -302,6 +302,36 @@ namespace Compiler.AST.Visitors
 			return clone;
 		}
 
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.IntegerReturn node)
+		{
+			var clone = new Compiler.AST.Data.IntegerReturn() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.BooleanReturn node)
+		{
+			var clone = new Compiler.AST.Data.BooleanReturn() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.RegisterReturn node)
+		{
+			var clone = new Compiler.AST.Data.RegisterReturn() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.ActualParameters node)
 		{
 			var clone = new Compiler.AST.Data.ActualParameters() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };

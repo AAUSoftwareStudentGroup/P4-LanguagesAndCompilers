@@ -90,6 +90,12 @@ CompoundFormalParameter[FormalParameter:p1 , FormalParameter:p2] -> CompoundForm
     [s dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
 [Statement[ForStatement:s] Declaration:dcl Function:f Statement:si] ->:a [dcl2 f2 si2]
     [s dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
+[Statement[IntegerReturn:iret] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[iret1 ;]]]]
+    iret -> IntegerReturn:iret1
+[Statement[BooleanReturn:bret] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[bret1 ;]]]]
+    iret -> BooleanReturn:bret1
+[Statement[RegisterReturn:rret] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[rret1 ;]]]]
+    iret -> RegisterReturn:rret1
 [Statement[Call:c] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[c1 ;]]]]
     c -> Call:c1
 
@@ -162,6 +168,15 @@ RegisterExpression[identifier:id] -> RegisterExpression[id1]
 
 RegisterExpression[Call:s] -> RegisterExpression[s1]
     s -> Call:s1
+
+IntegerReturn[return IntegerExpression:expr] -> IntegerReturn[return iexpr]
+    expr -> IntegerExpression:iexpr
+
+BooleanReturn[return BooleanExpression:expr] -> BooleanReturn[return bexpr]
+    expr -> BooleanExpression:bexpr
+
+RegisterReturn[return RegisterExpression:expr] -> RegisterReturn[return rexpr]
+    expr -> RegisterExpression:rexpr
 
 Call[identifier:id ( ActualParameters:p )] -> Call[id1 ( p1 )]
     id -> identifier:id1
