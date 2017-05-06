@@ -469,7 +469,7 @@ namespace Compiler.Parsing
 			        return node;
 			    case "(":
 			        node.Add(ParseTerminal(tokens, "("));
-			        node.Add(ParseActualParameters(tokens));
+			        node.Add(ParseExpressionList(tokens));
 			        node.Add(ParseTerminal(tokens, ")"));
 			        return node;
 			    default:
@@ -1119,7 +1119,7 @@ namespace Compiler.Parsing
 			        return node;
 			    case "(":
 			        node.Add(ParseTerminal(tokens, "("));
-			        node.Add(ParseActualParameters(tokens));
+			        node.Add(ParseExpressionList(tokens));
 			        node.Add(ParseTerminal(tokens, ")"));
 			        return node;
 			    default:
@@ -1127,9 +1127,9 @@ namespace Compiler.Parsing
 			}
 		}
 
-		public Compiler.Parsing.Data.ActualParameters ParseActualParameters(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		public Compiler.Parsing.Data.ExpressionList ParseExpressionList(IEnumerator<Compiler.Parsing.Data.Token> tokens)
 		{
-			Compiler.Parsing.Data.ActualParameters node = new Compiler.Parsing.Data.ActualParameters(){ Name = "ActualParameters" };
+			Compiler.Parsing.Data.ExpressionList node = new Compiler.Parsing.Data.ExpressionList(){ Name = "ExpressionList" };
 			switch(tokens.Current.Name)
 			{
 			    case "numeral":
@@ -1141,7 +1141,7 @@ namespace Compiler.Parsing
 			    case "true":
 			    case "false":
 			        node.Add(ParseExpression(tokens));
-			        node.Add(ParseActualParametersP(tokens));
+			        node.Add(ParseExpressionListP(tokens));
 			        return node;
 			    case ")":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
@@ -1151,15 +1151,15 @@ namespace Compiler.Parsing
 			}
 		}
 
-		public Compiler.Parsing.Data.ActualParametersP ParseActualParametersP(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		public Compiler.Parsing.Data.ExpressionListP ParseExpressionListP(IEnumerator<Compiler.Parsing.Data.Token> tokens)
 		{
-			Compiler.Parsing.Data.ActualParametersP node = new Compiler.Parsing.Data.ActualParametersP(){ Name = "ActualParametersP" };
+			Compiler.Parsing.Data.ExpressionListP node = new Compiler.Parsing.Data.ExpressionListP(){ Name = "ExpressionListP" };
 			switch(tokens.Current.Name)
 			{
 			    case ",":
 			        node.Add(ParseTerminal(tokens, ","));
 			        node.Add(ParseExpression(tokens));
-			        node.Add(ParseActualParametersP(tokens));
+			        node.Add(ParseExpressionListP(tokens));
 			        return node;
 			    case ")":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));

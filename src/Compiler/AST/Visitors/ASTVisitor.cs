@@ -167,17 +167,17 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.AST.Data.ActualParameters node)
+		public virtual T Visit(Compiler.AST.Data.ExpressionList node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.AST.Data.ActualParameter node)
+		public virtual T Visit(Compiler.AST.Data.ExpressionListArgs node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.AST.Data.CompoundActualParameter node)
+		public virtual T Visit(Compiler.AST.Data.CompoundArgs node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
