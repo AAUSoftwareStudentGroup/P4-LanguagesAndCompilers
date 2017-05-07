@@ -72,6 +72,26 @@ namespace Compiler.Parsing.Visitors
 			return clone;
 		}
 
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.Array node)
+		{
+			var clone = new Compiler.Parsing.Data.Array() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.ArrayP node)
+		{
+			var clone = new Compiler.Parsing.Data.ArrayP() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.RegisterStatement node)
 		{
 			var clone = new Compiler.Parsing.Data.RegisterStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -105,6 +125,16 @@ namespace Compiler.Parsing.Visitors
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.Definition node)
 		{
 			var clone = new Compiler.Parsing.Data.Definition() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.DefinitionAssign node)
+		{
+			var clone = new Compiler.Parsing.Data.DefinitionAssign() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
