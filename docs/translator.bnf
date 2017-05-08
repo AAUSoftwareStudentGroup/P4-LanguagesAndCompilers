@@ -69,7 +69,7 @@ Patterns -> TreePattern Patterns
           | EPSILON
 
 Structure -> ListStructure
-		   | TreeStructure
+           | TreeStructure
 
 ListStructure -> [ Structures ]
 
