@@ -72,6 +72,21 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.C.Data.IntegerArrayInit node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.IntegerExpressionListArgs node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.IntegerCompoundArgs node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.C.Data.IntegerAssignment node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
@@ -183,6 +198,11 @@ namespace Compiler.C.Visitors
 		}
 
 		public virtual T Visit(Compiler.C.Data.ExpressionListArgs node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.CompoundArgs node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
@@ -312,27 +332,12 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.IntegerArrayInit node)
-		{
-			return Visit((Compiler.C.Data.Node)node);
-		}
-
 		public virtual T Visit(Compiler.C.Data.BooleanArray node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.BooleanArrayInit node)
-		{
-			return Visit((Compiler.C.Data.Node)node);
-		}
-
 		public virtual T Visit(Compiler.C.Data.RegisterArray node)
-		{
-			return Visit((Compiler.C.Data.Node)node);
-		}
-
-		public virtual T Visit(Compiler.C.Data.RegisterArrayInit node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}

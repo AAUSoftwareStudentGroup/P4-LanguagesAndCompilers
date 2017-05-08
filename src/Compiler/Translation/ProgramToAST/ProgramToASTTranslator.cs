@@ -25,6 +25,8 @@ namespace Compiler.Translation.ProgramToAST
 		public int Translate__statement_symbolTable = 0;
 		public int Translate__returnStatement_symbolTable = 0;
 		public int Translate__identifierDeclaration_symbolTable = 0;
+		public int Translate__expressionList_symbolTable = 0;
+		public int Translate__expressionListP_symbolTable = 0;
 		public int Translate__formalParameters_symbolTable = 0;
 		public int Translate__formalParametersP_symbolTable = 0;
 		public int Translate__formalParameter_symbolTable = 0;
@@ -330,6 +332,10 @@ namespace Compiler.Translation.ProgramToAST
 			{
 				return symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
 			}
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 4 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "Array" && (identifierDeclaration[1].Count == 1 && identifierDeclaration[1][0] != null && identifierDeclaration[1][0].Name == "EPSILON" && true) && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "identifier" && true && identifierDeclaration[3] != null && identifierDeclaration[3].Name == "Definition" && (identifierDeclaration[3].Count == 2 && identifierDeclaration[3][0] != null && identifierDeclaration[3][0].Name == "=" && true && identifierDeclaration[3][1] != null && identifierDeclaration[3][1].Name == "DefinitionAssign" && (identifierDeclaration[3][1].Count == 3 && identifierDeclaration[3][1][0] != null && identifierDeclaration[3][1][0].Name == "[" && true && identifierDeclaration[3][1][1] != null && identifierDeclaration[3][1][1].Name == "ExpressionList" && true && identifierDeclaration[3][1][2] != null && identifierDeclaration[3][1][2].Name == "]" && true))) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			{
+				return symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
+			}
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 4 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "Array" && (identifierDeclaration[1].Count == 1 && identifierDeclaration[1][0] != null && identifierDeclaration[1][0].Name == "EPSILON" && true) && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "identifier" && true && identifierDeclaration[3] != null && identifierDeclaration[3].Name == "Definition" && (identifierDeclaration[3].Count == 6 && identifierDeclaration[3][0] != null && identifierDeclaration[3][0].Name == "(" && true && identifierDeclaration[3][1] != null && identifierDeclaration[3][1].Name == "FormalParameters" && true && identifierDeclaration[3][2] != null && identifierDeclaration[3][2].Name == ")" && true && identifierDeclaration[3][3] != null && identifierDeclaration[3][3].Name == "indent" && true && identifierDeclaration[3][4] != null && identifierDeclaration[3][4].Name == "Statements" && true && identifierDeclaration[3][5] != null && identifierDeclaration[3][5].Name == "dedent" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierDeclaration[2] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
@@ -391,6 +397,10 @@ namespace Compiler.Translation.ProgramToAST
 				return symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
 			}
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 4 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "RegisterType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "Array" && (identifierDeclaration[1].Count == 3 && identifierDeclaration[1][0] != null && identifierDeclaration[1][0].Name == "[" && true && identifierDeclaration[1][1] != null && identifierDeclaration[1][1].Name == "ArrayP" && true && identifierDeclaration[1][2] != null && identifierDeclaration[1][2].Name == "]" && true) && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "identifier" && true && identifierDeclaration[3] != null && identifierDeclaration[3].Name == "Definition" && (identifierDeclaration[3].Count == 1 && identifierDeclaration[3][0] != null && identifierDeclaration[3][0].Name == "newline" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			{
+				return symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
+			}
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 4 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "Array" && (identifierDeclaration[1].Count == 3 && identifierDeclaration[1][0] != null && identifierDeclaration[1][0].Name == "[" && true && identifierDeclaration[1][1] != null && identifierDeclaration[1][1].Name == "ArrayP" && true && identifierDeclaration[1][2] != null && identifierDeclaration[1][2].Name == "]" && true) && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "identifier" && true && identifierDeclaration[3] != null && identifierDeclaration[3].Name == "Definition" && (identifierDeclaration[3].Count == 2 && identifierDeclaration[3][0] != null && identifierDeclaration[3][0].Name == "=" && true && identifierDeclaration[3][1] != null && identifierDeclaration[3][1].Name == "DefinitionAssign" && (identifierDeclaration[3][1].Count == 3 && identifierDeclaration[3][1][0] != null && identifierDeclaration[3][1][0].Name == "[" && true && identifierDeclaration[3][1][1] != null && identifierDeclaration[3][1][1].Name == "ExpressionList" && true && identifierDeclaration[3][1][2] != null && identifierDeclaration[3][1][2].Name == "]" && true))) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				return symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
 			}
@@ -739,6 +749,14 @@ namespace Compiler.Translation.ProgramToAST
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierDeclaration" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
 			{
 				(Compiler.AST.Data.Node dclStm, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				if(dclStm != null && dclStm.Name == "IntegerArrayDeclarationInit" && true && s1 != null && s1.Name == "SymbolTable" && true)
+				{
+					return (new Compiler.AST.Data.Statement(false) { dclStm as Compiler.AST.Data.IntegerArrayDeclarationInit }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierDeclaration" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			{
+				(Compiler.AST.Data.Node dclStm, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 				if(dclStm != null && dclStm.Name == "BooleanDeclaration" && true && s1 != null && s1.Name == "SymbolTable" && true)
 				{
 					return (new Compiler.AST.Data.Statement(false) { dclStm as Compiler.AST.Data.BooleanDeclaration }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
@@ -899,6 +917,26 @@ namespace Compiler.Translation.ProgramToAST
 								{
 									return (new Compiler.AST.Data.IntegerDeclaration(false) { t1 as Compiler.AST.Data.IntType, id1 as Compiler.AST.Data.Token }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
 								}
+							}
+						}
+					}
+				}
+			}
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 4 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && true && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "Array" && (identifierDeclaration[1].Count == 3 && identifierDeclaration[1][0] != null && identifierDeclaration[1][0].Name == "[" && true && identifierDeclaration[1][1] != null && identifierDeclaration[1][1].Name == "ArrayP" && true && identifierDeclaration[1][2] != null && identifierDeclaration[1][2].Name == "]" && true) && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "identifier" && true && identifierDeclaration[3] != null && identifierDeclaration[3].Name == "Definition" && (identifierDeclaration[3].Count == 2 && identifierDeclaration[3][0] != null && identifierDeclaration[3][0].Name == "=" && true && identifierDeclaration[3][1] != null && identifierDeclaration[3][1].Name == "DefinitionAssign" && (identifierDeclaration[3][1].Count == 3 && identifierDeclaration[3][1][0] != null && identifierDeclaration[3][1][0].Name == "[" && true && identifierDeclaration[3][1][1] != null && identifierDeclaration[3][1][1].Name == "ExpressionList" && true && identifierDeclaration[3][1][2] != null && identifierDeclaration[3][1][2].Name == "]" && true))) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			{
+				Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
+				if(t1 != null && t1.Name == "IntType" && true)
+				{
+					(Compiler.AST.Data.Node e1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[3][1][1] as Compiler.Parsing.Data.ExpressionList, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+					if(e1 != null && e1.Name == "IntegerExpressionListArgs" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
+					{
+						Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
+						if(t2 != null && t2.Name == "IntType" && true)
+						{
+							Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[2] as Compiler.Parsing.Data.Token);
+							if(id1 != null && id1.Name == "identifier" && true)
+							{
+								return (new Compiler.AST.Data.IntegerArrayDeclarationInit(false) { t1 as Compiler.AST.Data.IntType, new Compiler.AST.Data.Token() { Name = "[", Value = "[" }, new Compiler.AST.Data.Token() { Name = "]", Value = "]" }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, new Compiler.AST.Data.Token() { Name = "[", Value = "[" }, e1 as Compiler.AST.Data.IntegerExpressionListArgs, new Compiler.AST.Data.Token() { Name = "]", Value = "]" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 							}
 						}
 					}
@@ -1162,6 +1200,58 @@ namespace Compiler.Translation.ProgramToAST
 							}
 						}
 					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.ExpressionList expressionList, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		{
+			Translate__expressionList_symbolTable++;
+			if(expressionList != null && expressionList.Name == "ExpressionList" && (expressionList.Count == 2 && expressionList[0] != null && expressionList[0].Name == "Expression" && true && expressionList[1] != null && expressionList[1].Name == "ExpressionListP" && (expressionList[1].Count == 1 && expressionList[1][0] != null && expressionList[1][0].Name == "EPSILON" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			{
+				(Compiler.AST.Data.Node p2, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expressionList[0] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				if(p2 != null && p2.Name == "IntegerExpression" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
+				{
+					return (new Compiler.AST.Data.IntegerExpressionListArgs(false) { p2 as Compiler.AST.Data.IntegerExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				}
+			}
+			if(expressionList != null && expressionList.Name == "ExpressionList" && (expressionList.Count == 2 && expressionList[0] != null && expressionList[0].Name == "Expression" && true && expressionList[1] != null && expressionList[1].Name == "ExpressionListP" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			{
+				(Compiler.AST.Data.Node p2, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expressionList[0] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				if(p2 != null && p2.Name == "IntegerExpression" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
+				{
+					(Compiler.AST.Data.Node p4, Compiler.Translation.SymbolTable.Data.Node symbolTable2) = Translate(expressionList[1] as Compiler.Parsing.Data.ExpressionListP, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+					if(p4 != null && p4.Name == "IntegerExpression" && true && symbolTable2 != null && symbolTable2.Name == "SymbolTable" && true)
+					{
+						return (new Compiler.AST.Data.IntegerExpressionListArgs(false) { new Compiler.AST.Data.IntegerCompoundArgs(false) { new Compiler.AST.Data.IntegerExpressionListArgs(false) { p2 as Compiler.AST.Data.IntegerExpression }, new Compiler.AST.Data.Token() { Name = ",", Value = "," }, new Compiler.AST.Data.IntegerExpressionListArgs(false) { p4 as Compiler.AST.Data.IntegerExpression } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.ExpressionListP expressionListP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		{
+			Translate__expressionListP_symbolTable++;
+			if(expressionListP != null && expressionListP.Name == "ExpressionListP" && (expressionListP.Count == 3 && expressionListP[0] != null && expressionListP[0].Name == "," && true && expressionListP[1] != null && expressionListP[1].Name == "Expression" && true && expressionListP[2] != null && expressionListP[2].Name == "ExpressionListP" && true) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			{
+				(Compiler.AST.Data.Node p3, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expressionListP[1] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				if(p3 != null && p3.Name == "IntegerExpressionListArgs" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
+				{
+					(Compiler.AST.Data.Node p4, Compiler.Translation.SymbolTable.Data.Node symbolTable2) = Translate(expressionListP[2] as Compiler.Parsing.Data.ExpressionListP, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+					if(p4 != null && p4.Name == "IntegerExpressionListArgs" && true && symbolTable2 != null && symbolTable2.Name == "SymbolTable" && true)
+					{
+						return (new Compiler.AST.Data.IntegerExpressionListArgs(false) { new Compiler.AST.Data.IntegerCompoundArgs(false) { new Compiler.AST.Data.IntegerExpressionListArgs(false) { p3 as Compiler.AST.Data.IntegerExpressionListArgs }, new Compiler.AST.Data.Token() { Name = ",", Value = "," }, new Compiler.AST.Data.IntegerExpressionListArgs(false) { p4 as Compiler.AST.Data.IntegerExpressionListArgs } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+					}
+				}
+			}
+			if(expressionListP != null && expressionListP.Name == "ExpressionListP" && (expressionListP.Count == 3 && expressionListP[0] != null && expressionListP[0].Name == "," && true && expressionListP[1] != null && expressionListP[1].Name == "Expression" && true && expressionListP[2] != null && expressionListP[2].Name == "ExpressionListP" && (expressionListP[2].Count == 1 && expressionListP[2][0] != null && expressionListP[2][0].Name == "EPSILON" && true)) && symbolTable != null && symbolTable.Name == "SymbolTable" && true)
+			{
+				(Compiler.AST.Data.Node p5, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expressionListP[1] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				if(p5 != null && p5.Name == "IntegerExpression" && true && symbolTable1 != null && symbolTable1.Name == "SymbolTable" && true)
+				{
+					return (new Compiler.AST.Data.IntegerExpressionListArgs(false) { p5 as Compiler.AST.Data.IntegerExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 				}
 			}
 			throw new System.Exception();
@@ -2711,6 +2801,8 @@ namespace Compiler.Translation.ProgramToAST
 			System.Console.WriteLine("Translate__statement_symbolTable: "+Translate__statement_symbolTable);
 			System.Console.WriteLine("Translate__returnStatement_symbolTable: "+Translate__returnStatement_symbolTable);
 			System.Console.WriteLine("Translate__identifierDeclaration_symbolTable: "+Translate__identifierDeclaration_symbolTable);
+			System.Console.WriteLine("Translate__expressionList_symbolTable: "+Translate__expressionList_symbolTable);
+			System.Console.WriteLine("Translate__expressionListP_symbolTable: "+Translate__expressionListP_symbolTable);
 			System.Console.WriteLine("Translate__formalParameters_symbolTable: "+Translate__formalParameters_symbolTable);
 			System.Console.WriteLine("Translate__formalParametersP_symbolTable: "+Translate__formalParametersP_symbolTable);
 			System.Console.WriteLine("Translate__formalParameter_symbolTable: "+Translate__formalParameter_symbolTable);

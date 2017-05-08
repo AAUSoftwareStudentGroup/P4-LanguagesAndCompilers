@@ -14,6 +14,8 @@ namespace Compiler.Translation.ASTToC
 		public int Translatea__compoundStatement_declaration_function_statement = 0;
 		public int Translate__integerDeclaration = 0;
 		public int Translate__integerArrayDeclaration = 0;
+		public int Translate__integerArrayDeclarationInit = 0;
+		public int Translate__integerExpressionListArgs = 0;
 		public int Translate__booleanArrayDeclaration = 0;
 		public int Translate__registerArrayDeclaration = 0;
 		public int Translate__integerDeclarationInit = 0;
@@ -288,6 +290,14 @@ namespace Compiler.Translation.ASTToC
 					return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.IntegerArray, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
 				}
 			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerArrayDeclarationInit" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IntegerArrayDeclarationInit);
+				if(s1 != null && s1.Name == "IntegerArrayInit" && true)
+				{
+					return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.IntegerArrayInit, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				}
+			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanArrayDeclaration" && true) && declaration != null && declaration.Name == "Declaration" && true && function != null && function.Name == "Function" && true && statement1 != null && statement1.Name == "Statement" && true)
 			{
 				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.BooleanArrayDeclaration);
@@ -515,6 +525,54 @@ namespace Compiler.Translation.ASTToC
 						{
 							return new Compiler.C.Data.IntegerArray(false) { t1 as Compiler.C.Data.IntType, new Compiler.C.Data.Token() { Name = "[", Value = "[" }, num1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "]", Value = "]" }, id1 as Compiler.C.Data.Token };
 						}
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.IntegerArrayDeclarationInit integerArrayDeclarationInit)
+		{
+			Translate__integerArrayDeclarationInit++;
+			if(integerArrayDeclarationInit != null && integerArrayDeclarationInit.Name == "IntegerArrayDeclarationInit" && (integerArrayDeclarationInit.Count == 8 && integerArrayDeclarationInit[0] != null && integerArrayDeclarationInit[0].Name == "IntType" && true && integerArrayDeclarationInit[1] != null && integerArrayDeclarationInit[1].Name == "[" && true && integerArrayDeclarationInit[2] != null && integerArrayDeclarationInit[2].Name == "]" && true && integerArrayDeclarationInit[3] != null && integerArrayDeclarationInit[3].Name == "identifier" && true && integerArrayDeclarationInit[4] != null && integerArrayDeclarationInit[4].Name == "=" && true && integerArrayDeclarationInit[5] != null && integerArrayDeclarationInit[5].Name == "[" && true && integerArrayDeclarationInit[6] != null && integerArrayDeclarationInit[6].Name == "IntegerExpressionListArgs" && true && integerArrayDeclarationInit[7] != null && integerArrayDeclarationInit[7].Name == "]" && true))
+			{
+				Compiler.C.Data.Node t1 = Translate(integerArrayDeclarationInit[0] as Compiler.AST.Data.IntType);
+				if(t1 != null && t1.Name == "IntType" && true)
+				{
+					Compiler.C.Data.Node id1 = Translate(integerArrayDeclarationInit[3] as Compiler.AST.Data.Token);
+					if(id1 != null && id1.Name == "identifier" && true)
+					{
+						Compiler.C.Data.Node ielist1 = Translate(integerArrayDeclarationInit[6] as Compiler.AST.Data.IntegerExpressionListArgs);
+						if(ielist1 != null && ielist1.Name == "IntegerExpressionListArgs" && true)
+						{
+							return new Compiler.C.Data.IntegerArrayInit(false) { t1 as Compiler.C.Data.IntType, new Compiler.C.Data.Token() { Name = "[", Value = "[" }, new Compiler.C.Data.Token() { Name = "]", Value = "]" }, id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "=", Value = "=" }, new Compiler.C.Data.Token() { Name = "[", Value = "[" }, ielist1 as Compiler.C.Data.IntegerExpressionListArgs, new Compiler.C.Data.Token() { Name = "]", Value = "]" } };
+						}
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.IntegerExpressionListArgs integerExpressionListArgs)
+		{
+			Translate__integerExpressionListArgs++;
+			if(integerExpressionListArgs != null && integerExpressionListArgs.Name == "IntegerExpressionListArgs" && (integerExpressionListArgs.Count == 1 && integerExpressionListArgs[0] != null && integerExpressionListArgs[0].Name == "IntegerExpression" && true))
+			{
+				Compiler.C.Data.Node iexpr = Translate(integerExpressionListArgs[0] as Compiler.AST.Data.IntegerExpression);
+				if(iexpr != null && iexpr.Name == "IntegerExpression" && true)
+				{
+					return new Compiler.C.Data.IntegerExpressionListArgs(false) { iexpr as Compiler.C.Data.IntegerExpression };
+				}
+			}
+			if(integerExpressionListArgs != null && integerExpressionListArgs.Name == "IntegerExpressionListArgs" && (integerExpressionListArgs.Count == 1 && integerExpressionListArgs[0] != null && integerExpressionListArgs[0].Name == "IntegerCompoundArgs" && (integerExpressionListArgs[0].Count == 3 && integerExpressionListArgs[0][0] != null && integerExpressionListArgs[0][0].Name == "IntegerExpressionListArgs" && true && integerExpressionListArgs[0][1] != null && integerExpressionListArgs[0][1].Name == "," && true && integerExpressionListArgs[0][2] != null && integerExpressionListArgs[0][2].Name == "IntegerExpressionListArgs" && true)))
+			{
+				Compiler.C.Data.Node p3 = Translate(integerExpressionListArgs[0][0] as Compiler.AST.Data.IntegerExpressionListArgs);
+				if(p3 != null && p3.Name == "IntegerExpressionListArgs" && true)
+				{
+					Compiler.C.Data.Node p4 = Translate(integerExpressionListArgs[0][2] as Compiler.AST.Data.IntegerExpressionListArgs);
+					if(p4 != null && p4.Name == "IntegerExpressionListArgs" && true)
+					{
+						return new Compiler.C.Data.IntegerExpressionListArgs(false) { new Compiler.C.Data.IntegerCompoundArgs(false) { p3 as Compiler.C.Data.IntegerExpressionListArgs, new Compiler.C.Data.Token() { Name = ",", Value = "," }, p4 as Compiler.C.Data.IntegerExpressionListArgs } };
 					}
 				}
 			}
@@ -936,7 +994,7 @@ namespace Compiler.Translation.ASTToC
 					Compiler.C.Data.Node p4 = Translate(expressionListArgs[0][2] as Compiler.AST.Data.ExpressionListArgs);
 					if(p4 != null && p4.Name == "ExpressionListArgs" && true)
 					{
-						return new Compiler.C.Data.ExpressionListArgs(false) { new Compiler.C.Data.Token() { Name = "CompoundArgs", Value = "CompoundArgs" } };
+						return new Compiler.C.Data.ExpressionListArgs(false) { new Compiler.C.Data.CompoundArgs(false) { p3 as Compiler.C.Data.ExpressionListArgs, new Compiler.C.Data.Token() { Name = ",", Value = "," }, p4 as Compiler.C.Data.ExpressionListArgs } };
 					}
 				}
 			}
@@ -1789,6 +1847,8 @@ namespace Compiler.Translation.ASTToC
 			System.Console.WriteLine("Translatea__compoundStatement_declaration_function_statement: "+Translatea__compoundStatement_declaration_function_statement);
 			System.Console.WriteLine("Translate__integerDeclaration: "+Translate__integerDeclaration);
 			System.Console.WriteLine("Translate__integerArrayDeclaration: "+Translate__integerArrayDeclaration);
+			System.Console.WriteLine("Translate__integerArrayDeclarationInit: "+Translate__integerArrayDeclarationInit);
+			System.Console.WriteLine("Translate__integerExpressionListArgs: "+Translate__integerExpressionListArgs);
 			System.Console.WriteLine("Translate__booleanArrayDeclaration: "+Translate__booleanArrayDeclaration);
 			System.Console.WriteLine("Translate__registerArrayDeclaration: "+Translate__registerArrayDeclaration);
 			System.Console.WriteLine("Translate__integerDeclarationInit: "+Translate__integerDeclarationInit);

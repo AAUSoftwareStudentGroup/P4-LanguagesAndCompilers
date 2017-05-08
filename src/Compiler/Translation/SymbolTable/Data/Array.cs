@@ -3,20 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.Translation.SymbolTable.Data
 {
-	public class Token : Compiler.Translation.SymbolTable.Data.Node
+	public class Array : Compiler.Translation.SymbolTable.Data.Node
 	{
-		public string Value { get; set; }
-		public string FileName { get; set; }
-		public int Row { get; set; }
-		public int Column { get; set; }
-		public  Token()
+		public  Array()
 		{
 		}
 
-		public  Token(bool isPlaceholder)
+		public  Array(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "Token";
+			Name = "Array";
 		}
 
 		public override T Accept<T>(Compiler.Translation.SymbolTable.Visitors.SymbolTableVisitor<T> visitor)

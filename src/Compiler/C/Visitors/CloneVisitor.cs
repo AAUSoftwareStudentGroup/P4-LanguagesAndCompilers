@@ -142,6 +142,36 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.IntegerArrayInit node)
+		{
+			var clone = new Compiler.C.Data.IntegerArrayInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.IntegerExpressionListArgs node)
+		{
+			var clone = new Compiler.C.Data.IntegerExpressionListArgs() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.IntegerCompoundArgs node)
+		{
+			var clone = new Compiler.C.Data.IntegerCompoundArgs() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.IntegerAssignment node)
 		{
 			var clone = new Compiler.C.Data.IntegerAssignment() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -365,6 +395,16 @@ namespace Compiler.C.Visitors
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.ExpressionListArgs node)
 		{
 			var clone = new Compiler.C.Data.ExpressionListArgs() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.CompoundArgs node)
+		{
+			var clone = new Compiler.C.Data.CompoundArgs() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
@@ -622,16 +662,6 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.IntegerArrayInit node)
-		{
-			var clone = new Compiler.C.Data.IntegerArrayInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.BooleanArray node)
 		{
 			var clone = new Compiler.C.Data.BooleanArray() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -642,29 +672,9 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.BooleanArrayInit node)
-		{
-			var clone = new Compiler.C.Data.BooleanArrayInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.RegisterArray node)
 		{
 			var clone = new Compiler.C.Data.RegisterArray() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.RegisterArrayInit node)
-		{
-			var clone = new Compiler.C.Data.RegisterArrayInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

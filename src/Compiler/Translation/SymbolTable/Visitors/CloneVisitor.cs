@@ -52,6 +52,16 @@ namespace Compiler.Translation.SymbolTable.Visitors
 			return clone;
 		}
 
+		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.Array node)
+		{
+			var clone = new Compiler.Translation.SymbolTable.Data.Array() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.ReturnType node)
 		{
 			var clone = new Compiler.Translation.SymbolTable.Data.ReturnType() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };

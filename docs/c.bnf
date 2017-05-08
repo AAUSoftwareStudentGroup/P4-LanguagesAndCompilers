@@ -33,6 +33,10 @@ Type -> IntType
 Statement -> EPSILON 
            | CompoundStatement
            | IntegerDeclaration ;
+           | IntegerArray ;
+           | BooleanArray ;
+           | RegisterArray ;
+           | IntegerArrayInit ;
            | IntegerDeclarationInit ;
            | BooleanDeclaration ;
            | BooleanDeclarationInit ;
@@ -57,6 +61,13 @@ CompoundStatement -> Statement Statement
 IntegerDeclaration -> IntType identifier
 
 IntegerDeclarationInit -> IntType identifier = IntegerExpression
+
+IntegerArrayInit -> IntType [ ] identifier = { IntegerExpressionListArgs }
+
+IntegerExpressionListArgs -> IntegerExpression 
+              |IntegerCompoundArgs
+
+IntegerCompoundArgs -> IntegerExpressionListArgs , IntegerExpressionListArgs
 		   
 IntegerAssignment -> identifier = IntegerExpression
 
@@ -110,6 +121,8 @@ ExpressionListArgs -> IntegerExpression
                  | BooleanExpression
                  | RegisterExpression
                  | CompoundArgs
+
+CompoundArgs -> ExpressionListArgs , ExpressionListArgs 
 
 IntType -> signed char
          | signed int
@@ -191,17 +204,11 @@ AndExpression -> ( BooleanExpression && BooleanExpression )
 
 OrExpression -> ( BooleanExpression || BooleanExpression )
 
-IntegerArray -> IntType identifier [ IntegerExpression ]
+IntegerArray -> IntType identifier [ numeral ]
 
-IntegerArrayInit -> IntType identifier [ ] = [ Expressions ]
+BooleanArray -> BooleanType identifier [ numeral ]
 
-BooleanArray -> BooleanType identifier [ ]
-
-BooleanArrayInit -> BooleanType identifier [ ] = [ Expressions ]  
-
-RegisterArray -> RegisterType identifier [ ]
-
-RegisterArrayInit -> RegisterType identifier [ ] = [ Expressions ]
+RegisterArray -> RegisterType identifier [ numeral ]
 
 Expressions -> IntExpressions
             |  BoolExpressions

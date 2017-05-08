@@ -62,6 +62,11 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.AST.Data.IntegerArrayDeclarationInit node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.AST.Data.RegisterArrayDeclaration node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
@@ -183,6 +188,16 @@ namespace Compiler.AST.Visitors
 		}
 
 		public virtual T Visit(Compiler.AST.Data.ExpressionList node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.IntegerExpressionListArgs node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.IntegerCompoundArgs node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}

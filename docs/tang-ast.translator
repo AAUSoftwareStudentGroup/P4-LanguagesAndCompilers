@@ -86,6 +86,8 @@ Program:p ->:p ast
 
 [IdentifierDeclaration[IntType Array[EPSILON] identifier Definition[= Expression newline]] SymbolTable:s] ->:f s
 
+[IdentifierDeclaration[IntType Array[EPSILON] identifier Definition[ = DefinitionAssign[ \[ ExpressionList \] ]]] SymbolTable:s] ->:f s
+
 [IdentifierDeclaration[IntType:intType Array[EPSILON] identifier:id Definition[( FormalParameters:params ) indent Statements dedent]] SymbolTable:s] 
 ->:f s <- Declarations[Declaration[Function[ReturnType[Type[it]] id1 p]] %Declarations[EPSILON]]
     [id s] ->:s Declaration[EPSILON]
@@ -136,6 +138,8 @@ Type[RegisterType:t] ->:q Type[t1]
 [IdentifierDeclaration[BooleanType Array[ \[ ArrayP \] ] identifier Definition[newline]] SymbolTable:s] ->:f s
 
 [IdentifierDeclaration[RegisterType Array[ \[ ArrayP \] ] identifier Definition[newline]] SymbolTable:s] ->:f s
+
+[IdentifierDeclaration[IntType Array[ \[ ArrayP \] ] identifier Definition[= DefinitionAssign[ \[ ExpressionList \] ]]] SymbolTable:s] ->:f s
 
 [IdentifierDeclaration[nothing:n Array[EPSILON] identifier:id ( FormalParameters:params ) indent Statements dedent] SymbolTable:s] 
 ->:f s <- Declarations[Declaration[Function[ReturnType[t] id1 p]] %Declarations[EPSILON]]
@@ -232,6 +236,9 @@ Type[RegisterType:t] ->:q Type[t1]
     [idDcl s] -> [IntegerDeclarationInit:dclStm SymbolTable:s1]
 
 [Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
+    [idDcl s] -> [IntegerArrayDeclarationInit:dclStm SymbolTable:s1]
+
+[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
     [idDcl s] -> [BooleanDeclaration:dclStm SymbolTable:s1]
 
 [Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
@@ -285,6 +292,29 @@ Type[RegisterType:t] ->:q Type[t1]
     id ->:p identifier:id1
     id ->:q identifier:id2
     [id s] ->:s Declaration[EPSILON]
+	
+[IdentifierDeclaration[IntType:t Array[ \[ ArrayP \] ] identifier:id Definition[= DefinitionAssign[ \[ ExpressionList:el \] ]]] SymbolTable:s] -> [IntegerArrayDeclarationInit[t1 \[ \] id1 = \[ e1 \] ] s <- 
+    t ->:p IntType:t1 
+    [el s] -> [IntegerExpressionListArgs:e1 SymbolTable]
+    t ->:q IntType:t2
+    id ->:p identifier:id1
+
+[ExpressionList[Expression:p1 ExpressionListP[EPSILON]] SymbolTable:s]
+-> [IntegerExpressionListArgs[p2] s]
+    [p1 s] -> [IntegerExpression:p2 SymbolTable]
+	
+[ExpressionList[Expression:p1 ExpressionListP:p3] SymbolTable:s]
+-> [IntegerExpressionListArgs[IntegerCompoundArgs[IntegerExpressionListArgs[p2] , IntegerExpressionListArgs[p4]]] s]
+    [p1 s] -> [IntegerExpression:p2 SymbolTable]
+    [p3 s] -> [IntegerExpression:p4 SymbolTable]
+
+[ExpressionListP[, Expression:p1 ExpressionListP:p2] SymbolTable:s] 
+-> [IntegerExpressionListArgs[IntegerCompoundArgs[IntegerExpressionListArgs[p3] , IntegerExpressionListArgs[p4]]] s]
+    [p1 s] -> [IntegerExpressionListArgs:p3 SymbolTable]
+    [p2 s] -> [IntegerExpressionListArgs:p4 SymbolTable]
+
+[ExpressionListP[, Expression:p1 ExpressionListP[EPSILON]] SymbolTable:s] -> [IntegerExpressionListArgs[p5] s]
+    [p1 s] -> [IntegerExpression:p5 SymbolTable]
 
 [IdentifierDeclaration[RegisterType:t Array[ \[ ArrayP[numeral:i] \] ] identifier:id Definition[newline]] SymbolTable:s] -> [RegisterArrayDeclaration[t1 \[ i1 \] id1] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p RegisterType:t1

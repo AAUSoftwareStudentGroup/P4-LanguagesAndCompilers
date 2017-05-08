@@ -29,6 +29,8 @@ Statement -> newline
            | EPSILON
            | CompoundStatement
 		   | IntegerArrayDeclaration
+		   | IntegerArrayDeclarationInit
+		   | IntegerArrayDeclarationEmptyInit
 		   | BooleanArrayDeclaration
 		   | RegisterArrayDeclaration
            | IntegerDeclaration
@@ -54,6 +56,8 @@ Statement -> newline
 CompoundStatement -> Statement newline Statement
 
 IntegerArrayDeclaration -> IntType [ numeral ] identifier
+
+IntegerArrayDeclarationInit -> IntType [ ] identifier = \[ IntegerExpressionListArgs \]
 
 RegisterArrayDeclaration -> RegisterType [ numeral ] identifier
 
@@ -107,7 +111,12 @@ RegisterReturn -> return RegisterExpression
 
 ExpressionList -> ExpressionListArgs
                 | EPSILON
- 
+					   
+IntegerExpressionListArgs -> IntegerExpression 
+							|IntegerCompoundArgs
+
+IntegerCompoundArgs -> IntegerExpressionListArgs , IntegerExpressionListArgs							
+				
 ExpressionListArgs -> IntegerExpression
                  | BooleanExpression
                  | RegisterExpression

@@ -5,12 +5,17 @@ Declarations -> Declaration Declarations
 
 Declaration -> Variable
              | Function
+			 | Array
              | EPSILON
 
 Variable -> Type identifier
           | Type returnId
 
 Function -> ReturnType identifier ( Parameters )
+
+Array -> Type identifier
+
+Declaration[Function[ReturnType[Type[IntType]] identifier Parameters:p1]
 
 ReturnType -> nothing
             | Type

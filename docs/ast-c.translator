@@ -62,6 +62,9 @@ CompoundFormalParameter[FormalParameter:p1 , FormalParameter:p2] -> CompoundForm
 [Statement[IntegerArrayDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
     s -> IntegerArray:s1
 
+[Statement[IntegerArrayDeclarationInit:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
+    s -> IntegerArrayInit:s1
+
 [Statement[BooleanArrayDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
     s -> IntegerArray:s1	
 
@@ -120,6 +123,18 @@ IntegerArrayDeclaration[IntType:t \[ numeral:num \] identifier:id ] -> IntegerAr
     t -> IntType:t1
     id -> identifier:id1
     num -> numeral:num1
+
+IntegerArrayDeclarationInit[IntType:t \[ \] identifier:id = \[ IntegerExpressionListArgs:ielist \] ] -> IntegerArrayInit[t1 \[ \] id1 = { ielist1 } ]
+    t -> IntType:t1
+    id -> identifier:id1
+    ielist -> IntegerExpressionListArgs:ielist1
+
+IntegerExpressionListArgs[IntegerExpression:expr] -> IntegerExpressionListArgs[iexpr]
+    expr -> IntegerExpression:iexpr
+
+IntegerExpressionListArgs[IntegerCompoundArgs[IntegerExpressionListArgs:p1 , IntegerExpressionListArgs:p2]] -> IntegerExpressionListArgs[IntegerCompoundArgs[p3 , p4]]
+    p1 -> IntegerExpressionListArgs:p3
+    p2 -> IntegerExpressionListArgs:p4
 
 BooleanArrayDeclaration[BooleanType:t \[ numeral:num \] identifier:id ] -> BooleanArray[t1 \[ num1 \] id1 ]
     t -> BooleanType:t1
