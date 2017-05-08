@@ -32,6 +32,11 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.C.Data.FormalParameters node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.C.Data.FormalParameter node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
@@ -132,11 +137,6 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.C.Data.RegisterVariable node)
-		{
-			return Visit((Compiler.C.Data.Node)node);
-		}
-
 		public virtual T Visit(Compiler.C.Data.IfStatement node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
@@ -157,17 +157,42 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.C.Data.Call node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.IntegerReturn node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.BooleanReturn node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.RegisterReturn node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.ExpressionList node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.ExpressionListArgs node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.C.Data.IntType node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
 		public virtual T Visit(Compiler.C.Data.IntegerExpression node)
-		{
-			return Visit((Compiler.C.Data.Node)node);
-		}
-
-		public virtual T Visit(Compiler.C.Data.IntegerVariable node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
@@ -208,11 +233,6 @@ namespace Compiler.C.Visitors
 		}
 
 		public virtual T Visit(Compiler.C.Data.BooleanExpression node)
-		{
-			return Visit((Compiler.C.Data.Node)node);
-		}
-
-		public virtual T Visit(Compiler.C.Data.BooleanVariable node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}
@@ -283,6 +303,41 @@ namespace Compiler.C.Visitors
 		}
 
 		public virtual T Visit(Compiler.C.Data.OrExpression node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.ArrayEmpty node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.ArrayNonEmptyNoSize node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.Expressions node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.IntExpressions node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.BoolExpressions node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.IntegerList node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.BooleanList node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}

@@ -13,8 +13,6 @@ void main ( )
     {
         if ( ( counter == 100000 ) )
         {
-            unsigned char a ;
-            a = 0 ;
             counter = 0 ;
             * port = ( ( ! ( * port & ( 1 << ( 5 ) ) ) ) ? ( ( * port ) | 1 << ( 5 ) ) : ( ( * port ) & ~ ( 1 << ( 5 ) ) ) ) ;
         }
