@@ -13,7 +13,6 @@ namespace Compiler.Tests
         [TestMethod]
         public void ParseProgram()
         {
-
             //Lexer lexer = new Lexer("C:/Users/Steffan/Desktop/P4-LanguagesAndCompilers/docs/tang.tokens.json");
 
             //string file = "C:/Users/Steffan/Desktop/P4-LanguagesAndCompilers/docs/samples/Alias.tang";
@@ -21,8 +20,6 @@ namespace Compiler.Tests
             //var tokens = lexer.Analyse(File.ReadAllText(file));
 
             //System.Diagnostics.Debug.WriteLine(tokens);
-
-            string[] testtokens = { "intType", "identifier", "newline", "identifier", "=", "intLiteral", "newline", "intType", "identifier", "newline", "identifier", "=", "identifier", "eof" };
 
             string[] testTokens = { "uint8", "identifier", "newline", "identifier", "=", "numeral", "newline", "uint8", "identifier", "newline", "identifier", "=", "identifier", "eof" };
 

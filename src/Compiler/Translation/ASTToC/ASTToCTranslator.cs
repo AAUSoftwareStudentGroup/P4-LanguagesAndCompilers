@@ -30,8 +30,8 @@ namespace Compiler.Translation.ASTToC
 		public int Translate__booleanReturn = 0;
 		public int Translate__registerReturn = 0;
 		public int Translate__call = 0;
-		public int Translate__actualParameters = 0;
-		public int Translate__actualParameter = 0;
+		public int Translate__expressionList = 0;
+		public int Translate__expressionListArgs = 0;
 		public int Translate__registerLiteral = 0;
 		public int Translatea__ifStatement_declaration_function_statement = 0;
 		public int Translatea__ifElseStatement_declaration_function_statement = 0;
@@ -775,75 +775,75 @@ namespace Compiler.Translation.ASTToC
 		public Compiler.C.Data.Node Translate(Compiler.AST.Data.Call call)
 		{
 			Translate__call++;
-			if(call != null && call.Name == "Call" && (call.Count == 4 && call[0] != null && call[0].Name == "identifier" && true && call[1] != null && call[1].Name == "(" && true && call[2] != null && call[2].Name == "ActualParameters" && true && call[3] != null && call[3].Name == ")" && true))
+			if(call != null && call.Name == "Call" && (call.Count == 4 && call[0] != null && call[0].Name == "identifier" && true && call[1] != null && call[1].Name == "(" && true && call[2] != null && call[2].Name == "ExpressionList" && true && call[3] != null && call[3].Name == ")" && true))
 			{
 				Compiler.C.Data.Node id1 = Translate(call[0] as Compiler.AST.Data.Token);
 				if(id1 != null && id1.Name == "identifier" && true)
 				{
-					Compiler.C.Data.Node p1 = Translate(call[2] as Compiler.AST.Data.ActualParameters);
-					if(p1 != null && p1.Name == "ActualParameters" && true)
+					Compiler.C.Data.Node p1 = Translate(call[2] as Compiler.AST.Data.ExpressionList);
+					if(p1 != null && p1.Name == "ExpressionList" && true)
 					{
-						return new Compiler.C.Data.Call(false) { id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, p1 as Compiler.C.Data.ActualParameters, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
+						return new Compiler.C.Data.Call(false) { id1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, p1 as Compiler.C.Data.ExpressionList, new Compiler.C.Data.Token() { Name = ")", Value = ")" } };
 					}
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public Compiler.C.Data.Node Translate(Compiler.AST.Data.ActualParameters actualParameters)
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.ExpressionList expressionList)
 		{
-			Translate__actualParameters++;
-			if(actualParameters != null && actualParameters.Name == "ActualParameters" && (actualParameters.Count == 1 && actualParameters[0] != null && actualParameters[0].Name == "EPSILON" && true))
+			Translate__expressionList++;
+			if(expressionList != null && expressionList.Name == "ExpressionList" && (expressionList.Count == 1 && expressionList[0] != null && expressionList[0].Name == "EPSILON" && true))
 			{
-				return new Compiler.C.Data.ActualParameters(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
+				return new Compiler.C.Data.ExpressionList(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
 			}
-			if(actualParameters != null && actualParameters.Name == "ActualParameters" && (actualParameters.Count == 1 && actualParameters[0] != null && actualParameters[0].Name == "ActualParameter" && true))
+			if(expressionList != null && expressionList.Name == "ExpressionList" && (expressionList.Count == 1 && expressionList[0] != null && expressionList[0].Name == "ExpressionListArgs" && true))
 			{
-				Compiler.C.Data.Node p1 = Translate(actualParameters[0] as Compiler.AST.Data.ActualParameter);
-				if(p1 != null && p1.Name == "ActualParameter" && true)
+				Compiler.C.Data.Node p1 = Translate(expressionList[0] as Compiler.AST.Data.ExpressionListArgs);
+				if(p1 != null && p1.Name == "ExpressionListArgs" && true)
 				{
-					return new Compiler.C.Data.ActualParameters(false) { p1 as Compiler.C.Data.ActualParameter };
+					return new Compiler.C.Data.ExpressionList(false) { p1 as Compiler.C.Data.ExpressionListArgs };
 				}
 			}
 			throw new System.Exception();
 		}
 
-		public Compiler.C.Data.Node Translate(Compiler.AST.Data.ActualParameter actualParameter)
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.ExpressionListArgs expressionListArgs)
 		{
-			Translate__actualParameter++;
-			if(actualParameter != null && actualParameter.Name == "ActualParameter" && (actualParameter.Count == 1 && actualParameter[0] != null && actualParameter[0].Name == "IntegerExpression" && true))
+			Translate__expressionListArgs++;
+			if(expressionListArgs != null && expressionListArgs.Name == "ExpressionListArgs" && (expressionListArgs.Count == 1 && expressionListArgs[0] != null && expressionListArgs[0].Name == "IntegerExpression" && true))
 			{
-				Compiler.C.Data.Node iexpr = Translate(actualParameter[0] as Compiler.AST.Data.IntegerExpression);
+				Compiler.C.Data.Node iexpr = Translate(expressionListArgs[0] as Compiler.AST.Data.IntegerExpression);
 				if(iexpr != null && iexpr.Name == "IntegerExpression" && true)
 				{
-					return new Compiler.C.Data.ActualParameter(false) { iexpr as Compiler.C.Data.IntegerExpression };
+					return new Compiler.C.Data.ExpressionListArgs(false) { iexpr as Compiler.C.Data.IntegerExpression };
 				}
 			}
-			if(actualParameter != null && actualParameter.Name == "ActualParameter" && (actualParameter.Count == 1 && actualParameter[0] != null && actualParameter[0].Name == "BooleanExpression" && true))
+			if(expressionListArgs != null && expressionListArgs.Name == "ExpressionListArgs" && (expressionListArgs.Count == 1 && expressionListArgs[0] != null && expressionListArgs[0].Name == "BooleanExpression" && true))
 			{
-				Compiler.C.Data.Node bexpr = Translate(actualParameter[0] as Compiler.AST.Data.BooleanExpression);
+				Compiler.C.Data.Node bexpr = Translate(expressionListArgs[0] as Compiler.AST.Data.BooleanExpression);
 				if(bexpr != null && bexpr.Name == "BooleanExpression" && true)
 				{
-					return new Compiler.C.Data.ActualParameter(false) { bexpr as Compiler.C.Data.BooleanExpression };
+					return new Compiler.C.Data.ExpressionListArgs(false) { bexpr as Compiler.C.Data.BooleanExpression };
 				}
 			}
-			if(actualParameter != null && actualParameter.Name == "ActualParameter" && (actualParameter.Count == 1 && actualParameter[0] != null && actualParameter[0].Name == "RegisterExpression" && true))
+			if(expressionListArgs != null && expressionListArgs.Name == "ExpressionListArgs" && (expressionListArgs.Count == 1 && expressionListArgs[0] != null && expressionListArgs[0].Name == "RegisterExpression" && true))
 			{
-				Compiler.C.Data.Node rexpr = Translate(actualParameter[0] as Compiler.AST.Data.RegisterExpression);
+				Compiler.C.Data.Node rexpr = Translate(expressionListArgs[0] as Compiler.AST.Data.RegisterExpression);
 				if(rexpr != null && rexpr.Name == "RegisterExpression" && true)
 				{
-					return new Compiler.C.Data.ActualParameter(false) { rexpr as Compiler.C.Data.RegisterExpression };
+					return new Compiler.C.Data.ExpressionListArgs(false) { rexpr as Compiler.C.Data.RegisterExpression };
 				}
 			}
-			if(actualParameter != null && actualParameter.Name == "ActualParameter" && (actualParameter.Count == 1 && actualParameter[0] != null && actualParameter[0].Name == "CompoundActualParameter" && (actualParameter[0].Count == 3 && actualParameter[0][0] != null && actualParameter[0][0].Name == "ActualParameter" && true && actualParameter[0][1] != null && actualParameter[0][1].Name == "," && true && actualParameter[0][2] != null && actualParameter[0][2].Name == "ActualParameter" && true)))
+			if(expressionListArgs != null && expressionListArgs.Name == "ExpressionListArgs" && (expressionListArgs.Count == 1 && expressionListArgs[0] != null && expressionListArgs[0].Name == "CompoundArgs" && (expressionListArgs[0].Count == 3 && expressionListArgs[0][0] != null && expressionListArgs[0][0].Name == "ExpressionListArgs" && true && expressionListArgs[0][1] != null && expressionListArgs[0][1].Name == "," && true && expressionListArgs[0][2] != null && expressionListArgs[0][2].Name == "ExpressionListArgs" && true)))
 			{
-				Compiler.C.Data.Node p3 = Translate(actualParameter[0][0] as Compiler.AST.Data.ActualParameter);
-				if(p3 != null && p3.Name == "ActualParameter" && true)
+				Compiler.C.Data.Node p3 = Translate(expressionListArgs[0][0] as Compiler.AST.Data.ExpressionListArgs);
+				if(p3 != null && p3.Name == "ExpressionListArgs" && true)
 				{
-					Compiler.C.Data.Node p4 = Translate(actualParameter[0][2] as Compiler.AST.Data.ActualParameter);
-					if(p4 != null && p4.Name == "ActualParameter" && true)
+					Compiler.C.Data.Node p4 = Translate(expressionListArgs[0][2] as Compiler.AST.Data.ExpressionListArgs);
+					if(p4 != null && p4.Name == "ExpressionListArgs" && true)
 					{
-						return new Compiler.C.Data.ActualParameter(false) { new Compiler.C.Data.Token() { Name = "CompoundActualParameter", Value = "CompoundActualParameter" } };
+						return new Compiler.C.Data.ExpressionListArgs(false) { new Compiler.C.Data.Token() { Name = "CompoundArgs", Value = "CompoundArgs" } };
 					}
 				}
 			}
@@ -1712,8 +1712,8 @@ namespace Compiler.Translation.ASTToC
 			System.Console.WriteLine("Translate__booleanReturn: "+Translate__booleanReturn);
 			System.Console.WriteLine("Translate__registerReturn: "+Translate__registerReturn);
 			System.Console.WriteLine("Translate__call: "+Translate__call);
-			System.Console.WriteLine("Translate__actualParameters: "+Translate__actualParameters);
-			System.Console.WriteLine("Translate__actualParameter: "+Translate__actualParameter);
+			System.Console.WriteLine("Translate__expressionList: "+Translate__expressionList);
+			System.Console.WriteLine("Translate__expressionListArgs: "+Translate__expressionListArgs);
 			System.Console.WriteLine("Translate__registerLiteral: "+Translate__registerLiteral);
 			System.Console.WriteLine("Translatea__ifStatement_declaration_function_statement: "+Translatea__ifStatement_declaration_function_statement);
 			System.Console.WriteLine("Translatea__ifElseStatement_declaration_function_statement: "+Translatea__ifElseStatement_declaration_function_statement);

@@ -54,7 +54,7 @@ Type -> IntType
 IdentifierStatement -> identifier IdentifierStatementP
 
 IdentifierStatementP -> BitSelector = Expression newline
-                      | ( ActualParameters )
+                      | ( ExpressionList )
 
 BitSelector -> { Expression }
              | EPSILON
@@ -123,10 +123,10 @@ PrimaryExpression -> numeral
                    | false
 
 IdentifierOperation -> BitSelector
-                     | ( ActualParameters )
+                     | ( ExpressionList )
 
-ActualParameters -> Expression ActualParametersP
+ExpressionList -> Expression ExpressionListP
                   | EPSILON
 
-ActualParametersP -> , Expression ActualParametersP
+ExpressionListP -> , Expression ExpressionListP
                    | EPSILON

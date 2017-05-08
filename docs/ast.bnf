@@ -1,5 +1,5 @@
 AST -> GlobalStatement eof
-	 | eof
+     | eof
 
 GlobalStatement -> Interrupt
                  | Function
@@ -53,7 +53,7 @@ CompoundStatement -> Statement newline Statement
 IntegerDeclaration -> IntType identifier
 
 IntegerDeclarationInit -> IntType identifier = IntegerExpression
-		   
+           
 IntegerAssignment -> identifier = IntegerExpression
 
 BooleanDeclaration -> BooleanType identifier
@@ -75,7 +75,7 @@ RegisterDeclarationInit -> RegisterType identifier = RegisterExpression
 RegisterAssignment -> identifier = RegisterExpression
 
 RegisterExpression -> RegisterLiteral
-			  | identifier
+              | identifier
                     | Call
 
 RegisterLiteral -> RegisterType ( numeral )
@@ -83,12 +83,12 @@ RegisterLiteral -> RegisterType ( numeral )
 IfStatement -> if ( BooleanExpression ) indent Statement dedent 
 
 IfElseStatement -> if ( BooleanExpression ) indent Statement dedent else indent Statement dedent
-		   
+           
 WhileStatement -> while ( BooleanExpression ) indent Statement dedent
 
 ForStatement -> for ( IntType identifier from IntegerExpression to IntegerExpression ) indent Statement dedent
 
-Call -> identifier ( ActualParameters )
+Call -> identifier ( ExpressionList )
 
 IntegerReturn -> return IntegerExpression
 
@@ -96,15 +96,16 @@ BooleanReturn -> return BooleanExpression
 
 RegisterReturn -> return RegisterExpression
 
-ActualParameters -> ActualParameter
-                  | EPSILON
-
-ActualParameter -> IntegerExpression
+ExpressionList -> ExpressionListArgs
+                | EPSILON
+ 
+ExpressionListArgs -> IntegerExpression
                  | BooleanExpression
                  | RegisterExpression
-                 | CompoundActualParameter
+                 | CompoundArgs
 
-CompoundActualParameter -> ActualParameter , ActualParameter
+CompoundArgs -> ExpressionListArgs , ExpressionListArgs
+
 
 IntType -> int8
          | int16
@@ -140,7 +141,7 @@ PowExpression -> IntegerExpression ^ IntegerExpression
 
 BooleanExpression -> true 
                    | false 
-			 | identifier
+             | identifier
                    | DirectBitValue
                    | IndirectBitValue
                    | BooleanParenthesisExpression

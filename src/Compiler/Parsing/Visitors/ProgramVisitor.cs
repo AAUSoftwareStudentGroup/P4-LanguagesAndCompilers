@@ -212,12 +212,12 @@ namespace Compiler.Parsing.Visitors
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.Parsing.Data.ActualParameters node)
+		public virtual T Visit(Compiler.Parsing.Data.ExpressionList node)
 		{
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}
 
-		public virtual T Visit(Compiler.Parsing.Data.ActualParametersP node)
+		public virtual T Visit(Compiler.Parsing.Data.ExpressionListP node)
 		{
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}

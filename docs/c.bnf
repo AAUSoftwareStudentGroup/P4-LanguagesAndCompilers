@@ -95,7 +95,7 @@ WhileStatement -> while ( BooleanExpression ) { Declarations Statement }
 
 ForStatement -> for ( IntType identifier = IntegerExpression ; identifier <= IntegerExpression ; identifier ++ ) { Statement }
 
-Call -> identifier ( ActualParameters )
+Call -> identifier ( ExpressionList )
 
 IntegerReturn -> return IntegerExpression
 
@@ -103,13 +103,13 @@ BooleanReturn -> return BooleanExpression
 
 RegisterReturn -> return RegisterExpression
 
-ActualParameters -> ActualParameter
+ExpressionList -> ExpressionListArgs
                   | EPSILON
 
-ActualParameter -> IntegerExpression
+ExpressionListArgs -> IntegerExpression
                  | BooleanExpression
                  | RegisterExpression
-                 | CompoundActualParameter
+                 | CompoundArgs
 
 IntType -> signed char
          | signed int
@@ -190,3 +190,20 @@ NotExpression -> ( ! BooleanExpression )
 AndExpression -> ( BooleanExpression && BooleanExpression )
 
 OrExpression -> ( BooleanExpression || BooleanExpression )
+
+ArrayEmpty -> Type identifier [ IntegerExpression ]
+
+ArrayNonEmptyNoSize -> Type identifier [ ] = [ Expressions ]
+
+Expressions -> IntExpressions
+            |  BoolExpressions
+
+IntExpressions -> IntegerExpression
+                | IntegerList
+
+BoolExpressions -> BooleanExpression
+                |  BooleanList
+
+IntegerList -> IntExpressions , IntExpressions
+
+BooleanList -> BoolExpressions , BoolExpressions
