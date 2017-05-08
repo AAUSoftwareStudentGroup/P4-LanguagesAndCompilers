@@ -21,9 +21,16 @@ Statement -> IdentifierDeclaration
            | ReturnStatement
            | newline
 
-IdentifierDeclaration -> IntType identifier Definition
-                       | BooleanType identifier Definition
-                       | nothing identifier ( FormalParameters ) indent Statements dedent
+IdentifierDeclaration -> IntType Array identifier Definition
+                       | BooleanType Array identifier Definition
+                       | nothing Array identifier ( FormalParameters ) indent Statements dedent
+					   
+
+Array -> [ ArrayP ]
+        | EPSILON
+
+ArrayP -> numeral
+        | EPSILON
 
 RegisterStatement -> RegisterType RegisterOperation
 
@@ -31,11 +38,14 @@ RegisterType -> register8
               | register16
 
 RegisterOperation -> ( Expression ) { Expression } = Expression newline
-                   | identifier Definition
+                   | Array identifier Definition
 
-Definition -> = Expression newline
+Definition -> = DefinitionAssign
             | ( FormalParameters ) indent Statements dedent
             | newline
+
+DefinitionAssign -> Expression newline
+                 | [ ExpressionList ]
 
 ReturnStatement -> return Expression newline
 

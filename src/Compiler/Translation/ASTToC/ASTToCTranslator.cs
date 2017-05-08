@@ -13,6 +13,9 @@ namespace Compiler.Translation.ASTToC
 		public int Translatea__statement_declaration_function_statement1 = 0;
 		public int Translatea__compoundStatement_declaration_function_statement = 0;
 		public int Translate__integerDeclaration = 0;
+		public int Translate__integerArrayDeclaration = 0;
+		public int Translate__booleanArrayDeclaration = 0;
+		public int Translate__registerArrayDeclaration = 0;
 		public int Translate__integerDeclarationInit = 0;
 		public int Translate__integerAssignment = 0;
 		public int Translate__booleanDeclaration = 0;
@@ -277,6 +280,30 @@ namespace Compiler.Translation.ASTToC
 					return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.IntegerDeclaration, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
 				}
 			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerArrayDeclaration") && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement1 != null && statement1.Name == "Statement")
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.IntegerArrayDeclaration);
+				if(s1 != null && s1.Name == "IntegerArray")
+				{
+					return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.IntegerArray, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanArrayDeclaration") && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement1 != null && statement1.Name == "Statement")
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.BooleanArrayDeclaration);
+				if(s1 != null && s1.Name == "IntegerArray")
+				{
+					return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.IntegerArray, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterArrayDeclaration") && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement1 != null && statement1.Name == "Statement")
+			{
+				Compiler.C.Data.Node s1 = Translate(statement[0] as Compiler.AST.Data.RegisterArrayDeclaration);
+				if(s1 != null && s1.Name == "RegisterArray")
+				{
+					return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { s1 as Compiler.C.Data.RegisterArray, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				}
+			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IntegerDeclarationInit" && (statement[0].Count == 4 && statement[0][0] != null && statement[0][0].Name == "IntType" && statement[0][1] != null && statement[0][1].Name == "identifier" && statement[0][2] != null && statement[0][2].Name == "=" && statement[0][3] != null && statement[0][3].Name == "IntegerExpression")) && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement1 != null && statement1.Name == "Statement")
 			{
 				(Compiler.C.Data.Node dcl1, Compiler.C.Data.Node f1, Compiler.C.Data.Node si1) = Translatea(new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.IntegerDeclaration(false) { statement[0][0] as Compiler.AST.Data.IntType, statement[0][1] as Compiler.AST.Data.Token } }, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
@@ -459,13 +486,79 @@ namespace Compiler.Translation.ASTToC
 			Translate__integerDeclaration++;
 			if(integerDeclaration != null && integerDeclaration.Name == "IntegerDeclaration" && (integerDeclaration.Count == 2 && integerDeclaration[0] != null && integerDeclaration[0].Name == "IntType" && integerDeclaration[1] != null && integerDeclaration[1].Name == "identifier"))
 			{
-				Compiler.C.Data.Node intType1 = Translate(integerDeclaration[0] as Compiler.AST.Data.IntType);
-				if(intType1 != null && intType1.Name == "IntType")
+				Compiler.C.Data.Node i1 = Translate(integerDeclaration[0] as Compiler.AST.Data.IntType);
+				if(i1 != null && i1.Name == "IntType")
 				{
 					Compiler.C.Data.Node id1 = Translate(integerDeclaration[1] as Compiler.AST.Data.Token);
 					if(id1 != null && id1.Name == "identifier")
 					{
-						return new Compiler.C.Data.IntegerDeclaration(false) { intType1 as Compiler.C.Data.IntType, id1 as Compiler.C.Data.Token };
+						return new Compiler.C.Data.IntegerDeclaration(false) { i1 as Compiler.C.Data.IntType, id1 as Compiler.C.Data.Token };
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.IntegerArrayDeclaration integerArrayDeclaration)
+		{
+			Translate__integerArrayDeclaration++;
+			if(integerArrayDeclaration != null && integerArrayDeclaration.Name == "IntegerArrayDeclaration" && (integerArrayDeclaration.Count == 5 && integerArrayDeclaration[0] != null && integerArrayDeclaration[0].Name == "IntType" && integerArrayDeclaration[1] != null && integerArrayDeclaration[1].Name == "[" && integerArrayDeclaration[2] != null && integerArrayDeclaration[2].Name == "numeral" && integerArrayDeclaration[3] != null && integerArrayDeclaration[3].Name == "]" && integerArrayDeclaration[4] != null && integerArrayDeclaration[4].Name == "identifier"))
+			{
+				Compiler.C.Data.Node t1 = Translate(integerArrayDeclaration[0] as Compiler.AST.Data.IntType);
+				if(t1 != null && t1.Name == "IntType")
+				{
+					Compiler.C.Data.Node id1 = Translate(integerArrayDeclaration[4] as Compiler.AST.Data.Token);
+					if(id1 != null && id1.Name == "identifier")
+					{
+						Compiler.C.Data.Node num1 = Translate(integerArrayDeclaration[2] as Compiler.AST.Data.Token);
+						if(num1 != null && num1.Name == "numeral")
+						{
+							return new Compiler.C.Data.IntegerArray(false) { t1 as Compiler.C.Data.IntType, new Compiler.C.Data.Token() { Name = "[", Value = "[" }, num1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "]", Value = "]" }, id1 as Compiler.C.Data.Token };
+						}
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.BooleanArrayDeclaration booleanArrayDeclaration)
+		{
+			Translate__booleanArrayDeclaration++;
+			if(booleanArrayDeclaration != null && booleanArrayDeclaration.Name == "BooleanArrayDeclaration" && (booleanArrayDeclaration.Count == 5 && booleanArrayDeclaration[0] != null && booleanArrayDeclaration[0].Name == "BooleanType" && booleanArrayDeclaration[1] != null && booleanArrayDeclaration[1].Name == "[" && booleanArrayDeclaration[2] != null && booleanArrayDeclaration[2].Name == "numeral" && booleanArrayDeclaration[3] != null && booleanArrayDeclaration[3].Name == "]" && booleanArrayDeclaration[4] != null && booleanArrayDeclaration[4].Name == "identifier"))
+			{
+				Compiler.C.Data.Node t1 = Translate(booleanArrayDeclaration[0] as Compiler.AST.Data.BooleanType);
+				if(t1 != null && t1.Name == "BooleanType")
+				{
+					Compiler.C.Data.Node id1 = Translate(booleanArrayDeclaration[4] as Compiler.AST.Data.Token);
+					if(id1 != null && id1.Name == "identifier")
+					{
+						Compiler.C.Data.Node num1 = Translate(booleanArrayDeclaration[2] as Compiler.AST.Data.Token);
+						if(num1 != null && num1.Name == "numeral")
+						{
+							return new Compiler.C.Data.BooleanArray(false) { t1 as Compiler.C.Data.BooleanType, new Compiler.C.Data.Token() { Name = "[", Value = "[" }, num1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "]", Value = "]" }, id1 as Compiler.C.Data.Token };
+						}
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.RegisterArrayDeclaration registerArrayDeclaration)
+		{
+			Translate__registerArrayDeclaration++;
+			if(registerArrayDeclaration != null && registerArrayDeclaration.Name == "RegisterArrayDeclaration" && (registerArrayDeclaration.Count == 5 && registerArrayDeclaration[0] != null && registerArrayDeclaration[0].Name == "RegisterType" && registerArrayDeclaration[1] != null && registerArrayDeclaration[1].Name == "[" && registerArrayDeclaration[2] != null && registerArrayDeclaration[2].Name == "numeral" && registerArrayDeclaration[3] != null && registerArrayDeclaration[3].Name == "]" && registerArrayDeclaration[4] != null && registerArrayDeclaration[4].Name == "identifier"))
+			{
+				Compiler.C.Data.Node t1 = Translate(registerArrayDeclaration[0] as Compiler.AST.Data.RegisterType);
+				if(t1 != null && t1.Name == "RegisterType")
+				{
+					Compiler.C.Data.Node id1 = Translate(registerArrayDeclaration[4] as Compiler.AST.Data.Token);
+					if(id1 != null && id1.Name == "identifier")
+					{
+						Compiler.C.Data.Node num1 = Translate(registerArrayDeclaration[2] as Compiler.AST.Data.Token);
+						if(num1 != null && num1.Name == "numeral")
+						{
+							return new Compiler.C.Data.RegisterArray(false) { t1 as Compiler.C.Data.RegisterType, new Compiler.C.Data.Token() { Name = "[", Value = "[" }, num1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "]", Value = "]" }, id1 as Compiler.C.Data.Token };
+						}
 					}
 				}
 			}
@@ -1695,6 +1788,9 @@ namespace Compiler.Translation.ASTToC
 			System.Console.WriteLine("Translatea__statement_declaration_function_statement1: "+Translatea__statement_declaration_function_statement1);
 			System.Console.WriteLine("Translatea__compoundStatement_declaration_function_statement: "+Translatea__compoundStatement_declaration_function_statement);
 			System.Console.WriteLine("Translate__integerDeclaration: "+Translate__integerDeclaration);
+			System.Console.WriteLine("Translate__integerArrayDeclaration: "+Translate__integerArrayDeclaration);
+			System.Console.WriteLine("Translate__booleanArrayDeclaration: "+Translate__booleanArrayDeclaration);
+			System.Console.WriteLine("Translate__registerArrayDeclaration: "+Translate__registerArrayDeclaration);
 			System.Console.WriteLine("Translate__integerDeclarationInit: "+Translate__integerDeclarationInit);
 			System.Console.WriteLine("Translate__integerAssignment: "+Translate__integerAssignment);
 			System.Console.WriteLine("Translate__booleanDeclaration: "+Translate__booleanDeclaration);

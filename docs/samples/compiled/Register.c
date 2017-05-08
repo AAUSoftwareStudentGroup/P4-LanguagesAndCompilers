@@ -1,6 +1,6 @@
 unsigned long c ;
-void main ( void ) ;
-void main ( void )
+void main ( ) ;
+void main ( )
 {
     ( * ( volatile unsigned char * ) ( 36 ) ) = ( 1 ? ( ( * ( volatile unsigned char * ) ( 36 ) ) | 1 << ( 5 ) ) : ( ( * ( volatile unsigned char * ) ( 36 ) ) & ~ ( 1 << ( 5 ) ) ) ) ;
     ( * ( volatile unsigned char * ) ( 37 ) ) = ( 0 ? ( ( * ( volatile unsigned char * ) ( 37 ) ) | 1 << ( 5 ) ) : ( ( * ( volatile unsigned char * ) ( 37 ) ) & ~ ( 1 << ( 5 ) ) ) ) ;

@@ -59,6 +59,15 @@ CompoundFormalParameter[FormalParameter:p1 , FormalParameter:p2] -> CompoundForm
     [s dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
 [Statement[IntegerDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
     s -> IntegerDeclaration:s1
+[Statement[IntegerArrayDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
+    s -> IntegerArray:s1
+
+[Statement[BooleanArrayDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
+    s -> IntegerArray:s1	
+
+[Statement[RegisterArrayDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
+    s -> RegisterArray:s1	
+	
 [Statement[IntegerDeclarationInit[IntType:intType identifier:id = IntegerExpression:iexpr]] Declaration:dcl Function:f Statement:si] ->:a [dcl2 f2 si2]
     [Statement[IntegerDeclaration[intType id]] dcl f si] ->:a [Declaration:dcl1 Function:f1 Statement:si1]
     [Statement[IntegerAssignment[id = iexpr]] dcl1 f1 si1] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
@@ -103,9 +112,24 @@ CompoundFormalParameter[FormalParameter:p1 , FormalParameter:p2] -> CompoundForm
     [s1 dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
     [s2 dcl2 f2 si2] ->:a [Declaration:dcl3 Function:f3 Statement:si3]
 
-IntegerDeclaration[IntType:intType identifier:id] -> IntegerDeclaration[intType1 id1]
-    intType -> IntType:intType1
+IntegerDeclaration[IntType:i identifier:id] -> IntegerDeclaration[i1 id1]
+    i -> IntType:i1
     id -> identifier:id1
+
+IntegerArrayDeclaration[IntType:t \[ numeral:num \] identifier:id ] -> IntegerArray[t1 \[ num1 \] id1 ]
+    t -> IntType:t1
+    id -> identifier:id1
+    num -> numeral:num1
+
+BooleanArrayDeclaration[BooleanType:t \[ numeral:num \] identifier:id ] -> BooleanArray[t1 \[ num1 \] id1 ]
+    t -> BooleanType:t1
+    id -> identifier:id1
+    num -> numeral:num1
+
+RegisterArrayDeclaration[RegisterType:t \[ numeral:num \] identifier:id ] -> RegisterArray[t1 \[ num1 \] id1 ]
+    t -> RegisterType:t1
+    id -> identifier:id1
+    num -> numeral:num1
 
 IntegerDeclarationInit[IntType:intType identifier:id = IntegerExpression:iexpr] -> IntegerDeclarationInit[intType1 id1 = iexpr1]
     intType -> IntType:intType1
