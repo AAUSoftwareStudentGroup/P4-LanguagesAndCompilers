@@ -41,7 +41,6 @@ namespace Compiler.Parsing
 			    case "identifier":
 			    case "register8":
 			    case "register16":
-			    case "Assignment":
 			    case "if":
 			    case "while":
 			    case "for":
@@ -73,7 +72,6 @@ namespace Compiler.Parsing
 			    case "identifier":
 			    case "register8":
 			    case "register16":
-			    case "Assignment":
 			    case "if":
 			    case "while":
 			    case "for":
@@ -109,7 +107,6 @@ namespace Compiler.Parsing
 			    case "identifier":
 			    case "register8":
 			    case "register16":
-			    case "Assignment":
 			    case "if":
 			    case "while":
 			    case "for":
@@ -157,7 +154,6 @@ namespace Compiler.Parsing
 			    case "identifier":
 			    case "register8":
 			    case "register16":
-			    case "Assignment":
 			    case "if":
 			    case "while":
 			    case "for":
@@ -195,9 +191,6 @@ namespace Compiler.Parsing
 			    case "register8":
 			    case "register16":
 			        node.Add(ParseRegisterStatement(tokens));
-			        return node;
-			    case "Assignment":
-			        node.Add(ParseTerminal(tokens, "Assignment"));
 			        return node;
 			    case "if":
 			        node.Add(ParseIfStatement(tokens));
@@ -622,7 +615,6 @@ namespace Compiler.Parsing
 			    case "identifier":
 			    case "register8":
 			    case "register16":
-			    case "Assignment":
 			    case "if":
 			    case "while":
 			    case "for":

@@ -14,7 +14,6 @@ Statements -> Statement Statements
 Statement -> IdentifierDeclaration
            | IdentifierStatement
            | RegisterStatement
-           | Assignment
            | IfStatement
            | WhileStatement
            | ForStatement

@@ -26,12 +26,12 @@ AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration
     [gs2 dcl1 f1 s1] ->:a [Declaration:dcl2 Function:f2 Statement:s2]
 
 [Interrupt[interrupt ( numeral:i ) indent Statement:s1 dedent] Declaration:dcl Function:f Statement:s] 
-->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[Type[void] __vector_21 ( FormalParameters[EPSILON] ) ;]]]] Function[CompoundFunction[f Function[Type[void] __vector_21 ( FormalParameters[EPSILON] ) { gs1 si2 }]]] s]
+->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[Type[void] __vector_21 ( FormalParameters[EPSILON] )] ;]]] Function[CompoundFunction[f Function[Type[void] __vector_21 ( FormalParameters[EPSILON] ) { gs1 si2 }]]] s]
     i -> numeral:i1
     [s1 dcl Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:gs1 Function[EPSILON] Statement:si2]
 
 [Function[Type:t identifier:id ( FormalParameters:p ) indent Statement:stm dedent] Declaration:dcl Function:f Statement:s]
-->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[t1 id1 ( p1 ) ;]]]] Function[CompoundFunction[f Function[t1 id1 ( p1 ) { dcl1 s1 }]]] s]
+->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[t1 id1 ( p1 ) ] ;]]] Function[CompoundFunction[f Function[t1 id1 ( p1 ) { dcl1 s1 }]]] s]
     t -> Type:t1
     id -> identifier:id1
     p -> FormalParameters:p1
@@ -51,7 +51,7 @@ FormalParameter[CompoundFormalParameter:cpar] -> FormalParameter[cpar1]
 
 CompoundFormalParameter[FormalParameter:p1 , FormalParameter:p2] -> CompoundFormalParameter[p3 , p4]
     p1 -> FormalParameter:p3
-    p2 -> FormalParameters:p4
+    p2 -> FormalParameter:p4
 
 [Statement[EPSILON] Declaration:dcl Function:f Statement:s] ->:a [dcl f s]
 [Statement[newline] Declaration:dcl Function:f Statement:s] ->:a [dcl f s]
@@ -59,14 +59,6 @@ CompoundFormalParameter[FormalParameter:p1 , FormalParameter:p2] -> CompoundForm
     [s dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
 [Statement[IntegerDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
     s -> IntegerDeclaration:s1
-[Statement[IntegerArrayDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
-    s -> IntegerArray:s1
-
-[Statement[BooleanArrayDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
-    s -> IntegerArray:s1	
-
-[Statement[RegisterArrayDeclaration:s] Declaration:dcl Function:f Statement:si] ->:a [Declaration[CompoundDeclaration[dcl Declaration[s1 ;]]] f si]
-    s -> RegisterArray:s1	
 	
 [Statement[IntegerDeclarationInit[IntType:intType identifier:id = IntegerExpression:iexpr]] Declaration:dcl Function:f Statement:si] ->:a [dcl2 f2 si2]
     [Statement[IntegerDeclaration[intType id]] dcl f si] ->:a [Declaration:dcl1 Function:f1 Statement:si1]
@@ -115,21 +107,6 @@ CompoundFormalParameter[FormalParameter:p1 , FormalParameter:p2] -> CompoundForm
 IntegerDeclaration[IntType:i identifier:id] -> IntegerDeclaration[i1 id1]
     i -> IntType:i1
     id -> identifier:id1
-
-IntegerArrayDeclaration[IntType:t \[ numeral:num \] identifier:id ] -> IntegerArray[t1 \[ num1 \] id1 ]
-    t -> IntType:t1
-    id -> identifier:id1
-    num -> numeral:num1
-
-BooleanArrayDeclaration[BooleanType:t \[ numeral:num \] identifier:id ] -> BooleanArray[t1 \[ num1 \] id1 ]
-    t -> BooleanType:t1
-    id -> identifier:id1
-    num -> numeral:num1
-
-RegisterArrayDeclaration[RegisterType:t \[ numeral:num \] identifier:id ] -> RegisterArray[t1 \[ num1 \] id1 ]
-    t -> RegisterType:t1
-    id -> identifier:id1
-    num -> numeral:num1
 
 IntegerDeclarationInit[IntType:intType identifier:id = IntegerExpression:iexpr] -> IntegerDeclarationInit[intType1 id1 = iexpr1]
     intType -> IntType:intType1

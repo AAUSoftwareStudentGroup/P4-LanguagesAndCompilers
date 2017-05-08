@@ -8,9 +8,9 @@ Declaration -> Variable
              | EPSILON
 
 Variable -> Type identifier
-          | Type returnId
+          | Type return
 
-Function -> ReturnType identifier ( Parameters )
+Function -> ReturnType identifier Parameters
 
 ReturnType -> nothing
             | Type
@@ -26,6 +26,7 @@ Parameter -> Type identifier
 Type -> IntType
       | RegisterType
       | BooleanType
+      | nothing
 
 ParameterTypes -> Type ParameterTypes
                 | EPSILON

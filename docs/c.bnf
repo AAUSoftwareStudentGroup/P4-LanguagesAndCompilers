@@ -9,10 +9,12 @@ Declaration -> CompoundDeclaration
 
 CompoundDeclaration -> Declaration Declaration
 
-FunctionPrototype -> Type identifier ( FormalParameter )
+FunctionPrototype -> Type identifier ( FormalParameters )
+                  |  Type main ( )
 
 Function -> CompoundFunction
           | Type identifier ( FormalParameters ) { Declaration Statement }
+          | Type main ( ) { Declaration Statement }
           | EPSILON
 
 CompoundFunction -> Function Function
@@ -68,7 +70,7 @@ BooleanType -> unsigned char
 
 BooleanAssignment -> identifier = BooleanExpression
 
-DirectBitAssignment -> * ( RegisterType ) ( numeral ) = ( BooleanExpression ? ( ( * ( RegisterType ) ( numeral ) ) | 1 << ( IntegerExpression ) ) : ( ( * ( RegisterType ) ( numeral ) ) & ! ( 1 << ( IntegerExpression ) ) ) )
+DirectBitAssignment -> ( * ( RegisterType ) ( IntegerExpression ) ) = ( BooleanExpression ? ( ( * ( RegisterType ) ( IntegerExpression ) ) \| 1 << ( iexpr2 ) ) : ( ( * ( RegisterType ) ( IntegerExpression ) ) & ~ ( 1 << ( IntegerExpression ) ) ) )
 
 IndirectBitAssignment -> * identifier = ( BooleanExpression ? ( ( * identifier ) | 1 << ( IntegerExpression ) ) : ( ( * identifier ) & ! ( 1 << ( IntegerExpression ) ) ) )
 

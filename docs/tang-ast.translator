@@ -397,6 +397,7 @@ IntType[int32] ->:q IntType[int32]
 [IdentifierDeclaration[RegisterType:t Array[EPSILON] identifier:id Definition[( FormalParameters:params ) indent Statements:stms dedent]] SymbolTable:s] 
 -> [Function[Type[t1] id1 ( p ) indent stm1 dedent] s]
     t ->:p RegisterType:t1
+    t ->:q RegisterType:t2
     id ->:p identifier:id1
     [params s] -> [FormalParameters:p SymbolTable:s1]
     [stms s1 <- Declarations[Declaration[Variable[Type[t2] return]] %Declarations[EPSILON]]] -> [Statement:stm1 SymbolTable]
@@ -540,7 +541,7 @@ BooleanType[bool] ->:q BooleanType[bool]
 [AndExpressionP[and EqExpression:eqExpr AndExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[AndExpression[%BooleanExpression and expr]] s]
     [eqExpr s] -> [BooleanExpression:expr SymbolTable]
 [AndExpressionP[and EqExpression:eqExpr AndExpressionP:andExprP] SymbolTable:s] 
--> [expr2 <- BooleanExpression[AndExpression[%BooleanExpression And expr1]] s]
+-> [expr2 <- BooleanExpression[AndExpression[%BooleanExpression and expr1]] s]
     [eqExpr s] -> [BooleanExpression:expr1 SymbolTable]
     [andExprP s] -> [BooleanExpression:expr2 SymbolTable]
 
@@ -699,7 +700,7 @@ BooleanType[bool] ->:q BooleanType[bool]
     [p1 p3 s] ->:t ExpressionListArgs:p5
 
 [ExpressionList[Expression:p1 ExpressionListP:p2] Parameters[Parameter:p3 ParametersP:p4] SymbolTable:s] 
-->:t ExpressionList[CompoundArgs[p5 , p6]]
+->:t ExpressionListArgs[CompoundArgs[p5 , p6]]
     [p1 p3 s] ->:t ExpressionListArgs:p5
     [p2 p4 s] ->:t ExpressionListArgs:p6
 
@@ -709,7 +710,7 @@ BooleanType[bool] ->:q BooleanType[bool]
     [p2 p4 s] ->:t ExpressionListArgs:p6
 
 [ExpressionListP[, Expression:p1 ExpressionListP[EPSILON]] ParametersP[Parameter:p3 ParametersP[EPSILON]] SymbolTable:s] 
-->:t ExpressionListArgs[p5]
+->:t ExpressionList[p5]
     [p1 p3 s] ->:t ExpressionListArgs:p5
 
 [Expression:expr Parameter[Type[IntType] identifier] SymbolTable:s] ->:t ExpressionListArgs[iexpr]

@@ -28,9 +28,9 @@ CompoundGlobalStatement -> GlobalStatement newline GlobalStatement
 Statement -> newline 
            | EPSILON
            | CompoundStatement
-		   | IntegerArrayDeclaration
-		   | BooleanArrayDeclaration
-		   | RegisterArrayDeclaration
+		       | IntegerArrayDeclaration
+		       | BooleanArrayDeclaration
+		       | RegisterArrayDeclaration
            | IntegerDeclaration
            | IntegerDeclarationInit
            | BooleanDeclaration
@@ -73,7 +73,7 @@ BooleanType -> bool
 
 BooleanAssignment -> identifier = BooleanExpression
 
-DirectBitAssignment -> RegisterType ( numeral ) { IntegerExpression } = BooleanExpression
+DirectBitAssignment -> RegisterType ( IntegerExpression ) { IntegerExpression } = BooleanExpression
 
 IndirectBitAssignment -> identifier { IntegerExpression } = BooleanExpression
 
@@ -87,7 +87,7 @@ RegisterExpression -> RegisterLiteral
               | identifier
                     | Call
 
-RegisterLiteral -> RegisterType ( numeral )
+RegisterLiteral -> RegisterType ( IntegerExpression )
 
 IfStatement -> if ( BooleanExpression ) indent Statement dedent 
 
@@ -167,7 +167,7 @@ BooleanExpression -> true
                    | OrExpression
                    | Call
 
-DirectBitValue -> RegisterType ( numeral ) { IntegerExpression }
+DirectBitValue -> RegisterType ( IntegerExpression ) { IntegerExpression }
 
 RegisterType -> register8
               | register16
