@@ -285,7 +285,16 @@ void main ( )
         }
 
         //test return, functions, and call of functions
+        [TestMethod]
+        public void ScopeRulesTest() 
+        {
 
+        }
 
+        [TestMethod]
+        public void TypeRuleTest()
+        {
+
+        }
     }
 }
