@@ -6,6 +6,7 @@ namespace Generator.Translation.Data
 	public class Token : Generator.Translation.Data.Node
 	{
 		public string Value { get; set; }
+		public string FileName { get; set; }
 		public int Row { get; set; }
 		public int Column { get; set; }
 		public  Token()

@@ -305,6 +305,7 @@ namespace Generator.Parsing
 
             ClassType tokenClass = CreateParseTreeClass(dataNamespace, visitorNamespace, visitorName, "Token");
             tokenClass.Fields.Add(new FieldType("public", "string", "Value") { Expression = "{ get; set; }" });
+            tokenClass.Fields.Add(new FieldType("public", "string", "FileName") { Expression = "{ get; set; }" });
             tokenClass.Fields.Add(new FieldType("public", "int", "Row") { Expression = "{ get; set; }" });
             tokenClass.Fields.Add(new FieldType("public", "int", "Column") { Expression = "{ get; set; }" });
 

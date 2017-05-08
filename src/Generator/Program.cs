@@ -60,6 +60,7 @@ namespace Generator
 
             IEnumerator<Translation.Data.Token> tokens = lexer.Analyse(File.ReadAllText("../../docs/tang-ast.translator")).Select(t => new Translation.Data.Token()
             {
+                FileName = "tang-ast.translator",
                 Name = t.Name,
                 Value = t.Value,
                 Row = t.Row,
@@ -69,6 +70,7 @@ namespace Generator
 
             IEnumerator<Translation.Data.Token> toCTranslatorTokens = lexer.Analyse(File.ReadAllText("../../docs/ast-c.translator")).Select(t => new Translation.Data.Token()
             {
+                FileName = "ast-c.translator",
                 Name = t.Name,
                 Value = t.Value,
                 Row = t.Row,
