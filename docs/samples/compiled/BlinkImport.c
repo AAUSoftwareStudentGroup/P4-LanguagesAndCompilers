@@ -87,7 +87,9 @@ volatile unsigned char * UBRR0L ;
 volatile unsigned char * UBRR0H ;
 volatile unsigned char * UDR0 ;
 signed char func ( signed char portBit ) ;
+int Pow ( signed long a , unsigned long b ) ;
 void main ( ) ;
+int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
 signed char func ( signed char portBit )
 {
     signed int counter ;

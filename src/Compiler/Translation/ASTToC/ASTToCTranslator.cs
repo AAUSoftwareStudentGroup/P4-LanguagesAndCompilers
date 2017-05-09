@@ -843,7 +843,7 @@ namespace Compiler.Translation.ASTToC
 					Compiler.C.Data.Node p4 = Translate(expressionListArgs[0][2] as Compiler.AST.Data.ExpressionListArgs);
 					if(p4 != null && p4.Name == "ExpressionListArgs")
 					{
-						return new Compiler.C.Data.ExpressionListArgs(false) { new Compiler.C.Data.Token() { Name = "CompoundArgs", Value = "CompoundArgs" } };
+						return new Compiler.C.Data.ExpressionListArgs(false) { new Compiler.C.Data.CompoundArgs(false) { p3 as Compiler.C.Data.ExpressionListArgs, new Compiler.C.Data.Token() { Name = ",", Value = "," }, p4 as Compiler.C.Data.ExpressionListArgs } };
 					}
 				}
 			}

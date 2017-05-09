@@ -14,7 +14,7 @@ namespace Compiler
             DateTime t1 = DateTime.Now;
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
 
-            string file = "../../docs/samples/BlinkImport.tang";
+            string file = "../../docs/samples/Function.tang";
 
             if(args.Length > 0)
             {

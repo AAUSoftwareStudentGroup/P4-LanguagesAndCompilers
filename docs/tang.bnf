@@ -32,8 +32,6 @@ RegisterType -> register8
 RegisterOperation -> ( Expression ) { Expression } = Expression newline
                    | identifier Definition
 
-                  
-
 Definition -> = DefinitionAssign
             | ( FormalParameters ) indent Statements dedent
             | newline
@@ -130,7 +128,7 @@ IdentifierOperation -> BitSelector
                      | ( ExpressionList )
 
 ExpressionList -> Expression ExpressionListP
-                  | EPSILON
+                | EPSILON
 
 ExpressionListP -> , Expression ExpressionListP
-                   | EPSILON
+                 | EPSILON

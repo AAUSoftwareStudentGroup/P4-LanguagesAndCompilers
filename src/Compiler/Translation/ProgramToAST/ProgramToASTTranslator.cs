@@ -876,12 +876,12 @@ namespace Compiler.Translation.ProgramToAST
 						if(id1 != null && id1.Name == "identifier")
 						{
 							(Compiler.AST.Data.Node p, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-							if(p != null && p.Name == "FormalParameter" && s1 != null && s1.Name == "SymbolTable")
+							if(p != null && p.Name == "FormalParameters" && s1 != null && s1.Name == "SymbolTable")
 							{
 								(Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][4] as Compiler.Parsing.Data.Statements, Insert(s1 as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, new Compiler.Translation.SymbolTable.Data.Token() { Name = "return", Value = "return" } } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
 								if(stm1 != null && stm1.Name == "Statement" && symbolTable1 != null && symbolTable1.Name == "SymbolTable")
 								{
-									return (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.IntType }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameter, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+									return (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.IntType }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 								}
 							}
 						}
@@ -2324,7 +2324,7 @@ namespace Compiler.Translation.ProgramToAST
 					Compiler.AST.Data.Node p6 = Translatet(expressionList[1] as Compiler.Parsing.Data.ExpressionListP, parameters[1] as Compiler.Translation.SymbolTable.Data.ParametersP, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 					if(p6 != null && p6.Name == "ExpressionListArgs")
 					{
-						return new Compiler.AST.Data.ExpressionListArgs(false) { new Compiler.AST.Data.CompoundArgs(false) { p5 as Compiler.AST.Data.ExpressionListArgs, new Compiler.AST.Data.Token() { Name = ",", Value = "," }, p6 as Compiler.AST.Data.ExpressionListArgs } };
+						return new Compiler.AST.Data.ExpressionList(false) { new Compiler.AST.Data.ExpressionListArgs(false) { new Compiler.AST.Data.CompoundArgs(false) { p5 as Compiler.AST.Data.ExpressionListArgs, new Compiler.AST.Data.Token() { Name = ",", Value = "," }, p6 as Compiler.AST.Data.ExpressionListArgs } } };
 					}
 				}
 			}
@@ -2334,6 +2334,14 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.AST.Data.Node Translatet(Compiler.Parsing.Data.ExpressionListP expressionListP, Compiler.Translation.SymbolTable.Data.ParametersP parametersP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			Translatet__expressionListP_parametersP_symbolTable++;
+			if(expressionListP != null && expressionListP.Name == "ExpressionListP" && (expressionListP.Count == 3 && expressionListP[0] != null && expressionListP[0].Name == "," && expressionListP[1] != null && expressionListP[1].Name == "Expression" && expressionListP[2] != null && expressionListP[2].Name == "ExpressionListP" && (expressionListP[2].Count == 1 && expressionListP[2][0] != null && expressionListP[2][0].Name == "EPSILON")) && parametersP != null && parametersP.Name == "ParametersP" && (parametersP.Count == 3 && parametersP[0] != null && parametersP[0].Name == "," && parametersP[1] != null && parametersP[1].Name == "Parameter" && parametersP[2] != null && parametersP[2].Name == "ParametersP" && (parametersP[2].Count == 1 && parametersP[2][0] != null && parametersP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+				Compiler.AST.Data.Node p5 = Translatet(expressionListP[1] as Compiler.Parsing.Data.Expression, parametersP[1] as Compiler.Translation.SymbolTable.Data.Parameter, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				if(p5 != null && p5.Name == "ExpressionListArgs")
+				{
+					return p5 as Compiler.AST.Data.ExpressionListArgs;
+				}
+			}
 			if(expressionListP != null && expressionListP.Name == "ExpressionListP" && (expressionListP.Count == 3 && expressionListP[0] != null && expressionListP[0].Name == "," && expressionListP[1] != null && expressionListP[1].Name == "Expression" && expressionListP[2] != null && expressionListP[2].Name == "ExpressionListP") && parametersP != null && parametersP.Name == "ParametersP" && (parametersP.Count == 3 && parametersP[0] != null && parametersP[0].Name == "," && parametersP[1] != null && parametersP[1].Name == "Parameter" && parametersP[2] != null && parametersP[2].Name == "ParametersP") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 				Compiler.AST.Data.Node p5 = Translatet(expressionListP[1] as Compiler.Parsing.Data.Expression, parametersP[1] as Compiler.Translation.SymbolTable.Data.Parameter, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
@@ -2344,14 +2352,6 @@ namespace Compiler.Translation.ProgramToAST
 					{
 						return new Compiler.AST.Data.ExpressionListArgs(false) { new Compiler.AST.Data.CompoundArgs(false) { p5 as Compiler.AST.Data.ExpressionListArgs, new Compiler.AST.Data.Token() { Name = ",", Value = "," }, p6 as Compiler.AST.Data.ExpressionListArgs } };
 					}
-				}
-			}
-			if(expressionListP != null && expressionListP.Name == "ExpressionListP" && (expressionListP.Count == 3 && expressionListP[0] != null && expressionListP[0].Name == "," && expressionListP[1] != null && expressionListP[1].Name == "Expression" && expressionListP[2] != null && expressionListP[2].Name == "ExpressionListP" && (expressionListP[2].Count == 1 && expressionListP[2][0] != null && expressionListP[2][0].Name == "EPSILON")) && parametersP != null && parametersP.Name == "ParametersP" && (parametersP.Count == 3 && parametersP[0] != null && parametersP[0].Name == "," && parametersP[1] != null && parametersP[1].Name == "Parameter" && parametersP[2] != null && parametersP[2].Name == "ParametersP" && (parametersP[2].Count == 1 && parametersP[2][0] != null && parametersP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-				Compiler.AST.Data.Node p5 = Translatet(expressionListP[1] as Compiler.Parsing.Data.Expression, parametersP[1] as Compiler.Translation.SymbolTable.Data.Parameter, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-				if(p5 != null && p5.Name == "ExpressionListArgs")
-				{
-					return new Compiler.AST.Data.ExpressionList(false) { p5 as Compiler.AST.Data.ExpressionListArgs };
 				}
 			}
 			throw new System.Exception();

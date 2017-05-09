@@ -141,7 +141,7 @@ PowExpression -> IntegerExpression ^ IntegerExpression
 
 BooleanExpression -> true 
                    | false 
-             | identifier
+                   | identifier
                    | DirectBitValue
                    | IndirectBitValue
                    | BooleanParenthesisExpression

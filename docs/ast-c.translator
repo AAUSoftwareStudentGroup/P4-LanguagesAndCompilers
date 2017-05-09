@@ -256,7 +256,7 @@ IntegerExpression[DivExpression:s] -> IntegerExpression[s1]
     s -> DivExpression:s1 
 IntegerExpression[ModExpression:s] -> IntegerExpression[s1]
     s -> ModExpression:s1
-[IntegerExpression[PowExpression:s]  -> IntegerExpression[s1]
+[IntegerExpression[PowExpression:s]] -> IntegerExpression[s1]
     s -> PowExpression:s1
 IntegerExpression[Call:s] -> IntegerExpression[s1]
     s -> Call:s1

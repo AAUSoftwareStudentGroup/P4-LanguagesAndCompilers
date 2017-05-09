@@ -1,18 +1,12 @@
-unsigned char a ;
-signed char bar ( signed int n ) ;
-signed char foo ( ) ;
+signed char add ( signed char a , signed char b ) ;
+int Pow ( signed long a , unsigned long b ) ;
 void main ( ) ;
-signed char bar ( signed int n )
+int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+signed char add ( signed char a , signed char b )
 {
-    a = ( a + 5 ) ;
-    return ( foo ( ) + n ) ;
-}
-signed char foo ( )
-{
-    return 4 ;
+    return ( a + b ) ;
 }
 void main ( )
 {
-    a = 4 ;
-    bar ( foo ( ) ) ;
+    add ( 2 , add ( add ( 2 , 3 ) , add ( 2 , Pow ( 3 , 2 ) ) ) ) ;
 }

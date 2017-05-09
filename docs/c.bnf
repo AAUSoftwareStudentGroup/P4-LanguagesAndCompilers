@@ -116,6 +116,8 @@ ExpressionListArgs -> IntegerExpression
                  | RegisterExpression
                  | CompoundArgs
 
+CompoundArgs -> ExpressionListArgs , ExpressionListArgs
+
 IntType -> signed char
          | signed int
          | signed long
