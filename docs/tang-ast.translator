@@ -84,7 +84,7 @@ Program:p ->:p ast
 [Statement[IdentifierDeclaration:idDcl] SymbolTable:s] ->:f s1
     [idDcl s] ->:f SymbolTable:s1
 
-[IdentifierDeclaration[IntType Array[EPSILON] identifier Definition[= Expression newline]] SymbolTable:s] ->:f s
+[IdentifierDeclaration[IntType Array[EPSILON] identifier Definition[= DefinitionAssign[Expression newline]]] SymbolTable:s] ->:f s
 
 [IdentifierDeclaration[IntType:intType Array[EPSILON] identifier:id Definition[( FormalParameters:params ) indent Statements dedent]] SymbolTable:s] 
 ->:f s <- Declarations[Declaration[Function[ReturnType[Type[it]] id1 p]] %Declarations[EPSILON]]
@@ -122,7 +122,7 @@ Type[RegisterType:t] ->:q Type[t1]
 
 [IdentifierDeclaration[IntType Array[ \[ ArrayP \] ] identifier Definition[newline]] SymbolTable:s] ->:f s
 
-[IdentifierDeclaration[BooleanType Array[EPSILON] identifier Definition[= Expression newline]] SymbolTable:s] ->:f s
+[IdentifierDeclaration[BooleanType Array[EPSILON] identifier Definition[= DefinitionAssign[Expression newline]]] SymbolTable:s] ->:f s
 
 [IdentifierDeclaration[BooleanType:boolType Array[EPSILON] identifier:id Definition[( FormalParameters:params ) indent Statements dedent]] SymbolTable:s] 
 ->:f s <- Declarations[Declaration[Function[ReturnType[Type[t]] id1 p]] %Declarations[EPSILON]]
@@ -134,8 +134,6 @@ Type[RegisterType:t] ->:q Type[t1]
 [IdentifierDeclaration[BooleanType Array[EPSILON] identifier Definition[newline]] SymbolTable:s] ->:f s
 
 [IdentifierDeclaration[BooleanType Array[ \[ ArrayP \] ] identifier Definition[newline]] SymbolTable:s] ->:f s
-
-[IdentifierDeclaration[RegisterType Array[ \[ ArrayP \] ] identifier Definition[newline]] SymbolTable:s] ->:f s
 
 [IdentifierDeclaration[nothing:n Array[EPSILON] identifier:id ( FormalParameters:params ) indent Statements dedent] SymbolTable:s] 
 ->:f s <- Declarations[Declaration[Function[ReturnType[t] id1 p]] %Declarations[EPSILON]]
@@ -159,9 +157,9 @@ Type[RegisterType:t] ->:q Type[t1]
 
 [RegisterStatement[RegisterType RegisterOperation[( Expression ) { Expression } = Expression newline]] SymbolTable:s] ->:f s
 
-[RegisterStatement[RegisterType RegisterOperation[Array[EPSILON] identifier Definition[= Expression newline]]] SymbolTable:s] ->:f s
+[RegisterStatement[RegisterType RegisterOperation[Array[EPSILON] identifier Definition[= DefinitionAssign[Expression newline]]]] SymbolTable:s] ->:f s
 
-[RegisterStatement[RegisterType RegisterOperation[Array[EPSILON] identifier Definition[= Expression newline]]] SymbolTable:s] ->:f s
+[RegisterStatement[RegisterType RegisterOperation[Array[EPSILON] identifier Definition[= DefinitionAssign[Expression newline]]]] SymbolTable:s] ->:f s
 
 [RegisterStatement[RegisterType RegisterOperation[Array[EPSILON] identifier Definition[newline]]] SymbolTable:s] ->:f s
 
@@ -286,14 +284,6 @@ Type[RegisterType:t] ->:q Type[t1]
     id ->:q identifier:id2
     [id s] ->:s Declaration[EPSILON]
 
-[IdentifierDeclaration[RegisterType:t Array[ \[ ArrayP[numeral:i] \] ] identifier:id Definition[newline]] SymbolTable:s] -> [RegisterArrayDeclaration[t1 \[ i1 \] id1] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
-    t ->:p RegisterType:t1
-    t ->:q RegisterType:t2
-    id ->:p identifier:id1
-    id ->:q identifier:id2
-    [id s] ->:s Declaration[EPSILON]
-    i ->:p numeral:i1	
-
 [IdentifierDeclaration[BooleanType:t Array[ \[ ArrayP[numeral:i] \] ] identifier:id Definition[newline]] SymbolTable:s] -> [BooleanArrayDeclaration[t1 \[ i1 \] id1] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p BooleanType:t1
     t ->:q BooleanType:t2
@@ -349,7 +339,7 @@ Type[BooleanType:t] ->:p Type[t1]
 Type[RegisterType:t] ->:p Type[t1]
     t ->:p RegisterType:t1
 
-[IdentifierDeclaration[IntType:t Array[EPSILON] identifier:id Definition[= Expression:expr newline]] SymbolTable:s] -> [IntegerDeclarationInit[t1 id1 = iexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
+[IdentifierDeclaration[IntType:t Array[EPSILON] identifier:id Definition[= DefinitionAssign[Expression:expr newline]]] SymbolTable:s] -> [IntegerDeclarationInit[t1 id1 = iexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p IntType:t1
     t ->:q IntType:t2
     id ->:p identifier:id1
@@ -393,16 +383,8 @@ IntType[int32] ->:q IntType[int32]
     id ->:q identifier:id2
     [id s] ->:s Declaration[EPSILON]	
     num ->:p numeral:num1
-	
-[IdentifierDeclaration[RegisterType:t Array[EPSILON] identifier:id Definition[( FormalParameters:params ) indent Statements:stms dedent]] SymbolTable:s] 
--> [Function[Type[t1] id1 ( p ) indent stm1 dedent] s]
-    t ->:p RegisterType:t1
-    t ->:q RegisterType:t2
-    id ->:p identifier:id1
-    [params s] -> [FormalParameters:p SymbolTable:s1]
-    [stms s1 <- Declarations[Declaration[Variable[Type[t2] return]] %Declarations[EPSILON]]] -> [Statement:stm1 SymbolTable]
 
-[RegisterStatement[RegisterType:t RegisterOperation[ Array[EPSILON] identifier:id Definition[= Expression:expr newline]]] SymbolTable:s] -> [RegisterDeclarationInit[t1 id1 = rexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
+[RegisterStatement[RegisterType:t RegisterOperation[ Array[EPSILON] identifier:id Definition[= DefinitionAssign[Expression:expr newline]]]] SymbolTable:s] -> [RegisterDeclarationInit[t1 id1 = rexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p RegisterType:t1
     t ->:q RegisterType:t2
     id ->:p identifier:id1
@@ -432,7 +414,7 @@ RegisterType[register16] ->:q RegisterType[register16]
     [params s] -> [FormalParameters:p SymbolTable:s1]
     [stms s1 <- Declarations[Declaration[Variable[Type[t2] return]] %Declarations[EPSILON]]] -> [Statement:stm1 SymbolTable]
 
-[IdentifierDeclaration[BooleanType:t Array[EPSILON] identifier:id Definition[= Expression:expr newline]] SymbolTable:s] -> [BooleanDeclarationInit[t1 id1 = bexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
+[IdentifierDeclaration[BooleanType:t Array[EPSILON] identifier:id Definition[= DefinitionAssign[Expression:expr newline]]] SymbolTable:s] -> [BooleanDeclarationInit[t1 id1 = bexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p BooleanType:t1
     t ->:q BooleanType:t2
     id ->:p identifier:id1
@@ -704,12 +686,12 @@ BooleanType[bool] ->:q BooleanType[bool]
     [p1 p3 s] ->:t ExpressionListArgs:p5
     [p2 p4 s] ->:t ExpressionListArgs:p6
 
-[ExpressionListP[, Expression:p1 ExpressionListP:p2] ParametersP[Parameter:p3 ParametersP:p4] SymbolTable:s] 
+[ExpressionListP[, Expression:p1 ExpressionListP:p2] ParametersP[, Parameter:p3 ParametersP:p4] SymbolTable:s] 
 ->:t ExpressionListArgs[CompoundArgs[p5 , p6]]
     [p1 p3 s] ->:t ExpressionListArgs:p5
     [p2 p4 s] ->:t ExpressionListArgs:p6
 
-[ExpressionListP[, Expression:p1 ExpressionListP[EPSILON]] ParametersP[Parameter:p3 ParametersP[EPSILON]] SymbolTable:s] 
+[ExpressionListP[, Expression:p1 ExpressionListP[EPSILON]] ParametersP[, Parameter:p3 ParametersP[EPSILON]] SymbolTable:s] 
 ->:t ExpressionList[p5]
     [p1 p3 s] ->:t ExpressionListArgs:p5
 

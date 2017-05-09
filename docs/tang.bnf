@@ -22,8 +22,7 @@ Statement -> IdentifierDeclaration
 
 IdentifierDeclaration -> IntType Array identifier Definition
                        | BooleanType Array identifier Definition
-                       | nothing Array identifier ( FormalParameters ) indent Statements dedent
-					   
+                       | nothing Array identifier ( FormalParameters ) indent Statements dedent				   
 
 Array -> [ ArrayP ]
         | EPSILON
@@ -38,6 +37,8 @@ RegisterType -> register8
 
 RegisterOperation -> ( Expression ) { Expression } = Expression newline
                    | Array identifier Definition
+
+                  
 
 Definition -> = DefinitionAssign
             | ( FormalParameters ) indent Statements dedent

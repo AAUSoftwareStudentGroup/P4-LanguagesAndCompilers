@@ -70,9 +70,10 @@ BooleanType -> unsigned char
 
 BooleanAssignment -> identifier = BooleanExpression
 
-DirectBitAssignment -> ( * ( RegisterType ) ( IntegerExpression ) ) = ( BooleanExpression ? ( ( * ( RegisterType ) ( IntegerExpression ) ) \| 1 << ( iexpr2 ) ) : ( ( * ( RegisterType ) ( IntegerExpression ) ) & ~ ( 1 << ( IntegerExpression ) ) ) )
+DirectBitAssignment -> ( * ( RegisterType ) ( IntegerExpression ) ) = ( BooleanExpression ? ( ( * ( RegisterType ) ( IntegerExpression ) ) \| 1 << ( IntegerExpression ) ) : ( ( * ( RegisterType ) ( IntegerExpression ) ) & ~ ( 1 << ( IntegerExpression ) ) ) )
 
-IndirectBitAssignment -> * identifier = ( BooleanExpression ? ( ( * identifier ) | 1 << ( IntegerExpression ) ) : ( ( * identifier ) & ! ( 1 << ( IntegerExpression ) ) ) )
+
+IndirectBitAssignment -> * identifier = ( BooleanExpression ? ( ( * identifier ) \| 1 << ( IntegerExpression ) ) : ( ( * identifier ) & ~ ( 1 << ( IntegerExpression ) ) ) )
 
 RegisterDeclaration -> RegisterType identifier
 
@@ -87,15 +88,15 @@ RegisterExpression -> RegisterLiteral
 			  | identifier
                     | Call
 
-RegisterLiteral -> * ( RegisterType ) ( numeral )
+RegisterLiteral -> ( RegisterType ) ( IntegerExpression )
 
-IfStatement -> if ( BooleanExpression ) { Declarations Statement } 
+IfStatement -> if ( BooleanExpression ) { Declaration Statement } 
 
-IfElseStatement ->  if ( BooleanExpression ) { Declarations Statement } else { Declarations Statement }
+IfElseStatement ->  if ( BooleanExpression ) { Declaration Statement } else { Declaration Statement }
 		   
-WhileStatement -> while ( BooleanExpression ) { Declarations Statement }
+WhileStatement -> while ( BooleanExpression ) { Declaration Statement }
 
-ForStatement -> for ( IntType identifier = IntegerExpression ; identifier <= IntegerExpression ; identifier ++ ) { Statement }
+ForStatement -> for ( IntType identifier = IntegerExpression ; identifier <= IntegerExpression ; identifier ++ ) { Declaration Statement }
 
 Call -> identifier ( ExpressionList )
 
@@ -148,7 +149,7 @@ PowExpression -> ( IntegerExpression * IntegerExpression )
 
 BooleanExpression -> 1 
                    | 0 
-			 | identifier
+			             | identifier
                    | DirectBitValue
                    | IndirectBitValue
                    | BooleanParenthesisExpression
@@ -165,7 +166,7 @@ BooleanExpression -> 1
                    | OrExpression
                    | Call
 
-DirectBitValue -> ( ( * ( RegisterType ) ( numeral ) ) & ( 1 << ( IntegerExpression ) ) )
+DirectBitValue -> ( ( * ( RegisterType ) ( IntegerExpression ) ) & ( 1 << ( IntegerExpression ) ) )
 
 IndirectBitValue -> ( * identifier & ( 1 << ( IntegerExpression ) ) )
 

@@ -133,7 +133,7 @@ BooleanAssignment[identifier:id = BooleanExpression:bexpr] -> BooleanAssignment[
     bexpr -> BooleanExpression:bexpr1
 
 DirectBitAssignment[RegisterType:regType ( IntegerExpression:expr1 ) { IntegerExpression:expr2 } = BooleanExpression:bexpr]
--> DirectBitAssignment[( \* ( regType1 ) ( iexpr1 ) ) = ( bexpr1 ? ( ( \* ( regType1 ) ( iexpr1 ) ) | 1 << ( iexpr2 ) ) \: ( ( \* ( regType1 ) ( iexpr1 ) ) & ~ ( 1 << ( iexpr2 ) ) ) )]
+-> DirectBitAssignment[( \* ( regType1 ) ( iexpr1 ) ) = ( bexpr1 ? ( ( \* ( regType1 ) ( iexpr1 ) ) \| 1 << ( iexpr2 ) ) \: ( ( \* ( regType1 ) ( iexpr1 ) ) & ~  ( 1 << ( iexpr2 ) ) ) )]
     regType -> RegisterType:regType1
     expr1 -> IntegerExpression:iexpr1
     expr2 -> IntegerExpression:iexpr2
@@ -201,7 +201,7 @@ ExpressionListArgs[CompoundArgs[ExpressionListArgs:p1 , ExpressionListArgs:p2]] 
     p1 -> ExpressionListArgs:p3
     p2 -> ExpressionListArgs:p4
 
-RegisterLiteral[RegisterType:regType ( IntegerExpression:iexpr )] -> RegisterLiteral[( regType1 ) ( iexpr1 )]
+RegisterLiteral[RegisterType:regType ( IntegerExpression:iexpr )] -> RegisterLiteral[ ( regType1 ) ( iexpr1 )]
     regType -> RegisterType:regType1
     iexpr -> IntegerExpression:iexpr1
 
@@ -218,8 +218,7 @@ RegisterLiteral[RegisterType:regType ( IntegerExpression:iexpr )] -> RegisterLit
     bexpr -> BooleanExpression:bexpr1
     [s Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl3 Function:f3 Statement:si3]
 
-[ForStatement[for ( IntType:intType identifier:id from IntegerExpression:expr1 to IntegerExpression:expr2 ) indent Statement:s dedent] Declaration:dcl Function:f Statement:si] 
-->:a [dcl f Statement[CompoundStatement[si Statement[ForStatement[for ( intType1 id1 = iexpr1 ; id1 <= iexpr2 ; id1 ++ ) { dcl3 si3 }]]]]]
+[ForStatement[for ( IntType:intType identifier:id from IntegerExpression:expr1 to IntegerExpression:expr2 ) indent Statement:s dedent] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[ForStatement[for ( intType1 id1 = iexpr1 ; id1 <= iexpr2 ; id1 ++ ) { dcl3 si3 }]]]]]
     intType -> IntType:intType1
     id -> identifier:id1
     expr1 -> IntegerExpression:iexpr1
@@ -233,7 +232,6 @@ Type[RegisterType:t] -> Type[t1]
 Type[BooleanType:t] -> Type[t1]
     t -> BooleanType:t1
 Type[nothing] -> Type[void]
-
 
 IntType[uint8] -> IntType[unsigned char]  
 IntType[uint16] -> IntType[unsigned int]  

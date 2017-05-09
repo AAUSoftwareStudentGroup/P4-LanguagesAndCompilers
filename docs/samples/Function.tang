@@ -1,11 +1,11 @@
-int8 t(bool h)
-    if(h and bob())
-        return 2
 
-bool bob()
-    return true
+uint8 a = 4
 
-bool bob2()
-    return true
+bar(foo())
 
-t(bob() and !bob())
+int8 bar(int16 n)
+    a = a + 5
+    return foo() + n
+
+int8 foo()
+    return 4

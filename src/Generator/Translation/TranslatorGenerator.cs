@@ -650,7 +650,6 @@ namespace Generator.Translation
 
             string nodeType = type;
 
-
             string namePattern = GetName(name);
 
             if (namePattern == "*" && name[0][0].Name == "symbol")
@@ -664,6 +663,11 @@ namespace Generator.Translation
                 namePattern = $"\"{namePattern}\"";
                 if (!domain.Grammar.ContainsKey(nameStr))
                 {
+                    if(!domain.Grammar.Values.Any(v => v.Any(e => e.Contains(nameStr))))
+                    {
+                        Token token = treePattern.Nodes<Name>()[0][0][0] as Token;
+                        System.Console.WriteLine($"In {token.FileName}. At line {token.Row + 1} column {token.Column + 1}. Grammar {domain.Identifier} does not contain symbol {nodeType}.");
+                    }
                     type = "Token";
                     fullType = $"{domain.DataNamespace}.Token";
                 }
@@ -682,32 +686,92 @@ namespace Generator.Translation
                 symbols.Add(aliasStr, (fullType, identifier, nodeType));
             }
 
-            return $"{identifier} != null && {identifier}.Name == {namePattern} && {CreateChildrenPatternCondition(identifier, domain, treePattern.Nodes<ChildrenPattern>()[0], symbols)}";
+            string childrenCondition = CreateChildrenPatternCondition(identifier, treePattern, domain, treePattern.Nodes<ChildrenPattern>()[0], symbols);
+
+            if(childrenCondition == "true")
+            {
+                return $"{identifier} != null && {identifier}.Name == {namePattern}";
+            }
+            else
+            {
+                return $"{identifier} != null && {identifier}.Name == {namePattern} && {childrenCondition}";
+            }
         }
 
-        private string CreateChildrenPatternCondition(string identifier, RelationDomain domain, ChildrenPattern childrenPattern, Dictionary<string, (string type, string name, string nodeType)> symbols)
+
+
+        private string CreateChildrenPatternCondition(string identifier, TreePattern parent, RelationDomain domain, ChildrenPattern childrenPattern, Dictionary<string, (string type, string name, string nodeType)> symbols)
         {
             if (childrenPattern.Nodes<Token>()[0].Name == "EPSILON")
             {
                 return "true";
             }
+
             string childrenConditions = "true";
             int index = 0;
+
+            List<string> children = new List<string>();
+
             Patterns patterns = childrenPattern.Nodes<Patterns>().FirstOrDefault();
             while (patterns != null && patterns.Nodes<TreePattern>().Count() > 0)
             {
                 TreePattern treePattern = patterns.Nodes<TreePattern>()[0];
+                Name name = treePattern.Nodes<Name>()[0];
+                string nameStr = GetName(name);
                 string treeCondition = CreateTreePatternCondition($"{identifier}[{index}]", domain, treePattern, symbols);
+                children.Add(nameStr);
                 if (index == 0)
                 {
                     childrenConditions = $"{treeCondition}";
                 }
-                else
+                else if(treeCondition != "true")
                 {
                     childrenConditions += $" && {treeCondition}";
                 }
                 patterns = patterns.Nodes<Patterns>().FirstOrDefault();
                 index++;
+            }
+
+            bool isValid = true;
+
+            string parentName = GetName(parent.Nodes<Name>()[0]);
+
+            var expansions = domain.Grammar[parentName];
+
+            for (int expansionIndex = 0; expansionIndex < expansions.Count; expansionIndex++)
+            {
+                index = 0;
+                isValid = true;
+
+                if (children.Count != expansions[expansionIndex].Count)
+                {
+                    isValid = false;
+                }
+                else
+                {
+                    foreach (string child in children)
+                    {
+                        string expectedName = expansions[expansionIndex][index];
+                        if (expectedName != child)
+                        {
+                            isValid = false;
+                            break;
+                        }
+                        index++;
+                    }
+                }
+
+                if (isValid)
+                {
+                    isValid = true;
+                    break;
+                }
+            }
+
+            if (!isValid)
+            {
+                Token token = parent.Nodes<Name>()[0][0][0] as Token;
+                System.Console.WriteLine($"In {token.FileName}. At line {token.Row + 1} column {token.Column + 1}. Grammar {domain.Identifier} does not contain rule {token.Value} -> {string.Join(" ", children)}");
             }
 
             return $"({identifier}.Count == {index} && {childrenConditions})";
@@ -816,7 +880,7 @@ namespace Generator.Translation
                 {
                     isValid = false;
                 }
-                else 
+                else
                 {
                     foreach(string name in names)
                     {
