@@ -612,66 +612,6 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.IntegerArray node)
-		{
-			var clone = new Compiler.C.Data.IntegerArray() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.IntegerArrayInit node)
-		{
-			var clone = new Compiler.C.Data.IntegerArrayInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.BooleanArray node)
-		{
-			var clone = new Compiler.C.Data.BooleanArray() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.BooleanArrayInit node)
-		{
-			var clone = new Compiler.C.Data.BooleanArrayInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.RegisterArray node)
-		{
-			var clone = new Compiler.C.Data.RegisterArray() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
-		public override Compiler.C.Data.Node Visit(Compiler.C.Data.RegisterArrayInit node)
-		{
-			var clone = new Compiler.C.Data.RegisterArrayInit() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.Expressions node)
 		{
 			var clone = new Compiler.C.Data.Expressions() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
