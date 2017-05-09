@@ -244,5 +244,31 @@ namespace Compiler.C.Visitors
             }
             yield return "}";
         }
+
+        public override IEnumerable<string> Visit(IfElseIfStatement node)
+        {
+            StringBuilder first = new StringBuilder("if ( ");
+            foreach (var str in node.Nodes<BooleanExpression>()[0].Accept(this).Where(s => !string.IsNullOrWhiteSpace(s)))
+            {
+                first.Append(str);
+            }
+            first.Append(" )");
+            yield return first.ToString();
+            yield return "{";
+            foreach (var str in node.Nodes<Declaration>()[0].Accept(this))
+            {
+                yield return $"    {str}";
+            }
+            foreach (var str in node.Nodes<Statement>()[0].Accept(this))
+            {
+                yield return $"    {str}";
+            }
+            yield return "}";
+            yield return "else";
+            foreach (var str in node[9].Accept(this))
+            {
+                yield return str;
+            }
+        }
     }
 }

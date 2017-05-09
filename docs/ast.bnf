@@ -41,6 +41,7 @@ Statement -> newline
            | RegisterAssignment
            | IfStatement
            | IfElseStatement 
+           | IfElseIfStatement 
            | WhileStatement
            | ForStatement
            | Call
@@ -75,7 +76,7 @@ RegisterDeclarationInit -> RegisterType identifier = RegisterExpression
 RegisterAssignment -> identifier = RegisterExpression
 
 RegisterExpression -> RegisterLiteral
-              | identifier
+                    | identifier
                     | Call
 
 RegisterLiteral -> RegisterType ( IntegerExpression )
@@ -83,6 +84,10 @@ RegisterLiteral -> RegisterType ( IntegerExpression )
 IfStatement -> if ( BooleanExpression ) indent Statement dedent 
 
 IfElseStatement -> if ( BooleanExpression ) indent Statement dedent else indent Statement dedent
+
+IfElseIfStatement -> if ( BooleanExpression ) indent Statement dedent else IfStatement
+                   | if ( BooleanExpression ) indent Statement dedent else IfElseStatement
+                   | if ( BooleanExpression ) indent Statement dedent else IfElseIfStatement
            
 WhileStatement -> while ( BooleanExpression ) indent Statement dedent
 
@@ -96,6 +101,8 @@ BooleanReturn -> return BooleanExpression
 
 RegisterReturn -> return RegisterExpression
 
+EmptyReturn -> return
+
 ExpressionList -> ExpressionListArgs
                 | EPSILON
  
@@ -105,7 +112,6 @@ ExpressionListArgs -> IntegerExpression
                  | CompoundArgs
 
 CompoundArgs -> ExpressionListArgs , ExpressionListArgs
-
 
 IntType -> int8
          | int16

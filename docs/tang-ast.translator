@@ -253,15 +253,15 @@ Type[RegisterType:t] ->:q Type[t1]
 [Statement[ReturnStatement:ret] SymbolTable:s] -> [Statement[retStm] s1]
     [ret s] -> [*:retStm SymbolTable:s1]
 
-[ReturnStatement[return Expression:expr newline] SymbolTable:s] -> [IntegerReturn[return iret] s]
+[ReturnStatement[return ReturnValue[Expression:expr] newline] SymbolTable:s] -> [IntegerReturn[return iret] s]
     [return s] ->:s Declaration[Variable[Type[IntType] return]]
     [expr s] -> [IntegerExpression:iret SymbolTable]
 
-[ReturnStatement[return Expression:expr newline] SymbolTable:s] -> [BooleanReturn[return bret] s]
+[ReturnStatement[return ReturnValue[Expression:expr] newline] SymbolTable:s] -> [BooleanReturn[return bret] s]
     [return s] ->:s Declaration[Variable[Type[BooleanType] return]]
     [expr s] -> [BooleanExpression:bret SymbolTable]
 
-[ReturnStatement[return Expression:expr newline] SymbolTable:s] -> [RegisterReturn[return rret] s]
+[ReturnStatement[return ReturnValue[Expression:expr] newline] SymbolTable:s] -> [RegisterReturn[return rret] s]
     [return s] ->:s Declaration[Variable[Type[RegisterType] return]]
     [expr s] -> [RegisterExpression:rret SymbolTable]
 
@@ -443,10 +443,15 @@ BooleanType[bool] ->:q BooleanType[bool]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]
     [stms s] -> [Statement:stm SymbolTable]
 
-[IfStatement[if ( Expression:expr ) indent Statements:stms dedent ElseStatement[else indent Statements:stms1 dedent]] SymbolTable:s] -> [IfElseStatement[if ( boolExpr ) indent stm dedent else indent stm1 dedent ] s]
+[IfStatement[if ( Expression:expr ) indent Statements:stms dedent ElseStatement[else ElseBlock[indent Statements:stms1 dedent]]] SymbolTable:s] -> [IfElseStatement[if ( boolExpr ) indent stm dedent else indent stm1 dedent ] s]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]
     [stms s] -> [Statement:stm SymbolTable]
     [stms1 s] -> [Statement:stm1 SymbolTable]
+
+[IfStatement[if ( Expression:expr ) indent Statements:stms dedent ElseStatement[else ElseBlock[IfStatement:ifStm]]] SymbolTable:s] -> [IfElseIfStatement[if ( boolExpr ) indent stm dedent else ifStm1] s]
+    [ifStm s] -> [*:ifStm1 SymbolTable]
+    [expr s] -> [BooleanExpression:boolExpr SymbolTable]
+    [stms s] -> [Statement:stm SymbolTable]
 
 [WhileStatement[while ( Expression:expr ) indent Statements:stms dedent] SymbolTable:s] -> [WhileStatement[while ( boolExpr ) indent stm dedent] s]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]

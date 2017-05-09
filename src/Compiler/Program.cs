@@ -16,7 +16,7 @@ namespace Compiler
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
             bool DebugEnabled = false;
 
-            string file = "../../docs/samples/Function.tang";
+            string file = "../../docs/samples/ElseIf.tang";
 
             if(args.Length > 0)
             {

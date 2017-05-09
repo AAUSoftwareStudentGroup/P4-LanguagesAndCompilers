@@ -35,6 +35,7 @@ namespace Compiler.Translation.ASTToC
 		public int Translate__registerLiteral = 0;
 		public int Translatea__ifStatement_declaration_function_statement = 0;
 		public int Translatea__ifElseStatement_declaration_function_statement = 0;
+		public int Translatea__ifElseIfStatement_declaration_function_statement = 0;
 		public int Translatea__whileStatement_declaration_function_statement = 0;
 		public int Translatea__forStatement_declaration_function_statement = 0;
 		public int Translate__type = 0;
@@ -380,6 +381,14 @@ namespace Compiler.Translation.ASTToC
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IfElseStatement") && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement1 != null && statement1.Name == "Statement")
 			{
 				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.IfElseStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
+				if(dcl2 != null && dcl2.Name == "Declaration" && f2 != null && f2.Name == "Function" && si2 != null && si2.Name == "Statement")
+				{
+					return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, si2 as Compiler.C.Data.Statement);
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IfElseIfStatement") && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement1 != null && statement1.Name == "Statement")
+			{
+				(Compiler.C.Data.Node dcl2, Compiler.C.Data.Node f2, Compiler.C.Data.Node si2) = Translatea(statement[0] as Compiler.AST.Data.IfElseIfStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement1 as Compiler.C.Data.Statement);
 				if(dcl2 != null && dcl2.Name == "Declaration" && f2 != null && f2.Name == "Function" && si2 != null && si2.Name == "Statement")
 				{
 					return (dcl2 as Compiler.C.Data.Declaration, f2 as Compiler.C.Data.Function, si2 as Compiler.C.Data.Statement);
@@ -901,6 +910,60 @@ namespace Compiler.Translation.ASTToC
 						if(dcl4 != null && dcl4.Name == "Declaration" && f4 != null && f4.Name == "Function" && si4 != null && si4.Name == "Statement")
 						{
 							return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfElseStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declaration, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" }, new Compiler.C.Data.Token() { Name = "else", Value = "else" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl4 as Compiler.C.Data.Declaration, si4 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } } });
+						}
+					}
+				}
+			}
+			throw new System.Exception();
+		}
+
+		public (Compiler.C.Data.Node, Compiler.C.Data.Node, Compiler.C.Data.Node) Translatea(Compiler.AST.Data.IfElseIfStatement ifElseIfStatement, Compiler.C.Data.Declaration declaration, Compiler.C.Data.Function function, Compiler.C.Data.Statement statement)
+		{
+			Translatea__ifElseIfStatement_declaration_function_statement++;
+			if(ifElseIfStatement != null && ifElseIfStatement.Name == "IfElseIfStatement" && (ifElseIfStatement.Count == 9 && ifElseIfStatement[0] != null && ifElseIfStatement[0].Name == "if" && ifElseIfStatement[1] != null && ifElseIfStatement[1].Name == "(" && ifElseIfStatement[2] != null && ifElseIfStatement[2].Name == "BooleanExpression" && ifElseIfStatement[3] != null && ifElseIfStatement[3].Name == ")" && ifElseIfStatement[4] != null && ifElseIfStatement[4].Name == "indent" && ifElseIfStatement[5] != null && ifElseIfStatement[5].Name == "Statement" && ifElseIfStatement[6] != null && ifElseIfStatement[6].Name == "dedent" && ifElseIfStatement[7] != null && ifElseIfStatement[7].Name == "else" && ifElseIfStatement[8] != null && ifElseIfStatement[8].Name == "IfStatement") && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement != null && statement.Name == "Statement")
+			{
+				(Compiler.C.Data.Node declaration1, Compiler.C.Data.Node function1, Compiler.C.Data.Node statement1) = Translatea(ifElseIfStatement[8] as Compiler.AST.Data.IfStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement as Compiler.C.Data.Statement);
+				if(declaration1 != null && declaration1.Name == "Declaration" && function1 != null && function1.Name == "Function" && statement1 != null && statement1.Name == "Statement" && (statement1.Count == 1 && statement1[0] != null && statement1[0].Name == "CompoundStatement" && (statement1[0].Count == 2 && statement1[0][0] != null && statement1[0][0].Name == "Statement" && statement1[0][1] != null && statement1[0][1].Name == "Statement" && (statement1[0][1].Count == 1 && statement1[0][1][0] != null && statement1[0][1][0].Name == "IfStatement"))))
+				{
+					Compiler.C.Data.Node bexpr1 = Translate(ifElseIfStatement[2] as Compiler.AST.Data.BooleanExpression);
+					if(bexpr1 != null && bexpr1.Name == "BooleanExpression")
+					{
+						(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(ifElseIfStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+						if(dcl3 != null && dcl3.Name == "Declaration" && f3 != null && f3.Name == "Function" && si3 != null && si3.Name == "Statement")
+						{
+							return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfElseIfStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declaration, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" }, new Compiler.C.Data.Token() { Name = "else", Value = "else" }, statement1[0][1][0] as Compiler.C.Data.IfStatement } } } });
+						}
+					}
+				}
+			}
+			if(ifElseIfStatement != null && ifElseIfStatement.Name == "IfElseIfStatement" && (ifElseIfStatement.Count == 9 && ifElseIfStatement[0] != null && ifElseIfStatement[0].Name == "if" && ifElseIfStatement[1] != null && ifElseIfStatement[1].Name == "(" && ifElseIfStatement[2] != null && ifElseIfStatement[2].Name == "BooleanExpression" && ifElseIfStatement[3] != null && ifElseIfStatement[3].Name == ")" && ifElseIfStatement[4] != null && ifElseIfStatement[4].Name == "indent" && ifElseIfStatement[5] != null && ifElseIfStatement[5].Name == "Statement" && ifElseIfStatement[6] != null && ifElseIfStatement[6].Name == "dedent" && ifElseIfStatement[7] != null && ifElseIfStatement[7].Name == "else" && ifElseIfStatement[8] != null && ifElseIfStatement[8].Name == "IfElseStatement") && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement != null && statement.Name == "Statement")
+			{
+				(Compiler.C.Data.Node declaration1, Compiler.C.Data.Node function1, Compiler.C.Data.Node statement1) = Translatea(ifElseIfStatement[8] as Compiler.AST.Data.IfElseStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement as Compiler.C.Data.Statement);
+				if(declaration1 != null && declaration1.Name == "Declaration" && function1 != null && function1.Name == "Function" && statement1 != null && statement1.Name == "Statement" && (statement1.Count == 1 && statement1[0] != null && statement1[0].Name == "CompoundStatement" && (statement1[0].Count == 2 && statement1[0][0] != null && statement1[0][0].Name == "Statement" && statement1[0][1] != null && statement1[0][1].Name == "Statement" && (statement1[0][1].Count == 1 && statement1[0][1][0] != null && statement1[0][1][0].Name == "IfElseStatement"))))
+				{
+					Compiler.C.Data.Node bexpr1 = Translate(ifElseIfStatement[2] as Compiler.AST.Data.BooleanExpression);
+					if(bexpr1 != null && bexpr1.Name == "BooleanExpression")
+					{
+						(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(ifElseIfStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+						if(dcl3 != null && dcl3.Name == "Declaration" && f3 != null && f3.Name == "Function" && si3 != null && si3.Name == "Statement")
+						{
+							return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfElseIfStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declaration, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" }, new Compiler.C.Data.Token() { Name = "else", Value = "else" }, statement1[0][1][0] as Compiler.C.Data.IfElseStatement } } } });
+						}
+					}
+				}
+			}
+			if(ifElseIfStatement != null && ifElseIfStatement.Name == "IfElseIfStatement" && (ifElseIfStatement.Count == 9 && ifElseIfStatement[0] != null && ifElseIfStatement[0].Name == "if" && ifElseIfStatement[1] != null && ifElseIfStatement[1].Name == "(" && ifElseIfStatement[2] != null && ifElseIfStatement[2].Name == "BooleanExpression" && ifElseIfStatement[3] != null && ifElseIfStatement[3].Name == ")" && ifElseIfStatement[4] != null && ifElseIfStatement[4].Name == "indent" && ifElseIfStatement[5] != null && ifElseIfStatement[5].Name == "Statement" && ifElseIfStatement[6] != null && ifElseIfStatement[6].Name == "dedent" && ifElseIfStatement[7] != null && ifElseIfStatement[7].Name == "else" && ifElseIfStatement[8] != null && ifElseIfStatement[8].Name == "IfElseIfStatement") && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement != null && statement.Name == "Statement")
+			{
+				(Compiler.C.Data.Node declaration1, Compiler.C.Data.Node function1, Compiler.C.Data.Node statement1) = Translatea(ifElseIfStatement[8] as Compiler.AST.Data.IfElseIfStatement, declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, statement as Compiler.C.Data.Statement);
+				if(declaration1 != null && declaration1.Name == "Declaration" && function1 != null && function1.Name == "Function" && statement1 != null && statement1.Name == "Statement" && (statement1.Count == 1 && statement1[0] != null && statement1[0].Name == "CompoundStatement" && (statement1[0].Count == 2 && statement1[0][0] != null && statement1[0][0].Name == "Statement" && statement1[0][1] != null && statement1[0][1].Name == "Statement" && (statement1[0][1].Count == 1 && statement1[0][1][0] != null && statement1[0][1][0].Name == "IfElseIfStatement"))))
+				{
+					Compiler.C.Data.Node bexpr1 = Translate(ifElseIfStatement[2] as Compiler.AST.Data.BooleanExpression);
+					if(bexpr1 != null && bexpr1.Name == "BooleanExpression")
+					{
+						(Compiler.C.Data.Node dcl3, Compiler.C.Data.Node f3, Compiler.C.Data.Node si3) = Translatea(ifElseIfStatement[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+						if(dcl3 != null && dcl3.Name == "Declaration" && f3 != null && f3.Name == "Function" && si3 != null && si3.Name == "Statement")
+						{
+							return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.IfElseIfStatement(false) { new Compiler.C.Data.Token() { Name = "if", Value = "if" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, bexpr1 as Compiler.C.Data.BooleanExpression, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, dcl3 as Compiler.C.Data.Declaration, si3 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" }, new Compiler.C.Data.Token() { Name = "else", Value = "else" }, statement1[0][1][0] as Compiler.C.Data.IfElseIfStatement } } } });
 						}
 					}
 				}
@@ -1717,6 +1780,7 @@ namespace Compiler.Translation.ASTToC
 			System.Console.WriteLine("Translate__registerLiteral: "+Translate__registerLiteral);
 			System.Console.WriteLine("Translatea__ifStatement_declaration_function_statement: "+Translatea__ifStatement_declaration_function_statement);
 			System.Console.WriteLine("Translatea__ifElseStatement_declaration_function_statement: "+Translatea__ifElseStatement_declaration_function_statement);
+			System.Console.WriteLine("Translatea__ifElseIfStatement_declaration_function_statement: "+Translatea__ifElseIfStatement_declaration_function_statement);
 			System.Console.WriteLine("Translatea__whileStatement_declaration_function_statement: "+Translatea__whileStatement_declaration_function_statement);
 			System.Console.WriteLine("Translatea__forStatement_declaration_function_statement: "+Translatea__forStatement_declaration_function_statement);
 			System.Console.WriteLine("Translate__type: "+Translate__type);
