@@ -1,0 +1,83 @@
+import AllRegisters
+bool OUTPUT = true
+bool INPUT = false
+
+int8 PinModeD(int8 pin, bool mode)
+    if(pin <= 7)
+        DDRD{pin} = mode
+        return 0
+    if(pin <= 13)
+        DDRB{pin - 8} = mode
+        return 0
+
+bool DigitalRead(int8 pin)
+    if(pin < 0)
+        return false
+    else 
+        if(pin <= 7)
+            return PORTD{pin}
+        else
+            if(pin <= 13)
+                return PORTB{pin - 8}
+            else
+                if(pin <= 20)
+                    return PORTC{pin - 14}
+
+
+nothing SetAnalogMode(bool mode) // True = analog, false = digital
+    ADCSRA{7} = mode
+    if(mode)
+        ADCSRA{6} = true
+        // ADC Frekuency Prescaler division: 128 = 125 khz at 16 Mhz
+        ADCSRA{0} = true
+        ADCSRA{1} = true
+        ADCSRA{2} = true
+        // Auto-update
+        ADCSRA{5} = true
+        // Interrupt enable
+        ADCSRA{3} = false
+        
+int8 DigitalWrite(int8 pin, bool value)
+    if(pin < 0)
+        return 0
+    else 
+        if(pin <= 7)
+            PIND{pin} = value
+        else 
+            if(pin <= 13)
+                PINB{pin - 8} = value
+            else
+                if(pin <= 20)
+                    PINC{pin - 14} = value
+
+
+nothing PinModeA(int8 pin, bool pullUp)
+    ADMUX{5} = false
+    ADMUX{6} = true
+    ADMUX{7} = false // Left Adjust Result
+    if(pin < 8 or pin >= 0)
+        DDRC{pin} = pullUp
+        
+int16 AnalogRead(int8 pin)
+    if(ADCSRA{7})
+        // Set Multiplexer
+        if(pin % 2 == 0)
+            ADMUX{0} = true            
+        else
+            ADMUX{0} = false
+        if(pin % 4 == 0)
+            ADMUX{1} = true
+        else
+            ADMUX{1} = false
+        if(pin % 8 == 0)
+            ADMUX{2} = true
+        else
+            ADMUX{2} = false
+        ADCSRA{4} = false
+        while(ADCSRA{4} == false) // Set to 1 when ADC is updated
+            // Do nothing
+        return ADC()
+    else
+        if(DigitalRead(pin+14))
+            return 1
+        return 0
