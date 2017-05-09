@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.Parsing.Data
 {
-	public class ActualParameters : Compiler.Parsing.Data.Node
+	public class DefinitionAssign : Compiler.Parsing.Data.Node
 	{
-		public  ActualParameters()
+		public  DefinitionAssign()
 		{
 		}
 
-		public  ActualParameters(bool isPlaceholder)
+		public  DefinitionAssign(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "ActualParameters";
+			Name = "DefinitionAssign";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

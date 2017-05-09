@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.Parsing.Data
 {
-	public class Initialization : Compiler.Parsing.Data.Node
+	public class ArrayP : Compiler.Parsing.Data.Node
 	{
-		public  Initialization()
+		public  ArrayP()
 		{
 		}
 
-		public  Initialization(bool isPlaceholder)
+		public  ArrayP(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "Initialization";
+			Name = "ArrayP";
 		}
 
 		public override T Accept<T>(Compiler.Parsing.Visitors.ProgramVisitor<T> visitor)

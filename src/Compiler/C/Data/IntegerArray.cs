@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.C.Data
 {
-	public class ActualParameters : Compiler.C.Data.Node
+	public class IntegerArray : Compiler.C.Data.Node
 	{
-		public  ActualParameters()
+		public  IntegerArray()
 		{
 		}
 
-		public  ActualParameters(bool isPlaceholder)
+		public  IntegerArray(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "ActualParameters";
+			Name = "IntegerArray";
 		}
 
 		public override T Accept<T>(Compiler.C.Visitors.CVisitor<T> visitor)

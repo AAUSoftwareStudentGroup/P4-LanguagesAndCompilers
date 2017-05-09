@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.C.Data
 {
-	public class RegisterVariable : Compiler.C.Data.Node
+	public class BooleanArray : Compiler.C.Data.Node
 	{
-		public  RegisterVariable()
+		public  BooleanArray()
 		{
 		}
 
-		public  RegisterVariable(bool isPlaceholder)
+		public  BooleanArray(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "RegisterVariable";
+			Name = "BooleanArray";
 		}
 
 		public override T Accept<T>(Compiler.C.Visitors.CVisitor<T> visitor)

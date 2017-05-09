@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.AST.Data
 {
-	public class ActualParameter : Compiler.AST.Data.Node
+	public class IntegerArrayDeclaration : Compiler.AST.Data.Node
 	{
-		public  ActualParameter()
+		public  IntegerArrayDeclaration()
 		{
 		}
 
-		public  ActualParameter(bool isPlaceholder)
+		public  IntegerArrayDeclaration(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "ActualParameter";
+			Name = "IntegerArrayDeclaration";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

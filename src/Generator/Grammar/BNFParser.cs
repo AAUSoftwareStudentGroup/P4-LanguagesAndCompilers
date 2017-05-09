@@ -19,7 +19,9 @@ namespace Generator.Grammar {
                 } else if(word == "|") {
                     expansionIndex++;
                     BNF[production].Add(new List<string>());
-                } else
+                } else if(word[0] == '\\') {
+                    BNF[production][expansionIndex].Add(word.Substring(1));
+                } else 
                     BNF[production][expansionIndex].Add(word);
             }
             return BNF;

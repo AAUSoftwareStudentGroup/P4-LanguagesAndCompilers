@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.C.Data
 {
-	public class ArrayNonEmptyNoSize : Compiler.C.Data.Node
+	public class RegisterArray : Compiler.C.Data.Node
 	{
-		public  ArrayNonEmptyNoSize()
+		public  RegisterArray()
 		{
 		}
 
-		public  ArrayNonEmptyNoSize(bool isPlaceholder)
+		public  RegisterArray(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "ArrayNonEmptyNoSize";
+			Name = "RegisterArray";
 		}
 
 		public override T Accept<T>(Compiler.C.Visitors.CVisitor<T> visitor)

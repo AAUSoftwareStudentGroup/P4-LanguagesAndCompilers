@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.C.Data
 {
-	public class GlobalDeclaration : Compiler.C.Data.Node
+	public class BooleanArrayInit : Compiler.C.Data.Node
 	{
-		public  GlobalDeclaration()
+		public  BooleanArrayInit()
 		{
 		}
 
-		public  GlobalDeclaration(bool isPlaceholder)
+		public  BooleanArrayInit(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "GlobalDeclaration";
+			Name = "BooleanArrayInit";
 		}
 
 		public override T Accept<T>(Compiler.C.Visitors.CVisitor<T> visitor)

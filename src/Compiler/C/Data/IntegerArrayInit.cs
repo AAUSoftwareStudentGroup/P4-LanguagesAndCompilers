@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.C.Data
 {
-	public class Functions : Compiler.C.Data.Node
+	public class IntegerArrayInit : Compiler.C.Data.Node
 	{
-		public  Functions()
+		public  IntegerArrayInit()
 		{
 		}
 
-		public  Functions(bool isPlaceholder)
+		public  IntegerArrayInit(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "Functions";
+			Name = "IntegerArrayInit";
 		}
 
 		public override T Accept<T>(Compiler.C.Visitors.CVisitor<T> visitor)

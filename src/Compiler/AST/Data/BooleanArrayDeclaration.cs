@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Compiler.AST.Data
 {
-	public class BooleanVariable : Compiler.AST.Data.Node
+	public class BooleanArrayDeclaration : Compiler.AST.Data.Node
 	{
-		public  BooleanVariable()
+		public  BooleanArrayDeclaration()
 		{
 		}
 
-		public  BooleanVariable(bool isPlaceholder)
+		public  BooleanArrayDeclaration(bool isPlaceholder)
 		{
 			IsPlaceholder = isPlaceholder;
-			Name = "BooleanVariable";
+			Name = "BooleanArrayDeclaration";
 		}
 
 		public override T Accept<T>(Compiler.AST.Visitors.ASTVisitor<T> visitor)

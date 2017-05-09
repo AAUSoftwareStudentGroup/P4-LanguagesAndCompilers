@@ -79,7 +79,7 @@ namespace Generator.Translation
             return aliasName;
         }
 
-        private List<string> AnalyzeReturnTypes(Conclusion conclusion, List<RelationDomain> translationDomains, Dictionary<string, (string type, string name)> symbols)
+        private List<string> AnalyzeReturnTypes(Conclusion conclusion, List<RelationDomain> translationDomains, Dictionary<string, (string type, string name, string nodeType)> symbols)
         {
             List<string> returnTypes = new List<string>();
             Structure structure = conclusion.Nodes<Structure>()[0];
@@ -103,7 +103,7 @@ namespace Generator.Translation
             return returnTypes;
         }
 
-        private void AnalyzeTreeStructureReturnType(RelationDomain translationDomain, Dictionary<string, (string type, string name)> symbols, List<string> returnTypes, TreeStructure treeStructure)
+        private void AnalyzeTreeStructureReturnType(RelationDomain translationDomain, Dictionary<string, (string type, string name, string nodeType)> symbols, List<string> returnTypes, TreeStructure treeStructure)
         {
             returnTypes.Add($"{translationDomain.DataNamespace}.Node");
         }
@@ -148,7 +148,7 @@ namespace Generator.Translation
                     Pattern pattern = conclusion.Nodes<Pattern>().FirstOrDefault();
                     List<string> patternConditions = new List<string>();
                     List<ParameterType> parameters = new List<ParameterType>();
-                    Dictionary<string, (string type, string name)> symbols = new Dictionary<string, (string type, string name)>();
+                    Dictionary<string, (string type, string name, string nodeType)> symbols = new Dictionary<string, (string type, string name, string nodeType)>();
 
                     string alias = GetAlias(conclusion.Nodes<Alias>()[0]);
 
@@ -526,7 +526,7 @@ namespace Generator.Translation
             return $"{domain.DataNamespace}.{typeName}?";
         }
 
-        private void AnalyzePattern(Pattern pattern, bool useAlias, List<RelationDomain> domain, List<string> patternConditions, List<ParameterType> parameters, Dictionary<string, (string type, string name)> symbols)
+        private void AnalyzePattern(Pattern pattern, bool useAlias, List<RelationDomain> domain, List<string> patternConditions, List<ParameterType> parameters, Dictionary<string, (string type, string name, string nodeType)> symbols)
         {
             int domainIndex = 0;
             if (pattern != null && pattern.Nodes<ListPattern>().Count() > 0)
@@ -553,10 +553,11 @@ namespace Generator.Translation
             }
         }
 
-        private void AnalyzeTreePattern(List<string> patternConditions, bool useAlias, RelationDomain domain, List<ParameterType> parameters, Dictionary<string, (string type, string name)> symbols, TreePattern treePattern)
+        private void AnalyzeTreePattern(List<string> patternConditions, bool useAlias, RelationDomain domain, List<ParameterType> parameters, Dictionary<string, (string type, string name, string nodeType)> symbols, TreePattern treePattern)
         {
             Name name = treePattern.Nodes<Name>()[0];
             string type = GetName(name);
+            string nodeType = type;
             string identifier = string.Join("", type.Take(1)).ToLower() + string.Join("", type.Skip(1));
             if(identifier == "return")
             {
@@ -591,7 +592,7 @@ namespace Generator.Translation
                     i++;
                 }
                 identifier = $"{identifier}{i}";
-                symbols.Add(identifier, (fullType, identifier));
+                symbols.Add(identifier, (fullType, identifier, nodeType));
             }
 
             var pp = parameters.FirstOrDefault(p => p.Identifier == identifier);
@@ -608,13 +609,13 @@ namespace Generator.Translation
 
                 if (aliasStr != "")
                 {
-                    symbols.Add(aliasStr, (fullType, identifier));
+                    symbols.Add(aliasStr, (fullType, identifier, nodeType));
                 }
             }
 
             if(!symbols.ContainsKey("$" + identifier))
             {
-                symbols.Add("$" + identifier, (fullType, identifier));
+                symbols.Add("$" + identifier, (fullType, identifier, nodeType));
             }
 
             patternConditions.Add(CreateTreePatternCondition(identifier, domain, treePattern, symbols));
@@ -640,14 +641,14 @@ namespace Generator.Translation
             return nameStr;
         }
 
-        private string CreateTreePatternCondition(string identifier, RelationDomain domain, TreePattern treePattern, Dictionary<string, (string type, string name)> symbols)
+        private string CreateTreePatternCondition(string identifier, RelationDomain domain, TreePattern treePattern, Dictionary<string, (string type, string name, string nodeType)> symbols)
         {
             Name name = treePattern.Nodes<Name>()[0];
             string nameStr = GetName(name);
             string type = nameStr;
             string fullType = type;
 
-
+            string nodeType = type;
 
             string namePattern = GetName(name);
 
@@ -662,6 +663,11 @@ namespace Generator.Translation
                 namePattern = $"\"{namePattern}\"";
                 if (!domain.Grammar.ContainsKey(nameStr))
                 {
+                    if(!domain.Grammar.Values.Any(v => v.Any(e => e.Contains(nameStr))))
+                    {
+                        Token token = treePattern.Nodes<Name>()[0][0][0] as Token;
+                        System.Console.WriteLine($"In {token.FileName}. At line {token.Row + 1} column {token.Column + 1}. Grammar {domain.Identifier} does not contain symbol {nodeType}.");
+                    }
                     type = "Token";
                     fullType = $"{domain.DataNamespace}.Token";
                 }
@@ -677,30 +683,48 @@ namespace Generator.Translation
 
             if (aliasStr != "" && !symbols.ContainsKey(aliasStr))
             {
-                symbols.Add(aliasStr, (fullType, identifier));
+                symbols.Add(aliasStr, (fullType, identifier, nodeType));
             }
 
-            return $"{identifier} != null && {identifier}.Name == {namePattern} && {CreateChildrenPatternCondition(identifier, domain, treePattern.Nodes<ChildrenPattern>()[0], symbols)}";
+            string childrenCondition = CreateChildrenPatternCondition(identifier, treePattern, domain, treePattern.Nodes<ChildrenPattern>()[0], symbols);
+
+            if(childrenCondition == "true")
+            {
+                return $"{identifier} != null && {identifier}.Name == {namePattern}";
+            }
+            else
+            {
+                return $"{identifier} != null && {identifier}.Name == {namePattern} && {childrenCondition}";
+            }
         }
 
-        private string CreateChildrenPatternCondition(string identifier, RelationDomain domain, ChildrenPattern childrenPattern, Dictionary<string, (string type, string name)> symbols)
+
+
+        private string CreateChildrenPatternCondition(string identifier, TreePattern parent, RelationDomain domain, ChildrenPattern childrenPattern, Dictionary<string, (string type, string name, string nodeType)> symbols)
         {
             if (childrenPattern.Nodes<Token>()[0].Name == "EPSILON")
             {
                 return "true";
             }
+
             string childrenConditions = "true";
             int index = 0;
+
+            List<string> children = new List<string>();
+
             Patterns patterns = childrenPattern.Nodes<Patterns>().FirstOrDefault();
             while (patterns != null && patterns.Nodes<TreePattern>().Count() > 0)
             {
                 TreePattern treePattern = patterns.Nodes<TreePattern>()[0];
+                Name name = treePattern.Nodes<Name>()[0];
+                string nameStr = GetName(name);
                 string treeCondition = CreateTreePatternCondition($"{identifier}[{index}]", domain, treePattern, symbols);
+                children.Add(nameStr);
                 if (index == 0)
                 {
                     childrenConditions = $"{treeCondition}";
                 }
-                else
+                else if(treeCondition != "true")
                 {
                     childrenConditions += $" && {treeCondition}";
                 }
@@ -708,10 +732,52 @@ namespace Generator.Translation
                 index++;
             }
 
+            bool isValid = true;
+
+            string parentName = GetName(parent.Nodes<Name>()[0]);
+
+            var expansions = domain.Grammar[parentName];
+
+            for (int expansionIndex = 0; expansionIndex < expansions.Count; expansionIndex++)
+            {
+                index = 0;
+                isValid = true;
+
+                if (children.Count != expansions[expansionIndex].Count)
+                {
+                    isValid = false;
+                }
+                else
+                {
+                    foreach (string child in children)
+                    {
+                        string expectedName = expansions[expansionIndex][index];
+                        if (expectedName != child)
+                        {
+                            isValid = false;
+                            break;
+                        }
+                        index++;
+                    }
+                }
+
+                if (isValid)
+                {
+                    isValid = true;
+                    break;
+                }
+            }
+
+            if (!isValid)
+            {
+                Token token = parent.Nodes<Name>()[0][0][0] as Token;
+                System.Console.WriteLine($"In {token.FileName}. At line {token.Row + 1} column {token.Column + 1}. Grammar {domain.Identifier} does not contain rule {token.Value} -> {string.Join(" ", children)}");
+            }
+
             return $"({identifier}.Count == {index} && {childrenConditions})";
         }
 
-        private List<string> CreateListStructure(ListStructure listStructure, List<RelationDomain> domains, Dictionary<string, (string type, string name)> symbols)
+        private List<string> CreateListStructure(ListStructure listStructure, List<RelationDomain> domains, Dictionary<string, (string type, string name, string nodeType)> symbols)
         {
             Structures structures = listStructure.Nodes<Structures>()[0];
             List<string> result = new List<string>();
@@ -719,22 +785,14 @@ namespace Generator.Translation
             while (structures.Nodes<TreeStructure>().Count() > 0)
             {
                 TreeStructure treeStructure = structures.Nodes<TreeStructure>()[0];
-
-                //if(structureIndex > domains.Count - 1)
-                //{
-                //    result.Add(CreateTreeStructure(treeStructure, new TranslationDomain() { Grammar = null, Identifier = null, Namespace = "Undefined" }, symbols));
-                //}
-                //else
-                {
-                    result.Add(CreateTreeStructure(treeStructure, domains[structureIndex], symbols));
-                }
+                result.Add(CreateTreeStructure(treeStructure, domains[structureIndex], symbols));
                 structureIndex++;
                 structures = structures.Nodes<Structures>()[0];
             }
             return result;
         }
 
-        private List<string> CreateStructures(Structures structures, RelationDomain domain, Dictionary<string, (string type, string name)> symbols)
+        private List<string> CreateStructures(Structures structures, RelationDomain domain, Dictionary<string, (string type, string name, string nodeType)> symbols)
         {
             List<string> result = new List<string>();
             while (structures.Nodes<TreeStructure>().Count() > 0)
@@ -748,29 +806,39 @@ namespace Generator.Translation
             return result;
         }
 
-        private string CreateTreeStructure(TreeStructure treeStructure, RelationDomain domain, Dictionary<string, (string type, string name)> symbols)
+        private string CreateTreeStructure(TreeStructure treeStructure, RelationDomain domain, Dictionary<string, (string type, string name, string nodeType)> symbols)
         {
             string name = GetName(treeStructure.Nodes<Name>()[0]);
             bool isPlaceholder = treeStructure.Nodes<Placeholder>()[0].Nodes<Token>()[0].Name == "%";
             ChildrenStructure childrenStructure = treeStructure.Nodes<ChildrenStructure>()[0];
             string instance = "";
+            Token token = treeStructure.Nodes<Name>()[0][0][0] as Token;
             if (symbols.ContainsKey(name))
             {
                 instance = $"{symbols[name].name} as {symbols[name].type}";
             }
-            else if (!domain.Grammar?.ContainsKey(name) ?? false)
+            else if (!domain.Grammar.ContainsKey(name))
             {
+                if(!domain.Grammar.Values.Any(p => p.Any(e => e.Contains(name))))
+                {
+                    System.Console.WriteLine($"In {token.FileName}. At line {token.Row + 1} column {token.Column + 1}. Grammar {domain.Identifier} does not contain symbol {name}.");
+                }
                 instance = $"new {domain.DataNamespace}.Token() {{ Name = \"{name}\", Value = \"{name}\" }}";
             }
             else if (childrenStructure.Nodes<Structures>().Count() > 0)
             {
                 Structures structures = childrenStructure.Nodes<Structures>()[0];
+                if(!ValidateStructures(domain.Grammar[name], structures, out List<string> names, symbols))
+                {
+                    System.Console.WriteLine($"In {token.FileName}. At line {token.Row + 1} column {token.Column + 1}. Grammar {domain.Identifier} does not contain rule {token.Value} -> {string.Join(" ", names)}");
+                }
                 instance = $"new {domain.DataNamespace}.{name}({(isPlaceholder ? "true" : "false")}) {{ {string.Join(", ", CreateStructures(structures, domain, symbols))} }}";
             }
             else
             {
                 instance = $"new {domain.DataNamespace}.{name}({(isPlaceholder ? "true" : "false")})";
             }
+
             if (treeStructure.Nodes<Insertion>()[0].Nodes<TreeStructure>().Count() > 0)
             {
                 TreeStructure insertTreeStructure = treeStructure.Nodes<Insertion>()[0].Nodes<TreeStructure>()[0];
@@ -778,5 +846,62 @@ namespace Generator.Translation
             }
             return instance;
         }
+
+        private bool ValidateStructures(List<List<string>> expansions, Structures structures, out List<string> names, Dictionary<string, (string type, string name, string nodeType)> symbols)
+        {
+            int index = 0;
+            bool isValid = true;
+            names = new List<string>();
+            
+            while (structures.Nodes<TreeStructure>().Count() > 0)
+            {
+                TreeStructure treeStructure = structures.Nodes<TreeStructure>()[0];
+
+                string name = GetName(treeStructure.Nodes<Name>()[0]);
+
+                if(symbols.ContainsKey(name))
+                {
+                    name = symbols[name].nodeType;
+                }
+
+                names.Add(name);
+                
+                index++;
+
+                structures = structures.Nodes<Structures>()[0];
+            }
+
+            for(int expansionIndex = 0; expansionIndex < expansions.Count; expansionIndex++)
+            {
+                index = 0;
+                isValid = true;
+                
+                if(names.Count != expansions[expansionIndex].Count)
+                {
+                    isValid = false;
+                }
+                else
+                {
+                    foreach(string name in names)
+                    {
+                        string expectedName = expansions[expansionIndex][index];
+                        if(expectedName != name)
+                        {
+                            isValid = false;
+                            break;
+                        }
+                        index++;
+                    }
+                }
+
+                if(isValid)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 }

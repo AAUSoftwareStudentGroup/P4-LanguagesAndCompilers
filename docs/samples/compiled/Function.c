@@ -1,23 +1,18 @@
-signed char t ( unsigned char h ) ;
-unsigned char bob ( ) ;
-unsigned char bob2 ( ) ;
+unsigned char a ;
+signed char bar ( signed int n ) ;
+signed char foo ( ) ;
 void main ( ) ;
-signed char t ( unsigned char h )
+signed char bar ( signed int n )
 {
-    if ( ( h && bob ( ) ) )
-    {
-        return 2 ;
-    }
+    a = ( a + 5 ) ;
+    return ( foo ( ) + n ) ;
 }
-unsigned char bob ( )
+signed char foo ( )
 {
-    return 1 ;
-}
-unsigned char bob2 ( )
-{
-    return 1 ;
+    return 4 ;
 }
 void main ( )
 {
-    t ( ( bob ( ) && ( ! bob ( ) ) ) ) ;
+    a = 4 ;
+    bar ( foo ( ) ) ;
 }
