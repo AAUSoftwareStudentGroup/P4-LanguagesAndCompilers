@@ -410,7 +410,7 @@ namespace Compiler.Translation.ProgramToAST
 					}
 				}
 			}
-			throw new System.Exception();
+			throw new System.Exception(identifierDeclaration.Name);
 		}
 
 		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.FormalParameters formalParameters)
