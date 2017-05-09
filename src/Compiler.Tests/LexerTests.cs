@@ -19,7 +19,7 @@ namespace Compiler.Tests
         [TestMethod]
         // Test if each token generated from a test file generates tokens with correct names
         // A newline is inserted after each scope
-        public void TestForCorrectTokenGeneration()
+        public void GenerateTokensCorrectly()
         {
             // Initialise Lexer
             Lexer l = new Lexer(AppContext.BaseDirectory + "\\TestFiles\\Tokens.cfg.json");
@@ -69,7 +69,7 @@ namespace Compiler.Tests
 
         [TestMethod]
         // Test if attributes are given correctly, e.g. singleline and row/column
-        public void TestForCorrectTokenAttributes()
+        public void GenereteCorrectTokenAttributes()
         {
             // Initialise Lexer
             Lexer le = new Lexer(AppContext.BaseDirectory + "\\TestFiles\\Tokens.cfg.json");

@@ -11,7 +11,7 @@ namespace Compiler.Tests
     public class ParserTests
     {
         [TestMethod]
-        public void ParseProgram()
+        public void ParseProgramCorrectly()
         {
             //Lexer lexer = new Lexer("C:/Users/Steffan/Desktop/P4-LanguagesAndCompilers/docs/tang.tokens.json");
 
