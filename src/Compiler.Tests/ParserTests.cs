@@ -74,6 +74,7 @@ namespace Compiler.Tests
             var tokenlist2 = list.GetEnumerator();
             tokenlist2.MoveNext();
 
+            //A manually build parser tree, based on the tool "KfG edit"
             var parseTreeTest = new Parsing.Data.Program(true) {
                 new Parsing.Data.GlobalStatements(true){
                     new Parsing.Data.GlobalStatement(true){
@@ -250,15 +251,7 @@ namespace Compiler.Tests
                 }
 
 
-                //TreeAsserter(parseTree, parseTreeTest);
-
-                //var parseTreeLine = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
-
-
-                //foreach (var line in tokens)
-                //{
-                //    System.Diagnostics.Debug.WriteLine(line);
-                //}
+                TreeAsserter(parseTree, parseTreeTest);
 
             }
             catch (Exception e)
