@@ -200,7 +200,8 @@ void main ( )
 
             TangCompiler tc = new TangCompiler();
 
-            // An exception should be thrown when using a reserved keyword as an identifier. This will be caught by the generic exception and if it is caught, then the test passes. If it is not caught, we make use of Assert.Fail to indicate that the test failed.
+            // An exception should be thrown when using a reserved keyword as an identifier. 
+            //This will be caught by the generic exception and if it is caught, then the test passes. 
             Assert.ThrowsException<Exception>(() => cOutput = tc.Compile(tang));
         }
         
@@ -223,7 +224,7 @@ void main ( )
 
             Assert.AreEqual(c, cOutput);
         }
-
+            
         [TestMethod]
         public void CompileIfCorrectly()
         {
@@ -288,18 +289,43 @@ void main ( )
         //test return, functions, and call of functions
         [TestMethod]
         // Rename to match convention
-        public void ScopeRulesTest() 
+        public void Should_ThrowException_When_VariableDefinedInScope() 
         {
+            string tang = @"int8 a = 2
+if (true)
+    int8 a = 5";
+            string cOutput;
+            TangCompiler tc = new TangCompiler();
+
+            //Should throw exception, when variable already defined in scope
+            Assert.ThrowsException<Exception>(() => cOutput = tc.Compile(tang));
+        }
+
+        [TestMethod]
+        public void Should_ThrowException_When_AssingingIntToBool()
+        {   
+            string tang = @"int8 a
+a = true";
+            string cOutput;
+            TangCompiler tc = new TangCompiler();
+            
+            //Should throw exception, when two different types are used in an assignment.
+            Assert.ThrowsException<Exception>(() => cOutput = tc.Compile(tang));
+
 
         }
 
         [TestMethod]
-        // Rename to match convention
-        public void TypeRuleTest()
+        public void Should_ThrowException_When_TypesDifferInArithmetic()
         {
-            //Testing type rules
+            string tang = @"int8 i = 5
+char c = '4'
+i = i + c";
+            string cOutput;
+            TangCompiler tc = new TangCompiler();
 
-            
+            //should throw exception when two different types are used in arithmetic statements
+            Assert.ThrowsException<Exception>(() => cOutput = tc.Compile(tang));
         }
     }
 }

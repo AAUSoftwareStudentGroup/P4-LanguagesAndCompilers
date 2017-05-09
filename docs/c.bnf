@@ -11,10 +11,12 @@ CompoundDeclaration -> Declaration Declaration
 
 FunctionPrototype -> Type identifier ( FormalParameters )
                   |  Type main ( )
+                  |  int Pow ( signed long a , unsigned long b )
 
 Function -> CompoundFunction
           | Type identifier ( FormalParameters ) { Declaration Statement }
           | Type main ( ) { Declaration Statement }
+          | int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
           | EPSILON
 
 CompoundFunction -> Function Function
@@ -144,8 +146,7 @@ DivExpression -> ( IntegerExpression / IntegerExpression )
 
 ModExpression -> ( IntegerExpression % IntegerExpression )
 
-/* implement this later */
-PowExpression -> ( IntegerExpression * IntegerExpression )
+PowExpression -> Pow ( IntegerExpression , IntegerExpression )
 
 BooleanExpression -> 1 
                    | 0 
@@ -193,18 +194,6 @@ NotExpression -> ( ! BooleanExpression )
 AndExpression -> ( BooleanExpression && BooleanExpression )
 
 OrExpression -> ( BooleanExpression || BooleanExpression )
-
-IntegerArray -> IntType identifier [ IntegerExpression ]
-
-IntegerArrayInit -> IntType identifier [ ] = [ Expressions ]
-
-BooleanArray -> BooleanType identifier [ ]
-
-BooleanArrayInit -> BooleanType identifier [ ] = [ Expressions ]  
-
-RegisterArray -> RegisterType identifier [ ]
-
-RegisterArrayInit -> RegisterType identifier [ ] = [ Expressions ]
 
 Expressions -> IntExpressions
             |  BoolExpressions

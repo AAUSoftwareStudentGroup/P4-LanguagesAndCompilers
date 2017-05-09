@@ -3,7 +3,7 @@
 
 AST[eof] -> C[Declaration[EPSILON] Function[EPSILON]]
 
-AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[Type[void] main ( )] ;]]] Function[CompoundFunction[f Function[Type[void] main ( ) { Declaration[EPSILON] s }]]]]
+AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration[CompoundDeclaration[Declaration[FunctionPrototype[int Pow ( signed long a , unsigned long b )] ;] Declaration[FunctionPrototype[Type[void] main ( )] ;]]]]] Function[CompoundFunction[Function[CompoundFunction[Function[int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }] f]] Function[Type[void] main ( ) { Declaration[EPSILON] s }]]]]
     [gs Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl Function:f Statement:s]
 
 [GlobalStatement[CompoundGlobalStatement:cgs] Declaration:dcl Function:f Statement:s] ->:a [dcl1 f1 s1]
@@ -256,7 +256,7 @@ IntegerExpression[DivExpression:s] -> IntegerExpression[s1]
     s -> DivExpression:s1 
 IntegerExpression[ModExpression:s] -> IntegerExpression[s1]
     s -> ModExpression:s1
-IntegerExpression[PowExpression:s] -> IntegerExpression[s1]
+[IntegerExpression[PowExpression:s]  -> IntegerExpression[s1]
     s -> PowExpression:s1
 IntegerExpression[Call:s] -> IntegerExpression[s1]
     s -> Call:s1
@@ -284,7 +284,7 @@ ModExpression[IntegerExpression:iexpr1 \% IntegerExpression:iexpr2] -> ModExpres
     iexpr1 -> IntegerExpression:iexpr3
     iexpr2 -> IntegerExpression:iexpr4
 
-PowExpression[IntegerExpression:iexpr1 ^ IntegerExpression:iexpr2] -> PowExpression[( iexpr3 \* iexpr4 )]
+PowExpression[IntegerExpression:iexpr1 ^ IntegerExpression:iexpr2] -> PowExpression[Pow ( iexpr3 , iexpr4 )]
     iexpr1 -> IntegerExpression:iexpr3
     iexpr2 -> IntegerExpression:iexpr4
 

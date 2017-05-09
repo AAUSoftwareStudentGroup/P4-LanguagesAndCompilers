@@ -52,7 +52,11 @@ namespace Compiler.C.Visitors
         {
             if (node[0].Name != "EPSILON")
             {
-                if(node.Nodes<Statement>().Count() == 0)
+                if(node.Count > 2 && node[1].Name == "Pow")
+                {
+                    yield return string.Join(" ", node.Select(c => c.Name));
+                }
+                else if(node.Nodes<Statement>().Count() == 0)
                 {
                     foreach (var item in node[0].Accept(this))
                     {
