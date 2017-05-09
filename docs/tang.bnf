@@ -20,15 +20,9 @@ Statement -> IdentifierDeclaration
            | ReturnStatement
            | newline
 
-IdentifierDeclaration -> IntType Array identifier Definition
-                       | BooleanType Array identifier Definition
-                       | nothing Array identifier ( FormalParameters ) indent Statements dedent				   
-
-Array -> [ ArrayP ]
-        | EPSILON
-
-ArrayP -> numeral
-        | EPSILON
+IdentifierDeclaration -> IntType identifier Definition
+                       | BooleanType identifier Definition
+                       | nothing identifier ( FormalParameters ) indent Statements dedent				   
 
 RegisterStatement -> RegisterType RegisterOperation
 
@@ -36,7 +30,7 @@ RegisterType -> register8
               | register16
 
 RegisterOperation -> ( Expression ) { Expression } = Expression newline
-                   | Array identifier Definition
+                   | identifier Definition
 
                   
 

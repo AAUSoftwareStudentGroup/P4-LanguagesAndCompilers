@@ -1,13 +1,8 @@
-long long int p ;
-void __vector_21 ( void ) ;
-void __vector_21 ( void )
+signed int a ;
+int Pow ( signed long a , unsigned long b ) ;
+void main ( ) ;
+int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+void main ( )
 {
-    p = 4;
-}
-void main ( void )
-{
-    if(( p == 2 ))
-    {
-        p = 3;
-    }
+    a = Pow ( 2 , 3 ) ;
 }

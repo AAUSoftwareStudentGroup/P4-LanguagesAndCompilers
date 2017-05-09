@@ -224,7 +224,7 @@ void main ( )
 
             Assert.AreEqual(c, cOutput);
         }
-
+            
         [TestMethod]
         public void CompileIfCorrectly()
         {
