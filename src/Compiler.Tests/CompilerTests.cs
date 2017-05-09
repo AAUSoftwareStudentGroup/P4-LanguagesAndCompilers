@@ -294,7 +294,9 @@ void main ( )
         [TestMethod]
         public void TypeRuleTest()
         {
+            //Testing type rules
 
+            
         }
     }
 }
