@@ -43,10 +43,36 @@ namespace Compiler.Tests
                 "eof"
             };
 
+            string[] importTest =
+            {
+                "nothing",
+                "identifier",
+                "(",
+                ")",
+                "indent",
+                "int8",
+                "identifier",
+                "=",
+                "numeral",
+                "newline",
+                "dedent",
+                "newline",
+                "identifier",
+                "(",
+                ")",
+                "newline",
+                "eof"
+            };
+
             var list = testTokens.Select(t => new Parsing.Data.Token() { Name = t});
 
             var tokenlist = list.GetEnumerator();
             tokenlist.MoveNext();
+
+            var list2 = importTest.Select(t => new Parsing.Data.Token() { Name = t });
+
+            var tokenlist2 = list.GetEnumerator();
+            tokenlist2.MoveNext();
 
             var parseTreeTest = new Parsing.Data.Program(true) {
                 new Parsing.Data.GlobalStatements(true){
@@ -207,7 +233,7 @@ namespace Compiler.Tests
             {
                 ProgramParser parser = new ProgramParser();
 
-                var parseTree = parser.ParseProgram(tokenlist);
+                var parseTree = parser.ParseProgram(tokenlist2);
 
                 var parseTreeLines = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
                 foreach (var line in parseTreeLines)
@@ -215,7 +241,7 @@ namespace Compiler.Tests
                     System.Diagnostics.Debug.WriteLine(line);
                 }
 
-                System.Diagnostics.Debug.WriteLine("\n < ParserTree \n TestTree> \n");
+                System.Diagnostics.Debug.WriteLine("\n < ParserTree \n importTree> \n");
 
                 var parseTreeLinesTest = parseTreeTest.Accept(new Parsing.Visitors.TreePrintVisitor());
                 foreach (var line in parseTreeLinesTest)
@@ -224,7 +250,7 @@ namespace Compiler.Tests
                 }
 
 
-                TreeAsserter(parseTree, parseTreeTest);
+                //TreeAsserter(parseTree, parseTreeTest);
 
                 //var parseTreeLine = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
 

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System;
 using Compiler.Parsing;
+using Compiler.Preprocessing;
 using Compiler.LexicalAnalysis;
 using System.Linq;
 
@@ -13,7 +14,7 @@ namespace Compiler
             DateTime t1 = DateTime.Now;
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
 
-            string file = "../../docs/samples/Register.tang";
+            string file = "../../docs/samples/BlinkImport.tang";
 
             if(args.Length > 0)
             {
@@ -22,10 +23,25 @@ namespace Compiler
 
             var tokens = lexer.Analyse(File.ReadAllText(file));
 
-            Console.WriteLine("Lexer: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
+            Console.WriteLine("Lexer on main: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;
             if (args.Length == 0)
             {
+                Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
+
+                Console.WriteLine("");
+                Console.WriteLine("--------------------------------------");
+                Console.WriteLine("");
+            }
+
+            Preprocessor preprocessor = new Preprocessor();
+            tokens = preprocessor.Process(lexer, tokens);
+
+            Console.WriteLine("Lexer of imported files:: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
+            t1 = DateTime.Now;           
+            if (args.Length == 0)
+            {
+                Console.WriteLine("Tokens with imports:");
                 Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
 
                 Console.WriteLine("");

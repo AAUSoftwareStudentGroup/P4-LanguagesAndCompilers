@@ -19,7 +19,7 @@ namespace Compiler.Tests
         [TestMethod]
         // Method to test that each type is correctly translated from .tang to .c
         // bool in tang = unsigned char in c
-        public void Types()
+        public void CompileTypesCorrectly()
         {
             string tang = @"bool on = true
 int8 sc = 127
@@ -59,7 +59,7 @@ void main ( )
 
         [TestMethod]
         // Does not work yet, since pow is not yet implemented
-        public void Operators()
+        public void CompileOperatorsCorrectly()
         {
             string tang = @"bool off = (true or false) and !true
 bool on = ((43-1) == 42)
@@ -93,7 +93,7 @@ void main ( )
 
         [TestMethod]
         // Test that a variable declared and assigned in same line is compiled correctly
-        public void VarDeclAndAssInOneLine()
+        public void CompileDeclAndAssOneLineCorrectly()
         {
             /* 
              * int16 a = 27 (.tang)
@@ -126,7 +126,7 @@ void main ( )
 
         [TestMethod]
         // Much like the test above, this tests if a variable declared first then assigned in another line is compiled correctly
-        public void VarDeclAndAssInTwoLines()
+        public void CompileDeclAndAssTwoLinesCorrectly()
         {
             /*
              * int16 a
@@ -161,7 +161,7 @@ void main ( )
 
         [TestMethod]
         // Test (nested) for
-        public void ForStmTest()
+        public void CompileNestedForLoopCorrectly()
         {
             string tang = @"uint32 sum
 sum = 0
@@ -193,7 +193,7 @@ void main ( )
         }
 
         [TestMethod]
-        public void ReservedKeywordIdentifier()
+        public void Should_ThrowException_When_ReservedKeywordIsUsed()
         {
             string tang = @"uint32 return = 42";
             string cOutput;
@@ -205,7 +205,7 @@ void main ( )
         }
         
         [TestMethod]
-        public void DirectBitAss()
+        public void CompileDirectBitAssCorrectly()
         {
             string tang = @"register8(36){5} = true";
             string c = @"void main ( ) ;
@@ -225,7 +225,7 @@ void main ( )
         }
 
         [TestMethod]
-        public void IfStmTest()
+        public void CompileIfCorrectly()
         {
             /*
              * int32 a
@@ -279,6 +279,7 @@ void main ( )
         }
 
         [TestMethod]
+        // Rename to match convention
         public void FuncReturnAndCallTest()
         {
 
@@ -286,15 +287,19 @@ void main ( )
 
         //test return, functions, and call of functions
         [TestMethod]
+        // Rename to match convention
         public void ScopeRulesTest() 
         {
 
         }
 
         [TestMethod]
+        // Rename to match convention
         public void TypeRuleTest()
         {
+            //Testing type rules
 
+            
         }
     }
 }

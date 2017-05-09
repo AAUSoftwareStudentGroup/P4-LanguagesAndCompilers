@@ -1,0 +1,9 @@
+import AllRegisters
+int8 func(int8 portBit)
+    int16 counter = 0
+    while(true)
+        if(counter == 100000)
+            counter = 0
+            PORTB{portBit} = !PORTB{portBit}
+        if(!(counter == 100000))
+            counter = counter + 1
