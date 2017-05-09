@@ -297,7 +297,9 @@ void main ( )
         // Rename to match convention
         public void TypeRuleTest()
         {
+            //Testing type rules
 
+            
         }
     }
 }
