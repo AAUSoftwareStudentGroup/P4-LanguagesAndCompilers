@@ -208,6 +208,10 @@
         "PatternString": "to(?![a-zA-Z_0-9])"
     },
     {
+        "Name": "import",
+        "PatternString": "import [a-zA-Z0-9_\\.]*"
+    },
+    {
         "Name": "identifier",
         "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
     }

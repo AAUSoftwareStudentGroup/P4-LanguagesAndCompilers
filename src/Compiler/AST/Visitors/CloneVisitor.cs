@@ -112,36 +112,6 @@ namespace Compiler.AST.Visitors
 			return clone;
 		}
 
-		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.IntegerArrayDeclaration node)
-		{
-			var clone = new Compiler.AST.Data.IntegerArrayDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
-		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.RegisterArrayDeclaration node)
-		{
-			var clone = new Compiler.AST.Data.RegisterArrayDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
-		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.BooleanArrayDeclaration node)
-		{
-			var clone = new Compiler.AST.Data.BooleanArrayDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.IntegerDeclaration node)
 		{
 			var clone = new Compiler.AST.Data.IntegerDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };

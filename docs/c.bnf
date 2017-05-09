@@ -195,18 +195,6 @@ AndExpression -> ( BooleanExpression && BooleanExpression )
 
 OrExpression -> ( BooleanExpression || BooleanExpression )
 
-IntegerArray -> IntType identifier [ IntegerExpression ]
-
-IntegerArrayInit -> IntType identifier [ ] = [ Expressions ]
-
-BooleanArray -> BooleanType identifier [ ]
-
-BooleanArrayInit -> BooleanType identifier [ ] = [ Expressions ]  
-
-RegisterArray -> RegisterType identifier [ ]
-
-RegisterArrayInit -> RegisterType identifier [ ] = [ Expressions ]
-
 Expressions -> IntExpressions
             |  BoolExpressions
 
