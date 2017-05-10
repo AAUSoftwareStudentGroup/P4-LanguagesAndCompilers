@@ -51,7 +51,6 @@ Program:p ->:p ast
 [return:r Declarations[Declaration[Function[ReturnType identifier Parameters]] Declarations:dcls]] ->:s dcl
     [r dcls] ->:s Declaration:dcl
 
-
 //Fill all functions into SymbolTable
 
 [Program[GlobalStatements[EPSILON] eof] SymbolTable:s] ->:f s
@@ -144,6 +143,8 @@ Type[RegisterType:t] ->:q Type[t1]
 
 [Statement[ReturnStatement] SymbolTable:s] ->:f s
 
+[Statement[InterruptStatement] SymbolTable:s] ->:f s
+
 [Statement[IfStatement:ifStm] SymbolTable:s] ->:f s
 
 [Statement[WhileStatement:whileStm] SymbolTable:s] ->:f s
@@ -232,6 +233,9 @@ Type[RegisterType:t] ->:q Type[t1]
 [Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
     [idDcl s] -> [BooleanDeclarationInit:dclStm SymbolTable:s1]
 
+[Statement[InterruptStatement:itrStm] SymbolTable:s] -> [Statement[itrStm1] s]
+    itrStm ->:p InterruptStatement:itrStm1 
+    
 [Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [f s1]
     [idDcl s] -> [Function:f SymbolTable:s1]
 
@@ -268,6 +272,9 @@ Type[RegisterType:t] ->:q Type[t1]
 [ReturnStatement[return ReturnValue[EPSILON] newline] SymbolTable:s] -> [EmptyReturn[return] s]
     [return s] ->:s Declaration[Variable[Type[nothing] return]]
 
+InterruptStatement[enableinterrupts ( )] -> :p InterruptStatement[enableinterrupts ( )]
+InterruptStatement[disableinterrupts ( )] -> :p InterruptStatement[disableinterrupts ( )]
+    
 [IdentifierDeclaration[IntType:t  identifier:id Definition[newline]] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p IntType:t1
     t ->:q IntType:t2

@@ -187,6 +187,11 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.C.Data.InterruptStatement node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.C.Data.ExpressionList node)
 		{
 			return Visit((Compiler.C.Data.Node)node);

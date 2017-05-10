@@ -823,7 +823,7 @@ namespace Generator.Translation
                 {
                     System.Console.WriteLine($"In {token.FileName}. At line {token.Row + 1} column {token.Column + 1}. Grammar {domain.Identifier} does not contain symbol {name}.");
                 }
-                instance = $"new {domain.DataNamespace}.Token() {{ Name = \"{name}\", Value = \"{name}\" }}";
+                instance = $"new {domain.DataNamespace}.Token() {{ Name = \"{name.Replace("\"", "\\\"")}\", Value = \"{name.Replace("\"", "\\\"")}\" }}";
             }
             else if (childrenStructure.Nodes<Structures>().Count() > 0)
             {

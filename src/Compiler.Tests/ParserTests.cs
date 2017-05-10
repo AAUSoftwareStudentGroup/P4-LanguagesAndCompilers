@@ -43,36 +43,10 @@ namespace Compiler.Tests
                 "eof"
             };
 
-            string[] importTest =
-            {
-                "nothing",
-                "identifier",
-                "(",
-                ")",
-                "indent",
-                "int8",
-                "identifier",
-                "=",
-                "numeral",
-                "newline",
-                "dedent",
-                "newline",
-                "identifier",
-                "(",
-                ")",
-                "newline",
-                "eof"
-            };
-
             var list = testTokens.Select(t => new Parsing.Data.Token() { Name = t});
 
             var tokenlist = list.GetEnumerator();
             tokenlist.MoveNext();
-
-            var list2 = importTest.Select(t => new Parsing.Data.Token() { Name = t });
-
-            var tokenlist2 = list.GetEnumerator();
-            tokenlist2.MoveNext();
 
             //A manually build parser tree, based on the tool "KfG edit"
             var parseTreeTest = new Parsing.Data.Program(true) {
@@ -234,7 +208,7 @@ namespace Compiler.Tests
             {
                 ProgramParser parser = new ProgramParser();
 
-                var parseTree = parser.ParseProgram(tokenlist2);
+                var parseTree = parser.ParseProgram(tokenlist);
 
                 var parseTreeLines = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
                 foreach (var line in parseTreeLines)

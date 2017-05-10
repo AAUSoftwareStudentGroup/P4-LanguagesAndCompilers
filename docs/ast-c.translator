@@ -26,9 +26,9 @@ AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration
     [gs2 dcl1 f1 s1] ->:a [Declaration:dcl2 Function:f2 Statement:s2]
 
 [Interrupt[interrupt ( numeral:i ) indent Statement:s1 dedent] Declaration:dcl Function:f Statement:s] 
-->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[Type[void] __vector_21 ( FormalParameters[EPSILON] )] ;]]] Function[CompoundFunction[f Function[Type[void] __vector_21 ( FormalParameters[EPSILON] ) { gs1 si2 }]]] s]
+->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[Type[void] __vector_ i1 ( )] ;]]] Function[CompoundFunction[f Function[Type[void] __vector_ i1 ( ) { gs1 si2 }]]] s]
     i -> numeral:i1
-    [s1 dcl Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:gs1 Function[EPSILON] Statement:si2]
+    [s1 Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:gs1 Function[EPSILON] Statement:si2]
 
 [Function[Type:t identifier:id ( FormalParameters:p ) indent Statement:stm dedent] Declaration:dcl Function:f Statement:s]
 ->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[t1 id1 ( p1 ) ] ;]]] Function[CompoundFunction[f Function[t1 id1 ( p1 ) { dcl1 s1 }]]] s]
@@ -103,6 +103,8 @@ CompoundFormalParameter[FormalParameter:p1 , FormalParameter:p2] -> CompoundForm
     rret -> RegisterReturn:rret1
 [Statement[Call:c] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[c1 ;]]]]
     c -> Call:c1
+[Statement[InterruptStatement:c] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[c1 ;]]]]
+    c -> InterruptStatement:c1
 
 [CompoundStatement[Statement:s1 newline Statement:s2] Declaration:dcl Function:f Statement:si] ->:a [dcl3 f3 si3]
     [s1 dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
@@ -259,7 +261,10 @@ IntType[uint16] -> IntType[unsigned int]
 IntType[uint32] -> IntType[unsigned long]  
 IntType[int8] -> IntType[signed char]  
 IntType[int16] -> IntType[signed int]  
-IntType[int32] -> IntType[signed long]  
+IntType[int32] -> IntType[signed long] 
+
+InterruptStatement[enableinterrupts ( )] -> InterruptStatement[__asm__ __volatile__ ("sei" \::: "memory")]
+InterruptStatement[disableinterrupts ( )] -> InterruptStatement[__asm__ __volatile__ ("cli" \::: "memory")] 
 
 IntegerExpression[identifier:id] -> IntegerExpression[id1]
     id -> identifier:id1

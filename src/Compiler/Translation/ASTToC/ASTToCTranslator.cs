@@ -41,6 +41,7 @@ namespace Compiler.Translation.ASTToC
 		public int Translatea__forStatement_declaration_function_statement = 0;
 		public int Translate__type = 0;
 		public int Translate__intType = 0;
+		public int Translate__interruptStatement = 0;
 		public int Translate__integerExpression = 0;
 		public int Translate__integerParenthesisExpression = 0;
 		public int Translate__addExpression = 0;
@@ -154,10 +155,10 @@ namespace Compiler.Translation.ASTToC
 				Compiler.C.Data.Node i1 = Translate(interrupt[2] as Compiler.AST.Data.Token);
 				if(i1 != null && i1.Name == "numeral")
 				{
-					(Compiler.C.Data.Node gs1, Compiler.C.Data.Node function1, Compiler.C.Data.Node si2) = Translatea(interrupt[5] as Compiler.AST.Data.Statement, declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
+					(Compiler.C.Data.Node gs1, Compiler.C.Data.Node function1, Compiler.C.Data.Node si2) = Translatea(interrupt[5] as Compiler.AST.Data.Statement, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } });
 					if(gs1 != null && gs1.Name == "Declaration" && function1 != null && function1.Name == "Function" && (function1.Count == 1 && function1[0] != null && function1[0].Name == "EPSILON") && si2 != null && si2.Name == "Statement")
 					{
-						return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.FunctionPrototype(false) { new Compiler.C.Data.Type(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" } }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.FormalParameters(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Token() { Name = ")", Value = ")" } }, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.CompoundFunction(false) { function as Compiler.C.Data.Function, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Type(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" } }, new Compiler.C.Data.Token() { Name = "__vector_21", Value = "__vector_21" }, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.FormalParameters(false) { new Compiler.C.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, gs1 as Compiler.C.Data.Declaration, si2 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } }, statement as Compiler.C.Data.Statement);
+						return (new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.CompoundDeclaration(false) { declaration as Compiler.C.Data.Declaration, new Compiler.C.Data.Declaration(false) { new Compiler.C.Data.FunctionPrototype(false) { new Compiler.C.Data.Type(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" } }, new Compiler.C.Data.Token() { Name = "__vector_", Value = "__vector_" }, i1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" } }, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } }, new Compiler.C.Data.Function(false) { new Compiler.C.Data.CompoundFunction(false) { function as Compiler.C.Data.Function, new Compiler.C.Data.Function(false) { new Compiler.C.Data.Type(false) { new Compiler.C.Data.Token() { Name = "void", Value = "void" } }, new Compiler.C.Data.Token() { Name = "__vector_", Value = "__vector_" }, i1 as Compiler.C.Data.Token, new Compiler.C.Data.Token() { Name = "(", Value = "(" }, new Compiler.C.Data.Token() { Name = ")", Value = ")" }, new Compiler.C.Data.Token() { Name = "{", Value = "{" }, gs1 as Compiler.C.Data.Declaration, si2 as Compiler.C.Data.Statement, new Compiler.C.Data.Token() { Name = "}", Value = "}" } } } }, statement as Compiler.C.Data.Statement);
 					}
 				}
 			}
@@ -449,6 +450,14 @@ namespace Compiler.Translation.ASTToC
 				if(c1 != null && c1.Name == "Call")
 				{
 					return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { c1 as Compiler.C.Data.Call, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
+				}
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "InterruptStatement") && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement1 != null && statement1.Name == "Statement")
+			{
+				Compiler.C.Data.Node c1 = Translate(statement[0] as Compiler.AST.Data.InterruptStatement);
+				if(c1 != null && c1.Name == "InterruptStatement")
+				{
+					return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { c1 as Compiler.C.Data.InterruptStatement, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
 				}
 			}
 			throw new System.Exception();
@@ -1098,6 +1107,20 @@ namespace Compiler.Translation.ASTToC
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int32"))
 			{
 				return new Compiler.C.Data.IntType(false) { new Compiler.C.Data.Token() { Name = "signed", Value = "signed" }, new Compiler.C.Data.Token() { Name = "long", Value = "long" } };
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.InterruptStatement interruptStatement)
+		{
+			Translate__interruptStatement++;
+			if(interruptStatement != null && interruptStatement.Name == "InterruptStatement" && (interruptStatement.Count == 3 && interruptStatement[0] != null && interruptStatement[0].Name == "enableinterrupts" && interruptStatement[1] != null && interruptStatement[1].Name == "(" && interruptStatement[2] != null && interruptStatement[2].Name == ")"))
+			{
+				return new Compiler.C.Data.InterruptStatement(false) { new Compiler.C.Data.Token() { Name = "__asm__", Value = "__asm__" }, new Compiler.C.Data.Token() { Name = "__volatile__", Value = "__volatile__" }, new Compiler.C.Data.Token() { Name = "(\"sei\"", Value = "(\"sei\"" }, new Compiler.C.Data.Token() { Name = ":::", Value = ":::" }, new Compiler.C.Data.Token() { Name = "\"memory\")", Value = "\"memory\")" } };
+			}
+			if(interruptStatement != null && interruptStatement.Name == "InterruptStatement" && (interruptStatement.Count == 3 && interruptStatement[0] != null && interruptStatement[0].Name == "disableinterrupts" && interruptStatement[1] != null && interruptStatement[1].Name == "(" && interruptStatement[2] != null && interruptStatement[2].Name == ")"))
+			{
+				return new Compiler.C.Data.InterruptStatement(false) { new Compiler.C.Data.Token() { Name = "__asm__", Value = "__asm__" }, new Compiler.C.Data.Token() { Name = "__volatile__", Value = "__volatile__" }, new Compiler.C.Data.Token() { Name = "(\"cli\"", Value = "(\"cli\"" }, new Compiler.C.Data.Token() { Name = ":::", Value = ":::" }, new Compiler.C.Data.Token() { Name = "\"memory\")", Value = "\"memory\")" } };
 			}
 			throw new System.Exception();
 		}
@@ -1805,6 +1828,7 @@ namespace Compiler.Translation.ASTToC
 			System.Console.WriteLine("Translatea__forStatement_declaration_function_statement: "+Translatea__forStatement_declaration_function_statement);
 			System.Console.WriteLine("Translate__type: "+Translate__type);
 			System.Console.WriteLine("Translate__intType: "+Translate__intType);
+			System.Console.WriteLine("Translate__interruptStatement: "+Translate__interruptStatement);
 			System.Console.WriteLine("Translate__integerExpression: "+Translate__integerExpression);
 			System.Console.WriteLine("Translate__integerParenthesisExpression: "+Translate__integerParenthesisExpression);
 			System.Console.WriteLine("Translate__addExpression: "+Translate__addExpression);

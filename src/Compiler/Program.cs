@@ -16,7 +16,7 @@ namespace Compiler
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
             bool DebugEnabled = false;
 
-            string file = "../../docs/samples/emptyReturn.tang";
+            string file = "../../docs/samples/enableInterrupts.tang";
 
             if(args.Length > 0)
             {
@@ -24,6 +24,11 @@ namespace Compiler
             }
             Console.WriteLine("Running Lexer");
             var tokens = lexer.Analyse(File.ReadAllText(file));
+
+            foreach(Token t in tokens)
+            {
+                Console.WriteLine(t.Name);
+            }
 
             Console.WriteLine("Lexer on main: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;

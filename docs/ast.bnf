@@ -49,6 +49,7 @@ Statement -> newline
            | BooleanReturn
            | RegisterReturn
            | EmptyReturn
+           | InterruptStatement
 
 CompoundStatement -> Statement newline Statement
 
@@ -103,6 +104,9 @@ BooleanReturn -> return BooleanExpression
 RegisterReturn -> return RegisterExpression
 
 EmptyReturn -> return
+
+InterruptStatement -> disableinterrupts ( )
+                            | enableinterrupts ( )
 
 ExpressionList -> ExpressionListArgs
                 | EPSILON
