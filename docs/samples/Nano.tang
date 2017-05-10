@@ -7,7 +7,7 @@ bool LOW = false
 
 nothing delay(uint32 ms)
     ms = ms * 16000 / 33
-    while(ms > 0)
+    while(ms > 0)   
         ms = ms - 1
 
 bool DigitalRead(int8 pin)
