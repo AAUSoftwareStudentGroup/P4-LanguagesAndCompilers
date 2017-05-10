@@ -143,3 +143,5 @@ uint8 EE_READY_vect = 23
 uint8 ANALOG_COMP_vect = 24
 uint8 TWI_vect = 25
 uint8 SPM_READY_vect = 26
+uint8 INT0 = 2
+uint8 INT1 = 3

@@ -5,6 +5,27 @@ bool PULLUP = true
 bool HIGH = true
 bool LOW = false
 
+nothing INT0_enable()
+    EIMSK{0} = true
+
+nothing INT0_init(uint8 edge)
+    INT0_enable()
+    if(edge ==  INTERRUPT_LOW)
+        EICRA{0} = false
+        EICRA{1} = false
+    else if(edge == ANY_EDGE)
+        EICRA{0} = true
+        EICRA{1} = false
+    else if(edge == RISING_EDGE)
+        EICRA{0} = true
+        EICRA{1} = true
+    else if(edge == FALLING_EDGE)
+        EICRA{0} = false
+        EICRA{1} = true
+    DDRD{INT0} = false
+    enableinterrupts()
+
+
 nothing delay(uint32 ms)
     ms = ms * 16000 / 33
     while(ms > 0)   
