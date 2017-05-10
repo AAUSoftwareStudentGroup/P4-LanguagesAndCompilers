@@ -361,8 +361,31 @@ namespace Compiler.Parsing
 			{
 			    case "return":
 			        node.Add(ParseTerminal(tokens, "return"));
-			        node.Add(ParseExpression(tokens));
+			        node.Add(ParseReturnValue(tokens));
 			        node.Add(ParseTerminal(tokens, "newline"));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.ReturnValue ParseReturnValue(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.ReturnValue node = new Compiler.Parsing.Data.ReturnValue(){ Name = "ReturnValue" };
+			switch(tokens.Current.Name)
+			{
+			    case "numeral":
+			    case "identifier":
+			    case "(":
+			    case "!":
+			    case "register8":
+			    case "register16":
+			    case "true":
+			    case "false":
+			        node.Add(ParseExpression(tokens));
+			        return node;
+			    case "newline":
+			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -560,9 +583,7 @@ namespace Compiler.Parsing
 			{
 			    case "else":
 			        node.Add(ParseTerminal(tokens, "else"));
-			        node.Add(ParseTerminal(tokens, "indent"));
-			        node.Add(ParseStatements(tokens));
-			        node.Add(ParseTerminal(tokens, "dedent"));
+			        node.Add(ParseElseBlock(tokens));
 			        return node;
 			    case "interrupt":
 			    case "int8":
@@ -584,6 +605,24 @@ namespace Compiler.Parsing
 			    case "eof":
 			    case "dedent":
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.ElseBlock ParseElseBlock(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.ElseBlock node = new Compiler.Parsing.Data.ElseBlock(){ Name = "ElseBlock" };
+			switch(tokens.Current.Name)
+			{
+			    case "if":
+			        node.Add(ParseIfStatement(tokens));
+			        return node;
+			    case "indent":
+			        node.Add(ParseTerminal(tokens, "indent"));
+			        node.Add(ParseStatements(tokens));
+			        node.Add(ParseTerminal(tokens, "dedent"));
 			        return node;
 			    default:
 			        throw new Exception();

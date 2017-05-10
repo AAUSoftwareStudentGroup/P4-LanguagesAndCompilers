@@ -39,7 +39,10 @@ Definition -> = DefinitionAssign
 DefinitionAssign -> Expression newline
                  | [ ExpressionList ]
 
-ReturnStatement -> return Expression newline
+ReturnStatement -> return ReturnValue newline
+
+ReturnValue -> Expression
+             | EPSILON
 
 FormalParameters -> FormalParameter FormalParametersP
                   | EPSILON
@@ -63,9 +66,12 @@ BitSelector -> { Expression }
 
 IfStatement -> if ( Expression ) indent Statements dedent ElseStatement
 
-ElseStatement -> else indent Statements dedent 
+ElseStatement -> else ElseBlock
                | EPSILON
-           
+
+ElseBlock -> IfStatement
+           | indent Statements dedent
+
 WhileStatement -> while ( Expression ) indent Statements dedent
 
 ForStatement -> for ( IntType identifier from Expression to Expression ) indent Statements dedent

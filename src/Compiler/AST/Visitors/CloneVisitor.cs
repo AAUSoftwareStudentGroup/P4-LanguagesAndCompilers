@@ -272,6 +272,16 @@ namespace Compiler.AST.Visitors
 			return clone;
 		}
 
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.IfElseIfStatement node)
+		{
+			var clone = new Compiler.AST.Data.IfElseIfStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.WhileStatement node)
 		{
 			var clone = new Compiler.AST.Data.WhileStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -325,6 +335,16 @@ namespace Compiler.AST.Visitors
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.RegisterReturn node)
 		{
 			var clone = new Compiler.AST.Data.RegisterReturn() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.EmptyReturn node)
+		{
+			var clone = new Compiler.AST.Data.EmptyReturn() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

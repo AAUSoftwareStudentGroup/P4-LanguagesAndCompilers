@@ -147,6 +147,11 @@ namespace Compiler.C.Visitors
 			return Visit((Compiler.C.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.C.Data.IfElseIfStatement node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.C.Data.WhileStatement node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
@@ -173,6 +178,11 @@ namespace Compiler.C.Visitors
 		}
 
 		public virtual T Visit(Compiler.C.Data.RegisterReturn node)
+		{
+			return Visit((Compiler.C.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.C.Data.EmptyReturn node)
 		{
 			return Visit((Compiler.C.Data.Node)node);
 		}

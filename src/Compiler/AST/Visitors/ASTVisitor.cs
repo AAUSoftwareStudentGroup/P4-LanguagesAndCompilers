@@ -137,6 +137,11 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.AST.Data.IfElseIfStatement node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.AST.Data.WhileStatement node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
@@ -163,6 +168,11 @@ namespace Compiler.AST.Visitors
 		}
 
 		public virtual T Visit(Compiler.AST.Data.RegisterReturn node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.EmptyReturn node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
