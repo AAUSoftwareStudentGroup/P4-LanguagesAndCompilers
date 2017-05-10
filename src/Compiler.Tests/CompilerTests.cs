@@ -280,16 +280,14 @@ void main ( )
         }
 
         [TestMethod]
-        // Rename to match convention
+        // Not made
         public void FuncReturnAndCallTest()
         {
 
         }
 
-        //test return, functions, and call of functions
         [TestMethod]
-        // Rename to match convention
-        public void Should_ThrowException_When_VariableDefinedInScope() 
+        public void Should_ThrowException_When_SameVariableDefinedInScope() 
         {
             string tang = @"int8 a = 2
 if (true)
@@ -311,8 +309,6 @@ a = true";
             
             //Should throw exception, when two different types are used in an assignment.
             Assert.ThrowsException<Exception>(() => cOutput = tc.Compile(tang));
-
-
         }
 
         [TestMethod]

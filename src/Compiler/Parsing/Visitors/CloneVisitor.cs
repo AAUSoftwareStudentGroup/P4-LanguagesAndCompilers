@@ -132,6 +132,16 @@ namespace Compiler.Parsing.Visitors
 			return clone;
 		}
 
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.ReturnValue node)
+		{
+			var clone = new Compiler.Parsing.Data.ReturnValue() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.FormalParameters node)
 		{
 			var clone = new Compiler.Parsing.Data.FormalParameters() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -215,6 +225,16 @@ namespace Compiler.Parsing.Visitors
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.ElseStatement node)
 		{
 			var clone = new Compiler.Parsing.Data.ElseStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.ElseBlock node)
+		{
+			var clone = new Compiler.Parsing.Data.ElseBlock() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

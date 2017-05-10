@@ -49,12 +49,14 @@ Statement -> EPSILON
            | RegisterAssignment ;
            | IfStatement 
            | IfElseStatement
+           | IfElseIfStatement
            | WhileStatement
            | ForStatement
            | Call ;
            | IntegerReturn ;
            | BooleanReturn ;
            | RegisterReturn ;
+           | EmptyReturn ;
 
 CompoundStatement -> Statement Statement
 
@@ -95,7 +97,11 @@ RegisterLiteral -> ( RegisterType ) ( IntegerExpression )
 IfStatement -> if ( BooleanExpression ) { Declaration Statement } 
 
 IfElseStatement ->  if ( BooleanExpression ) { Declaration Statement } else { Declaration Statement }
-		   
+
+IfElseIfStatement -> if ( BooleanExpression ) { Declaration Statement } else IfStatement
+                   | if ( BooleanExpression ) { Declaration Statement } else IfElseStatement
+                   | if ( BooleanExpression ) { Declaration Statement } else IfElseIfStatement
+
 WhileStatement -> while ( BooleanExpression ) { Declaration Statement }
 
 ForStatement -> for ( IntType identifier = IntegerExpression ; identifier <= IntegerExpression ; identifier ++ ) { Declaration Statement }
@@ -107,6 +113,8 @@ IntegerReturn -> return IntegerExpression
 BooleanReturn -> return BooleanExpression
 
 RegisterReturn -> return RegisterExpression
+
+EmptyReturn -> return
 
 ExpressionList -> ExpressionListArgs
                   | EPSILON
