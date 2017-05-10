@@ -1,0 +1,19 @@
+import Nano
+
+SetAnalogMode(true)
+PinModeD(13, true)
+PinModeA(0, false)
+DigitalWrite(13, true)
+uint32 counter = 0
+uint32 limiter = 50000
+bool value = true
+while(true)
+    limiter = AnalogRead(0)
+    if(counter > limiter)
+        counter = 0
+        value = !value
+        if(value)
+            DigitalWrite(13, false)
+        else
+            DigitalWrite(13, true)
+    counter = counter + 1

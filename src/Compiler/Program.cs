@@ -16,7 +16,7 @@ namespace Compiler
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
             bool DebugEnabled = false;
 
-            string file = "../../docs/samples/Function.tang";
+            string file = "../../docs/samples/test2.tang";
 
             if(args.Length > 0)
             {
@@ -99,7 +99,7 @@ namespace Compiler
             t1 = DateTime.Now;
             var cLines = c.Accept(new C.Visitors.TreePrintVisitor());
             var cStr = c.Accept(new C.Visitors.TextPrintVisitor());
-            if (args.Length == 0 && DebugEnabled)
+            if (args.Length == 0)
             {
                 foreach (var line in cLines)
                 {
