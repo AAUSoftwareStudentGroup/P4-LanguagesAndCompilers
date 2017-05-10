@@ -834,6 +834,14 @@ namespace Compiler.Translation.ProgramToAST
 					}
 				}
 			}
+			if(returnStatement != null && returnStatement.Name == "ReturnStatement" && (returnStatement.Count == 3 && returnStatement[0] != null && returnStatement[0].Name == "return" && returnStatement[1] != null && returnStatement[1].Name == "ReturnValue" && (returnStatement[1].Count == 1 && returnStatement[1][0] != null && returnStatement[1][0].Name == "EPSILON") && returnStatement[2] != null && returnStatement[2].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+				Compiler.Translation.SymbolTable.Data.Node declaration = Translates(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				if(declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "nothing") && declaration[0][1] != null && declaration[0][1].Name == "return")))
+				{
+					return (new Compiler.AST.Data.EmptyReturn(false) { new Compiler.AST.Data.Token() { Name = "return", Value = "return" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				}
+			}
 			throw new System.Exception();
 		}
 

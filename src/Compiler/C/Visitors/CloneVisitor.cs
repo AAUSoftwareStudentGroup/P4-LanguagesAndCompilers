@@ -362,6 +362,16 @@ namespace Compiler.C.Visitors
 			return clone;
 		}
 
+		public override Compiler.C.Data.Node Visit(Compiler.C.Data.EmptyReturn node)
+		{
+			var clone = new Compiler.C.Data.EmptyReturn() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.ExpressionList node)
 		{
 			var clone = new Compiler.C.Data.ExpressionList() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };

@@ -56,6 +56,7 @@ Statement -> EPSILON
            | IntegerReturn ;
            | BooleanReturn ;
            | RegisterReturn ;
+           | EmptyReturn ;
 
 CompoundStatement -> Statement Statement
 
@@ -112,6 +113,8 @@ IntegerReturn -> return IntegerExpression
 BooleanReturn -> return BooleanExpression
 
 RegisterReturn -> return RegisterExpression
+
+EmptyReturn -> return
 
 ExpressionList -> ExpressionListArgs
                   | EPSILON

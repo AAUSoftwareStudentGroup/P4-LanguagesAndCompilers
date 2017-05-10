@@ -95,6 +95,8 @@ CompoundFormalParameter[FormalParameter:p1 , FormalParameter:p2] -> CompoundForm
     [s dcl f si] ->:a [Declaration:dcl2 Function:f2 Statement:si2]
 [Statement[IntegerReturn:iret] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[iret1 ;]]]]
     iret -> IntegerReturn:iret1
+[Statement[EmptyReturn:eret] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[eret1 ;]]]]
+    eret -> EmptyReturn:eret1
 [Statement[BooleanReturn:bret] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[bret1 ;]]]]
     bret -> BooleanReturn:bret1
 [Statement[RegisterReturn:rret] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[rret1 ;]]]]
@@ -177,6 +179,8 @@ IntegerReturn[return IntegerExpression:expr] -> IntegerReturn[return iexpr]
 
 BooleanReturn[return BooleanExpression:expr] -> BooleanReturn[return bexpr]
     expr -> BooleanExpression:bexpr
+
+EmptyReturn[return] -> EmptyReturn[return]
 
 RegisterReturn[return RegisterExpression:expr] -> RegisterReturn[return rexpr]
     expr -> RegisterExpression:rexpr

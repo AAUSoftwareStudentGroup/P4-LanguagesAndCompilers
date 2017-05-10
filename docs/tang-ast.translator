@@ -265,6 +265,9 @@ Type[RegisterType:t] ->:q Type[t1]
     [return s] ->:s Declaration[Variable[Type[RegisterType] return]]
     [expr s] -> [RegisterExpression:rret SymbolTable]
 
+[ReturnStatement[return ReturnValue[EPSILON] newline] SymbolTable:s] -> [EmptyReturn[return] s]
+    [return s] ->:s Declaration[Variable[Type[nothing] return]]
+
 [IdentifierDeclaration[IntType:t  identifier:id Definition[newline]] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p IntType:t1
     t ->:q IntType:t2

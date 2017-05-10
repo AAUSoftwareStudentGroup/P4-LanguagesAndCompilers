@@ -48,6 +48,7 @@ Statement -> newline
            | IntegerReturn
            | BooleanReturn
            | RegisterReturn
+           | EmptyReturn
 
 CompoundStatement -> Statement newline Statement
 

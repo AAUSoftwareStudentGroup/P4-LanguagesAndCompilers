@@ -28,6 +28,7 @@ namespace Compiler.Translation.ASTToC
 		public int Translate__registerExpression = 0;
 		public int Translate__integerReturn = 0;
 		public int Translate__booleanReturn = 0;
+		public int Translate__emptyReturn = 0;
 		public int Translate__registerReturn = 0;
 		public int Translate__call = 0;
 		public int Translate__expressionList = 0;
@@ -418,6 +419,14 @@ namespace Compiler.Translation.ASTToC
 					return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { iret1 as Compiler.C.Data.IntegerReturn, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
 				}
 			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "EmptyReturn") && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement1 != null && statement1.Name == "Statement")
+			{
+				Compiler.C.Data.Node eret1 = Translate(statement[0] as Compiler.AST.Data.EmptyReturn);
+				if(eret1 != null && eret1.Name == "EmptyReturn")
+				{
+					return (declaration as Compiler.C.Data.Declaration, function as Compiler.C.Data.Function, new Compiler.C.Data.Statement(false) { new Compiler.C.Data.CompoundStatement(false) { statement1 as Compiler.C.Data.Statement, new Compiler.C.Data.Statement(false) { eret1 as Compiler.C.Data.EmptyReturn, new Compiler.C.Data.Token() { Name = ";", Value = ";" } } } });
+				}
+			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "BooleanReturn") && declaration != null && declaration.Name == "Declaration" && function != null && function.Name == "Function" && statement1 != null && statement1.Name == "Statement")
 			{
 				Compiler.C.Data.Node bret1 = Translate(statement[0] as Compiler.AST.Data.BooleanReturn);
@@ -763,6 +772,16 @@ namespace Compiler.Translation.ASTToC
 				{
 					return new Compiler.C.Data.BooleanReturn(false) { new Compiler.C.Data.Token() { Name = "return", Value = "return" }, bexpr as Compiler.C.Data.BooleanExpression };
 				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.EmptyReturn emptyReturn)
+		{
+			Translate__emptyReturn++;
+			if(emptyReturn != null && emptyReturn.Name == "EmptyReturn" && (emptyReturn.Count == 1 && emptyReturn[0] != null && emptyReturn[0].Name == "return"))
+			{
+				return new Compiler.C.Data.EmptyReturn(false) { new Compiler.C.Data.Token() { Name = "return", Value = "return" } };
 			}
 			throw new System.Exception();
 		}
@@ -1773,6 +1792,7 @@ namespace Compiler.Translation.ASTToC
 			System.Console.WriteLine("Translate__registerExpression: "+Translate__registerExpression);
 			System.Console.WriteLine("Translate__integerReturn: "+Translate__integerReturn);
 			System.Console.WriteLine("Translate__booleanReturn: "+Translate__booleanReturn);
+			System.Console.WriteLine("Translate__emptyReturn: "+Translate__emptyReturn);
 			System.Console.WriteLine("Translate__registerReturn: "+Translate__registerReturn);
 			System.Console.WriteLine("Translate__call: "+Translate__call);
 			System.Console.WriteLine("Translate__expressionList: "+Translate__expressionList);
