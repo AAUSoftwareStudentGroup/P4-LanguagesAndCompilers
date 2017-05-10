@@ -34,15 +34,12 @@ nothing delay(uint32 ms)
 bool DigitalRead(int8 pin)
     if(pin < 0)
         return false
-    else 
-        if(pin <= 7)
-            return PIND{pin}
-        else
-            if(pin <= 13)
-                return PINB{pin - 8}
-            else
-                if(pin <= 20)
-                    return PINC{pin - 14}
+    else if(pin <= 7)
+        return PIND{pin}
+    else if(pin <= 13)
+        return PINB{pin - 8}
+    else if(pin <= 20)
+        return PINC{pin - 14}
 
 
 nothing SetAnalogMode(bool mode) // True = analog, false = digital
@@ -99,12 +96,9 @@ int8 PinModeD(int8 pin, bool mode)
 int8 DigitalWrite(uint8 pin, bool value)
     if(pin < 0)
         return 0
-    else 
-        if(pin <= 7)
-            PORTD{pin} = value
-        else 
-            if(pin <= 13)
-                PORTB{pin - 8} = value
-            else
-                if(pin <= 20)
-                    PORTC{pin - 14} = value
+    else if(pin <= 7)
+        PORTD{pin} = value
+    else if(pin <= 13)
+        PORTB{pin - 8} = value
+    else if(pin <= 20)
+        PORTC{pin - 14} = value

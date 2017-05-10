@@ -1,14 +1,6 @@
-nothing setup()
-    register8 ddrb = register8(36)
-    register8 portb = register8(37) 
-    ddrb{5} = true
-    portb{5} = true
+int16 i = 0
+nothing procedure()
+    i = 10
 
-setup()
-int16 counter = 0
-while(true)
-    if(counter == 100000)
-        counter = 0
-        port{5} = !port{5}
-    if(!(counter == 100000))
-        counter = counter + 1
+procedure()
+// i is 10
