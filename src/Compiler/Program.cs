@@ -14,9 +14,9 @@ namespace Compiler
             Console.WriteLine("Compiler running");
             DateTime t1 = DateTime.Now;
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
-            bool DebugEnabled = false;
+            bool DebugEnabled = true;
 
-            string file = "../../docs/samples/emptyReturn.tang";
+            string file = "../../docs/samples/AddExpression.tang";
 
             if(args.Length > 0)
             {
