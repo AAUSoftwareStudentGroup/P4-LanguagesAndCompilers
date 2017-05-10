@@ -14,7 +14,7 @@ namespace Compiler.Tests
     public class ProgramToASTTranslatorTests
     {
         [TestMethod]
-        public void FirstTest()
+        public void ConvertToASTCorrectly()
         {
             /* Alias.tang file:
              * uint8 a
