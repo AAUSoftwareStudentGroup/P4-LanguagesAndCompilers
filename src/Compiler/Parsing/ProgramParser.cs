@@ -45,6 +45,8 @@ namespace Compiler.Parsing
 			    case "while":
 			    case "for":
 			    case "return":
+			    case "disableinterrupts":
+			    case "enableinterrupts":
 			    case "newline":
 			    case "eof":
 			        node.Add(ParseGlobalStatements(tokens));
@@ -76,6 +78,8 @@ namespace Compiler.Parsing
 			    case "while":
 			    case "for":
 			    case "return":
+			    case "disableinterrupts":
+			    case "enableinterrupts":
 			    case "newline":
 			        node.Add(ParseGlobalStatement(tokens));
 			        node.Add(ParseGlobalStatements(tokens));
@@ -111,6 +115,8 @@ namespace Compiler.Parsing
 			    case "while":
 			    case "for":
 			    case "return":
+			    case "disableinterrupts":
+			    case "enableinterrupts":
 			    case "newline":
 			        node.Add(ParseStatement(tokens));
 			        return node;
@@ -158,6 +164,8 @@ namespace Compiler.Parsing
 			    case "while":
 			    case "for":
 			    case "return":
+			    case "disableinterrupts":
+			    case "enableinterrupts":
 			    case "newline":
 			        node.Add(ParseStatement(tokens));
 			        node.Add(ParseStatements(tokens));
@@ -203,6 +211,10 @@ namespace Compiler.Parsing
 			        return node;
 			    case "return":
 			        node.Add(ParseReturnStatement(tokens));
+			        return node;
+			    case "disableinterrupts":
+			    case "enableinterrupts":
+			        node.Add(ParseInterruptStatement(tokens));
 			        return node;
 			    case "newline":
 			        node.Add(ParseTerminal(tokens, "newline"));
@@ -348,6 +360,26 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "["));
 			        node.Add(ParseExpressionList(tokens));
 			        node.Add(ParseTerminal(tokens, "]"));
+			        return node;
+			    default:
+			        throw new Exception();
+			}
+		}
+
+		public Compiler.Parsing.Data.InterruptStatement ParseInterruptStatement(IEnumerator<Compiler.Parsing.Data.Token> tokens)
+		{
+			Compiler.Parsing.Data.InterruptStatement node = new Compiler.Parsing.Data.InterruptStatement(){ Name = "InterruptStatement" };
+			switch(tokens.Current.Name)
+			{
+			    case "disableinterrupts":
+			        node.Add(ParseTerminal(tokens, "disableinterrupts"));
+			        node.Add(ParseTerminal(tokens, "("));
+			        node.Add(ParseTerminal(tokens, ")"));
+			        return node;
+			    case "enableinterrupts":
+			        node.Add(ParseTerminal(tokens, "enableinterrupts"));
+			        node.Add(ParseTerminal(tokens, "("));
+			        node.Add(ParseTerminal(tokens, ")"));
 			        return node;
 			    default:
 			        throw new Exception();
@@ -601,6 +633,8 @@ namespace Compiler.Parsing
 			    case "while":
 			    case "for":
 			    case "return":
+			    case "disableinterrupts":
+			    case "enableinterrupts":
 			    case "newline":
 			    case "eof":
 			    case "dedent":

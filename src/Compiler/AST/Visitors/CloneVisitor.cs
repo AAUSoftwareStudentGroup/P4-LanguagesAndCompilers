@@ -352,6 +352,16 @@ namespace Compiler.AST.Visitors
 			return clone;
 		}
 
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.InterruptStatement node)
+		{
+			var clone = new Compiler.AST.Data.InterruptStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.ExpressionList node)
 		{
 			var clone = new Compiler.AST.Data.ExpressionList() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };

@@ -1,55 +1,56 @@
 import AllRegisters
-bool OUTPUT = true
 bool INPUT = false
+bool OUTPUT = true
+bool PULLUP = true
+bool HIGH = true
+bool LOW = false
 
-int8 PinModeD(int8 pin, bool mode)
-    if(pin <= 7)
-        DDRD{pin} = mode
-        return 0
-    if(pin <= 13)
-        DDRB{pin - 8} = mode
-        return 0
+nothing INT0_enable()
+    EIMSK{0} = true
+
+nothing INT0_init(uint8 edge)
+    INT0_enable()
+    if(edge ==  INTERRUPT_LOW)
+        EICRA{0} = false
+        EICRA{1} = false
+    else if(edge == ANY_EDGE)
+        EICRA{0} = true
+        EICRA{1} = false
+    else if(edge == RISING_EDGE)
+        EICRA{0} = true
+        EICRA{1} = true
+    else if(edge == FALLING_EDGE)
+        EICRA{0} = false
+        EICRA{1} = true
+    DDRD{INT0} = false
+    enableinterrupts()
+
+
+nothing delay(uint32 ms)
+    ms = ms * 16000 / 33
+    while(ms > 0)   
+        ms = ms - 1
 
 bool DigitalRead(int8 pin)
     if(pin < 0)
         return false
-    else 
-        if(pin <= 7)
-            return PORTD{pin}
-        else
-            if(pin <= 13)
-                return PORTB{pin - 8}
-            else
-                if(pin <= 20)
-                    return PORTC{pin - 14}
+    else if(pin <= 7)
+        return PIND{pin}
+    else if(pin <= 13)
+        return PINB{pin - 8}
+    else if(pin <= 20)
+        return PINC{pin - 14}
 
 
 nothing SetAnalogMode(bool mode) // True = analog, false = digital
     ADCSRA{7} = mode
     if(mode)
-        ADCSRA{6} = true
         // ADC Frekuency Prescaler division: 128 = 125 khz at 16 Mhz
         ADCSRA{0} = true
         ADCSRA{1} = true
         ADCSRA{2} = true
         // Auto-update
         ADCSRA{5} = true
-        // Interrupt enable
-        ADCSRA{3} = false
-        
-int8 DigitalWrite(int8 pin, bool value)
-    if(pin < 0)
-        return 0
-    else 
-        if(pin <= 7)
-            PIND{pin} = value
-        else 
-            if(pin <= 13)
-                PINB{pin - 8} = value
-            else
-                if(pin <= 20)
-                    PINC{pin - 14} = value
-
 
 nothing PinModeA(int8 pin, bool pullUp)
     ADMUX{5} = false
@@ -57,23 +58,24 @@ nothing PinModeA(int8 pin, bool pullUp)
     ADMUX{7} = false // Left Adjust Result
     if(pin < 8 or pin >= 0)
         DDRC{pin} = pullUp
-        
-int16 AnalogRead(int8 pin)
+
+
+uint16 AnalogRead(int8 pin)
     if(ADCSRA{7})
         // Set Multiplexer
-        if(pin % 2 == 0)
+        if(pin % 2 == 1)
             ADMUX{0} = true            
         else
             ADMUX{0} = false
-        if(pin % 4 == 0)
+        if(pin % 4 == 1)
             ADMUX{1} = true
         else
             ADMUX{1} = false
-        if(pin % 8 == 0)
+        if(pin % 8 == 1)
             ADMUX{2} = true
         else
             ADMUX{2} = false
-        ADCSRA{4} = false
+        ADCSRA{6} = true
         while(ADCSRA{4} == false) // Set to 1 when ADC is updated
             // Do nothing
         return ADC()
@@ -81,3 +83,22 @@ int16 AnalogRead(int8 pin)
         if(DigitalRead(pin+14))
             return 1
         return 0
+
+int8 PinModeD(int8 pin, bool mode)
+    if(pin <= 7)
+        DDRD{pin} = mode
+        return 0
+    if(pin <= 13)
+        DDRB{pin-8} = mode
+        return 0
+
+
+int8 DigitalWrite(uint8 pin, bool value)
+    if(pin < 0)
+        return 0
+    else if(pin <= 7)
+        PORTD{pin} = value
+    else if(pin <= 13)
+        PORTB{pin - 8} = value
+    else if(pin <= 20)
+        PORTC{pin - 14} = value

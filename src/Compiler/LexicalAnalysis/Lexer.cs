@@ -157,7 +157,7 @@ namespace Compiler.LexicalAnalysis
             token = new Token
             {
                 Name = "newline",
-                Value = match.Value,
+                Value = "",
                 Row = row,
                 Column = column
             };

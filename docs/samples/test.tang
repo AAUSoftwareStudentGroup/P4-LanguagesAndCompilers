@@ -1,12 +1,22 @@
 import Nano
 
-PinModeD(13, OUTPUT)
-DigitalWrite(13, true)
-int16 counter = 0
-bool value = true
-while(true)
-    if(counter > 10000)
-        counter = 0
-        value = !value
-        DigitalWrite(13, value)
-    counter = counter + 1
+uint8 button
+uint8 led
+bool value
+
+button = 10
+led = 13
+value = false
+
+nothing func()
+    value = !value
+    DigitalWrite(led, value)
+
+interrupt(2) // INT0_vect
+    func()
+
+DigitalWrite(2, HIGH)
+
+INT0_init(FALLING_EDGE)
+
+DigitalWrite(led, LOW)

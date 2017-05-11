@@ -24,6 +24,7 @@ namespace Compiler.Translation.ProgramToAST
 		public int Translate__statements_symbolTable = 0;
 		public int Translate__statement_symbolTable = 0;
 		public int Translate__returnStatement_symbolTable = 0;
+		public int Translatep__interruptStatement = 0;
 		public int Translate__identifierDeclaration_symbolTable = 0;
 		public int Translate__formalParameters_symbolTable = 0;
 		public int Translate__formalParametersP_symbolTable = 0;
@@ -297,6 +298,10 @@ namespace Compiler.Translation.ProgramToAST
 				return symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
 			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "ReturnStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+				return symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "InterruptStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 				return symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
 			}
@@ -736,6 +741,14 @@ namespace Compiler.Translation.ProgramToAST
 					return (new Compiler.AST.Data.Statement(false) { dclStm as Compiler.AST.Data.BooleanDeclarationInit }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 				}
 			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "InterruptStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+				Compiler.AST.Data.Node itrStm1 = Translatep(statement[0] as Compiler.Parsing.Data.InterruptStatement);
+				if(itrStm1 != null && itrStm1.Name == "InterruptStatement")
+				{
+					return (new Compiler.AST.Data.Statement(false) { itrStm1 as Compiler.AST.Data.InterruptStatement }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+				}
+			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 				(Compiler.AST.Data.Node f, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
@@ -841,6 +854,20 @@ namespace Compiler.Translation.ProgramToAST
 				{
 					return (new Compiler.AST.Data.EmptyReturn(false) { new Compiler.AST.Data.Token() { Name = "return", Value = "return" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 				}
+			}
+			throw new System.Exception();
+		}
+
+		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.InterruptStatement interruptStatement)
+		{
+			Translatep__interruptStatement++;
+			if(interruptStatement != null && interruptStatement.Name == "InterruptStatement" && (interruptStatement.Count == 3 && interruptStatement[0] != null && interruptStatement[0].Name == "enableinterrupts" && interruptStatement[1] != null && interruptStatement[1].Name == "(" && interruptStatement[2] != null && interruptStatement[2].Name == ")"))
+			{
+				return new Compiler.AST.Data.InterruptStatement(false) { new Compiler.AST.Data.Token() { Name = "enableinterrupts", Value = "enableinterrupts" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } };
+			}
+			if(interruptStatement != null && interruptStatement.Name == "InterruptStatement" && (interruptStatement.Count == 3 && interruptStatement[0] != null && interruptStatement[0].Name == "disableinterrupts" && interruptStatement[1] != null && interruptStatement[1].Name == "(" && interruptStatement[2] != null && interruptStatement[2].Name == ")"))
+			{
+				return new Compiler.AST.Data.InterruptStatement(false) { new Compiler.AST.Data.Token() { Name = "disableinterrupts", Value = "disableinterrupts" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } };
 			}
 			throw new System.Exception();
 		}
@@ -2562,6 +2589,7 @@ namespace Compiler.Translation.ProgramToAST
 			System.Console.WriteLine("Translate__statements_symbolTable: "+Translate__statements_symbolTable);
 			System.Console.WriteLine("Translate__statement_symbolTable: "+Translate__statement_symbolTable);
 			System.Console.WriteLine("Translate__returnStatement_symbolTable: "+Translate__returnStatement_symbolTable);
+			System.Console.WriteLine("Translatep__interruptStatement: "+Translatep__interruptStatement);
 			System.Console.WriteLine("Translate__identifierDeclaration_symbolTable: "+Translate__identifierDeclaration_symbolTable);
 			System.Console.WriteLine("Translate__formalParameters_symbolTable: "+Translate__formalParameters_symbolTable);
 			System.Console.WriteLine("Translate__formalParametersP_symbolTable: "+Translate__formalParametersP_symbolTable);

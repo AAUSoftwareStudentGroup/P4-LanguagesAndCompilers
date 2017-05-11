@@ -14,9 +14,9 @@ namespace Compiler
             Console.WriteLine("Compiler running");
             DateTime t1 = DateTime.Now;
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
-            bool DebugEnabled = true;
+            bool DebugEnabled = false;
 
-            string file = "../../docs/samples/AddExpression.tang";
+            string file = "../../docs/samples/Empty.tang";
 
             if(args.Length > 0)
             {
@@ -24,6 +24,11 @@ namespace Compiler
             }
             Console.WriteLine("Running Lexer");
             var tokens = lexer.Analyse(File.ReadAllText(file));
+
+            foreach(Token t in tokens)
+            {
+                Console.WriteLine(t.Name);
+            }
 
             Console.WriteLine("Lexer on main: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;
@@ -99,7 +104,7 @@ namespace Compiler
             t1 = DateTime.Now;
             var cLines = c.Accept(new C.Visitors.TreePrintVisitor());
             var cStr = c.Accept(new C.Visitors.TextPrintVisitor());
-            if (args.Length == 0 && DebugEnabled)
+            if (args.Length == 0)
             {
                 foreach (var line in cLines)
                 {

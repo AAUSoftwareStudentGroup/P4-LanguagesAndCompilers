@@ -300,7 +300,7 @@ if (true)
         }
 
         [TestMethod]
-        public void Should_ThrowException_When_AssingingIntToBool()
+        public void Should_ThrowException_When_AssigningIntToBool()
         {   
             string tang = @"int8 a
 a = true";

@@ -73,7 +73,7 @@ namespace Compiler.C.Visitors
                             res.Add(str);
                         }
                     }
-                    yield return string.Join(" ", res);
+                    yield return string.Join(" ", res).Replace("__vector_ ", "__vector_");
                     yield return "{";
                     foreach (var item in node.Nodes<Declaration>()[0].Accept(this))
                     {
@@ -131,7 +131,7 @@ namespace Compiler.C.Visitors
             }
             else
             {
-                return node.First().Accept(this).Select(s => s + " ;");
+                return node.First().Accept(this).Select(s => s.Replace("__vector_ ", "__vector_") + " ;");
             }
         }
 

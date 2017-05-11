@@ -152,6 +152,14 @@
         "PatternString": "bool(?![a-zA-Z_0-9])"
     },
     {
+        "Name": "enableinterrupts",
+        "PatternString": "enableinterrupts(?![a-zA-Z_0-9])"
+    },
+    {
+        "Name": "disableinterrupts",
+        "PatternString": "disableinterrupts(?![a-zA-Z_0-9])"
+    },
+    {
         "Name": "==",
         "PatternString": "=="
     },
