@@ -1,1 +1,9 @@
 int8 a = 1 + 2 + 3
+
+
+signed char a ;
+void main ( ) ;
+void ( )
+{
+	a = 1 + 2 + 3 ;
+}

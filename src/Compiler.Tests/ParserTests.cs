@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Compiler.Tests
 {
@@ -258,6 +259,159 @@ namespace Compiler.Tests
             {
                Assert.Fail("Expected no exception, but got: " + e.Message);
             }
+        }
+
+        [TestMethod]
+        public void AddExpressionSpecialTestParser()
+        {
+            // Initialise Lexer
+            Lexer l = new Lexer(AppContext.BaseDirectory + "\\TestFiles\\Tokens.cfg.json");
+
+            // Read from test file
+            IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\AddExpression.tang"));
+
+            ProgramParser pp = new ProgramParser();
+
+            var tokenEnumerator = tokens.Select(t => new Parsing.Data.Token() { Name = t.Name, Value = t.Value }).GetEnumerator();
+            tokenEnumerator.MoveNext();
+            var parseTree = pp.ParseProgram(tokenEnumerator);
+
+            // Build parse tree manually for the AddExpression.tang program, kfg edit is used to visualise how it will look
+            var parseTreeManual = new Parsing.Data.Program(true)
+            {
+                new Parsing.Data.GlobalStatements(true)
+                {
+                    new Parsing.Data.GlobalStatement(true)
+                    {
+                        new Parsing.Data.Statement(true)
+                        {
+                            new Parsing.Data.IdentifierDeclaration(true)
+                            {
+                                new Parsing.Data.IntType(true)
+                                {
+                                    new Parsing.Data.Token(){ Name = "int8" }
+                                },
+                                new Parsing.Data.Token(){ Name = "identifier" },
+                                new Parsing.Data.Definition(true)
+                                {
+                                    new Parsing.Data.Token(){ Name = "=" },
+                                    new Parsing.Data.DefinitionAssign(true)
+                                    {
+                                        new Parsing.Data.Expression(true)
+                                        {
+                                            new Parsing.Data.OrExpression(true)
+                                            {
+                                                new Parsing.Data.AndExpression(true)
+                                                {
+                                                    new Parsing.Data.EqExpression(true)
+                                                    {
+                                                        new Parsing.Data.RelationalExpression(true)
+                                                        {
+                                                            new Parsing.Data.AddSubExpression(true)
+                                                            {
+                                                                new Parsing.Data.MulDivExpression(true)
+                                                                {
+                                                                    new Parsing.Data.PowExpression(true)
+                                                                    {
+                                                                        new Parsing.Data.PrimaryExpression(true)
+                                                                        {
+                                                                            new Parsing.Data.Token(){ Name = "numeral" }
+                                                                        },
+                                                                        new Parsing.Data.PowExpressionP(true)
+                                                                        {
+                                                                            new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                                        }
+                                                                    },
+                                                                    new Parsing.Data.MulDivExpressionP(true)
+                                                                    {
+                                                                        new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                                    }
+                                                                },
+                                                                new Parsing.Data.AddSubExpressionP(true)
+                                                                {
+                                                                    new Parsing.Data.Token(){ Name = "+" },
+                                                                    new Parsing.Data.MulDivExpression(true)
+                                                                    {
+                                                                        new Parsing.Data.PowExpression(true)
+                                                                        {
+                                                                            new Parsing.Data.PrimaryExpression(true)
+                                                                            {
+                                                                                new Parsing.Data.Token(){ Name = "numeral" }
+                                                                            },
+                                                                            new Parsing.Data.PowExpressionP(true)
+                                                                            {
+                                                                                new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                                            }
+                                                                        },
+                                                                        new Parsing.Data.MulDivExpressionP(true)
+                                                                        {
+                                                                            new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                                        }
+                                                                    },
+                                                                    new Parsing.Data.AddSubExpressionP(true)
+                                                                    {
+                                                                        new Parsing.Data.Token(){ Name = "+" },
+                                                                        new Parsing.Data.MulDivExpression(true)
+                                                                        {
+                                                                            new Parsing.Data.PowExpression(true)
+                                                                            {
+                                                                                new Parsing.Data.PrimaryExpression(true)
+                                                                                {
+                                                                                    new Parsing.Data.Token(){ Name = "numeral" }
+                                                                                },
+                                                                                new Parsing.Data.PowExpressionP(true)
+                                                                                {
+                                                                                    new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                                                }
+                                                                            },
+                                                                            new Parsing.Data.MulDivExpressionP(true)
+                                                                            {
+                                                                                new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                                            }
+                                                                        },
+                                                                        new Parsing.Data.AddSubExpressionP(true)
+                                                                        {
+                                                                            new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            },
+                                                            new Parsing.Data.RelationalExpressionP(true)
+                                                            {
+                                                                new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                            }
+                                                        },
+                                                        new Parsing.Data.EqExpressionP(true)
+                                                        {
+                                                            new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                        }
+                                                    },
+                                                    new Parsing.Data.AndExpressionP(true)
+                                                    {
+                                                        new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                    }
+                                                },
+                                                new Parsing.Data.OrExpressionP(true)
+                                                {
+                                                    new Parsing.Data.Token(){ Name = "EPSILON" }
+                                                }
+                                            }
+                                        },
+                                        new Parsing.Data.Token(){ Name = "newline" }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new Parsing.Data.GlobalStatements(true)
+                    {
+                        new Parsing.Data.Token(){ Name = "EPSILON" }
+                    }
+                },
+                new Parsing.Data.Token(){ Name = "eof" }
+            };
+
+            TreeAsserter(parseTree, parseTreeManual);
         }
 
         public void TreeAsserter(Parsing.Data.Node node, Parsing.Data.Node nodeTest)

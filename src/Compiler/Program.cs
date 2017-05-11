@@ -78,7 +78,7 @@ namespace Compiler
             astTranslator.printCounts();
             Console.WriteLine("tangToAST: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;
-            var astLines = ast.Accept(new AST.Visitors.TreePrintVisitor());
+            var astLines = ast.Accept(new AST.Visitors.ASTVisitor());
             if (args.Length == 0 && DebugEnabled)
             {
                 foreach (var line in astLines)
