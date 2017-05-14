@@ -1,5 +1,16 @@
 import Nano
 
+int16 dutyCycle = 40
+SetAnalogMode(true) // Enable ADC
+PinModeA(0, INPUT)
+PinModeD(13, OUTPUT)
+int32 counter = 0
 while(true)
-    delay(500)
-    DigitalFlip(13)
+    counter = counter + 1
+    dutyCycle = counter%511
+    if(dutyCycle >= 256)
+        dutyCycle = 255 - dutyCycle%255
+    if(dutyCycle < 0 or dutyCycle > 255)
+        DigitalWrite(13, true)
+    SetFastPWMPin6(dutyCycle)
+    delay(5)

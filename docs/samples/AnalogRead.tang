@@ -1,9 +1,9 @@
 import Nano
 
 SetAnalogMode(true)
-PinModeD(13, true)
+PinModeD(13, OUTPUT)
 PinModeA(0, false)
-DigitalWrite(13, true)
+DigitalWrite(13, PULLUP)
 uint32 counter = 0
 uint32 limiter = 50000
 bool value = true

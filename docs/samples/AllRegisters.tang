@@ -53,12 +53,12 @@ register8 TIMSK1 = register8(111)
 register8 TIMSK2 = register8(112)
 register8 ADCL   = register8(120)
 register8 ADCH   = register8(121)
-uint16 ADC()
-    uint16 result = 0
-    for(int16 i from 0 to 7)
+int16 ADC()
+    int16 result = 0
+    for(int8 i from 0 to 7)
         if(ADCL{i})
             result = result + 2^(i)
-    for(int16 i from 0 to 1)
+    for(int8 i from 0 to 1)
         if(ADCH{i})
             result = result + 2^(8+i)
     return result

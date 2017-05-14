@@ -2,6 +2,7 @@ import AllRegisters
 bool INPUT = false
 bool OUTPUT = true
 bool PULLUP = true
+bool NO_PULLUP = false
 bool HIGH = true
 bool LOW = false
 
@@ -25,7 +26,6 @@ nothing INT0_init(uint8 edge)
     DDRD{INT0} = false
     enableinterrupts()
 
-
 nothing delay(uint32 ms)
     ms = ms * 16000 / 33
     while(ms > 0)   
@@ -41,7 +41,6 @@ bool DigitalRead(int8 pin)
     else if(pin <= 20)
         return PINC{pin - 14}
 
-
 nothing SetAnalogMode(bool mode) // True = analog, false = digital
     ADCSRA{7} = mode
     if(mode)
@@ -52,13 +51,12 @@ nothing SetAnalogMode(bool mode) // True = analog, false = digital
         // Auto-update
         ADCSRA{5} = true
 
-nothing PinModeA(int8 pin, bool pullUp)
+nothing PinModeA(int8 pin, bool mode)
     ADMUX{5} = false
     ADMUX{6} = true
     ADMUX{7} = false // Left Adjust Result
     if(pin < 8 or pin >= 0)
-        DDRC{pin} = pullUp
-
+        DDRC{pin} = mode
 
 uint16 AnalogRead(int8 pin)
     if(ADCSRA{7})
@@ -112,3 +110,23 @@ int8 DigitalFlip(uint8 pin)
         PORTB{pin - 8} = !PORTB{pin - 8}
     else if(pin <= 20)
         PORTC{pin - 14} = !PORTC{pin - 14}
+
+nothing SetFastPWMPin6(int16 dutyCycle)
+    DDRD{6} = true
+    // PD6 is now an output
+    // dutyCycle = (dutyCycle * 256) / 100 // To make dutyCycle go from 0-100 instead of 0-256
+    int8 bit = 2
+    for(int8 i from 0 to 7)
+        if(dutyCycle%bit > 0)
+            OCR0A{i} = true
+            dutyCycle = dutyCycle - dutyCycle%bit
+        else
+            OCR0A{i} = false
+        bit = bit * 2
+    TCCR0A{7} = true
+    // set none-inverting mode
+    TCCR0A{0} = true
+    TCCR0A{1} = true
+    // set fast PWM Mode
+    TCCR0B{0} = true
+    // sets prescaler to 1 (Full speed) and starts PWM
