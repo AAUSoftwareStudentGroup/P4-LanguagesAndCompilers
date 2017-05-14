@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Compiler.AST.Visitors
 {
-	public class ASTVisitor : ASTVisitor<IEnumerable<string>>
+	public class TreePrintVisitor : ASTVisitor<IEnumerable<string>>
 	{
 		public override IEnumerable<string> Visit(Compiler.AST.Data.Node node)
 		{
