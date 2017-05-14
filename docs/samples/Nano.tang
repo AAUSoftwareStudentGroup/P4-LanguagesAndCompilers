@@ -102,3 +102,13 @@ int8 DigitalWrite(uint8 pin, bool value)
         PORTB{pin - 8} = value
     else if(pin <= 20)
         PORTC{pin - 14} = value
+
+int8 DigitalFlip(uint8 pin)
+    if(pin < 0)
+        return 0
+    else if(pin <= 7)
+        PORTD{pin} = !PORTD{pin}
+    else if(pin <= 13)
+        PORTB{pin - 8} = !PORTB{pin - 8}
+    else if(pin <= 20)
+        PORTC{pin - 14} = !PORTC{pin - 14}

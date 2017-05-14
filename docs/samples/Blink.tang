@@ -1,11 +1,5 @@
-register8 ddrb = register8(36)
-register8 portb = register8(37) 
-ddrb{5} = true
-portb{5} = true
-int16 counter = 0
+import Nano
+
 while(true)
-    if(counter == 100000)
-        counter = 0
-        portb{5} = !portb{5}
-    if(!(counter == 100000))
-        counter = counter + 1
+    delay(500)
+    DigitalFlip(13)

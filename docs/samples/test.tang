@@ -1,22 +1,5 @@
 import Nano
 
-uint8 button
-uint8 led
-bool value
-
-button = 10
-led = 13
-value = false
-
-nothing func()
-    value = !value
-    DigitalWrite(led, value)
-
-interrupt(2) // INT0_vect
-    func()
-
-DigitalWrite(2, HIGH)
-
-INT0_init(FALLING_EDGE)
-
-DigitalWrite(led, LOW)
+while(true)
+    delay(500)
+    DigitalFlip(13)
