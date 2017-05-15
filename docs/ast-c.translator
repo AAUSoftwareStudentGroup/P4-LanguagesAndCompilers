@@ -26,7 +26,7 @@ AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration
     [gs2 dcl1 f1 s1] ->:a [Declaration:dcl2 Function:f2 Statement:s2]
 
 [Interrupt[interrupt ( numeral:i ) indent Statement:s1 dedent] Declaration:dcl Function:f Statement:s] 
-->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[Type[void] __vector_ i1 ( )] ;]]] Function[CompoundFunction[f Function[Type[void] __vector_ i1 ( ) { gs1 si2 }]]] s]
+->:a [Declaration[CompoundDeclaration[dcl Declaration[FunctionPrototype[Type[void] __vector_ i1 ( ) __attribute__ ( ( signal , used , externally_visible ) )] ;]]] Function[CompoundFunction[f Function[Type[void] __vector_ i1 ( ) { gs1 si2 }]]] s]
     i -> numeral:i1
     [s1 Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:gs1 Function[EPSILON] Statement:si2]
 

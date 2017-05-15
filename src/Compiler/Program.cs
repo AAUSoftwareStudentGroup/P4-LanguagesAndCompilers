@@ -12,9 +12,10 @@ namespace Compiler
         public static void Main(string[] args)
         {
             Console.WriteLine("Compiler running");
+            DateTime tStart = DateTime.Now;
             DateTime t1 = DateTime.Now;
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
-            bool DebugEnabled = true;
+            int DebugLevel = 0;
 
             string file = "../../docs/samples/test2.tang";
 
@@ -32,7 +33,7 @@ namespace Compiler
 
             Console.WriteLine("Lexer on main: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;
-            if (args.Length == 0 && DebugEnabled)
+            if (args.Length == 0 && DebugLevel >= 2)
             {
                 Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
 
@@ -47,7 +48,7 @@ namespace Compiler
 
             Console.WriteLine("Preprocessor: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;           
-            if (args.Length == 0 && DebugEnabled)
+            if (args.Length == 0 && DebugLevel >= 2)
             {
                 Console.WriteLine("Tokens with imports:");
                 Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
@@ -65,7 +66,7 @@ namespace Compiler
             Console.WriteLine("Parser: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;
             var parseTreeLines = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
-            if (args.Length == 0 && DebugEnabled)
+            if (args.Length == 0 && DebugLevel >= 2)
             {
                 foreach (var line in parseTreeLines)
                 {
@@ -80,11 +81,12 @@ namespace Compiler
             Console.WriteLine("Running Ast Translator");
             var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
             AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
-            astTranslator.printCounts();
+            if(DebugLevel >= 2)
+                astTranslator.printCounts();
             Console.WriteLine("tangToAST: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;
             var astLines = ast.Accept(new AST.Visitors.TreePrintVisitor());
-            if (args.Length == 0 && DebugEnabled)
+            if (args.Length == 0 && DebugLevel >= 2)
             {
                 foreach (var line in astLines)
                 {
@@ -99,12 +101,13 @@ namespace Compiler
             Console.WriteLine("Running C Translator");
             var cTranslator = new Translation.ASTToC.ASTToCTranslator();
             C.Data.C c = cTranslator.Translate(ast) as C.Data.C;
-            cTranslator.printCounts();
+            if(DebugLevel >= 2)
+                cTranslator.printCounts();
             Console.WriteLine("astToC: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
             t1 = DateTime.Now;
             var cLines = c.Accept(new C.Visitors.TreePrintVisitor());
             var cStr = c.Accept(new C.Visitors.TextPrintVisitor());
-            if (args.Length == 0)
+            if (args.Length == 0 && DebugLevel >= 2)
             {
                 foreach (var line in cLines)
                 {
@@ -114,6 +117,10 @@ namespace Compiler
                 Console.WriteLine("");
                 Console.WriteLine("--------------------------------------");
                 Console.WriteLine("");
+            }
+
+            if(args.Length == 0 && DebugLevel >= 1)
+            {
 
                 foreach (var term in cStr)
                 {
@@ -125,9 +132,7 @@ namespace Compiler
 
             Console.WriteLine("Writing to file");
             File.WriteAllLines(args.Length == 2 ? args[1] : "../../docs/samples/compiled/" + file.Replace("\\", " /").Split('/').Last().Split('.').First() + ".c", cStr);
-
-            //Todo
-
+            Console.WriteLine("Compiler run-time: " + DateTime.Now.Subtract(tStart).TotalMilliseconds + " ms" );
         }
     }
 

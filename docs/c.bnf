@@ -11,7 +11,7 @@ CompoundDeclaration -> Declaration Declaration
 
 FunctionPrototype -> Type identifier ( FormalParameters )
                   |  Type main ( )
-                  |  Type __vector_ numeral ( )
+                  |  Type __vector_ numeral ( ) __attribute__ ( ( signal , used , externally_visible ) )
                   |  int Pow ( signed long a , unsigned long b )
 
 Function -> CompoundFunction

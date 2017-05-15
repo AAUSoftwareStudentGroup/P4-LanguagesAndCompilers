@@ -1,31 +1,16 @@
 import Nano
 
-uint8 button
-uint8 pinIN
-uint8 pinOUT
-uint8 led
-
-button = 10
-pinIN = 11
-pinOUT = 12
-led = 13
-
-// Send signal to next chip
-nothing Next()
-    DigitalWrite(pinOUT, HIGH)
-    for(uint16 i from 0 to 10000)
-        // Nothing
-    DigitalWrite(pinOUT, LOW)
-
-PinModeD(led, OUTPUT)
-PinModeD(pinOUT, OUTPUT)
-PinModeD(pinIN, INPUT)
-PinModeD(button, INPUT)
-
-//PinModeD(pinIN, INPUT)
-
+int16 dutyCycle = 40
+SetAnalogMode(true) // Enable ADC
+PinModeA(0, INPUT)
+PinModeD(13, OUTPUT)
+int32 counter = 0
 while(true)
-    delay(1000)
-    DigitalWrite(led, HIGH)
-    delay(1000)
-    DigitalWrite(led, LOW)
+    counter = counter + 1
+    dutyCycle = counter%511
+    if(dutyCycle >= 256)
+        dutyCycle = 255 - dutyCycle%255
+    if(dutyCycle < 0 or dutyCycle > 255)
+        DigitalWrite(13, true)
+    SetFastPWMPin6(dutyCycle)
+    delay(5)

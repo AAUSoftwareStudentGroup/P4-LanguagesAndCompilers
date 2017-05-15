@@ -458,5 +458,39 @@ i = i + c";
             //should throw exception when two different types are used in arithmetic statements
             Assert.ThrowsException<Exception>(() => cOutput = tc.Compile(tang));
         }
+
+        [TestMethod]
+        public void AddExpressionSpecialTestCompiler()
+        {
+            /* tang:
+             * int8 a = 1 + 2 + 3
+             * c:
+             * signed char a ;
+             * void main ( ) ;
+             * void main ( ) 
+             * {
+             *     a = 1 + 2 + 3 ;
+             * }
+             */ 
+            string tang = System.IO.File.ReadAllText("TestFiles\\AddExpression.tang");
+
+            string c = @"signed char a ;
+void main ( ) ;
+void ( )
+{
+	a = ( ( 1 + 2 ) + 3 ) ;
+}";
+
+            TangCompiler tc = new TangCompiler();
+
+            string cOutput = tc.Compile(tang);
+
+            c = new System.Text.RegularExpressions.Regex("[\r]").Replace(c, "");
+            cOutput = new System.Text.RegularExpressions.Regex("[\r]").Replace(cOutput, "");
+
+            Assert.AreEqual(c, cOutput);
+        }
+
+
     }
 }
