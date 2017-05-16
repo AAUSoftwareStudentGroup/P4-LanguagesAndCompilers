@@ -21,8 +21,10 @@ namespace Generator.Parsing
             return !bnf.ContainsKey(symbol);
         }
 
-        public ClassType GenerateParserClass(BNF bnf, string parserName, string dataNamespace, string parserNamespace)
+        public ClassType[] GenerateParserClasses(BNF bnf, string parserName, string dataNamespace, string parserNamespace)
         {
+            List<ClassType> classes = new List<ClassType>();
+
             GrammarInfo grammarInfo = _bnfAnalyzer.Analyze(bnf);
 
             ClassType parserClass = new ClassType(parserNamespace, "public", parserName, null)
@@ -58,7 +60,7 @@ namespace Generator.Parsing
                     "}",
                     "else",
                     "{",
-                    "    throw new Exception();",
+                    "    throw new UnexpectedTokenException(token);",
                     "}"
                 }
             };
@@ -106,7 +108,7 @@ namespace Generator.Parsing
                 }
 
                 methodStatements.Add($"    default:");
-                methodStatements.Add($"        throw new Exception();");
+                methodStatements.Add($"        throw new UnexpectedTokenException(tokens.Current);");
 
                 methodStatements.Add("}");
 
@@ -115,7 +117,33 @@ namespace Generator.Parsing
                 parserClass.Methods.Add(parseMethod);
             }
 
-            return parserClass;
+            classes.Add(parserClass);
+
+            ClassType unexpectedTokenException = new ClassType(parserNamespace, "public", "UnexpectedTokenException", "System.Exception")
+            {
+                Fields = new List<FieldType>()
+                {
+                    new FieldType("public", $"{dataNamespace}.Token", "Token") { Expression = "{ get; set; }"}
+                },
+                Methods = new List<MethodType>()
+                {
+                    new MethodType("public", "", "UnexpectedTokenException")
+                    {
+                        Parameters = new List<ParameterType>()
+                        {
+                            new ParameterType($"{dataNamespace}.Token", "token")
+                        },
+                        Body = new List<string>()
+                        {
+                            "Token = token;"
+                        }
+                    }
+                }
+            };
+
+            classes.Add(unexpectedTokenException);
+
+            return classes.ToArray();
         }
 
         public ClassType[] GenerateVisitorClasses(BNF bnf, string visitorName, string dataNamespace, string visitorNamespace)
@@ -297,6 +325,13 @@ namespace Generator.Parsing
                         {
                             "return this.Where(c => c is T).Select(c => c as T).ToArray();"
                         }
+                    },
+                    new MethodType("public override", "string", "ToString")
+                    {
+                        Body = new List<string>()
+                        {
+                            "return string.Join(\" \", this.Select(child => child.ToString()).Where(str => !string.IsNullOrWhiteSpace(str)));"
+                        }
                     }
                 }
             };
@@ -308,6 +343,14 @@ namespace Generator.Parsing
             tokenClass.Fields.Add(new FieldType("public", "string", "FileName") { Expression = "{ get; set; }" });
             tokenClass.Fields.Add(new FieldType("public", "int", "Row") { Expression = "{ get; set; }" });
             tokenClass.Fields.Add(new FieldType("public", "int", "Column") { Expression = "{ get; set; }" });
+
+            tokenClass.Methods.Add(new MethodType("public override", "string", "ToString")
+            {
+                Body = new List<string>()
+                {
+                    "return Value;"
+                }
+            });
 
             classes.Add(tokenClass);
 

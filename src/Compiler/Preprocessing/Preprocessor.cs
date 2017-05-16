@@ -13,7 +13,12 @@ namespace Compiler.Preprocessing
 			List<Token> newList = new List<Token>();
 			foreach(Token token in tokens) {
 				if(onlyImportsYet && token.Name == "import" && !imports.Contains(token.Value)) {
-					var newTokens = Process(lexer,lexer.Analyse(File.ReadAllText("../../docs/samples/" + token.Value.Replace("import ", "") + ".tang")));
+                    var importedTokens = lexer.Analyse(token.Value.Replace("import ", "") + ".tang", File.ReadAllText("../../docs/samples/" + token.Value.Replace("import ", "") + ".tang"));
+                    foreach (var importedToken in importedTokens)
+                    {
+                        importedToken.FileName = token.Value.Replace("import ", "") + ".tang";
+                    }
+                    var newTokens = Process(lexer, importedTokens);
 					if(newTokens == null)
 						throw new Exception("Import not found");
 					foreach(var newToken in newTokens)

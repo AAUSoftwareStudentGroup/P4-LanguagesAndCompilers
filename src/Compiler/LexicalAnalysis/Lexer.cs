@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using System.IO;
+using System.Linq;
 
 namespace Compiler.LexicalAnalysis
 {
@@ -26,7 +28,12 @@ namespace Compiler.LexicalAnalysis
             }
         }
 
-        public IEnumerable<Token> Analyse(String source)
+        public IEnumerable<Token> Analyse(string source)
+        {
+            return Analyse(source, null);
+        }
+
+        public IEnumerable<Token> Analyse(string source, string fileName)
         {
             Token token = null;
             Match match = null;
@@ -43,28 +50,31 @@ namespace Compiler.LexicalAnalysis
             Stack<int> indentationLevel = new Stack<int>();
             indentationLevel.Push(0);
 
-            while(currentIndex < source.Length) 
+            while (currentIndex < source.Length)
             {
                 token = null;
                 // Generate indentation to
                 match = BeforeIndent.Match(source, currentIndex);
-                if(match.Success && match.Index == currentIndex)
+                if (match.Success && match.Index == currentIndex)
                 {
                     currentIndex += match.Value.Length;
+                    UpdateCounters(match, ref row, ref column);
                     match = Indentation.Match(source, currentIndex);
-                    if(match.Success && match.Index == currentIndex) {
+                    if (match.Success && match.Index == currentIndex)
+                    {
                         int indentSize = match.Value.Length;
                         currentIndex += indentSize;
-                        
-                        if(indentSize > indentationLevel.Peek())
+                        UpdateCounters(match, ref row, ref column);
+                        if (indentSize > indentationLevel.Peek())
                         {
-                            token = new Token {
+                            token = new Token
+                            {
                                 Name = "indent",
                                 Value = match.Value,
+                                FileName = fileName,
                                 Row = row,
                                 Column = column
                             };
-                            column += token.Value.Length;
                             indentationLevel.Push(indentSize);
                             yield return token;
                         }
@@ -74,97 +84,117 @@ namespace Compiler.LexicalAnalysis
                             {
                                 Name = "newline",
                                 Value = match.Value,
+                                FileName = fileName,
                                 Row = row,
                                 Column = column
                             };
-                            row++;
-                            column = 0;
                             yield return token;
                         }
-
                         while (indentSize < indentationLevel.Peek())
                         {
+                            indentationLevel.Pop();
+                            token = new Token
+                            {
+                                Name = "dedent",
+                                Value = match.Value,
+                                FileName = fileName,
+                                Row = row,
+                                Column = column
+                            };
+                            yield return token;
+
                             token = new Token
                             {
                                 Name = "newline",
                                 Value = match.Value,
+                                FileName = fileName,
                                 Row = row,
                                 Column = column
                             };
-                            yield return token;
-
-                            indentationLevel.Pop();
-                            token = new Token {
-                                Name = "dedent",
-                                Value = match.Value,
-                                Row = row++,
-                                Column = column
-                            };
-                            column += token.Value.Length;
                             yield return token;
                         }
                     }
                     continue;
                 }
 
-                foreach (LexerRule rule in _rules){
+                foreach (LexerRule rule in _rules)
+                {
                     match = rule.Pattern.Match(source, currentIndex);
-                    if(match.Success && match.Index == currentIndex){
+                    if (match.Success && match.Index == currentIndex)
+                    {
                         currentIndex += match.Value.Length;
-                        token = new Token {
+                        UpdateCounters(match, ref row, ref column);
+                        token = new Token
+                        {
                             Name = rule.Name,
                             Value = match.Value,
+                            FileName = fileName,
                             Row = row,
                             Column = column
                         };
-                        column += token.Value.Length;
-                        if (!rule.Ignore) {
+                        if (!rule.Ignore)
+                        {
                             yield return token;
                         }
                         break;
                     }
                 }
 
-                if(token == null)
+                if (token == null)
                 {
-                    Console.WriteLine("Error before: ..."+source.Substring(currentIndex, 10));
-                    throw new Exception("Error before: ..."+source.Substring(currentIndex, 10));
+                    throw new LexicalException(source.Substring(currentIndex, Math.Min(source.Length - currentIndex, 10)).Split(' ')[0] + "...", fileName, row, column);
                 }
             }
 
             while (indentationLevel.Peek() > 0)
             {
+                indentationLevel.Pop();
                 token = new Token
                 {
-                    Name = "newline",
+                    Name = "dedent",
                     Value = match.Value,
+                    FileName = fileName,
                     Row = row,
                     Column = column
                 };
                 yield return token;
 
-                indentationLevel.Pop();
-                token = new Token {
-                    Name = "dedent",
+                token = new Token
+                {
+                    Name = "newline",
                     Value = match.Value,
+                    FileName = fileName,
                     Row = row,
                     Column = column
                 };
-                column += token.Value.Length;
                 yield return token;
             }
 
             token = new Token
             {
                 Name = "newline",
+                FileName = fileName,
                 Value = "",
                 Row = row,
                 Column = column
             };
-            column = 0;
             yield return token;
 
-            yield return new Token {Name = "eof", Value = "", Row = row, Column = column};
+            yield return new Token { Name = "eof", Value = "", Row = row, Column = column };
+        }
+
+        private static void UpdateCounters(Match match, ref int row, ref int column)
+        {
+            int newLines = match.Value.Where(c => c == '\n').Count();
+            if (newLines > 0)
+            {
+                row += newLines;
+                column = 0;
+            }
+            else
+            {
+                column += match.Value.Length;
+            }
         }
     }
 }

@@ -1,0 +1,20 @@
+Add[numeral:e1 AddP[+ numeral:e2]] ->:a Add[e3 + e4]
+    e1 ->:a numeral:e3
+    e2 ->:a numeral:e4
+
+public Lc.Node Translatep(Ld.Add add)
+{
+    if(add != null && add.Name == "Add" && (add.Count == 2 && add[0] != null && add[0].Name == "numeral" && add[1] != null && add[1].Name == "AddP" && (add[1][0] != null && add[1][0].Name == "numeral")))
+    {
+        Lc.Node e3 = Translatea(add[0] as Ld.Token);
+        if(e3 != null && e3.Name == "numeral")
+        {
+            Lc.Node e4 = Translatea(add[1][0] as Ld.Token);
+            if(e4 != null && e4.Name == "numeral")
+            {
+                return new Ld.Add(false) { e3 as Lc.Token, new Lc.Token(false) { Name = "+", Value = "+" }, e4 as Lc.Token };
+            }
+        }
+    }
+    return null;
+}

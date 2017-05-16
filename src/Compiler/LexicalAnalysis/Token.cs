@@ -10,5 +10,6 @@ namespace Compiler.LexicalAnalysis
         public string Value { get; set; }
         public int Row { get; set; }
         public int Column { get; set; }
+        public string FileName { get; set; }
     }
 }

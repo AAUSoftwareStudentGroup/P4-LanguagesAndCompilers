@@ -51,10 +51,10 @@ namespace Generator
             string dataNamespace = "Compiler.Parsing.Data";
             string parsingNamespace = "Compiler.Parsing";
             string visitorNamespace = "Compiler.Parsing.Visitors";
-            ClassType programParser = parserGenerator.GenerateParserClass(bnf, programParserName, dataNamespace, parsingNamespace);
+            ClassType[] programParserClasses = parserGenerator.GenerateParserClasses(bnf, programParserName, dataNamespace, parsingNamespace);
             ClassType[] programVisitors = parserGenerator.GenerateVisitorClasses(bnf, programVisitorName, dataNamespace, visitorNamespace);
             ClassType[] programData = parserGenerator.GenerateParseTreeClasses(bnf, programVisitorName, dataNamespace, visitorNamespace);
-            IEnumerable<ClassType> classesToGenerate = new List<ClassType>(programData.Union(programVisitors)) { programParser };
+            IEnumerable<ClassType> classesToGenerate = programData.Union(programVisitors).Union(programParserClasses);
             Console.WriteLine("\tGenerating Program to AST translator...");
             Lexer lexer = new Lexer("../../docs/translator.tokens.json");
 

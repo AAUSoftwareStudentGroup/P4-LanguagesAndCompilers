@@ -13,5 +13,10 @@ namespace Compiler.Parsing.Data
 		{
 			return this.Where(c => c is T).Select(c => c as T).ToArray();
 		}
+
+		public override string ToString()
+		{
+			return string.Join(" ", this.Select(child => child.ToString()).Where(str => !string.IsNullOrWhiteSpace(str)));
+		}
 	}
 }

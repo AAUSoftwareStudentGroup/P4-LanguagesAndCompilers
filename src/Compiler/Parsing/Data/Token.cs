@@ -23,5 +23,10 @@ namespace Compiler.Parsing.Data
 		{
 			return visitor.Visit(this);
 		}
+
+		public override string ToString()
+		{
+			return Value;
+		}
 	}
 }

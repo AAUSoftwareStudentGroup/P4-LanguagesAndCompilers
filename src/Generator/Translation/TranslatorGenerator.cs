@@ -79,6 +79,30 @@ namespace Generator.Translation
             return aliasName;
         }
 
+        private List<string> GetReturnNames(Conclusion conclusion, List<RelationDomain> translationDomains, Dictionary<string, (string type, string name, string nodeType)> symbols)
+        {
+            List<string> returnTypes = new List<string>();
+            Structure structure = conclusion.Nodes<Structure>()[0];
+            if (structure.Nodes<TreeStructure>().Count() > 0)
+            {
+                TreeStructure treeStructure = structure.Nodes<TreeStructure>()[0];
+                GetTreeStructureReturnName(translationDomains[0], symbols, returnTypes, treeStructure);
+            }
+            else
+            {
+                int domainIndex = 0;
+                Structures structures = structure.Nodes<ListStructure>()[0].Nodes<Structures>()[0];
+                while (structures.Nodes<TreeStructure>().Count() > 0)
+                {
+                    TreeStructure treeStructure = structures.Nodes<TreeStructure>()[0];
+                    GetTreeStructureReturnName(translationDomains[domainIndex], symbols, returnTypes, treeStructure);
+                    structures = structures.Nodes<Structures>()[0];
+                    domainIndex++;
+                }
+            }
+            return returnTypes;
+        }
+
         private List<string> AnalyzeReturnTypes(Conclusion conclusion, List<RelationDomain> translationDomains, Dictionary<string, (string type, string name, string nodeType)> symbols)
         {
             List<string> returnTypes = new List<string>();
@@ -106,6 +130,19 @@ namespace Generator.Translation
         private void AnalyzeTreeStructureReturnType(RelationDomain translationDomain, Dictionary<string, (string type, string name, string nodeType)> symbols, List<string> returnTypes, TreeStructure treeStructure)
         {
             returnTypes.Add($"{translationDomain.DataNamespace}.Node");
+        }
+
+        private void GetTreeStructureReturnName(RelationDomain translationDomain, Dictionary<string, (string type, string name, string nodeType)> symbols, List<string> returnTypes, TreeStructure treeStructure)
+        {
+            string name = GetName(treeStructure.Nodes<Name>()[0]);
+            if (symbols.ContainsKey(name))
+            {
+                returnTypes.Add(symbols[name].nodeType);
+            }
+            else
+            {
+                returnTypes.Add(name);
+            }
         }
 
         public ClassType GenerateTranslatorClass(Translator translator, string translatorName, List<RelationDomain> translationDomains, string translatorNamespace)
@@ -162,6 +199,7 @@ namespace Generator.Translation
                     };
                     method.Body.Add($"if({string.Join(" && ", patternConditions)})");
                     method.Body.Add("{");
+                    int ruleStartIndex = method.Body.Count;
                     int indentLevel = 1;
                     int nodeNumber = 1;
                     Node premises = rule.Nodes<Premises>().FirstOrDefault();
@@ -206,9 +244,9 @@ namespace Generator.Translation
                                         translatorArgs = CreateTreeStructure(treeStructure, relations[(premisAlias, "->")].LeftDomains[0], symbols);
                                     }
 
-                                    method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}{returnTypeStr1} = Translate{premisAlias}({translatorArgs});");
-                                    method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}if({string.Join(" && ", patternConditions1)})");
-                                    method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}{{");
+                                    method.Body.Add($"{Indent(indentLevel)}{returnTypeStr1} = Translate{premisAlias}({translatorArgs});");
+                                    method.Body.Add($"{Indent(indentLevel)}if({string.Join(" && ", patternConditions1)})");
+                                    method.Body.Add($"{Indent(indentLevel)}{{");
                                     indentLevel++;
                                     nodeNumber++;
                                 }
@@ -240,7 +278,7 @@ namespace Generator.Translation
                                             ListStructure right = compareStructure.Nodes<ListStructure>()[0];
                                             string leftStructure = $"({string.Join(", ", CreateListStructure(left, relations[(premisAlias, "<=>")].LeftDomains, symbols))})";
                                             string rightStructure = $"({string.Join(", ", CreateListStructure(right, relations[(premisAlias, "<=>")].RightDomains, symbols))})";
-                                            method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}if({compareMethod}({leftStructure}, {rightStructure}))");
+                                            method.Body.Add($"{Indent(indentLevel)}if({compareMethod}({leftStructure}, {rightStructure}))");
                                         }
                                         else if (structure.Nodes<TreeStructure>().Count() > 0 && compareStructure.Nodes<TreeStructure>().Count() > 0)
                                         {
@@ -248,10 +286,10 @@ namespace Generator.Translation
                                             TreeStructure right = compareStructure.Nodes<TreeStructure>()[0];
                                             string leftStructure = $"({string.Join(", ", CreateTreeStructure(left, relations[(premisAlias, "</>")].LeftDomains[0], symbols))})";
                                             string rightStructure = $"({string.Join(", ", CreateTreeStructure(right, relations[(premisAlias, "</>")].RightDomains[0], symbols))})";
-                                            method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}if({compareMethod}({leftStructure}, {rightStructure}))");
+                                            method.Body.Add($"{Indent(indentLevel)}if({compareMethod}({leftStructure}, {rightStructure}))");
                                         }
 
-                                        method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}{{");
+                                        method.Body.Add($"{Indent(indentLevel)}{{");
                                         indentLevel++;
                                     }
                                 }
@@ -270,6 +308,10 @@ namespace Generator.Translation
                         returnTypeStr = $"({returnTypeStr})";
                     }
 
+                    string returnNames = $"new System.Collections.Generic.List<string>() {{ {string.Join(", ", GetReturnNames(conclusion, relations[(alias, "->")].RightDomains, symbols).Select(str => $"\"{str}\""))} }}";
+
+                    method.Body.Insert(ruleStartIndex, $"    RuleStart{alias}({returnNames}, \"{ conclusion.Accept(new TextPrintVisitor()).Replace("\\", "\\\\").Replace("\"", "\\\"") }\", ({string.Join(", ", parameters.Select(p => p.Identifier))}));");
+
                     method.Type = returnTypeStr;
 
                     Structure conclusionStructure = conclusion.Nodes<Structure>()[0];
@@ -278,21 +320,27 @@ namespace Generator.Translation
                     {
                         ListStructure listStructure = conclusionStructure.Nodes<ListStructure>()[0];
                         List<string> lst = CreateListStructure(listStructure, relations[(alias, "->")].RightDomains, symbols);
-                        method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}return ({ string.Join(", ", lst) });");
+                        method.Body.Add($"{Indent(indentLevel)}RuleEnd{alias}(true);");
+                        method.Body.Add($"{Indent(indentLevel)}return ({ string.Join(", ", lst) });");
                     }
                     else if (conclusionStructure.Nodes<TreeStructure>().Count() > 0)
                     {
                         TreeStructure treeStructure = conclusionStructure.Nodes<TreeStructure>()[0];
-                        method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}return {CreateTreeStructure(treeStructure, relations[(alias, "->")].RightDomains[0], symbols)};");
+                        method.Body.Add($"{Indent(indentLevel)}RuleEnd{alias}(true);");
+                        method.Body.Add($"{Indent(indentLevel)}return {CreateTreeStructure(treeStructure, relations[(alias, "->")].RightDomains[0], symbols)};");
                     }
 
                     indentLevel--;
 
+                    int indentation = indentLevel;
+
                     while (indentLevel > 0)
                     {
-                        method.Body.Add($"{string.Join("", Enumerable.Repeat("\t", indentLevel))}}}");
+                        method.Body.Add($"{Indent(indentLevel)}}}");
                         indentLevel--;
                     }
+
+                    method.Body.Add($"{Indent(1)}RuleEnd{alias}(false);");
 
                     method.Body.Add("}");
 
@@ -323,18 +371,71 @@ namespace Generator.Translation
                 rules = rules.Nodes<RulesP>()[0];
             }
 
-            List<string> counterNames = new List<string>();
-
             foreach (MethodType method in translatorClass.Methods)
             {
-                string counterName = method.Identifier+"__" + string.Join("_", method.Parameters.Select(p => p.Identifier))+"";
-                counterNames.Add(counterName);
-                method.Body.Insert(0, $"{counterName}++;");
-                method.Body.Add("throw new System.Exception();");
+                method.Body.Add($"return ({string.Join(", ", Enumerable.Repeat("null", method.Type.Split(',').Count()))});");
             }
+
+            FieldType ruleError = new FieldType("public", $"Compiler.Error.RuleError", $"RuleError")
+            {
+                Expression = $"{{ get; set; }} = new Compiler.Error.RuleError();"
+            };
+
+            translatorClass.Fields.Add(ruleError);
 
             foreach (var relation in relations.Where(r => r.Key.symbol == "->"))
             {
+                string errorDataType;
+
+                if (relation.Value.LeftDomains.Count == 1)
+                {
+                    errorDataType = $"{relation.Value.LeftDomains[0].DataNamespace}.Node";
+                }
+                else
+                {
+                    errorDataType = $"({string.Join(", ", relation.Value.LeftDomains.Select(d => $"{d.DataNamespace}.Node"))})";
+                }
+
+                MethodType ruleStart = new MethodType("public", "void", $"RuleStart{relation.Key.alias}")
+                {
+                    Parameters = new List<ParameterType>()
+                    {
+                        new ParameterType("System.Collections.Generic.List<string>", "returnTypes"),
+                        new ParameterType("string", "rule"),
+                        new ParameterType(errorDataType, "data")
+                    },
+                    Body = new List<string>()
+                    {
+                        $"Compiler.Error.RuleError<{errorDataType}> error = new Compiler.Error.RuleError<{errorDataType}>();",
+                        "error.ReturnTypes = returnTypes;",
+                        "error.Parent = RuleError;",
+                        "error.Rule = rule;",
+                        "RuleError.Children.Add(error);",
+                        "error.ErrorData = data;",
+                        "RuleError = error;"
+                    }
+                };
+
+                translatorClass.Methods.Add(ruleStart);
+
+                MethodType ruleEnd = new MethodType("public", "void", $"RuleEnd{relation.Key.alias}")
+                {
+                    Parameters = new List<ParameterType>()
+                    {
+                        new ParameterType("bool", "success")
+                    },
+                    Body = new List<string>()
+                    {
+                        "if(success)",
+                        "{",
+                        "    RuleError.Parent.Children.Remove(RuleError);",
+                        "}",
+                        "RuleError = RuleError.Parent;"
+                    }
+                };
+
+                translatorClass.Methods.Add(ruleEnd);
+
                 if (relation.Value.LeftDomains.Count == 1 && relation.Value.RightDomains.Count == 1)
                 {
                     MethodType translateMethod = new MethodType("public", $"{relation.Value.RightDomains[0].DataNamespace}.Token", $"Translate{relation.Key.alias}")
@@ -368,7 +469,8 @@ namespace Generator.Translation
                     },
                     Body = new List<string>()
                     {
-                        "if(left.IsPlaceholder && left.Name == right.Name) {",
+                        "if(left.IsPlaceholder && left.Name == right.Name)",
+                        "{",
                        $"    return right.Accept(new {translationDomain.VisitorNamespace}.CloneVisitor());",
                         "}",
                        $"var leftClone = left.Accept(new {translationDomain.VisitorNamespace}.CloneVisitor());",
@@ -388,14 +490,17 @@ namespace Generator.Translation
                     {
                         "for (int i = 0; i < left.Count;  i++)",
                         "{",
-                        "    if(left[i].IsPlaceholder && left[i].Name == right.Name) {",
+                        "    if(left[i].IsPlaceholder && left[i].Name == right.Name)",
+                        "    {",
                         "        left.RemoveAt(i);",
                         "        left.Insert(i, right);",
                         "        return left;",
                         "    }",
-                        "    else {",
+                        "    else",
+                        "    {",
                        $"        {translationDomain.DataNamespace}.Node leftUpdated = InsertAux(left[i], right);",
-                        "        if(leftUpdated != null) {",
+                        "        if(leftUpdated != null)",
+                        "        {",
                         "            return leftUpdated;",
                         "        }",
                         "    }",
@@ -408,16 +513,12 @@ namespace Generator.Translation
                 translatorClass.Methods.Add(insertAuxMethod);
             }
 
-            MethodType printCountsMethod = new MethodType("public", "void", "printCounts");
-            translatorClass.Methods.Add(printCountsMethod);
-            printCountsMethod.Body = new List<string>();
-            printCountsMethod.Body.Add("System.Console.WriteLine(\"___Translation methods calls___\");");
-            
-            foreach(var counterName in counterNames) {
-                translatorClass.Fields.Add(new FieldType("public", "int", counterName) {Expression = "= 0;"});
-                printCountsMethod.Body.Add($"System.Console.WriteLine(\"{counterName}: \"+{counterName});");
-            }
             return translatorClass;
+        }
+
+        private static string Indent(int indentLevel)
+        {
+            return string.Join("", Enumerable.Repeat("    ", indentLevel));
         }
 
         private void AddAreEqualMethod(string alias, List<RelationDomain> leftDomains, List<RelationDomain> rightDomains, List<MethodType> methods)

@@ -1,7 +1,5 @@
 import Nano as nano
 
-import Nano as nano2
-
 uint8 button
 uint8 led
 
@@ -12,7 +10,7 @@ value = false
 
 nothing func()
     value = !value
-    nano.DigitalWrite(led, value)
+    Nano.DigitalWrite(led, value)
 
 interrupt(2) // INT0_vect
     func()

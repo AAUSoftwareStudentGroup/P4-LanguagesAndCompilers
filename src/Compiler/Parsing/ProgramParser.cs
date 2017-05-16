@@ -20,7 +20,7 @@ namespace Compiler.Parsing
 			}
 			else
 			{
-			    throw new Exception();
+			    throw new UnexpectedTokenException(token);
 			}
 		}
 
@@ -53,7 +53,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "eof"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -88,7 +88,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -121,7 +121,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseStatement(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -140,7 +140,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "dedent"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -174,7 +174,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -220,7 +220,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "newline"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -255,7 +255,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "dedent"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -270,7 +270,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseRegisterOperation(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -286,7 +286,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "register16"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -311,7 +311,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseDefinition(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -336,7 +336,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "newline"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -362,7 +362,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "]"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -382,7 +382,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, ")"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -397,7 +397,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "newline"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -420,7 +420,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -445,7 +445,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -463,7 +463,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -485,7 +485,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "identifier"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -510,7 +510,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseBooleanType(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -524,7 +524,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseIdentifierStatementP(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -546,7 +546,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, ")"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -584,7 +584,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -604,7 +604,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseElseStatement(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -641,7 +641,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -659,7 +659,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "dedent"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -678,7 +678,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "dedent"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -702,7 +702,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "dedent"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -730,7 +730,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "uint32"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -743,7 +743,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "bool"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -763,7 +763,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseOrExpression(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -784,7 +784,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseOrExpressionP(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -807,7 +807,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -828,7 +828,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseAndExpressionP(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -852,7 +852,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -873,7 +873,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseEqExpressionP(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -903,7 +903,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -924,7 +924,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseRelationalExpressionP(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -966,7 +966,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -987,7 +987,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseAddSubExpressionP(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -1023,7 +1023,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -1044,7 +1044,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseMulDivExpressionP(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -1087,7 +1087,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -1108,7 +1108,7 @@ namespace Compiler.Parsing
 			        node.Add(ParsePowExpressionP(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -1144,7 +1144,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -1184,7 +1184,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "false"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -1222,7 +1222,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, ")"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -1247,7 +1247,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -1266,7 +1266,7 @@ namespace Compiler.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 	}

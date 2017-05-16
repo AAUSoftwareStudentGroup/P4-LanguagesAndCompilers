@@ -276,11 +276,11 @@ InterruptStatement[enableinterrupts ( )] -> :p InterruptStatement[enableinterrup
 InterruptStatement[disableinterrupts ( )] -> :p InterruptStatement[disableinterrupts ( )]
     
 [IdentifierDeclaration[IntType:t  identifier:id Definition[newline]] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
+    [id s] ->:s Declaration[EPSILON]
     t ->:p IntType:t1
     t ->:q IntType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
-    [id s] ->:s Declaration[EPSILON]
 
 [IdentifierDeclaration[IntType:t identifier:id Definition[( FormalParameters:params ) indent Statements:stms dedent]] SymbolTable:s] 
 -> [Function[Type[t1] id1 ( p ) indent stm1 dedent] s]
