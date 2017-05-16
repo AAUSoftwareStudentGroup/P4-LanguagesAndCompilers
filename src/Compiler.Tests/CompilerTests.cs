@@ -496,10 +496,10 @@ void ( )
         // Method to test that all programs compile correctly in Succes folder
         public void ProgramsCompileCorrectly()
         {
-            string path = "Succes";
+            string path = "Compiler.Tests/Succes";
             string[] files = Directory.GetFiles(path);
             foreach(string file in files) {
-                Console.WriteLine("Testing " + file + " for errors");
+                System.Diagnostics.Debug.WriteLine("Testting " + file + " for errors");
                 string tang = File.ReadAllText(file);
                 TangCompiler tc = new TangCompiler();                
                 Assert.IsNotNull(tc.Compile(tang));
@@ -510,10 +510,10 @@ void ( )
         // Method to test that all programs does not compile correctly in Fail folder
         public void ProgramsDoesntCompileCorrectly()
         {
-            string path = "Fail";
+            string path = "Compiler.Tests/Fail";
             string[] files = Directory.GetFiles(path);
             foreach(string file in files) {
-                Console.WriteLine("Testing " + file + " for errors");
+                System.Diagnostics.Debug.WriteLine("Testting " + file + " for errors");
                 string tang = File.ReadAllText(file);
                 TangCompiler tc = new TangCompiler();                
                 Assert.IsNull(tc.Compile(tang));
