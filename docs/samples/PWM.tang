@@ -1,6 +1,5 @@
 import Nano
-
-int16 dutyCycle = 40
+int16 dutyCycle
 int32 counter = 0
 while(true)
     counter = counter + 1

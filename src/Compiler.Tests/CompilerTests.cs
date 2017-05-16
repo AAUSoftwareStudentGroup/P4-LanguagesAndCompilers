@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -491,6 +492,32 @@ void ( )
             Assert.AreEqual(c, cOutput);
         }
 
+        [TestMethod]
+        // Method to test that all programs compile correctly in Succes folder
+        public void ProgramsCompileCorrectly()
+        {
+            string path = "Succes";
+            string[] files = Directory.GetFiles(path);
+            foreach(string file in files) {
+                Console.WriteLine("Testing " + file + " for errors");
+                string tang = File.ReadAllText(file);
+                TangCompiler tc = new TangCompiler();                
+                Assert.IsNotNull(tc.Compile(tang));
+            }
+        }
 
+        [TestMethod]
+        // Method to test that all programs does not compile correctly in Fail folder
+        public void ProgramsDoesntCompileCorrectly()
+        {
+            string path = "Fail";
+            string[] files = Directory.GetFiles(path);
+            foreach(string file in files) {
+                Console.WriteLine("Testing " + file + " for errors");
+                string tang = File.ReadAllText(file);
+                TangCompiler tc = new TangCompiler();                
+                Assert.IsNull(tc.Compile(tang));
+            }
+        }
     }
 }
