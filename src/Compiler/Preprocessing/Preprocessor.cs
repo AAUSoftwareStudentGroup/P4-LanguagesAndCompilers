@@ -8,12 +8,13 @@ namespace Compiler.Preprocessing
 	public class Preprocessor 
 	{
 		static private List<string> imports = new List<String>();
-        public  List<Token> Process(Lexer lexer, IEnumerable<Token> tokens) {
+        public  List<Token> Process(Lexer lexer, string path, IEnumerable<Token> tokens) {
 			bool onlyImportsYet = true;
 			List<Token> newList = new List<Token>();
 			foreach(Token token in tokens) {
 				if(onlyImportsYet && token.Name == "import" && !imports.Contains(token.Value)) {
-					var newTokens = Process(lexer,lexer.Analyse(File.ReadAllText("../../docs/samples/" + token.Value.Replace("import ", "") + ".tang")));
+					System.Console.WriteLine("Handling import: " + token.Value);
+					var newTokens = Process(lexer,path,lexer.Analyse(File.ReadAllText(path + token.Value.Replace("import ", "") + ".tang")));
 					if(newTokens == null)
 						throw new Exception("Import not found");
 					foreach(var newToken in newTokens)

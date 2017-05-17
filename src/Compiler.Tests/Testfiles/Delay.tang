@@ -1,0 +1,11 @@
+import Nano
+
+int8 led = 13
+
+PinModeD(led, OUTPUT)
+
+while(true)
+    delay(1000)
+    DigitalWrite(led, HIGH)
+    delay(1000)
+    DigitalWrite(led, LOW)

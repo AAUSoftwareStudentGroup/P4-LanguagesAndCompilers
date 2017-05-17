@@ -22,10 +22,10 @@ namespace Compiler.Tests
         public void GenerateTokensCorrectly()
         {
             // Initialise Lexer
-            Lexer l = new Lexer(AppContext.BaseDirectory + "\\TestFiles\\Tokens.cfg.json");
+            Lexer l = new Lexer(AppContext.BaseDirectory + "/TestFiles/Tokens.cfg.json");
 
             // Read from test file
-            IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\testSourceFile.tang"));
+            IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "/TestFiles/testSourceFile.tang"));
 
             /*
              * Assert that we have 26 tokens in testSourceFile.tang
@@ -53,7 +53,7 @@ namespace Compiler.Tests
         public void SplitTokensCorrectly()
         {
             // Initialise Lexer
-            Lexer l = new Lexer(AppContext.BaseDirectory + "\\TestFiles\\Tokens.cfg.json");
+            Lexer l = new Lexer(AppContext.BaseDirectory + "/TestFiles/Tokens.cfg.json");
 
             IEnumerable<Token> tokens = l.Analyse("=== 2test");
 
@@ -72,10 +72,10 @@ namespace Compiler.Tests
         public void GenereteCorrectTokenAttributes()
         {
             // Initialise Lexer
-            Lexer le = new Lexer(AppContext.BaseDirectory + "\\TestFiles\\Tokens.cfg.json");
+            Lexer le = new Lexer(AppContext.BaseDirectory + "/TestFiles/Tokens.cfg.json");
 
             // Read from another file, tokens should be SimpleType Identifier Assign Number eof (int16 a = 1)
-            IEnumerable<Token> tokens = le.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\testSourceFile.tang"));
+            IEnumerable<Token> tokens = le.Analyse(File.ReadAllText(AppContext.BaseDirectory + "/TestFiles/testSourceFile.tang"));
 
             // '=' should be at row 0 and column 8 since there are 8 symbols until '=' is hit
             Assert.AreEqual(tokens.ElementAt(2).Row, 0);
@@ -90,10 +90,10 @@ namespace Compiler.Tests
         public void AddExpressionSpecialTestLexer()
         {
             // Initialise Lexer
-            Lexer l = new Lexer(AppContext.BaseDirectory + "\\TestFiles\\Tokens.cfg.json");
+            Lexer l = new Lexer(AppContext.BaseDirectory + "/TestFiles/Tokens.cfg.json");
 
             // Read from test file
-            IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\AddExpression.tang"));
+            IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "/TestFiles/AddExpression.tang"));
 
             /* 
              * int8 a = 1 + 2 + 3

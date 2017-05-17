@@ -1,5 +1,0 @@
-﻿int16 a = 1
-bool on = true
-
-while(on == true)
-    a = a + 1

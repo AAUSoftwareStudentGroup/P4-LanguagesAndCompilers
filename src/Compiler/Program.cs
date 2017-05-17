@@ -11,128 +11,31 @@ namespace Compiler
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Compiler running");
-            DateTime tStart = DateTime.Now;
-            DateTime t1 = DateTime.Now;
-            Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
-            int DebugLevel = 0;
-
-            string file = "../../docs/samples/test2.tang";
-
-            if(args.Length > 0)
-            {
-                file = args[0];
+            string tokensPath = "../../docs/tang.tokens.json";
+            string sourcePath = "../../docs/samples/test.tang";
+            string outputPath = sourcePath + ".c";
+            int debugLevel = 0;
+            TangCompiler tangCompiler = new TangCompiler();
+            if(args.Count() > 0) {
+                // First arg is sourcefile.
+                sourcePath = args[0];
+                if(args[0] == "-h" || args[0] == "--help")
+                    Console.WriteLine("Usage: " + args[0] + " [SOURCEFILE] [OUTPUTFILE] [TOKENSFILE]");
             }
-            Console.WriteLine("Running Lexer");
-            var tokens = lexer.Analyse(File.ReadAllText(file));
-
-            foreach(Token t in tokens)
-            {
-                Console.WriteLine(t.Name);
+            if (args.Count() > 1) {
+                // Second arg is output name
+                outputPath = args[1];
             }
-
-            Console.WriteLine("Lexer on main: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
-            t1 = DateTime.Now;
-            if (args.Length == 0 && DebugLevel >= 2)
-            {
-                Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
-
-                Console.WriteLine("");
-                Console.WriteLine("--------------------------------------");
-                Console.WriteLine("");
+            if (args.Count() > 2) {
+                tokensPath = args[2];
             }
-
-            Console.WriteLine("Running Preprocessor");
-            Preprocessor preprocessor = new Preprocessor();
-            tokens = preprocessor.Process(lexer, tokens);
-
-            Console.WriteLine("Preprocessor: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
-            t1 = DateTime.Now;           
-            if (args.Length == 0 && DebugLevel >= 2)
-            {
-                Console.WriteLine("Tokens with imports:");
-                Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
-
-                Console.WriteLine("");
-                Console.WriteLine("--------------------------------------");
-                Console.WriteLine("");
+            if (args.Count() > 3) {
+                debugLevel = Int32.Parse(args[3]);
             }
-
-            Console.WriteLine("Running Parser");
-            ProgramParser parser = new ProgramParser();
-            var tokenEnumerator = tokens.Select(t => new Parsing.Data.Token() { Name = t.Name, Value = t.Value }).GetEnumerator();
-            tokenEnumerator.MoveNext();
-            var parseTree = parser.ParseProgram(tokenEnumerator);
-            Console.WriteLine("Parser: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
-            t1 = DateTime.Now;
-            var parseTreeLines = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
-            if (args.Length == 0 && DebugLevel >= 2)
-            {
-                foreach (var line in parseTreeLines)
-                {
-                    Console.WriteLine(line);
-                }
-
-                Console.WriteLine("");
-                Console.WriteLine("--------------------------------------");
-                Console.WriteLine("");
+            if (args.Count() > 4) {
+                throw new ArgumentException("Too many arguments");
             }
-
-            Console.WriteLine("Running Ast Translator");
-            var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
-            AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
-            if(DebugLevel >= 2)
-                astTranslator.printCounts();
-            Console.WriteLine("tangToAST: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
-            t1 = DateTime.Now;
-            var astLines = ast.Accept(new AST.Visitors.TreePrintVisitor());
-            if (args.Length == 0 && DebugLevel >= 2)
-            {
-                foreach (var line in astLines)
-                {
-                    Console.WriteLine(line);
-                }
-
-                Console.WriteLine("");
-                Console.WriteLine("--------------------------------------");
-                Console.WriteLine("");
-            }
-
-            Console.WriteLine("Running C Translator");
-            var cTranslator = new Translation.ASTToC.ASTToCTranslator();
-            C.Data.C c = cTranslator.Translate(ast) as C.Data.C;
-            if(DebugLevel >= 2)
-                cTranslator.printCounts();
-            Console.WriteLine("astToC: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
-            t1 = DateTime.Now;
-            var cLines = c.Accept(new C.Visitors.TreePrintVisitor());
-            var cStr = c.Accept(new C.Visitors.TextPrintVisitor());
-            if (args.Length == 0 && DebugLevel >= 2)
-            {
-                foreach (var line in cLines)
-                {
-                    Console.WriteLine(line);
-                }
-
-                Console.WriteLine("");
-                Console.WriteLine("--------------------------------------");
-                Console.WriteLine("");
-            }
-
-            if(args.Length == 0 && DebugLevel >= 1)
-            {
-
-                foreach (var term in cStr)
-                {
-                    Console.WriteLine(term);
-                }
-
-                Console.WriteLine();
-            }
-
-            Console.WriteLine("Writing to file");
-            File.WriteAllLines(args.Length == 2 ? args[1] : "../../docs/samples/compiled/" + file.Replace("\\", " /").Split('/').Last().Split('.').First() + ".c", cStr);
-            Console.WriteLine("Compiler run-time: " + DateTime.Now.Subtract(tStart).TotalMilliseconds + " ms" );
+            File.WriteAllText(outputPath, tangCompiler.Compile(sourcePath, tokensPath, debugLevel));
         }
     }
 

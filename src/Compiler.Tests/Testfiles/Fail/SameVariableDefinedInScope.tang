@@ -1,0 +1,3 @@
+int8 a = 2
+if (true)
+    int8 a = 5
