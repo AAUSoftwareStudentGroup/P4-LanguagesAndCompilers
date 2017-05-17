@@ -1,0 +1,2 @@
+int16 sixteen = 16
+int8 eight = sixteen

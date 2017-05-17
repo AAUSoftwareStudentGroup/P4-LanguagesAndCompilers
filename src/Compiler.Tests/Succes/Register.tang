@@ -4,7 +4,6 @@ uint32 c
 c = 0
 while(true)
     if(c == 300000)
-        register8(37){5} = !register8(37){5} + 5
+        register8(37){5} = !register8(37){5}
         c = 0
-    register8 r = 5
-    c = c + true
+    c = c + 1

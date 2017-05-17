@@ -15,13 +15,14 @@ namespace Compiler
         public static void Main(string[] args)
         {
             Console.WriteLine("Compiler running");
+            DateTime tStart = DateTime.Now;
             DateTime t1 = DateTime.Now;
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
-            bool DebugEnabled = false;
+            int DebugLevel = 2;
 
-            string file = "../../docs/samples/Register.tang";
+            string file = "../../docs/samples/test.tang";
 
-            if(args.Length > 0)
+            if (args.Length > 0)
             {
                 file = args[0];
             }
@@ -33,7 +34,7 @@ namespace Compiler
 
                 Console.WriteLine("Lexer on main: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
                 t1 = DateTime.Now;
-                if (args.Length == 0 && DebugEnabled)
+                if (args.Length == 0 && DebugLevel > 0)
                 {
                     Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
 
@@ -48,7 +49,7 @@ namespace Compiler
 
                 Console.WriteLine("Preprocessor: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
                 t1 = DateTime.Now;
-                if (args.Length == 0 && DebugEnabled)
+                if (args.Length == 0 && DebugLevel > 0)
                 {
                     Console.WriteLine("Tokens with imports:");
                     Console.WriteLine(string.Join(" ", tokens.Select(t => t.Name)));
@@ -66,79 +67,81 @@ namespace Compiler
                 Console.WriteLine("Parser: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
                 t1 = DateTime.Now;
                 var parseTreeLines = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
-                if (args.Length == 0 && DebugEnabled)
+                if (args.Length == 0 && DebugLevel >= 2)
                 {
-                    foreach (var line in parseTreeLines)
                     {
-                        Console.WriteLine(line);
+                        foreach (var line in parseTreeLines)
+                        {
+                            Console.WriteLine(line);
+                        }
+
+
+                        Console.WriteLine("");
+                        Console.WriteLine("--------------------------------------");
+                        Console.WriteLine("");
+                        Console.WriteLine("Running Ast Translator");
+                        var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
+                        AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
+                        if (ast == null)
+                        {
+                            throw new Translation.TranslationException(astTranslator.RuleError);
+                        }
+                        Console.WriteLine("tangToAST: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
+                        t1 = DateTime.Now;
+                        var astLines = ast.Accept(new AST.Visitors.TreePrintVisitor());
+
+                        if (args.Length == 0 && DebugLevel > 0)
+                        {
+                            foreach (var line in astLines)
+                            {
+                                Console.WriteLine(line);
+                            }
+
+                            Console.WriteLine("");
+                            Console.WriteLine("--------------------------------------");
+                            Console.WriteLine("");
+                        }
+
+                        Console.WriteLine("Running C Translator");
+                        var cTranslator = new Translation.ASTToC.ASTToCTranslator();
+                        C.Data.C c = cTranslator.Translate(ast) as C.Data.C;
+                        Console.WriteLine("astToC: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
+                        t1 = DateTime.Now;
+                        var cLines = c.Accept(new C.Visitors.TreePrintVisitor());
+                        var cStr = c.Accept(new C.Visitors.TextPrintVisitor());
+                        if (args.Length == 0)
+                        {
+                            foreach (var line in cLines)
+                            {
+                                Console.WriteLine(line);
+                            }
+
+                            Console.WriteLine("");
+                            Console.WriteLine("--------------------------------------");
+                            Console.WriteLine("");
+
+                            foreach (var term in cStr)
+                            {
+                                Console.WriteLine(term);
+                            }
+
+                            Console.WriteLine();
+                        }
+
+                        Console.WriteLine("Writing to file");
+                        File.WriteAllLines(args.Length == 2 ? args[1] : "../../docs/samples/compiled/" + file.Replace("\\", " /").Split('/').Last().Split('.').First() + ".c", cStr);
                     }
-
-                    Console.WriteLine("");
-                    Console.WriteLine("--------------------------------------");
-                    Console.WriteLine("");
                 }
-
-                Console.WriteLine("Running Ast Translator");
-                var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
-                AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
-                if(ast == null)
-                {
-                    throw new Translation.TranslationException(astTranslator.RuleError);
-                }
-                Console.WriteLine("tangToAST: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
-                t1 = DateTime.Now;
-                var astLines = ast.Accept(new AST.Visitors.TreePrintVisitor());
-
-                if (args.Length == 0 && DebugEnabled)
-                {
-                    foreach (var line in astLines)
-                    {
-                        Console.WriteLine(line);
-                    }
-
-                    Console.WriteLine("");
-                    Console.WriteLine("--------------------------------------");
-                    Console.WriteLine("");
-                }
-
-                Console.WriteLine("Running C Translator");
-                var cTranslator = new Translation.ASTToC.ASTToCTranslator();
-                C.Data.C c = cTranslator.Translate(ast) as C.Data.C;
-                Console.WriteLine("astToC: " + DateTime.Now.Subtract(t1).TotalMilliseconds + " ms");
-                t1 = DateTime.Now;
-                var cLines = c.Accept(new C.Visitors.TreePrintVisitor());
-                var cStr = c.Accept(new C.Visitors.TextPrintVisitor());
-                if (args.Length == 0)
-                {
-                    foreach (var line in cLines)
-                    {
-                        Console.WriteLine(line);
-                    }
-
-                    Console.WriteLine("");
-                    Console.WriteLine("--------------------------------------");
-                    Console.WriteLine("");
-
-                    foreach (var term in cStr)
-                    {
-                        Console.WriteLine(term);
-                    }
-
-                    Console.WriteLine();
-                }
-
-                Console.WriteLine("Writing to file");
-                File.WriteAllLines(args.Length == 2 ? args[1] : "../../docs/samples/compiled/" + file.Replace("\\", " /").Split('/').Last().Split('.').First() + ".c", cStr);
             }
-            catch(LexicalException exception)
+            catch (LexicalException exception)
             {
                 Console.WriteLine($"Unexpected symbol near {exception.Symbol} in {exception.FileName} line {exception.Row + 1} column {exception.Column + 1}.");
             }
-            catch(UnexpectedTokenException exception)
+            catch (UnexpectedTokenException exception)
             {
-                if(exception.Token.Name == exception.Token.Value)
+                if (exception.Token.Name == exception.Token.Value)
                 {
-                    if(exception.Token.FileName != null)
+                    if (exception.Token.FileName != null)
                     {
                         Console.WriteLine($"Unexpected '{exception.Token.Name}' in {exception.Token.FileName} line {exception.Token.Row + 1} column {exception.Token.Column + 1}.");
                     }
@@ -152,12 +155,14 @@ namespace Compiler
                     Console.WriteLine($"Unexpected {exception.Token.Name} '{exception.Token.Value}' in {exception.Token.FileName} line {exception.Token.Row + 1} column {exception.Token.Column + 1}.");
                 }
             }
-            catch(Translation.TranslationException exception)
+            catch (Translation.TranslationException exception)
             {
-                foreach (var err in GetUniqueErrors(exception.Error))
-                {
-                    Console.WriteLine(err.message);
-                }
+                //foreach (var err in GetUniqueErrors(exception.Error))
+                //{
+                //    Console.WriteLine(err.message);
+                //}
+                PrintErrorTree(exception.Error);
+                //Console.WriteLine(GetUniqueErrors(exception.Error).OrderBy(e => e.message.Replace("to", "æ").Split('æ')[0].Length).First().message);
             }
         }
 
@@ -183,7 +188,7 @@ namespace Compiler
                     errors.Add((level, err));
                 }
             }
-            
+
             foreach (var childError in error.Children)
             {
                 GetUniqueErrorsAux(childError, level + 1, errors);
@@ -197,7 +202,7 @@ namespace Compiler
 
         public static void PrintErrorTreeAux(RuleError error, int indent)
         {
-            if(error is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node)> error1)
+            if (error is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node)> error1)
             {
                 Console.WriteLine($"{Indent(indent)}Could not translate {error1.ErrorData.Item1} to {error1.ReturnTypes[0]}");
             }

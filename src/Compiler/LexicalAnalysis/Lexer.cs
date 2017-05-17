@@ -92,25 +92,24 @@ namespace Compiler.LexicalAnalysis
                         }
                         while (indentSize < indentationLevel.Peek())
                         {
-                            indentationLevel.Pop();
                             token = new Token
                             {
-                                Name = "dedent",
-                                Value = match.Value,
-                                FileName = fileName,
+                                Name = "newline",
+                                Value = "",
                                 Row = row,
                                 Column = column
                             };
                             yield return token;
 
+                            indentationLevel.Pop();
                             token = new Token
                             {
-                                Name = "newline",
-                                Value = match.Value,
-                                FileName = fileName,
-                                Row = row,
+                                Name = "dedent",
+                                Value = "",
+                                Row = row++,
                                 Column = column
                             };
+                            column += token.Value.Length;
                             yield return token;
                         }
                     }
@@ -148,25 +147,24 @@ namespace Compiler.LexicalAnalysis
 
             while (indentationLevel.Peek() > 0)
             {
-                indentationLevel.Pop();
                 token = new Token
                 {
-                    Name = "dedent",
-                    Value = match.Value,
-                    FileName = fileName,
+                    Name = "newline",
+                    Value = "",
                     Row = row,
                     Column = column
                 };
                 yield return token;
 
+                indentationLevel.Pop();
                 token = new Token
                 {
-                    Name = "newline",
-                    Value = match.Value,
-                    FileName = fileName,
-                    Row = row,
+                    Name = "dedent",
+                    Value = "",
+                    Row = row++,
                     Column = column
                 };
+                column += token.Value.Length;
                 yield return token;
             }
 

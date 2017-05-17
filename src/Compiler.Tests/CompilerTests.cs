@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -280,10 +281,145 @@ void main ( )
         }
 
         [TestMethod]
-        // Not made
-        public void FuncReturnAndCallTest()
+        // Tests that a function in tang, gives a proper function in c, when compiled.
+        public void CompileFunctionCorrectly()
         {
+            string tang = @"int8 foo()
+    return 8
 
+int8 a = foo()";
+            string c = @"signed char foo ( ) ;
+signed char a ;
+int Pow ( signed long a , unsigned long b ) ;
+void main ( ) ;
+int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+signed char foo ( )
+{
+    return 8 ;
+}
+void main ( )
+{
+    a = foo ( ) ;
+}";
+
+            TangCompiler tc = new TangCompiler();
+
+            string cOutput = tc.Compile(tang);
+
+            c = new System.Text.RegularExpressions.Regex("[\r]").Replace(c, "");
+            cOutput = new System.Text.RegularExpressions.Regex("[\r]").Replace(cOutput, "");
+
+            Assert.AreEqual(c, cOutput);
+        }
+
+        [TestMethod]
+        // Tests that the scope of a program in tang, gives a proper function in c, when compiled.
+        public void CompileScopeCorrectly()
+        {
+            string tang = @"int8 foo()
+    if(true)
+        return 2
+    return 4
+
+int8 a = foo()";
+            string c = @"signed char foo ( ) ;
+signed char a ;
+int Pow ( signed long a , unsigned long b ) ;
+void main ( ) ;
+int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+signed char foo ( )
+{
+    if ( 1 )
+    {
+        return 2 ;
+    }
+    return 4 ;
+}
+void main ( )
+{
+    a = foo ( ) ;
+}";
+
+            TangCompiler tc = new TangCompiler();
+
+            string cOutput = tc.Compile(tang);
+
+            c = new System.Text.RegularExpressions.Regex("[\r]").Replace(c, "");
+            cOutput = new System.Text.RegularExpressions.Regex("[\r]").Replace(cOutput, "");
+
+            Assert.AreEqual(c, cOutput);
+        }
+
+        [TestMethod]
+        // Tests that a function in tang, gives a proper function in c, when compiled.
+        public void Should_ThrowEception_When_ReturnTypeDiffer()
+        {
+            string tang = @"int8 foo()
+    return 8
+
+bool a = foo()";
+
+            TangCompiler tc = new TangCompiler();
+
+            string cOutput = tc.Compile(tang);
+
+            //Should throw exception, as the return type is different from the assign type.
+            Assert.ThrowsException<Exception>(() => cOutput = tc.Compile(tang));
+        }
+
+        [TestMethod]
+        // Tests that a function in tang, gives a proper function in c, when compiled.
+        public void Should_ThrowEception_When_ScopeIsOutOfReach()
+        {
+            string tang = @"nothing foo()
+    int8 a = 5
+
+a = 7";
+
+            TangCompiler tc = new TangCompiler();
+
+            string cOutput = tc.Compile(tang);
+
+            //Should throw exception, as the return type is different from the assign type.
+            Assert.ThrowsException<Exception>(() => cOutput = tc.Compile(tang));
+        }
+
+        [TestMethod]
+        // Tests that a function in tang, gives a proper function in c, when compiled.
+        public void CorrectConversionOfIntType()
+        {
+            string tang = @"int8 a = 10
+int16 b = 20
+int8 c = a + b";
+
+            string c = @"signed char foo ( ) ;
+signed char a ;
+int Pow ( signed long a , unsigned long b ) ;
+void main ( ) ;
+int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+signed char foo ( )
+{
+    if ( 1 )
+    {
+        return 2 ;
+    }
+    return 4 ;
+}
+void main ( )
+{
+    a = foo ( ) ;
+}";
+
+            TangCompiler tc = new TangCompiler();
+
+            string cOutput = tc.Compile(tang);
+
+            c = new System.Text.RegularExpressions.Regex("[\r]").Replace(c, "");
+            cOutput = new System.Text.RegularExpressions.Regex("[\r]").Replace(cOutput, "");
+
+            System.Diagnostics.Debug.WriteLine(cOutput);
+
+            Assert.AreEqual(c, cOutput);
         }
 
         [TestMethod]
@@ -295,7 +431,7 @@ if (true)
             string cOutput;
             TangCompiler tc = new TangCompiler();
 
-            //Should throw exception, when variable already defined in scope
+            //Should throw exception, when variable already defined in scope.
             Assert.ThrowsException<Exception>(() => cOutput = tc.Compile(tang));
         }
 
@@ -322,6 +458,66 @@ i = i + c";
 
             //should throw exception when two different types are used in arithmetic statements
             Assert.ThrowsException<Exception>(() => cOutput = tc.Compile(tang));
+        }
+
+        [TestMethod]
+        public void AddExpressionSpecialTestCompiler()
+        {
+            /* tang:
+             * int8 a = 1 + 2 + 3
+             * c:
+             * signed char a ;
+             * void main ( ) ;
+             * void main ( ) 
+             * {
+             *     a = 1 + 2 + 3 ;
+             * }
+             */ 
+            string tang = System.IO.File.ReadAllText("TestFiles\\AddExpression.tang");
+
+            string c = @"signed char a ;
+void main ( ) ;
+void ( )
+{
+	a = ( ( 1 + 2 ) + 3 ) ;
+}";
+
+            TangCompiler tc = new TangCompiler();
+
+            string cOutput = tc.Compile(tang);
+
+            c = new System.Text.RegularExpressions.Regex("[\r]").Replace(c, "");
+            cOutput = new System.Text.RegularExpressions.Regex("[\r]").Replace(cOutput, "");
+
+            Assert.AreEqual(c, cOutput);
+        }
+
+        [TestMethod]
+        // Method to test that all programs compile correctly in Succes folder
+        public void ProgramsCompileCorrectly()
+        {
+            string path = "Compiler.Tests/Succes";
+            string[] files = Directory.GetFiles(path);
+            foreach(string file in files) {
+                System.Diagnostics.Debug.WriteLine("Testting " + file + " for errors");
+                string tang = File.ReadAllText(file);
+                TangCompiler tc = new TangCompiler();                
+                Assert.IsNotNull(tc.Compile(tang));
+            }
+        }
+
+        [TestMethod]
+        // Method to test that all programs does not compile correctly in Fail folder
+        public void ProgramsDoesntCompileCorrectly()
+        {
+            string path = "Compiler.Tests/Fail";
+            string[] files = Directory.GetFiles(path);
+            foreach(string file in files) {
+                System.Diagnostics.Debug.WriteLine("Testting " + file + " for errors");
+                string tang = File.ReadAllText(file);
+                TangCompiler tc = new TangCompiler();                
+                Assert.IsNull(tc.Compile(tang));
+            }
         }
     }
 }

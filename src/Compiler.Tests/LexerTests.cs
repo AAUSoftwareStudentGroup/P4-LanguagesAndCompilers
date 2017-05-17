@@ -35,7 +35,7 @@ namespace Compiler.Tests
              * newline
              * while ( identifier == true )
              * indent identifier = identifier + numeral newline
-             * dedent newLine eof
+             * dedent newline eof
              */
             Assert.AreEqual(tokens.Count(), 26);
 
@@ -86,5 +86,26 @@ namespace Compiler.Tests
             Assert.AreEqual(tokens.ElementAt(6).Column, 5);
         }
 
+        [TestMethod]
+        public void AddExpressionSpecialTestLexer()
+        {
+            // Initialise Lexer
+            Lexer l = new Lexer(AppContext.BaseDirectory + "\\TestFiles\\Tokens.cfg.json");
+
+            // Read from test file
+            IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "\\TestFiles\\AddExpression.tang"));
+
+            /* 
+             * int8 a = 1 + 2 + 3
+             * should be
+             * int8 identifier = numeral + numeral + numeral newline eof
+             */
+            Assert.AreEqual(tokens.Count(), 10);
+            Assert.AreEqual(tokens.ElementAt(2).Name, "=");
+            Assert.AreEqual(tokens.ElementAt(4).Name, "+");
+            Assert.AreEqual(tokens.ElementAt(7).Name, "numeral");
+            Assert.AreEqual(tokens.ElementAt(8).Name, "newline");
+            Assert.AreEqual(tokens.ElementAt(9).Name, "eof");
+        }
     }
 }

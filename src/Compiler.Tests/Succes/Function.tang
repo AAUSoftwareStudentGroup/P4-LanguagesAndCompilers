@@ -1,0 +1,4 @@
+int8 add(int8 a, int8 b)
+    return a + b
+
+add(2, add(add(2, 3), add(2, 3^2)))
