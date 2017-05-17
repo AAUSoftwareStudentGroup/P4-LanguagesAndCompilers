@@ -20,7 +20,7 @@ namespace Compiler
                 // First arg is sourcefile.
                 sourcePath = args[0];
                 if(args[0] == "-h" || args[0] == "--help")
-                    Console.WriteLine("Usage: " + args[0] + " [SOURCEFILE] [OUTPUTFILE] [TOKENSFILE]");
+                    Console.WriteLine("Usage: " + args[0] + " [SOURCEFILE] [OUTPUTFILE] [TOKENSFILE] [DEBUGLEVEL]");
             }
             if (args.Count() > 1) {
                 // Second arg is output name
