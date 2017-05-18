@@ -12,8 +12,6 @@ namespace Compiler.Preprocessing
 			bool onlyImportsYet = true;
 			List<Token> newList = new List<Token>();
 			foreach(Token token in tokens) {
-				if(token.Value.Contains("import"))
-					System.Console.WriteLine("Handling import: " + token.Value);
 				if(onlyImportsYet && token.Name == "import" && !imports.Contains(token.Value)) {
 					var newTokens = Process(lexer,path,lexer.Analyse(File.ReadAllText(path + token.Value.Replace("import ", "") + ".tang")));
 					if(newTokens == null)

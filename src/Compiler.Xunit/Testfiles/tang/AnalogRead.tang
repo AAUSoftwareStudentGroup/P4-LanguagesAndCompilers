@@ -1,0 +1,19 @@
+import Nano
+
+SetAnalogMode(true)
+PinModeD(13, OUTPUT)
+PinModeA(0, false)
+DigitalWrite(13, PULLUP)
+int16 counter = 0
+int16 limiter = 0
+bool value = true
+while(true)
+    limiter = AnalogRead(0)
+    if(counter > limiter)
+        counter = 0
+        value = !value
+        if(value)
+            DigitalWrite(13, false)
+        else
+            DigitalWrite(13, true)
+    counter = counter + 1

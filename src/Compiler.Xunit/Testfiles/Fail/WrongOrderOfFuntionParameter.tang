@@ -1,0 +1,7 @@
+int8 sum(int8 num1, int8 num2, bool shouldAdd)
+	if(shouldAdd)
+		return num1 + num2
+	else
+		return num1 - num2
+
+func(false, 10, 10)

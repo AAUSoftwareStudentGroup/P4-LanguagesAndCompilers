@@ -2,7 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Compiler.LexicalAnalysis;
 using Compiler;
 
@@ -17,14 +17,13 @@ namespace Compiler.Tests
         // All expressions are put inside parentheses, e.g. a = a + 1 -> a = (a + 1)
         // Assume a space between each token
 
-        [TestMethod]
+        [[Fact]]
         // Method to test that all programs does not compile correctly in Fail folder
         public void ProgramsCompileCorrectly()
         {
             string path = "../../../Testfiles/tang";
             string[] files = Directory.GetFiles(path, "*.tang");
             foreach(string file in files) {
-                Console.WriteLine("Testing " + file + " for errors");
                 TangCompiler tc = new TangCompiler();
                 string actual = "";
                 string expected = File.ReadAllText(file + ".c");
@@ -37,11 +36,10 @@ namespace Compiler.Tests
                     Console.WriteLine("ERROR IN FILE: " + file);
                     throw e;
                 }
-                Assert.AreEqual(expected, actual);
-                Console.WriteLine("Done with " + file);
+                Assert.Equal(expected, actual);
             }
         }
-        [TestMethod]
+        [[Fact]]
         // Method to test that all programs does not compile correctly in Fail folder
         public void ProgramsDoesntCompileCorrectly()
         {
@@ -50,7 +48,7 @@ namespace Compiler.Tests
             foreach(string file in files) {
                 Console.WriteLine("Testing " + file + " for errors");
                 TangCompiler tc = new TangCompiler();   
-                Assert.ThrowsException<Exception>(() => tc.Compile(file, "../../../../../docs/tang.tokens.json"));
+                Assert.Throws(typeof(Exception), () => tc.Compile(file, "../../../../../docs/tang.tokens.json"));
                 Console.WriteLine("Done with " + file);
             }
         }

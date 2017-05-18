@@ -1,0 +1,5 @@
+import Nano
+PinModeD(6, OUTPUT)
+while(true)
+    delay(500)
+    DigitalFlip(6)
