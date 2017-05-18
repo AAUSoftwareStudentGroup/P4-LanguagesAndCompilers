@@ -1,6 +1,0 @@
-if (true)
-    int8 a
-    a = 2
-else
-    int8 b
-    b = 2 

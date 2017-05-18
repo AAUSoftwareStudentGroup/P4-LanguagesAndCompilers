@@ -1,2 +1,0 @@
-register8 reg8 = register8(10)
-register16 = reg8

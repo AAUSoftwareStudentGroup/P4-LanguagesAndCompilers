@@ -1,6 +1,0 @@
-int8 foo()
-    if(true)
-        return 2
-    return 4
-
-int8 a = foo()

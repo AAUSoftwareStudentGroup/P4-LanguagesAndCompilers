@@ -1,5 +1,0 @@
-bool off = (true or false) and !true
-bool on = ((43-1) == 42)
-int16 zero = ((42+18) * (10/2)) % 5
-int16 hunna = 10^2
-bool falseStatements = (hunna <= 101) and (hunna >= 99)

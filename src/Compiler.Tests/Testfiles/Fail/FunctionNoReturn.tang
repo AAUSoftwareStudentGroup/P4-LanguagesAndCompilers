@@ -1,5 +1,0 @@
-int8 func(int8 num)
-	num = num + 1
-
-int8 num8 = 10
-int8 num81 = func(num8, 10)

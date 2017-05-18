@@ -1,5 +1,0 @@
-nothing func(int8 num)
-	num = num + 1
-
-int16 num16 = 10
-func(num16)
