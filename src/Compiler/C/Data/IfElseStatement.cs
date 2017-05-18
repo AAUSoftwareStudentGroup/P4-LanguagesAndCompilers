@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  IfElseStatement()
 		{
+			Id = NextId;
 		}
 
 		public  IfElseStatement(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "IfElseStatement";
 		}

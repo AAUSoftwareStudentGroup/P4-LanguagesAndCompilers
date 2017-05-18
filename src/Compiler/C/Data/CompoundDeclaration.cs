@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  CompoundDeclaration()
 		{
+			Id = NextId;
 		}
 
 		public  CompoundDeclaration(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "CompoundDeclaration";
 		}

@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  IdentifierStatementP()
 		{
+			Id = NextId;
 		}
 
 		public  IdentifierStatementP(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "IdentifierStatementP";
 		}

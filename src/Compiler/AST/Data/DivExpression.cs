@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  DivExpression()
 		{
+			Id = NextId;
 		}
 
 		public  DivExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "DivExpression";
 		}

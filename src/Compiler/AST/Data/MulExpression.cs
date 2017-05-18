@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  MulExpression()
 		{
+			Id = NextId;
 		}
 
 		public  MulExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "MulExpression";
 		}

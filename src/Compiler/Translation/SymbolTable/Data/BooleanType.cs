@@ -7,10 +7,12 @@ namespace Compiler.Translation.SymbolTable.Data
 	{
 		public  BooleanType()
 		{
+			Id = NextId;
 		}
 
 		public  BooleanType(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "BooleanType";
 		}

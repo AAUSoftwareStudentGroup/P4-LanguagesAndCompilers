@@ -7,10 +7,12 @@ namespace Compiler.Translation.SymbolTable.Data
 	{
 		public  RegisterType()
 		{
+			Id = NextId;
 		}
 
 		public  RegisterType(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "RegisterType";
 		}

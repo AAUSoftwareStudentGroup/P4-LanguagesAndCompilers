@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  DirectBitValue()
 		{
+			Id = NextId;
 		}
 
 		public  DirectBitValue(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "DirectBitValue";
 		}

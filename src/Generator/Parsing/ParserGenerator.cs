@@ -307,6 +307,9 @@ namespace Generator.Parsing
                 Fields = new List<FieldType>()
                 {
                     new FieldType("public", "string", "Name") { Expression = "{ get; set; }"},
+                    new FieldType("private static", "int", "_nextId") { Expression = "= 0;"},
+                    new FieldType("public static", "int", "NextId") { Expression = "{ get { return _nextId++; } }"},
+                    new FieldType("public", "int", "Id") { Expression = "{ get; set; }"},
                     new FieldType("public", "bool", "IsPlaceholder") { Expression = "{ get; set; } = false;"}
                 },
                 Methods = new List<MethodType>()
@@ -331,6 +334,24 @@ namespace Generator.Parsing
                         Body = new List<string>()
                         {
                             "return string.Join(\" \", this.Select(child => child.ToString()).Where(str => !string.IsNullOrWhiteSpace(str)));"
+                        }
+                    },
+                    new MethodType("public override", "int", "GetHashCode")
+                    {
+                        Body = new List<string>()
+                        {
+                            "return Id;"
+                        }
+                    },
+                    new MethodType("public override", "bool", "Equals")
+                    {
+                        Parameters = new List<ParameterType>()
+                        {
+                            new ParameterType("object", "obj")
+                        },
+                        Body = new List<string>()
+                        {
+                            $"return obj is {dataNamespace}.Node && (obj as {dataNamespace}.Node).Id == Id;"
                         }
                     }
                 }
@@ -368,7 +389,13 @@ namespace Generator.Parsing
                 },
                 Methods = new List<MethodType>()
                 {
-                    new MethodType("public", "", name),
+                    new MethodType("public", "", name)
+                    {
+                        Body = new List<string>()
+                        {
+                            "Id = NextId;"
+                        }
+                    },
                     new MethodType("public", "", name)
                     {
                         Parameters = new List<ParameterType>()
@@ -377,6 +404,7 @@ namespace Generator.Parsing
                         },
                         Body = new List<string>()
                         {
+                            "Id = NextId;",
                             "IsPlaceholder = isPlaceholder;",
                             $"Name = \"{name}\";"
                         }

@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  AST()
 		{
+			Id = NextId;
 		}
 
 		public  AST(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "AST";
 		}

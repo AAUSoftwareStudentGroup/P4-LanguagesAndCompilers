@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  EqExpression()
 		{
+			Id = NextId;
 		}
 
 		public  EqExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "EqExpression";
 		}

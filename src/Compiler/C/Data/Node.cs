@@ -7,6 +7,9 @@ namespace Compiler.C.Data
 	public abstract class Node : List<Node>
 	{
 		public string Name { get; set; }
+		private static int _nextId = 0;
+		public static int NextId { get { return _nextId++; } }
+		public int Id { get; set; }
 		public bool IsPlaceholder { get; set; } = false;
 		public abstract T Accept<T>(Compiler.C.Visitors.CVisitor<T> visitor);
 		public T[] Nodes<T>()where T : class
@@ -17,6 +20,16 @@ namespace Compiler.C.Data
 		public override string ToString()
 		{
 			return string.Join(" ", this.Select(child => child.ToString()).Where(str => !string.IsNullOrWhiteSpace(str)));
+		}
+
+		public override int GetHashCode()
+		{
+			return Id;
+		}
+
+		public override bool Equals(object obj)
+		{
+			return obj is Compiler.C.Data.Node && (obj as Compiler.C.Data.Node).Id == Id;
 		}
 	}
 }

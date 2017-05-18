@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  PowExpression()
 		{
+			Id = NextId;
 		}
 
 		public  PowExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "PowExpression";
 		}

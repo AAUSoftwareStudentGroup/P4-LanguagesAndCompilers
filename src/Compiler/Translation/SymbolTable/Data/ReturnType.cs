@@ -7,10 +7,12 @@ namespace Compiler.Translation.SymbolTable.Data
 	{
 		public  ReturnType()
 		{
+			Id = NextId;
 		}
 
 		public  ReturnType(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "ReturnType";
 		}

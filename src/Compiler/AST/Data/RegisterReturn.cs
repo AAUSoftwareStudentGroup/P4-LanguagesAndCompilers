@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  RegisterReturn()
 		{
+			Id = NextId;
 		}
 
 		public  RegisterReturn(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "RegisterReturn";
 		}

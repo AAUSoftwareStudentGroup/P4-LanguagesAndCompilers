@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  IntegerEqExpression()
 		{
+			Id = NextId;
 		}
 
 		public  IntegerEqExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "IntegerEqExpression";
 		}

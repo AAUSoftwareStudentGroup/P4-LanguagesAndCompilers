@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  Statement()
 		{
+			Id = NextId;
 		}
 
 		public  Statement(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Statement";
 		}

@@ -1,0 +1,3 @@
+int16 ADC()
+    int16 result = 0
+    return result

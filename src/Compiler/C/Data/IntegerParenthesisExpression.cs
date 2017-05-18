@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  IntegerParenthesisExpression()
 		{
+			Id = NextId;
 		}
 
 		public  IntegerParenthesisExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "IntegerParenthesisExpression";
 		}

@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  IntegerAssignment()
 		{
+			Id = NextId;
 		}
 
 		public  IntegerAssignment(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "IntegerAssignment";
 		}

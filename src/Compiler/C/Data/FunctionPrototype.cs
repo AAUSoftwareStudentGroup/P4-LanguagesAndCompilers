@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  FunctionPrototype()
 		{
+			Id = NextId;
 		}
 
 		public  FunctionPrototype(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "FunctionPrototype";
 		}

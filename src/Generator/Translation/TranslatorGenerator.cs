@@ -245,7 +245,12 @@ namespace Generator.Translation
                                     }
 
                                     method.Body.Add($"{Indent(indentLevel)}{returnTypeStr1} = Translate{premisAlias}({translatorArgs});");
-                                    method.Body.Add($"{Indent(indentLevel)}if({string.Join(" && ", patternConditions1)})");
+                                    method.Body.Add($"{Indent(indentLevel)}_isMatching = {string.Join(" && ", patternConditions1)};");
+                                    method.Body.Add($"{Indent(indentLevel)}if({string.Join(" && ", parameters1.Select(p => $"{p.Identifier} != null"))} && !_isMatching)");
+                                    method.Body.Add($"{Indent(indentLevel)}{{");
+                                    method.Body.Add($"{Indent(indentLevel + 1)}WrongPattern{premisAlias}(({string.Join(", ", parameters1.Select(p => p.Identifier))}), new System.Collections.Generic.List<string>() {{ {string.Join(", ",  GetPatternNames(pattern1).Select(n => "\"" + n + "\""))} }});");
+                                    method.Body.Add($"{Indent(indentLevel)}}}");
+                                    method.Body.Add($"{Indent(indentLevel)}else if(_isMatching)");
                                     method.Body.Add($"{Indent(indentLevel)}{{");
                                     indentLevel++;
                                     nodeNumber++;
@@ -320,14 +325,16 @@ namespace Generator.Translation
                     {
                         ListStructure listStructure = conclusionStructure.Nodes<ListStructure>()[0];
                         List<string> lst = CreateListStructure(listStructure, relations[(alias, "->")].RightDomains, symbols);
-                        method.Body.Add($"{Indent(indentLevel)}RuleEnd{alias}(true);");
-                        method.Body.Add($"{Indent(indentLevel)}return ({ string.Join(", ", lst) });");
+                        method.Body.Add($"{Indent(indentLevel)}var _result = ({ string.Join(", ", lst) });");
+                        method.Body.Add($"{Indent(indentLevel)}RuleEnd{alias}(true, _result);");
+                        method.Body.Add($"{Indent(indentLevel)}return _result;");
                     }
                     else if (conclusionStructure.Nodes<TreeStructure>().Count() > 0)
                     {
                         TreeStructure treeStructure = conclusionStructure.Nodes<TreeStructure>()[0];
-                        method.Body.Add($"{Indent(indentLevel)}RuleEnd{alias}(true);");
-                        method.Body.Add($"{Indent(indentLevel)}return {CreateTreeStructure(treeStructure, relations[(alias, "->")].RightDomains[0], symbols)};");
+                        method.Body.Add($"{Indent(indentLevel)}var _result = {CreateTreeStructure(treeStructure, relations[(alias, "->")].RightDomains[0], symbols)};");
+                        method.Body.Add($"{Indent(indentLevel)}RuleEnd{alias}(true, _result);");
+                        method.Body.Add($"{Indent(indentLevel)}return _result;");
                     }
 
                     indentLevel--;
@@ -373,6 +380,15 @@ namespace Generator.Translation
 
             foreach (MethodType method in translatorClass.Methods)
             {
+                method.Body.InsertRange(0, new List<string>()
+                {
+                    "bool _isMatching = false;",
+                    $"if({method.Identifier.Replace("Translate", "Relation")}.ContainsKey(({string.Join(", ", method.Parameters.Select(p => p.Identifier))})))",
+                    "{",
+                    $"    return {method.Identifier.Replace("Translate", "Relation")}[({string.Join(", ", method.Parameters.Select(p => p.Identifier))})];",
+                    "}"
+                });
+                method.Body.Add($"{method.Identifier.Replace("Translate", "RulesFailed")}(({string.Join(", ", method.Parameters.Select(p => p.Identifier))}));");
                 method.Body.Add($"return ({string.Join(", ", Enumerable.Repeat("null", method.Type.Split(',').Count()))});");
             }
 
@@ -385,16 +401,34 @@ namespace Generator.Translation
 
             foreach (var relation in relations.Where(r => r.Key.symbol == "->"))
             {
-                string errorDataType;
+                string leftTypes, rightTypes, righDefault;
 
                 if (relation.Value.LeftDomains.Count == 1)
                 {
-                    errorDataType = $"{relation.Value.LeftDomains[0].DataNamespace}.Node";
+                    leftTypes = $"{relation.Value.LeftDomains[0].DataNamespace}.Node";
                 }
                 else
                 {
-                    errorDataType = $"({string.Join(", ", relation.Value.LeftDomains.Select(d => $"{d.DataNamespace}.Node"))})";
+                    leftTypes = $"({string.Join(", ", relation.Value.LeftDomains.Select(d => $"{d.DataNamespace}.Node"))})";
                 }
+
+                if (relation.Value.RightDomains.Count == 1)
+                {
+                    rightTypes = $"{relation.Value.RightDomains[0].DataNamespace}.Node";
+                    righDefault = "null";
+                }
+                else
+                {
+                    rightTypes = $"({string.Join(", ", relation.Value.RightDomains.Select(d => $"{d.DataNamespace}.Node"))})";
+                    righDefault = $"({string.Join(", ", relation.Value.RightDomains.Select(d => "null"))})";
+                }
+
+                FieldType Relation = new FieldType("public", $"System.Collections.Generic.Dictionary<{leftTypes},{rightTypes}>", $"Relation{relation.Key.alias}")
+                {
+                    Expression = $"{{ get; set; }} = new System.Collections.Generic.Dictionary<{leftTypes},{rightTypes}>();"
+                };
+
+                translatorClass.Fields.Add(Relation);
 
                 MethodType ruleStart = new MethodType("public", "void", $"RuleStart{relation.Key.alias}")
                 {
@@ -402,23 +436,55 @@ namespace Generator.Translation
                     {
                         new ParameterType("System.Collections.Generic.List<string>", "returnTypes"),
                         new ParameterType("string", "rule"),
-                        new ParameterType(errorDataType, "data")
+                        new ParameterType(leftTypes, "data")
                     },
                     Body = new List<string>()
                     {
-                        $"Compiler.Error.RuleError<{errorDataType}> error = new Compiler.Error.RuleError<{errorDataType}>();",
+                        $"Compiler.Error.RuleError<{leftTypes}, {rightTypes}> error = new Compiler.Error.RuleError<{leftTypes}, {rightTypes}>();",
                         "error.ReturnTypes = returnTypes;",
                         "error.Parent = RuleError;",
                         "error.Rule = rule;",
                         "RuleError.Children.Add(error);",
-                        "error.ErrorData = data;",
+                        "error.From = data;",
                         "RuleError = error;"
                     }
                 };
 
                 translatorClass.Methods.Add(ruleStart);
 
-                MethodType ruleEnd = new MethodType("public", "void", $"RuleEnd{relation.Key.alias}")
+                MethodType ruleEnd1 = new MethodType("public", "void", $"RuleEnd{relation.Key.alias}")
+                {
+                    Parameters = new List<ParameterType>()
+                    {
+                        new ParameterType("bool", "success"),
+                        new ParameterType(rightTypes, "data")
+                    },
+                    Body = new List<string>()
+                    {
+                        "RuleError.IsError = !success;",
+                        $"var casted = RuleError as Compiler.Error.RuleError<{leftTypes}, {rightTypes}>;",
+                        "casted.To = data;",
+                        $"if(success)",
+                        "{",
+                        $"    Relation{relation.Key.alias}.Add(casted.From, casted.To);",
+                        "}",
+                        "RuleError = RuleError.Parent;"
+                    }
+                };
+
+                MethodType rulesFailed = new MethodType("public", "void", $"RulesFailed{relation.Key.alias}")
+                {
+                    Parameters = new List<ParameterType>()
+                    {
+                        new ParameterType(leftTypes, "data")
+                    },
+                    Body = new List<string>()
+                    {
+                        $"Relation{relation.Key.alias}.Add(data, {righDefault});"
+                    }
+                };
+
+                MethodType ruleEnd2 = new MethodType("public", "void", $"RuleEnd{relation.Key.alias}")
                 {
                     Parameters = new List<ParameterType>()
                     {
@@ -426,15 +492,31 @@ namespace Generator.Translation
                     },
                     Body = new List<string>()
                     {
-                        "if(success)",
-                        "{",
-                        "    RuleError.Parent.Children.Remove(RuleError);",
-                        "}",
-                        "RuleError = RuleError.Parent;"
+                        $"RuleEnd{relation.Key.alias}(success, {righDefault});"
                     }
                 };
 
-                translatorClass.Methods.Add(ruleEnd);
+                MethodType wrongPattern = new MethodType("public", "void", $"WrongPattern{relation.Key.alias}")
+                {
+                    Parameters = new List<ParameterType>()
+                    {
+                        new ParameterType(rightTypes, "data"),
+                        new ParameterType("System.Collections.Generic.List<string>", "returnTypes"),
+                    },
+                    Body = new List<string>()
+                    {
+                        $"var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<{leftTypes}, {rightTypes}>;",
+                        "casted.IsError = true;",
+                        "casted.ReturnTypes = returnTypes;",
+                        "casted.IsPatternError = true;",
+                        "casted.To = data;"
+                    }
+                };
+
+                translatorClass.Methods.Add(ruleEnd1);
+                translatorClass.Methods.Add(ruleEnd2);
+                translatorClass.Methods.Add(rulesFailed);
+                translatorClass.Methods.Add(wrongPattern);
 
                 if (relation.Value.LeftDomains.Count == 1 && relation.Value.RightDomains.Count == 1)
                 {
@@ -446,7 +528,10 @@ namespace Generator.Translation
                         },
                         Body = new List<string>()
                         {
-                            $"return new {relation.Value.RightDomains[0].DataNamespace}.Token() {{ Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column }};"
+                            $"RuleStart{relation.Key.alias}(new System.Collections.Generic.List<string>() {{ token.Name }}, $\"{{token.Name}} ->:{relation.Key.alias} {{token.Name}}\", token);",
+                            $"var result = new {relation.Value.RightDomains[0].DataNamespace}.Token() {{ Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column }};",
+                            $"RuleEnd{relation.Key.alias}(true, result);",
+                            "return result;"
                         }
                     };
                     translatorClass.Methods.Add(translateMethod);
@@ -625,6 +710,33 @@ namespace Generator.Translation
                 return $"{domain.DataNamespace}.{typeName}";
             }
             return $"{domain.DataNamespace}.{typeName}?";
+        }
+
+        private List<string> GetPatternNames(Pattern pattern)
+        {
+            List<string> names = new List<string>();
+            if (pattern != null && pattern.Nodes<ListPattern>().Count() > 0)
+            {
+                Patterns patterns = pattern.Nodes<ListPattern>()[0].Nodes<Patterns>()[0];
+
+                while (patterns.Nodes<TreePattern>().Count() > 0)
+                {
+                    TreePattern treePattern = patterns.Nodes<TreePattern>()[0];
+
+                    names.Add(GetName(treePattern.Nodes<Name>()[0]));
+
+                    patterns = patterns.Nodes<Patterns>()[0];
+                }
+
+            }
+            else if (pattern != null && pattern.Nodes<TreePattern>().Count() > 0)
+            {
+                TreePattern treePattern = pattern.Nodes<TreePattern>()[0];
+
+                names.Add(GetName(treePattern.Nodes<Name>()[0]));
+            }
+
+            return names;
         }
 
         private void AnalyzePattern(Pattern pattern, bool useAlias, List<RelationDomain> domain, List<string> patternConditions, List<ParameterType> parameters, Dictionary<string, (string type, string name, string nodeType)> symbols)

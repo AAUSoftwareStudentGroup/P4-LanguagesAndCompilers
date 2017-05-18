@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  DefinitionAssign()
 		{
+			Id = NextId;
 		}
 
 		public  DefinitionAssign(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "DefinitionAssign";
 		}

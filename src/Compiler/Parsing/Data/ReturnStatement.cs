@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  ReturnStatement()
 		{
+			Id = NextId;
 		}
 
 		public  ReturnStatement(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "ReturnStatement";
 		}

@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  IdentifierOperation()
 		{
+			Id = NextId;
 		}
 
 		public  IdentifierOperation(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "IdentifierOperation";
 		}

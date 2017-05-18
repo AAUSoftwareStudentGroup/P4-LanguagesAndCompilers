@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  C()
 		{
+			Id = NextId;
 		}
 
 		public  C(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "C";
 		}

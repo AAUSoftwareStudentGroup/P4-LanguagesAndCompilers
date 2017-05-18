@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  Function()
 		{
+			Id = NextId;
 		}
 
 		public  Function(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Function";
 		}

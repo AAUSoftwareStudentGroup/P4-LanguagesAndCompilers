@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  IntegerDeclaration()
 		{
+			Id = NextId;
 		}
 
 		public  IntegerDeclaration(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "IntegerDeclaration";
 		}

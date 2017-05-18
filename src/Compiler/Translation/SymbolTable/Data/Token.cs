@@ -11,10 +11,12 @@ namespace Compiler.Translation.SymbolTable.Data
 		public int Column { get; set; }
 		public  Token()
 		{
+			Id = NextId;
 		}
 
 		public  Token(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Token";
 		}

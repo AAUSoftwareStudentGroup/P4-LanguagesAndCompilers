@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  GreaterThanExpression()
 		{
+			Id = NextId;
 		}
 
 		public  GreaterThanExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "GreaterThanExpression";
 		}

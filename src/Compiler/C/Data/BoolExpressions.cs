@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  BoolExpressions()
 		{
+			Id = NextId;
 		}
 
 		public  BoolExpressions(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "BoolExpressions";
 		}

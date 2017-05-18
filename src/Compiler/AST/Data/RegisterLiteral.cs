@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  RegisterLiteral()
 		{
+			Id = NextId;
 		}
 
 		public  RegisterLiteral(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "RegisterLiteral";
 		}

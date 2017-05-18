@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  WhileStatement()
 		{
+			Id = NextId;
 		}
 
 		public  WhileStatement(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "WhileStatement";
 		}

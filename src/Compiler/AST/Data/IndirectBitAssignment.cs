@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  IndirectBitAssignment()
 		{
+			Id = NextId;
 		}
 
 		public  IndirectBitAssignment(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "IndirectBitAssignment";
 		}

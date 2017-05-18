@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  NotExpression()
 		{
+			Id = NextId;
 		}
 
 		public  NotExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "NotExpression";
 		}

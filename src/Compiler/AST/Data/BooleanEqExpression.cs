@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  BooleanEqExpression()
 		{
+			Id = NextId;
 		}
 
 		public  BooleanEqExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "BooleanEqExpression";
 		}

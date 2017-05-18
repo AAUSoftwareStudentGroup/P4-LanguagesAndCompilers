@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  Call()
 		{
+			Id = NextId;
 		}
 
 		public  Call(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Call";
 		}

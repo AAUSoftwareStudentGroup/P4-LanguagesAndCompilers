@@ -7,10 +7,12 @@ namespace Compiler.Translation.SymbolTable.Data
 	{
 		public  SymbolTable()
 		{
+			Id = NextId;
 		}
 
 		public  SymbolTable(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "SymbolTable";
 		}

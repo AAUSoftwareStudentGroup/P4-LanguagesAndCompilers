@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  RegisterDeclarationInit()
 		{
+			Id = NextId;
 		}
 
 		public  RegisterDeclarationInit(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "RegisterDeclarationInit";
 		}

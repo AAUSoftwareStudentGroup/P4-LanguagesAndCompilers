@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  GreaterThanOrEqExpression()
 		{
+			Id = NextId;
 		}
 
 		public  GreaterThanOrEqExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "GreaterThanOrEqExpression";
 		}

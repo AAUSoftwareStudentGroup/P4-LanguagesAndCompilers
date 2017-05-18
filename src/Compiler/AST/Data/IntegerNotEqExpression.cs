@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  IntegerNotEqExpression()
 		{
+			Id = NextId;
 		}
 
 		public  IntegerNotEqExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "IntegerNotEqExpression";
 		}

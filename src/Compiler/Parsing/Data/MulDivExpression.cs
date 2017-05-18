@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  MulDivExpression()
 		{
+			Id = NextId;
 		}
 
 		public  MulDivExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "MulDivExpression";
 		}

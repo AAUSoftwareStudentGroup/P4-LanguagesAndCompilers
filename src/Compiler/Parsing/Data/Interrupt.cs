@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  Interrupt()
 		{
+			Id = NextId;
 		}
 
 		public  Interrupt(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Interrupt";
 		}

@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  ElseBlock()
 		{
+			Id = NextId;
 		}
 
 		public  ElseBlock(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "ElseBlock";
 		}

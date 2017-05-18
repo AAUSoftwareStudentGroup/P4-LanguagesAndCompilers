@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  BooleanNotEqExpression()
 		{
+			Id = NextId;
 		}
 
 		public  BooleanNotEqExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "BooleanNotEqExpression";
 		}

@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  CompoundArgs()
 		{
+			Id = NextId;
 		}
 
 		public  CompoundArgs(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "CompoundArgs";
 		}

@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  IntegerReturn()
 		{
+			Id = NextId;
 		}
 
 		public  IntegerReturn(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "IntegerReturn";
 		}

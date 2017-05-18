@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  BooleanAssignment()
 		{
+			Id = NextId;
 		}
 
 		public  BooleanAssignment(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "BooleanAssignment";
 		}

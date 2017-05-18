@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  BooleanReturn()
 		{
+			Id = NextId;
 		}
 
 		public  BooleanReturn(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "BooleanReturn";
 		}

@@ -55,12 +55,6 @@ register8 ADCL   = register8(120)
 register8 ADCH   = register8(121)
 int16 ADC()
     int16 result = 0
-    for(int8 i from 0 to 7)
-        if(ADCL{i})
-            result = result + 2^(i)
-    for(int8 i from 0 to 1)
-        if(ADCH{i})
-            result = result + 2^(8+i)
     return result
 register8 ADCSRA = register8(122)
 register8 ADCSRB = register8(123)

@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  EmptyReturn()
 		{
+			Id = NextId;
 		}
 
 		public  EmptyReturn(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "EmptyReturn";
 		}

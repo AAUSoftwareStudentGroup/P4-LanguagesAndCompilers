@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  ModExpression()
 		{
+			Id = NextId;
 		}
 
 		public  ModExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "ModExpression";
 		}

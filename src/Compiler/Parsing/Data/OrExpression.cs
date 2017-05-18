@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  OrExpression()
 		{
+			Id = NextId;
 		}
 
 		public  OrExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "OrExpression";
 		}

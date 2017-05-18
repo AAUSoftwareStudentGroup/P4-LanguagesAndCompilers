@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  CompoundFunction()
 		{
+			Id = NextId;
 		}
 
 		public  CompoundFunction(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "CompoundFunction";
 		}

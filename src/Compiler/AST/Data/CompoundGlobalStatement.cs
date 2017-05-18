@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  CompoundGlobalStatement()
 		{
+			Id = NextId;
 		}
 
 		public  CompoundGlobalStatement(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "CompoundGlobalStatement";
 		}

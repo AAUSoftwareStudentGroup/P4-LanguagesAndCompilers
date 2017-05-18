@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  RegisterExpression()
 		{
+			Id = NextId;
 		}
 
 		public  RegisterExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "RegisterExpression";
 		}

@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  RelationalExpressionP()
 		{
+			Id = NextId;
 		}
 
 		public  RelationalExpressionP(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "RelationalExpressionP";
 		}

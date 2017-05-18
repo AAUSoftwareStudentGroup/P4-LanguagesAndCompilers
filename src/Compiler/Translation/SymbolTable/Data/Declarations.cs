@@ -7,10 +7,12 @@ namespace Compiler.Translation.SymbolTable.Data
 	{
 		public  Declarations()
 		{
+			Id = NextId;
 		}
 
 		public  Declarations(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Declarations";
 		}

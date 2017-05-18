@@ -20,12 +20,13 @@ namespace Compiler
             Lexer lexer = new Lexer(args.Length == 3 ? args[2] : "../../docs/tang.tokens.json");
             int DebugLevel = 2;
 
-            string file = "../../docs/samples/test.tang";
+            string file = "../../docs/samples/Register.tang";
 
             if (args.Length > 0)
             {
                 file = args[0];
             }
+
             Console.WriteLine("Running Lexer");
 
             try
@@ -161,55 +162,84 @@ namespace Compiler
                 //{
                 //    Console.WriteLine(err.message);
                 //}
-                PrintErrorTree(exception.Error);
+                var err = (GetErrors(exception.Error).OrderByDescending(e => e.level).First().error as RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node), (AST.Data.Node, Translation.SymbolTable.Data.Node)>);
+
+                var first = err.From.Item1;
+
+                while (!(first is Parsing.Data.Token))
+                {
+                    first = first[0];
+                }
+
+                var firstToken = first as Parsing.Data.Token;
+
+                if (firstToken.FileName != null)
+                {
+                    Console.WriteLine($"Could not translate '{err.From.Item1}' to {err.ReturnTypes[0]} in {firstToken.FileName} line {firstToken.Row + 1} column {firstToken.Column + 1}.");
+                }
+                else
+                {
+                    Console.WriteLine($"Could not translate '{err.From.Item1}' to {err.ReturnTypes[0]} at line {firstToken.Row + 1} column {firstToken.Column + 1}.");
+                }
+
+                //PrintErrorTree(exception.Error);
+                //PrintErrorTree(exception.Error);
                 //Console.WriteLine(GetUniqueErrors(exception.Error).OrderBy(e => e.message.Replace("to", "æ").Split('æ')[0].Length).First().message);
             }
         }
 
-        public static List<(int level, string message)> GetUniqueErrors(RuleError error)
+        public static List<(int level, RuleError error)> GetErrors(Error.RuleError error)
         {
-            List<(int level, string message)> errors = new List<(int level, string message)>();
-            GetUniqueErrorsAux(error, 0, errors);
+            List<(int level, RuleError error)> errors = new List<(int level, RuleError error)>();
+            GetErrorsAux(error, 0, errors);
             return errors;
         }
 
-        public static void GetUniqueErrorsAux(RuleError error, int level, List<(int level, string message)> errors)
+        public static void GetErrorsAux(Error.RuleError error, int level, List<(int level, RuleError error)> errors)
         {
-            if (error is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node)> error1)
+            if(error.IsError)
             {
-                string err = $"Could not translate {error1.ErrorData.Item1} to {error1.ReturnTypes[0]}";
-                if (errors.Any(e => e.message == err))
-                {
-                    var currentError = errors.FirstOrDefault(e => e.message == err);
-                    currentError.level = Math.Max(level, currentError.level);
-                }
-                else
-                {
-                    errors.Add((level, err));
-                }
+                errors.Add((level, error));
             }
 
             foreach (var childError in error.Children)
             {
-                GetUniqueErrorsAux(childError, level + 1, errors);
+                if (childError.IsError)
+                {
+                    GetErrorsAux(childError, level + 1, errors);
+                }
             }
         }
 
-        public static void PrintErrorTree(RuleError error)
+        public static void PrintErrorTree(Error.RuleError error)
         {
             PrintErrorTreeAux(error, 0);
         }
 
-        public static void PrintErrorTreeAux(RuleError error, int indent)
+        public static void PrintErrorTreeAux(Error.RuleError error, int indent)
         {
-            if (error is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node)> error1)
+            if (error is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node), (AST.Data.Node, Translation.SymbolTable.Data.Node)> error1)
             {
-                Console.WriteLine($"{Indent(indent)}Could not translate {error1.ErrorData.Item1} to {error1.ReturnTypes[0]}");
+                if (error.IsError)
+                {
+                    Console.WriteLine($"{Indent(indent)}Could not translate ({error1.From.Item1}, {error1.From.Item2}) to ({string.Join(", ", error1.ReturnTypes)}) pattern { string.Join(", ", error1.PatternTypes)}");
+                }
+                else
+                {
+                    Console.WriteLine($"{Indent(indent)}Translated ({error1.From.Item1}, {error1.From.Item2}) to ({string.Join(", ", error1.ReturnTypes)}) pattern { string.Join(", ", error1.PatternTypes)}");
+                }
             }
-            else
+            else if(error is RuleError<Parsing.Data.Node, AST.Data.Node> error2)
             {
-                Console.WriteLine($"{Indent(indent)}{error.GetType()}");
-                Console.WriteLine($"{Indent(indent)}{error.Rule?.Replace("->", "æ").Split('æ')[1] ?? ""}");
+                string patternMsg = $" pattern ({ string.Join(", ", error2.PatternTypes)})";
+                if (error.IsError)
+                {
+                    Console.WriteLine($"{Indent(indent)}Could not translate ({error2.From}) to ({string.Join(", ", error2.ReturnTypes)}) pattern { string.Join(", ", error2.PatternTypes)}");
+                }
+                else
+                {
+                    Console.WriteLine($"{Indent(indent)}Translated ({error2.From}) to ({string.Join(", ", error2.ReturnTypes)}) pattern { string.Join(", ", error2.PatternTypes)}");
+                }
             }
 
             foreach (var childError in error.Children)

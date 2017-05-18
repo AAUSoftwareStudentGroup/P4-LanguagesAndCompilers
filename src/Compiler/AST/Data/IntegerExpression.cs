@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  IntegerExpression()
 		{
+			Id = NextId;
 		}
 
 		public  IntegerExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "IntegerExpression";
 		}

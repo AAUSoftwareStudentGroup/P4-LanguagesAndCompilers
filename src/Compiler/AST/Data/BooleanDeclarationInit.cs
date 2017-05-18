@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  BooleanDeclarationInit()
 		{
+			Id = NextId;
 		}
 
 		public  BooleanDeclarationInit(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "BooleanDeclarationInit";
 		}

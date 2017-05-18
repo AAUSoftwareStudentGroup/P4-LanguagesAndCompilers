@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  AddSubExpressionP()
 		{
+			Id = NextId;
 		}
 
 		public  AddSubExpressionP(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "AddSubExpressionP";
 		}

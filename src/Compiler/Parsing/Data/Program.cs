@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  Program()
 		{
+			Id = NextId;
 		}
 
 		public  Program(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Program";
 		}

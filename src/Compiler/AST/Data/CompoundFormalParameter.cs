@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  CompoundFormalParameter()
 		{
+			Id = NextId;
 		}
 
 		public  CompoundFormalParameter(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "CompoundFormalParameter";
 		}

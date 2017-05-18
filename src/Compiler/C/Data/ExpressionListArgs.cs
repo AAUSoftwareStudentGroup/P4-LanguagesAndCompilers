@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  ExpressionListArgs()
 		{
+			Id = NextId;
 		}
 
 		public  ExpressionListArgs(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "ExpressionListArgs";
 		}

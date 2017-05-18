@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  RegisterOperation()
 		{
+			Id = NextId;
 		}
 
 		public  RegisterOperation(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "RegisterOperation";
 		}

@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  FormalParameter()
 		{
+			Id = NextId;
 		}
 
 		public  FormalParameter(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "FormalParameter";
 		}

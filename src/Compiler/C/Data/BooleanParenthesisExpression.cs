@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  BooleanParenthesisExpression()
 		{
+			Id = NextId;
 		}
 
 		public  BooleanParenthesisExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "BooleanParenthesisExpression";
 		}

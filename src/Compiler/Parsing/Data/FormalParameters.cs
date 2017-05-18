@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  FormalParameters()
 		{
+			Id = NextId;
 		}
 
 		public  FormalParameters(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "FormalParameters";
 		}

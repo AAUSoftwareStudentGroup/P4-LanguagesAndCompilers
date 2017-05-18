@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  GlobalStatements()
 		{
+			Id = NextId;
 		}
 
 		public  GlobalStatements(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "GlobalStatements";
 		}

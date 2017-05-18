@@ -7,10 +7,12 @@ namespace Compiler.Parsing.Data
 	{
 		public  BitSelector()
 		{
+			Id = NextId;
 		}
 
 		public  BitSelector(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "BitSelector";
 		}

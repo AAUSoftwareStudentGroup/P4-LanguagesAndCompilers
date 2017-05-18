@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  AddExpression()
 		{
+			Id = NextId;
 		}
 
 		public  AddExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "AddExpression";
 		}

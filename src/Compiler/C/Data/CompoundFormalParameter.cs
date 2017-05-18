@@ -7,10 +7,12 @@ namespace Compiler.C.Data
 	{
 		public  CompoundFormalParameter()
 		{
+			Id = NextId;
 		}
 
 		public  CompoundFormalParameter(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "CompoundFormalParameter";
 		}

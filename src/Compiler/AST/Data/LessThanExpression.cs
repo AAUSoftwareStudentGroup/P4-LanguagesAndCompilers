@@ -7,10 +7,12 @@ namespace Compiler.AST.Data
 	{
 		public  LessThanExpression()
 		{
+			Id = NextId;
 		}
 
 		public  LessThanExpression(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "LessThanExpression";
 		}
