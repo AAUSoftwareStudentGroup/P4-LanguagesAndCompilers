@@ -8,7 +8,7 @@ DDRB{5} = true
 
 // infinite loop
 while(true)
-    PORTB{5} = false
+    PORTB{5} = true
     wait()
     PORTB{5} = false
     wait()
