@@ -160,7 +160,7 @@ namespace Compiler
                 Console.WriteLine("Compiler run-time: " + DateTime.Now.Subtract(tStart).TotalMilliseconds + " ms" );
             return string.Join("\n", cStr);
             /*// File path relative to where the debug file is located which is in a land far, far away
-            Lexer lexer = new Lexer(AppContext.BaseDirectory + "/../../../../../docs/tang.tokens.json");//fuckwindows
+            Lexer lexer = new Lexer(AppContext.BaseDirectory + "/../../../../../docs/tang.tokens.json");
             
             var tokens = lexer.Analyse(source);
             Preprocessor preprocessor = new Preprocessor();
