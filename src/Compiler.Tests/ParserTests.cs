@@ -230,10 +230,10 @@ namespace Compiler.Tests
         public void AddExpressionSpecialTestParser()
         {
             // Initialise Lexer
-            Lexer l = new Lexer(File.ReadAllText(AppContext.BaseDirectory + "/TestFiles/tang.tokens.json"));
+            Lexer l = new Lexer(File.ReadAllText(AppContext.BaseDirectory + "/Testfiles/tang.tokens.json"));
 
             // Read from test file
-            IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "/TestFiles/AddExpression.tang"));
+            IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "/Testfiles/AddExpression.tang"));
 
             ProgramParser pp = new ProgramParser();
 

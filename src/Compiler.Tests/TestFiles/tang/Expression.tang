@@ -1,6 +1,0 @@
-bool q
-q = true
-uint8 h2
-if(q and !q)
-    uint8 h25
-h2 = 0

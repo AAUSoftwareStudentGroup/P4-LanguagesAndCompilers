@@ -1,2 +1,0 @@
-for(int8 i from false to 10)
-	int8 val = i;

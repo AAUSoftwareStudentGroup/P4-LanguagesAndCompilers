@@ -9,7 +9,7 @@ namespace Compiler.Xunit
         {
             get { 
                 List<object[]> data = new List<object[]>();
-                var files = Directory.GetFiles("../../../Testfiles/tang/");
+                var files = Directory.GetFiles("Testfiles/tang/");
                 foreach(string file in files) {
                     if(file.EndsWith(".tang"))
                         data.Add(new object[]{file});
@@ -21,7 +21,7 @@ namespace Compiler.Xunit
         {
             get { 
                 List<object[]> data = new List<object[]>();
-                var files = Directory.GetFiles("../../../Testfiles/Fail/");
+                var files = Directory.GetFiles("Testfiles/Fail/");
                 foreach(string file in files) {
                     data.Add(new object[]{file});
                 }

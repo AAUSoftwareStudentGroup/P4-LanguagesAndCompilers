@@ -1,2 +1,0 @@
-for(bool i from true to false)
-	bool val = i;
