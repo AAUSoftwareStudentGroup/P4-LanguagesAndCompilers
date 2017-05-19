@@ -12,7 +12,7 @@ namespace Compiler
         public static void Main(string[] args)
         {
             string tokensPath = "../../docs/tang.tokens.json";
-            string sourcePath = "../../docs/samples/test.tang";
+            string sourcePath = "../../docs/samples/test2.tang";
             string outputPath = sourcePath + ".c";
             int debugLevel = 0;
             TangCompiler tangCompiler = new TangCompiler();

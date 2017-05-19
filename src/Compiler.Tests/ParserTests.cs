@@ -1,6 +1,6 @@
 using Compiler.Parsing;
 using Compiler.LexicalAnalysis;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using System;
 using System.Linq;
 using System.IO;
@@ -8,10 +8,10 @@ using System.Collections.Generic;
 
 namespace Compiler.Tests
 {
-    [TestClass]
     public class ParserTests
     {
-        [TestMethod]
+        /* 
+        [Fact]
         public void ParseProgramCorrectly()
         {
             //Lexer lexer = new Lexer("C:/Users/Steffan/Desktop/P4-LanguagesAndCompilers/docs/tang.tokens.json");
@@ -204,42 +204,33 @@ namespace Compiler.Tests
                 },
                 new Parsing.Data.Token(){ Name = "eof" }
             };
+            ProgramParser parser = new ProgramParser();
 
-            try
+            var parseTree = parser.ParseProgram(tokenlist);
+
+            var parseTreeLines = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
+            foreach (var line in parseTreeLines)
             {
-                ProgramParser parser = new ProgramParser();
-
-                var parseTree = parser.ParseProgram(tokenlist);
-
-                var parseTreeLines = parseTree.Accept(new Parsing.Visitors.TreePrintVisitor());
-                foreach (var line in parseTreeLines)
-                {
-                    System.Diagnostics.Debug.WriteLine(line);
-                }
-
-                System.Diagnostics.Debug.WriteLine("\n < ParserTree \n importTree> \n");
-
-                var parseTreeLinesTest = parseTreeTest.Accept(new Parsing.Visitors.TreePrintVisitor());
-                foreach (var line in parseTreeLinesTest)
-                {
-                    System.Diagnostics.Debug.WriteLine(line);
-                }
-
-
-                TreeAsserter(parseTree, parseTreeTest);
-
+                System.Diagnostics.Debug.WriteLine(line);
             }
-            catch (Exception e)
+
+            System.Diagnostics.Debug.WriteLine("\n < ParserTree \n importTree> \n");
+
+            var parseTreeLinesTest = parseTreeTest.Accept(new Parsing.Visitors.TreePrintVisitor());
+            foreach (var line in parseTreeLinesTest)
             {
-               Assert.Fail("Expected no exception, but got: " + e.Message);
+                System.Diagnostics.Debug.WriteLine(line);
             }
+
+
+            TreeAsserter(parseTree, parseTreeTest);
         }
 
-        [TestMethod]
+        [Fact]
         public void AddExpressionSpecialTestParser()
         {
             // Initialise Lexer
-            Lexer l = new Lexer(AppContext.BaseDirectory + "/TestFiles/Tokens.cfg.json");
+            Lexer l = new Lexer(File.ReadAllText(AppContext.BaseDirectory + "/TestFiles/tang.tokens.json"));
 
             // Read from test file
             IEnumerable<Token> tokens = l.Analyse(File.ReadAllText(AppContext.BaseDirectory + "/TestFiles/AddExpression.tang"));
@@ -390,7 +381,7 @@ namespace Compiler.Tests
 
         public void TreeAsserter(Parsing.Data.Node node, Parsing.Data.Node nodeTest)
         {
-            Assert.AreEqual(node.Name, nodeTest.Name);
+            Assert.Equal(node.Name, nodeTest.Name);
 
             if(node is Parsing.Data.Token){}
             else
@@ -402,6 +393,6 @@ namespace Compiler.Tests
                     TreeAsserter(nodeChildren[i], nodeChildrenTest[i]);
                 }
             }
-        }
+        }*/
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,10 +10,9 @@ using Compiler.Parsing;
 
 namespace Compiler.Tests
 {
-    [TestClass]
     public class ProgramToASTTranslatorTests
     {
-        [TestMethod]
+        [Fact]
         public void ConvertToASTCorrectly()
         {
             /* Alias.tang file:
@@ -32,10 +31,10 @@ namespace Compiler.Tests
             // The goal of the ProgramToASTTranslator is to take this parse tree as input and output an AST
             // The AST output is written by hand from the .tang file, and then it is asserted if the output is equivalent to the expected output
 
-            string source = System.IO.File.ReadAllText(AppContext.BaseDirectory + "/TestFiles/Alias.tang");
+            string source = System.IO.File.ReadAllText(AppContext.BaseDirectory + "/Testfiles/tang/Alias.tang");
 
             // File path relative to where the debug file is located which is in a land far, far away
-            Lexer l = new Lexer(AppContext.BaseDirectory + "../../../../../../docs/tang.tokens.json");
+            Lexer l = new Lexer(File.ReadAllText(AppContext.BaseDirectory + "../../../../../../docs/tang.tokens.json"));
 
             var tokens = l.Analyse(source);
             ProgramParser parser = new ProgramParser();
@@ -137,14 +136,14 @@ namespace Compiler.Tests
             TreeAsserter(ast, astExpected);
         }
 
-        [TestMethod]
+        [Fact]
         public void AddExpressionSpecialTestAST()
         {
             // Source file to produce an AST from
-            string source = System.IO.File.ReadAllText(AppContext.BaseDirectory + "/TestFiles/AddExpression.tang");
+            string source = System.IO.File.ReadAllText(AppContext.BaseDirectory + "/Testfiles/tang/AddExpression.tang");
 
             // File path relative to where the debug file is located which is in a land far, far away
-            Lexer l = new Lexer(AppContext.BaseDirectory + "../../../../../../docs/tang.tokens.json");
+            Lexer l = new Lexer(File.ReadAllText(AppContext.BaseDirectory + "../../../../../../docs/tang.tokens.json"));
 
             // Call the Analyse method from the Lexical Analysis class
             var tokens = l.Analyse(source);
@@ -219,7 +218,7 @@ namespace Compiler.Tests
 
         public void TreeAsserter(AST.Data.Node node, AST.Data.Node nodeTest)
         {
-            Assert.AreEqual(node.Name, nodeTest.Name);
+            Assert.Equal(node.Name, nodeTest.Name);
 
             if (node is AST.Data.Token) { }
             else
