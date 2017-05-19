@@ -326,14 +326,14 @@ namespace Generator.Translation
                         ListStructure listStructure = conclusionStructure.Nodes<ListStructure>()[0];
                         List<string> lst = CreateListStructure(listStructure, relations[(alias, "->")].RightDomains, symbols);
                         method.Body.Add($"{Indent(indentLevel)}var _result = ({ string.Join(", ", lst) });");
-                        method.Body.Add($"{Indent(indentLevel)}RuleEnd{alias}(true, _result);");
+                        method.Body.Add($"{Indent(indentLevel)}RuleEnd{alias}(true, true, _result);");
                         method.Body.Add($"{Indent(indentLevel)}return _result;");
                     }
                     else if (conclusionStructure.Nodes<TreeStructure>().Count() > 0)
                     {
                         TreeStructure treeStructure = conclusionStructure.Nodes<TreeStructure>()[0];
                         method.Body.Add($"{Indent(indentLevel)}var _result = {CreateTreeStructure(treeStructure, relations[(alias, "->")].RightDomains[0], symbols)};");
-                        method.Body.Add($"{Indent(indentLevel)}RuleEnd{alias}(true, _result);");
+                        method.Body.Add($"{Indent(indentLevel)}RuleEnd{alias}(true, true, _result);");
                         method.Body.Add($"{Indent(indentLevel)}return _result;");
                     }
 
@@ -380,14 +380,6 @@ namespace Generator.Translation
 
             foreach (MethodType method in translatorClass.Methods)
             {
-                method.Body.InsertRange(0, new List<string>()
-                {
-                    "bool _isMatching = false;",
-                    $"if({method.Identifier.Replace("Translate", "Relation")}.ContainsKey(({string.Join(", ", method.Parameters.Select(p => p.Identifier))})))",
-                    "{",
-                    $"    return {method.Identifier.Replace("Translate", "Relation")}[({string.Join(", ", method.Parameters.Select(p => p.Identifier))})];",
-                    "}"
-                });
                 method.Body.Add($"{method.Identifier.Replace("Translate", "RulesFailed")}(({string.Join(", ", method.Parameters.Select(p => p.Identifier))}));");
                 method.Body.Add($"return ({string.Join(", ", Enumerable.Repeat("null", method.Type.Split(',').Count()))});");
             }
@@ -457,6 +449,7 @@ namespace Generator.Translation
                     Parameters = new List<ParameterType>()
                     {
                         new ParameterType("bool", "success"),
+                        new ParameterType("bool", "save"),
                         new ParameterType(rightTypes, "data")
                     },
                     Body = new List<string>()
@@ -464,7 +457,7 @@ namespace Generator.Translation
                         "RuleError.IsError = !success;",
                         $"var casted = RuleError as Compiler.Error.RuleError<{leftTypes}, {rightTypes}>;",
                         "casted.To = data;",
-                        $"if(success)",
+                        $"if(save)",
                         "{",
                         $"    Relation{relation.Key.alias}.Add(casted.From, casted.To);",
                         "}",
@@ -492,7 +485,7 @@ namespace Generator.Translation
                     },
                     Body = new List<string>()
                     {
-                        $"RuleEnd{relation.Key.alias}(success, {righDefault});"
+                        $"RuleEnd{relation.Key.alias}(success, success, {righDefault});"
                     }
                 };
 
@@ -520,7 +513,7 @@ namespace Generator.Translation
 
                 if (relation.Value.LeftDomains.Count == 1 && relation.Value.RightDomains.Count == 1)
                 {
-                    MethodType translateMethod = new MethodType("public", $"{relation.Value.RightDomains[0].DataNamespace}.Token", $"Translate{relation.Key.alias}")
+                    MethodType translateMethod = new MethodType("public", $"{relation.Value.RightDomains[0].DataNamespace}.Node", $"Translate{relation.Key.alias}")
                     {
                         Parameters = new List<ParameterType>()
                         {
@@ -530,11 +523,30 @@ namespace Generator.Translation
                         {
                             $"RuleStart{relation.Key.alias}(new System.Collections.Generic.List<string>() {{ token.Name }}, $\"{{token.Name}} ->:{relation.Key.alias} {{token.Name}}\", token);",
                             $"var result = new {relation.Value.RightDomains[0].DataNamespace}.Token() {{ Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column }};",
-                            $"RuleEnd{relation.Key.alias}(true, result);",
+                            $"RuleEnd{relation.Key.alias}(true, true, result);",
                             "return result;"
                         }
                     };
                     translatorClass.Methods.Add(translateMethod);
+                }
+            }
+
+            foreach (var method in translatorClass.Methods)
+            {
+                if(method.Identifier.Contains("Translate"))
+                {
+                    method.Body.InsertRange(0, new List<string>()
+                    {
+                        "bool _isMatching = false;",
+                        $"var key = ({string.Join(", ", method.Parameters.Select(p => p.Identifier))});",
+                        $"if({method.Identifier.Replace("Translate", "Relation")}.ContainsKey(key))",
+                        "{",
+                        $"    var value = {method.Identifier.Replace("Translate", "Relation")}[key];",
+                        $"    {method.Identifier.Replace("Translate","RuleStart")}(new System.Collections.Generic.List<string>() {{ {string.Join(", ", method.Parameters.Select(p => $"{p.Identifier}.Name"))} }}, \"\", key);",
+                        $"    {method.Identifier.Replace("Translate", "RuleEnd")}(true, false, value);",
+                        $"    return value;",
+                        "}"
+                    });
                 }
             }
 

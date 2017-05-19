@@ -13,9 +13,13 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.Program program)
 		{
 			bool _isMatching = false;
-			if(Relationp.ContainsKey((program)))
+			var key = (program);
+			if(Relationp.ContainsKey(key))
 			{
-			    return Relationp[(program)];
+			    var value = Relationp[key];
+			    RuleStartp(new System.Collections.Generic.List<string>() { program.Name }, "", key);
+			    RuleEndp(true, false, value);
+			    return value;
 			}
 			if(program != null && program.Name == "Program")
 			{
@@ -37,7 +41,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = ast as Compiler.AST.Data.AST;
-			            RuleEndp(true, _result);
+			            RuleEndp(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -50,9 +54,13 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translates(Compiler.Parsing.Data.Token identifier, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relations.ContainsKey((identifier, symbolTable)))
+			var key = (identifier, symbolTable);
+			if(Relations.ContainsKey(key))
 			{
-			    return Relations[(identifier, symbolTable)];
+			    var value = Relations[key];
+			    RuleStarts(new System.Collections.Generic.List<string>() { identifier.Name, symbolTable.Name }, "", key);
+			    RuleEnds(true, false, value);
+			    return value;
 			}
 			if(identifier != null && identifier.Name == "identifier" && symbolTable != null && symbolTable.Name == "SymbolTable" && (symbolTable.Count == 1 && symbolTable[0] != null && symbolTable[0].Name == "Declarations"))
 			{
@@ -66,7 +74,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, _result);
+			        RuleEnds(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnds(false);
@@ -84,7 +92,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, _result);
+			        RuleEnds(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnds(false);
@@ -96,15 +104,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translates(Compiler.Parsing.Data.Token _return, Compiler.Translation.SymbolTable.Data.Declarations declarations)
 		{
 			bool _isMatching = false;
-			if(Relations.ContainsKey((_return, declarations)))
+			var key = (_return, declarations);
+			if(Relations.ContainsKey(key))
 			{
-			    return Relations[(_return, declarations)];
+			    var value = Relations[key];
+			    RuleStarts(new System.Collections.Generic.List<string>() { _return.Name, declarations.Name }, "", key);
+			    RuleEnds(true, false, value);
+			    return value;
 			}
 			if(_return != null && _return.Name == "return" && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 1 && declarations[0] != null && declarations[0].Name == "EPSILON"))
 			{
 			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return Declarations [ EPSILON ] ] -> : s Declaration [ EPSILON ]", (_return, declarations));
 			    var _result = new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
-			    RuleEnds(true, _result);
+			    RuleEnds(true, true, _result);
 			    return _result;
 			    RuleEnds(false);
 			}
@@ -113,7 +125,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier Declarations [ EPSILON ] ] -> : s Declaration [ EPSILON ]", (identifier, declarations));
 			    var _result = new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
-			    RuleEnds(true, _result);
+			    RuleEnds(true, true, _result);
 			    return _result;
 			    RuleEnds(false);
 			}
@@ -123,7 +135,7 @@ namespace Compiler.Translation.ProgramToAST
 			    if(AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
 			    {
 			        var _result = declarations[0] as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, _result);
+			        RuleEnds(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnds(false);
@@ -142,7 +154,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			            RuleEnds(true, _result);
+			            RuleEnds(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -160,7 +172,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, _result);
+			        RuleEnds(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnds(false);
@@ -171,7 +183,7 @@ namespace Compiler.Translation.ProgramToAST
 			    if(AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
 			    {
 			        var _result = declarations[0] as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, _result);
+			        RuleEnds(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnds(false);
@@ -190,7 +202,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			            RuleEnds(true, _result);
+			            RuleEnds(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -200,7 +212,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return Declarations [ Declaration : dcl [ Variable [ Type return ] ] Declarations ] ] -> : s dcl", (_return, declarations));
 			    var _result = declarations[0] as Compiler.Translation.SymbolTable.Data.Declaration;
-			    RuleEnds(true, _result);
+			    RuleEnds(true, true, _result);
 			    return _result;
 			    RuleEnds(false);
 			}
@@ -216,7 +228,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, _result);
+			        RuleEnds(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnds(false);
@@ -233,7 +245,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, _result);
+			        RuleEnds(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnds(false);
@@ -245,15 +257,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.Program program, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relationf.ContainsKey((program, symbolTable)))
+			var key = (program, symbolTable);
+			if(Relationf.ContainsKey(key))
 			{
-			    return Relationf[(program, symbolTable)];
+			    var value = Relationf[key];
+			    RuleStartf(new System.Collections.Generic.List<string>() { program.Name, symbolTable.Name }, "", key);
+			    RuleEndf(true, false, value);
+			    return value;
 			}
 			if(program != null && program.Name == "Program" && (program.Count == 2 && program[0] != null && program[0].Name == "GlobalStatements" && (program[0].Count == 1 && program[0][0] != null && program[0][0].Name == "EPSILON") && program[1] != null && program[1].Name == "eof") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Program [ GlobalStatements [ EPSILON ] eof ] SymbolTable : s ] -> : f s", (program, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -269,7 +285,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, _result);
+			        RuleEndf(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndf(false);
@@ -281,9 +297,13 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.GlobalStatements globalStatements, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relationf.ContainsKey((globalStatements, symbolTable)))
+			var key = (globalStatements, symbolTable);
+			if(Relationf.ContainsKey(key))
 			{
-			    return Relationf[(globalStatements, symbolTable)];
+			    var value = Relationf[key];
+			    RuleStartf(new System.Collections.Generic.List<string>() { globalStatements.Name, symbolTable.Name }, "", key);
+			    RuleEndf(true, false, value);
+			    return value;
 			}
 			if(globalStatements != null && globalStatements.Name == "GlobalStatements" && (globalStatements.Count == 2 && globalStatements[0] != null && globalStatements[0].Name == "GlobalStatement" && globalStatements[1] != null && globalStatements[1].Name == "GlobalStatements" && (globalStatements[1].Count == 1 && globalStatements[1][0] != null && globalStatements[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -297,7 +317,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, _result);
+			        RuleEndf(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndf(false);
@@ -322,7 +342,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = s2 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			            RuleEndf(true, _result);
+			            RuleEndf(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -335,15 +355,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.GlobalStatement globalStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relationf.ContainsKey((globalStatement, symbolTable)))
+			var key = (globalStatement, symbolTable);
+			if(Relationf.ContainsKey(key))
 			{
-			    return Relationf[(globalStatement, symbolTable)];
+			    var value = Relationf[key];
+			    RuleStartf(new System.Collections.Generic.List<string>() { globalStatement.Name, symbolTable.Name }, "", key);
+			    RuleEndf(true, false, value);
+			    return value;
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Interrupt") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ Interrupt : inter ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -359,7 +383,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, _result);
+			        RuleEndf(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndf(false);
@@ -371,15 +395,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.Interrupt interrupt, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relationf.ContainsKey((interrupt, symbolTable)))
+			var key = (interrupt, symbolTable);
+			if(Relationf.ContainsKey(key))
 			{
-			    return Relationf[(interrupt, symbolTable)];
+			    var value = Relationf[key];
+			    RuleStartf(new System.Collections.Generic.List<string>() { interrupt.Name, symbolTable.Name }, "", key);
+			    RuleEndf(true, false, value);
+			    return value;
 			}
 			if(interrupt != null && interrupt.Name == "Interrupt" && (interrupt.Count == 7 && interrupt[0] != null && interrupt[0].Name == "interrupt" && interrupt[1] != null && interrupt[1].Name == "(" && interrupt[2] != null && interrupt[2].Name == "numeral" && interrupt[3] != null && interrupt[3].Name == ")" && interrupt[4] != null && interrupt[4].Name == "indent" && interrupt[5] != null && interrupt[5].Name == "Statements" && interrupt[6] != null && interrupt[6].Name == "dedent") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Interrupt [ interrupt ( numeral : i ) indent Statements : stms dedent ] SymbolTable : s ] -> : f s", (interrupt, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -390,9 +418,13 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.Statements statements, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relationf.ContainsKey((statements, symbolTable)))
+			var key = (statements, symbolTable);
+			if(Relationf.ContainsKey(key))
 			{
-			    return Relationf[(statements, symbolTable)];
+			    var value = Relationf[key];
+			    RuleStartf(new System.Collections.Generic.List<string>() { statements.Name, symbolTable.Name }, "", key);
+			    RuleEndf(true, false, value);
+			    return value;
 			}
 			if(statements != null && statements.Name == "Statements" && (statements.Count == 2 && statements[0] != null && statements[0].Name == "Statement" && statements[1] != null && statements[1].Name == "Statements" && (statements[1].Count == 1 && statements[1][0] != null && statements[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -406,7 +438,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, _result);
+			        RuleEndf(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndf(false);
@@ -431,7 +463,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = s2 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			            RuleEndf(true, _result);
+			            RuleEndf(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -444,15 +476,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.Statement statement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relationf.ContainsKey((statement, symbolTable)))
+			var key = (statement, symbolTable);
+			if(Relationf.ContainsKey(key))
 			{
-			    return Relationf[(statement, symbolTable)];
+			    var value = Relationf[key];
+			    RuleStartf(new System.Collections.Generic.List<string>() { statement.Name, symbolTable.Name }, "", key);
+			    RuleEndf(true, false, value);
+			    return value;
 			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ newline ] SymbolTable : s ] -> : f s", (statement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -468,7 +504,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, _result);
+			        RuleEndf(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndf(false);
@@ -477,7 +513,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ IdentifierStatement ] SymbolTable : s ] -> : f s", (statement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -485,7 +521,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ ReturnStatement ] SymbolTable : s ] -> : f s", (statement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -493,7 +529,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ InterruptStatement ] SymbolTable : s ] -> : f s", (statement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -501,7 +537,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ IfStatement : ifStm ] SymbolTable : s ] -> : f s", (statement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -509,7 +545,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ WhileStatement : whileStm ] SymbolTable : s ] -> : f s", (statement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -517,7 +553,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ ForStatement : forStm ] SymbolTable : s ] -> : f s", (statement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -533,7 +569,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, _result);
+			        RuleEndf(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndf(false);
@@ -545,15 +581,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.IdentifierDeclaration identifierDeclaration, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relationf.ContainsKey((identifierDeclaration, symbolTable)))
+			var key = (identifierDeclaration, symbolTable);
+			if(Relationf.ContainsKey(key))
 			{
-			    return Relationf[(identifierDeclaration, symbolTable)];
+			    var value = Relationf[key];
+			    RuleStartf(new System.Collections.Generic.List<string>() { identifierDeclaration.Name, symbolTable.Name }, "", key);
+			    RuleEndf(true, false, value);
+			    return value;
 			}
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 2 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "DefinitionAssign" && (identifierDeclaration[2][1].Count == 2 && identifierDeclaration[2][1][0] != null && identifierDeclaration[2][1][0].Name == "Expression" && identifierDeclaration[2][1][1] != null && identifierDeclaration[2][1][1].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ IntType identifier Definition [ = DefinitionAssign [ Expression newline ] ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -593,7 +633,7 @@ namespace Compiler.Translation.ProgramToAST
 			                else if(_isMatching)
 			                {
 			                    var _result = Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Function(false) { new Compiler.Translation.SymbolTable.Data.ReturnType(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { it as Compiler.Translation.SymbolTable.Data.IntType } }, id1 as Compiler.Translation.SymbolTable.Data.Token, p as Compiler.Translation.SymbolTable.Data.Parameters } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			                    RuleEndf(true, _result);
+			                    RuleEndf(true, true, _result);
 			                    return _result;
 			                }
 			            }
@@ -605,7 +645,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ IntType identifier Definition [ newline ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -613,7 +653,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType identifier Definition [ = DefinitionAssign [ Expression newline ] ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -653,7 +693,7 @@ namespace Compiler.Translation.ProgramToAST
 			                else if(_isMatching)
 			                {
 			                    var _result = Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Function(false) { new Compiler.Translation.SymbolTable.Data.ReturnType(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t as Compiler.Translation.SymbolTable.Data.BooleanType } }, id1 as Compiler.Translation.SymbolTable.Data.Token, p as Compiler.Translation.SymbolTable.Data.Parameters } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			                    RuleEndf(true, _result);
+			                    RuleEndf(true, true, _result);
 			                    return _result;
 			                }
 			            }
@@ -665,7 +705,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType identifier Definition [ newline ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -705,7 +745,7 @@ namespace Compiler.Translation.ProgramToAST
 			                else if(_isMatching)
 			                {
 			                    var _result = Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Function(false) { new Compiler.Translation.SymbolTable.Data.ReturnType(false) { t as Compiler.Translation.SymbolTable.Data.Token }, id1 as Compiler.Translation.SymbolTable.Data.Token, p as Compiler.Translation.SymbolTable.Data.Parameters } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			                    RuleEndf(true, _result);
+			                    RuleEndf(true, true, _result);
 			                    return _result;
 			                }
 			            }
@@ -720,15 +760,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.FormalParameters formalParameters)
 		{
 			bool _isMatching = false;
-			if(Relationq.ContainsKey((formalParameters)))
+			var key = (formalParameters);
+			if(Relationq.ContainsKey(key))
 			{
-			    return Relationq[(formalParameters)];
+			    var value = Relationq[key];
+			    RuleStartq(new System.Collections.Generic.List<string>() { formalParameters.Name }, "", key);
+			    RuleEndq(true, false, value);
+			    return value;
 			}
 			if(formalParameters != null && formalParameters.Name == "FormalParameters" && (formalParameters.Count == 1 && formalParameters[0] != null && formalParameters[0].Name == "EPSILON"))
 			{
 			    RuleStartq(new System.Collections.Generic.List<string>() { "Parameters" }, "FormalParameters [ EPSILON ] -> : q Parameters [ EPSILON ]", (formalParameters));
 			    var _result = new Compiler.Translation.SymbolTable.Data.Parameters(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
-			    RuleEndq(true, _result);
+			    RuleEndq(true, true, _result);
 			    return _result;
 			    RuleEndq(false);
 			}
@@ -752,7 +796,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = new Compiler.Translation.SymbolTable.Data.Parameters(false) { p3 as Compiler.Translation.SymbolTable.Data.Parameter, p4 as Compiler.Translation.SymbolTable.Data.ParametersP };
-			            RuleEndq(true, _result);
+			            RuleEndq(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -765,15 +809,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.FormalParametersP formalParametersP)
 		{
 			bool _isMatching = false;
-			if(Relationq.ContainsKey((formalParametersP)))
+			var key = (formalParametersP);
+			if(Relationq.ContainsKey(key))
 			{
-			    return Relationq[(formalParametersP)];
+			    var value = Relationq[key];
+			    RuleStartq(new System.Collections.Generic.List<string>() { formalParametersP.Name }, "", key);
+			    RuleEndq(true, false, value);
+			    return value;
 			}
 			if(formalParametersP != null && formalParametersP.Name == "FormalParametersP" && (formalParametersP.Count == 1 && formalParametersP[0] != null && formalParametersP[0].Name == "EPSILON"))
 			{
 			    RuleStartq(new System.Collections.Generic.List<string>() { "ParametersP" }, "FormalParametersP [ EPSILON ] -> : q ParametersP [ EPSILON ]", (formalParametersP));
 			    var _result = new Compiler.Translation.SymbolTable.Data.ParametersP(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
-			    RuleEndq(true, _result);
+			    RuleEndq(true, true, _result);
 			    return _result;
 			    RuleEndq(false);
 			}
@@ -797,7 +845,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = new Compiler.Translation.SymbolTable.Data.ParametersP(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = ",", Value = "," }, p3 as Compiler.Translation.SymbolTable.Data.Parameter, p4 as Compiler.Translation.SymbolTable.Data.ParametersP };
-			            RuleEndq(true, _result);
+			            RuleEndq(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -810,9 +858,13 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.FormalParameter formalParameter)
 		{
 			bool _isMatching = false;
-			if(Relationq.ContainsKey((formalParameter)))
+			var key = (formalParameter);
+			if(Relationq.ContainsKey(key))
 			{
-			    return Relationq[(formalParameter)];
+			    var value = Relationq[key];
+			    RuleStartq(new System.Collections.Generic.List<string>() { formalParameter.Name }, "", key);
+			    RuleEndq(true, false, value);
+			    return value;
 			}
 			if(formalParameter != null && formalParameter.Name == "FormalParameter" && (formalParameter.Count == 2 && formalParameter[0] != null && formalParameter[0].Name == "Type" && formalParameter[1] != null && formalParameter[1].Name == "identifier"))
 			{
@@ -834,7 +886,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = new Compiler.Translation.SymbolTable.Data.Parameter(false) { t as Compiler.Translation.SymbolTable.Data.Type, id1 as Compiler.Translation.SymbolTable.Data.Token };
-			            RuleEndq(true, _result);
+			            RuleEndq(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -847,9 +899,13 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.Type type)
 		{
 			bool _isMatching = false;
-			if(Relationq.ContainsKey((type)))
+			var key = (type);
+			if(Relationq.ContainsKey(key))
 			{
-			    return Relationq[(type)];
+			    var value = Relationq[key];
+			    RuleStartq(new System.Collections.Generic.List<string>() { type.Name }, "", key);
+			    RuleEndq(true, false, value);
+			    return value;
 			}
 			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "IntType"))
 			{
@@ -863,7 +919,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.Translation.SymbolTable.Data.Type(false) { t1 as Compiler.Translation.SymbolTable.Data.IntType };
-			        RuleEndq(true, _result);
+			        RuleEndq(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndq(false);
@@ -880,7 +936,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.Translation.SymbolTable.Data.Type(false) { t1 as Compiler.Translation.SymbolTable.Data.BooleanType };
-			        RuleEndq(true, _result);
+			        RuleEndq(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndq(false);
@@ -897,7 +953,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.Translation.SymbolTable.Data.Type(false) { t1 as Compiler.Translation.SymbolTable.Data.RegisterType };
-			        RuleEndq(true, _result);
+			        RuleEndq(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndq(false);
@@ -909,15 +965,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.RegisterStatement registerStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relationf.ContainsKey((registerStatement, symbolTable)))
+			var key = (registerStatement, symbolTable);
+			if(Relationf.ContainsKey(key))
 			{
-			    return Relationf[(registerStatement, symbolTable)];
+			    var value = Relationf[key];
+			    RuleStartf(new System.Collections.Generic.List<string>() { registerStatement.Name, symbolTable.Name }, "", key);
+			    RuleEndf(true, false, value);
+			    return value;
 			}
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 9 && registerStatement[1][0] != null && registerStatement[1][0].Name == "(" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Expression" && registerStatement[1][2] != null && registerStatement[1][2].Name == ")" && registerStatement[1][3] != null && registerStatement[1][3].Name == "{" && registerStatement[1][4] != null && registerStatement[1][4].Name == "Expression" && registerStatement[1][5] != null && registerStatement[1][5].Name == "}" && registerStatement[1][6] != null && registerStatement[1][6].Name == "=" && registerStatement[1][7] != null && registerStatement[1][7].Name == "Expression" && registerStatement[1][8] != null && registerStatement[1][8].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ ( Expression ) { Expression } = Expression newline ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -925,7 +985,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ = DefinitionAssign [ Expression newline ] ] ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -933,7 +993,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ = DefinitionAssign [ Expression newline ] ] ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -941,7 +1001,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ newline ] ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, _result);
+			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
@@ -981,7 +1041,7 @@ namespace Compiler.Translation.ProgramToAST
 			                else if(_isMatching)
 			                {
 			                    var _result = Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Function(false) { new Compiler.Translation.SymbolTable.Data.ReturnType(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t as Compiler.Translation.SymbolTable.Data.RegisterType } }, id1 as Compiler.Translation.SymbolTable.Data.Token, p as Compiler.Translation.SymbolTable.Data.Parameters } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			                    RuleEndf(true, _result);
+			                    RuleEndf(true, true, _result);
 			                    return _result;
 			                }
 			            }
@@ -996,15 +1056,19 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.Program program, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((program, symbolTable)))
+			var key = (program, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(program, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { program.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(program != null && program.Name == "Program" && (program.Count == 2 && program[0] != null && program[0].Name == "GlobalStatements" && (program[0].Count == 1 && program[0][0] != null && program[0][0].Name == "EPSILON") && program[1] != null && program[1].Name == "eof") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "AST", "SymbolTable" }, "[ Program [ GlobalStatements [ EPSILON ] eof ] SymbolTable : s ] -> [ AST [ eof ] s ]", (program, symbolTable));
 			    var _result = (new Compiler.AST.Data.AST(false) { new Compiler.AST.Data.Token() { Name = "eof", Value = "eof" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    RuleEnd(true, _result);
+			    RuleEnd(true, true, _result);
 			    return _result;
 			    RuleEnd(false);
 			}
@@ -1020,7 +1084,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.AST(false) { stm as Compiler.AST.Data.GlobalStatement, new Compiler.AST.Data.Token() { Name = "eof", Value = "eof" } }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1032,9 +1096,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.GlobalStatements globalStatements, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((globalStatements, symbolTable)))
+			var key = (globalStatements, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(globalStatements, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { globalStatements.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(globalStatements != null && globalStatements.Name == "GlobalStatements" && (globalStatements.Count == 2 && globalStatements[0] != null && globalStatements[0].Name == "GlobalStatement" && globalStatements[1] != null && globalStatements[1].Name == "GlobalStatements" && (globalStatements[1].Count == 1 && globalStatements[1][0] != null && globalStatements[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -1048,7 +1116,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (stm1 as Compiler.AST.Data.GlobalStatement, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1073,7 +1141,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.CompoundGlobalStatement(false) { stm1 as Compiler.AST.Data.GlobalStatement, new Compiler.AST.Data.Token() { Name = "newline", Value = "newline" }, stm2 as Compiler.AST.Data.GlobalStatement } }, s2 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -1086,9 +1154,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.GlobalStatement globalStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((globalStatement, symbolTable)))
+			var key = (globalStatement, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(globalStatement, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { globalStatement.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Interrupt") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -1102,7 +1174,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { inter1 as Compiler.AST.Data.Interrupt }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1119,7 +1191,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { stm1 as Compiler.AST.Data.Statement }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1136,7 +1208,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (stm1 as Compiler.AST.Data.GlobalStatement, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1153,7 +1225,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { func as Compiler.AST.Data.Function }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1165,9 +1237,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.Interrupt interrupt, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((interrupt, symbolTable)))
+			var key = (interrupt, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(interrupt, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { interrupt.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(interrupt != null && interrupt.Name == "Interrupt" && (interrupt.Count == 7 && interrupt[0] != null && interrupt[0].Name == "interrupt" && interrupt[1] != null && interrupt[1].Name == "(" && interrupt[2] != null && interrupt[2].Name == "numeral" && interrupt[3] != null && interrupt[3].Name == ")" && interrupt[4] != null && interrupt[4].Name == "indent" && interrupt[5] != null && interrupt[5].Name == "Statements" && interrupt[6] != null && interrupt[6].Name == "dedent") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -1189,7 +1265,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.Interrupt(false) { new Compiler.AST.Data.Token() { Name = "interrupt", Value = "interrupt" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, i1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -1202,9 +1278,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.Statements statements, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((statements, symbolTable)))
+			var key = (statements, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(statements, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { statements.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(statements != null && statements.Name == "Statements" && (statements.Count == 2 && statements[0] != null && statements[0].Name == "Statement" && statements[1] != null && statements[1].Name == "Statements" && (statements[1].Count == 1 && statements[1][0] != null && statements[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -1218,7 +1298,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (stm1 as Compiler.AST.Data.Statement, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1235,7 +1315,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { func as Compiler.AST.Data.Function }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1260,7 +1340,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.CompoundStatement(false) { stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "newline", Value = "newline" }, stm2 as Compiler.AST.Data.Statement } }, s2 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -1286,7 +1366,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.CompoundGlobalStatement(false) { new Compiler.AST.Data.GlobalStatement(false) { func as Compiler.AST.Data.Function }, new Compiler.AST.Data.Token() { Name = "newline", Value = "newline" }, new Compiler.AST.Data.GlobalStatement(false) { stm2 as Compiler.AST.Data.Statement } } }, s2 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -1312,7 +1392,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.CompoundGlobalStatement(false) { new Compiler.AST.Data.GlobalStatement(false) { func as Compiler.AST.Data.Function }, new Compiler.AST.Data.Token() { Name = "newline", Value = "newline" }, stm2 as Compiler.AST.Data.GlobalStatement } }, s2 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -1325,15 +1405,19 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.Statement statement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((statement, symbolTable)))
+			var key = (statement, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(statement, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { statement.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ newline ] SymbolTable : s ] -> [ Statement [ newline ] s ]", (statement, symbolTable));
 			    var _result = (new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.Token() { Name = "newline", Value = "newline" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    RuleEnd(true, _result);
+			    RuleEnd(true, true, _result);
 			    return _result;
 			    RuleEnd(false);
 			}
@@ -1349,7 +1433,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.Statement(false) { dclStm as Compiler.AST.Data.IntegerDeclaration }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1366,7 +1450,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.Statement(false) { dclStm as Compiler.AST.Data.IntegerDeclarationInit }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1383,7 +1467,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.Statement(false) { dclStm as Compiler.AST.Data.BooleanDeclaration }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1400,7 +1484,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.Statement(false) { dclStm as Compiler.AST.Data.BooleanDeclarationInit }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1417,7 +1501,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.Statement(false) { itrStm1 as Compiler.AST.Data.InterruptStatement }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1434,7 +1518,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (f as Compiler.AST.Data.Function, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1451,7 +1535,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.Statement(false) { idStm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1468,7 +1552,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.Statement(false) { ifStm1 as Compiler.AST.Data.Node }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1485,7 +1569,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.Statement(false) { whileStm1 as Compiler.AST.Data.WhileStatement }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1502,7 +1586,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.Statement(false) { forStm1 as Compiler.AST.Data.ForStatement }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1519,7 +1603,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.Statement(false) { regStm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1536,7 +1620,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.Statement(false) { retStm as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1548,9 +1632,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.ReturnStatement returnStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((returnStatement, symbolTable)))
+			var key = (returnStatement, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(returnStatement, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { returnStatement.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(returnStatement != null && returnStatement.Name == "ReturnStatement" && (returnStatement.Count == 3 && returnStatement[0] != null && returnStatement[0].Name == "return" && returnStatement[1] != null && returnStatement[1].Name == "ReturnValue" && (returnStatement[1].Count == 1 && returnStatement[1][0] != null && returnStatement[1][0].Name == "Expression") && returnStatement[2] != null && returnStatement[2].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -1572,7 +1660,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.IntegerReturn(false) { new Compiler.AST.Data.Token() { Name = "return", Value = "return" }, iret as Compiler.AST.Data.IntegerExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -1598,7 +1686,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.BooleanReturn(false) { new Compiler.AST.Data.Token() { Name = "return", Value = "return" }, bret as Compiler.AST.Data.BooleanExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -1624,7 +1712,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.RegisterReturn(false) { new Compiler.AST.Data.Token() { Name = "return", Value = "return" }, rret as Compiler.AST.Data.RegisterExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -1642,7 +1730,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.EmptyReturn(false) { new Compiler.AST.Data.Token() { Name = "return", Value = "return" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -1654,15 +1742,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.InterruptStatement interruptStatement)
 		{
 			bool _isMatching = false;
-			if(Relationp.ContainsKey((interruptStatement)))
+			var key = (interruptStatement);
+			if(Relationp.ContainsKey(key))
 			{
-			    return Relationp[(interruptStatement)];
+			    var value = Relationp[key];
+			    RuleStartp(new System.Collections.Generic.List<string>() { interruptStatement.Name }, "", key);
+			    RuleEndp(true, false, value);
+			    return value;
 			}
 			if(interruptStatement != null && interruptStatement.Name == "InterruptStatement" && (interruptStatement.Count == 3 && interruptStatement[0] != null && interruptStatement[0].Name == "enableinterrupts" && interruptStatement[1] != null && interruptStatement[1].Name == "(" && interruptStatement[2] != null && interruptStatement[2].Name == ")"))
 			{
 			    RuleStartp(new System.Collections.Generic.List<string>() { "InterruptStatement" }, "InterruptStatement [ enableinterrupts ( ) ] -> : p InterruptStatement [ enableinterrupts ( ) ]", (interruptStatement));
 			    var _result = new Compiler.AST.Data.InterruptStatement(false) { new Compiler.AST.Data.Token() { Name = "enableinterrupts", Value = "enableinterrupts" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } };
-			    RuleEndp(true, _result);
+			    RuleEndp(true, true, _result);
 			    return _result;
 			    RuleEndp(false);
 			}
@@ -1670,7 +1762,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartp(new System.Collections.Generic.List<string>() { "InterruptStatement" }, "InterruptStatement [ disableinterrupts ( ) ] -> : p InterruptStatement [ disableinterrupts ( ) ]", (interruptStatement));
 			    var _result = new Compiler.AST.Data.InterruptStatement(false) { new Compiler.AST.Data.Token() { Name = "disableinterrupts", Value = "disableinterrupts" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } };
-			    RuleEndp(true, _result);
+			    RuleEndp(true, true, _result);
 			    return _result;
 			    RuleEndp(false);
 			}
@@ -1681,9 +1773,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.IdentifierDeclaration identifierDeclaration, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((identifierDeclaration, symbolTable)))
+			var key = (identifierDeclaration, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(identifierDeclaration, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { identifierDeclaration.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 1 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -1729,7 +1825,7 @@ namespace Compiler.Translation.ProgramToAST
 			                    else if(_isMatching)
 			                    {
 			                        var _result = (new Compiler.AST.Data.IntegerDeclaration(false) { t1 as Compiler.AST.Data.IntType, id1 as Compiler.AST.Data.Token }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                        RuleEnd(true, _result);
+			                        RuleEnd(true, true, _result);
 			                        return _result;
 			                    }
 			                }
@@ -1782,7 +1878,7 @@ namespace Compiler.Translation.ProgramToAST
 			                    else if(_isMatching)
 			                    {
 			                        var _result = (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.IntType }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                        RuleEnd(true, _result);
+			                        RuleEnd(true, true, _result);
 			                        return _result;
 			                    }
 			                }
@@ -1843,7 +1939,7 @@ namespace Compiler.Translation.ProgramToAST
 			                        else if(_isMatching)
 			                        {
 			                            var _result = (new Compiler.AST.Data.IntegerDeclarationInit(false) { t1 as Compiler.AST.Data.IntType, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, iexpr as Compiler.AST.Data.IntegerExpression }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                            RuleEnd(true, _result);
+			                            RuleEnd(true, true, _result);
 			                            return _result;
 			                        }
 			                    }
@@ -1897,7 +1993,7 @@ namespace Compiler.Translation.ProgramToAST
 			                    else if(_isMatching)
 			                    {
 			                        var _result = (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.Token }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                        RuleEnd(true, _result);
+			                        RuleEnd(true, true, _result);
 			                        return _result;
 			                    }
 			                }
@@ -1950,7 +2046,7 @@ namespace Compiler.Translation.ProgramToAST
 			                    else if(_isMatching)
 			                    {
 			                        var _result = (new Compiler.AST.Data.BooleanDeclaration(false) { t1 as Compiler.AST.Data.BooleanType, id1 as Compiler.AST.Data.Token }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.BooleanType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                        RuleEnd(true, _result);
+			                        RuleEnd(true, true, _result);
 			                        return _result;
 			                    }
 			                }
@@ -2011,7 +2107,7 @@ namespace Compiler.Translation.ProgramToAST
 			                        else if(_isMatching)
 			                        {
 			                            var _result = (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.BooleanType }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                            RuleEnd(true, _result);
+			                            RuleEnd(true, true, _result);
 			                            return _result;
 			                        }
 			                    }
@@ -2073,7 +2169,7 @@ namespace Compiler.Translation.ProgramToAST
 			                        else if(_isMatching)
 			                        {
 			                            var _result = (new Compiler.AST.Data.BooleanDeclarationInit(false) { t1 as Compiler.AST.Data.BooleanType, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, bexpr as Compiler.AST.Data.BooleanExpression }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.BooleanType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                            RuleEnd(true, _result);
+			                            RuleEnd(true, true, _result);
 			                            return _result;
 			                        }
 			                    }
@@ -2090,15 +2186,19 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.FormalParameters formalParameters, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((formalParameters, symbolTable)))
+			var key = (formalParameters, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(formalParameters, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { formalParameters.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(formalParameters != null && formalParameters.Name == "FormalParameters" && (formalParameters.Count == 1 && formalParameters[0] != null && formalParameters[0].Name == "EPSILON") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "FormalParameters", "SymbolTable" }, "[ FormalParameters [ EPSILON ] SymbolTable : s ] -> [ FormalParameters [ EPSILON ] s ]", (formalParameters, symbolTable));
 			    var _result = (new Compiler.AST.Data.FormalParameters(false) { new Compiler.AST.Data.Token() { Name = "EPSILON", Value = "EPSILON" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    RuleEnd(true, _result);
+			    RuleEnd(true, true, _result);
 			    return _result;
 			    RuleEnd(false);
 			}
@@ -2114,7 +2214,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.FormalParameters(false) { p1 as Compiler.AST.Data.FormalParameter }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -2139,7 +2239,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.FormalParameters(false) { new Compiler.AST.Data.FormalParameter(false) { new Compiler.AST.Data.CompoundFormalParameter(false) { p1 as Compiler.AST.Data.FormalParameter, new Compiler.AST.Data.Token() { Name = ",", Value = "," }, p2 as Compiler.AST.Data.FormalParameter } } }, s2 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -2152,9 +2252,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.FormalParametersP formalParametersP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((formalParametersP, symbolTable)))
+			var key = (formalParametersP, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(formalParametersP, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { formalParametersP.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(formalParametersP != null && formalParametersP.Name == "FormalParametersP" && (formalParametersP.Count == 3 && formalParametersP[0] != null && formalParametersP[0].Name == "," && formalParametersP[1] != null && formalParametersP[1].Name == "FormalParameter" && formalParametersP[2] != null && formalParametersP[2].Name == "FormalParametersP" && (formalParametersP[2].Count == 1 && formalParametersP[2][0] != null && formalParametersP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -2168,7 +2272,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (p1 as Compiler.AST.Data.FormalParameter, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -2193,7 +2297,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.FormalParameter(false) { new Compiler.AST.Data.CompoundFormalParameter(false) { p1 as Compiler.AST.Data.FormalParameter, new Compiler.AST.Data.Token() { Name = ",", Value = "," }, p2 as Compiler.AST.Data.FormalParameter } }, s2 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -2206,9 +2310,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.FormalParameter formalParameter, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((formalParameter, symbolTable)))
+			var key = (formalParameter, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(formalParameter, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { formalParameter.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(formalParameter != null && formalParameter.Name == "FormalParameter" && (formalParameter.Count == 2 && formalParameter[0] != null && formalParameter[0].Name == "Type" && formalParameter[1] != null && formalParameter[1].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -2246,7 +2354,7 @@ namespace Compiler.Translation.ProgramToAST
 			                else if(_isMatching)
 			                {
 			                    var _result = (new Compiler.AST.Data.FormalParameter(false) { t as Compiler.AST.Data.Type, id1 as Compiler.AST.Data.Token }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { t2 as Compiler.Translation.SymbolTable.Data.Type, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                    RuleEnd(true, _result);
+			                    RuleEnd(true, true, _result);
 			                    return _result;
 			                }
 			            }
@@ -2261,9 +2369,13 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.Type type)
 		{
 			bool _isMatching = false;
-			if(Relationp.ContainsKey((type)))
+			var key = (type);
+			if(Relationp.ContainsKey(key))
 			{
-			    return Relationp[(type)];
+			    var value = Relationp[key];
+			    RuleStartp(new System.Collections.Generic.List<string>() { type.Name }, "", key);
+			    RuleEndp(true, false, value);
+			    return value;
 			}
 			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "IntType"))
 			{
@@ -2277,7 +2389,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.IntType };
-			        RuleEndp(true, _result);
+			        RuleEndp(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndp(false);
@@ -2294,7 +2406,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.BooleanType };
-			        RuleEndp(true, _result);
+			        RuleEndp(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndp(false);
@@ -2311,7 +2423,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.RegisterType };
-			        RuleEndp(true, _result);
+			        RuleEndp(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndp(false);
@@ -2323,15 +2435,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.IntType intType)
 		{
 			bool _isMatching = false;
-			if(Relationp.ContainsKey((intType)))
+			var key = (intType);
+			if(Relationp.ContainsKey(key))
 			{
-			    return Relationp[(intType)];
+			    var value = Relationp[key];
+			    RuleStartp(new System.Collections.Generic.List<string>() { intType.Name }, "", key);
+			    RuleEndp(true, false, value);
+			    return value;
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint8"))
 			{
 			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint8 ] -> : p IntType [ uint8 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "uint8", Value = "uint8" } };
-			    RuleEndp(true, _result);
+			    RuleEndp(true, true, _result);
 			    return _result;
 			    RuleEndp(false);
 			}
@@ -2339,7 +2455,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint16 ] -> : p IntType [ uint16 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "uint16", Value = "uint16" } };
-			    RuleEndp(true, _result);
+			    RuleEndp(true, true, _result);
 			    return _result;
 			    RuleEndp(false);
 			}
@@ -2347,7 +2463,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint32 ] -> : p IntType [ uint32 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "uint32", Value = "uint32" } };
-			    RuleEndp(true, _result);
+			    RuleEndp(true, true, _result);
 			    return _result;
 			    RuleEndp(false);
 			}
@@ -2355,7 +2471,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int8 ] -> : p IntType [ int8 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int8", Value = "int8" } };
-			    RuleEndp(true, _result);
+			    RuleEndp(true, true, _result);
 			    return _result;
 			    RuleEndp(false);
 			}
@@ -2363,7 +2479,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int16 ] -> : p IntType [ int16 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int16", Value = "int16" } };
-			    RuleEndp(true, _result);
+			    RuleEndp(true, true, _result);
 			    return _result;
 			    RuleEndp(false);
 			}
@@ -2371,7 +2487,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int32 ] -> : p IntType [ int32 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int32", Value = "int32" } };
-			    RuleEndp(true, _result);
+			    RuleEndp(true, true, _result);
 			    return _result;
 			    RuleEndp(false);
 			}
@@ -2382,15 +2498,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.IntType intType)
 		{
 			bool _isMatching = false;
-			if(Relationq.ContainsKey((intType)))
+			var key = (intType);
+			if(Relationq.ContainsKey(key))
 			{
-			    return Relationq[(intType)];
+			    var value = Relationq[key];
+			    RuleStartq(new System.Collections.Generic.List<string>() { intType.Name }, "", key);
+			    RuleEndq(true, false, value);
+			    return value;
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint8"))
 			{
 			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint8 ] -> : q IntType [ uint8 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "uint8", Value = "uint8" } };
-			    RuleEndq(true, _result);
+			    RuleEndq(true, true, _result);
 			    return _result;
 			    RuleEndq(false);
 			}
@@ -2398,7 +2518,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint16 ] -> : q IntType [ uint16 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "uint16", Value = "uint16" } };
-			    RuleEndq(true, _result);
+			    RuleEndq(true, true, _result);
 			    return _result;
 			    RuleEndq(false);
 			}
@@ -2406,7 +2526,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint32 ] -> : q IntType [ uint32 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "uint32", Value = "uint32" } };
-			    RuleEndq(true, _result);
+			    RuleEndq(true, true, _result);
 			    return _result;
 			    RuleEndq(false);
 			}
@@ -2414,7 +2534,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int8 ] -> : q IntType [ int8 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "int8", Value = "int8" } };
-			    RuleEndq(true, _result);
+			    RuleEndq(true, true, _result);
 			    return _result;
 			    RuleEndq(false);
 			}
@@ -2422,7 +2542,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int16 ] -> : q IntType [ int16 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "int16", Value = "int16" } };
-			    RuleEndq(true, _result);
+			    RuleEndq(true, true, _result);
 			    return _result;
 			    RuleEndq(false);
 			}
@@ -2430,7 +2550,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int32 ] -> : q IntType [ int32 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "int32", Value = "int32" } };
-			    RuleEndq(true, _result);
+			    RuleEndq(true, true, _result);
 			    return _result;
 			    RuleEndq(false);
 			}
@@ -2441,9 +2561,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.RegisterStatement registerStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((registerStatement, symbolTable)))
+			var key = (registerStatement, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(registerStatement, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { registerStatement.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 1 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -2489,7 +2613,7 @@ namespace Compiler.Translation.ProgramToAST
 			                    else if(_isMatching)
 			                    {
 			                        var _result = (new Compiler.AST.Data.RegisterDeclaration(false) { t1 as Compiler.AST.Data.RegisterType, id1 as Compiler.AST.Data.Token }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.RegisterType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                        RuleEnd(true, _result);
+			                        RuleEnd(true, true, _result);
 			                        return _result;
 			                    }
 			                }
@@ -2550,7 +2674,7 @@ namespace Compiler.Translation.ProgramToAST
 			                        else if(_isMatching)
 			                        {
 			                            var _result = (new Compiler.AST.Data.RegisterDeclarationInit(false) { t1 as Compiler.AST.Data.RegisterType, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, rexpr as Compiler.AST.Data.RegisterExpression }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.RegisterType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                            RuleEnd(true, _result);
+			                            RuleEnd(true, true, _result);
 			                            return _result;
 			                        }
 			                    }
@@ -2596,7 +2720,7 @@ namespace Compiler.Translation.ProgramToAST
 			                else if(_isMatching)
 			                {
 			                    var _result = (new Compiler.AST.Data.DirectBitAssignment(false) { regType as Compiler.AST.Data.RegisterType, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, intExpr1 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "{", Value = "{" }, intExpr2 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = "}", Value = "}" }, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, boolExpr as Compiler.AST.Data.BooleanExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                    RuleEnd(true, _result);
+			                    RuleEnd(true, true, _result);
 			                    return _result;
 			                }
 			            }
@@ -2611,15 +2735,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.RegisterType registerType)
 		{
 			bool _isMatching = false;
-			if(Relationp.ContainsKey((registerType)))
+			var key = (registerType);
+			if(Relationp.ContainsKey(key))
 			{
-			    return Relationp[(registerType)];
+			    var value = Relationp[key];
+			    RuleStartp(new System.Collections.Generic.List<string>() { registerType.Name }, "", key);
+			    RuleEndp(true, false, value);
+			    return value;
 			}
 			if(registerType != null && registerType.Name == "RegisterType" && (registerType.Count == 1 && registerType[0] != null && registerType[0].Name == "register8"))
 			{
 			    RuleStartp(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register8 ] -> : p RegisterType [ register8 ]", (registerType));
 			    var _result = new Compiler.AST.Data.RegisterType(false) { new Compiler.AST.Data.Token() { Name = "register8", Value = "register8" } };
-			    RuleEndp(true, _result);
+			    RuleEndp(true, true, _result);
 			    return _result;
 			    RuleEndp(false);
 			}
@@ -2627,7 +2755,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartp(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register16 ] -> : p RegisterType [ register16 ]", (registerType));
 			    var _result = new Compiler.AST.Data.RegisterType(false) { new Compiler.AST.Data.Token() { Name = "register16", Value = "register16" } };
-			    RuleEndp(true, _result);
+			    RuleEndp(true, true, _result);
 			    return _result;
 			    RuleEndp(false);
 			}
@@ -2638,15 +2766,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.RegisterType registerType)
 		{
 			bool _isMatching = false;
-			if(Relationq.ContainsKey((registerType)))
+			var key = (registerType);
+			if(Relationq.ContainsKey(key))
 			{
-			    return Relationq[(registerType)];
+			    var value = Relationq[key];
+			    RuleStartq(new System.Collections.Generic.List<string>() { registerType.Name }, "", key);
+			    RuleEndq(true, false, value);
+			    return value;
 			}
 			if(registerType != null && registerType.Name == "RegisterType" && (registerType.Count == 1 && registerType[0] != null && registerType[0].Name == "register8"))
 			{
 			    RuleStartq(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register8 ] -> : q RegisterType [ register8 ]", (registerType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.RegisterType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "register8", Value = "register8" } };
-			    RuleEndq(true, _result);
+			    RuleEndq(true, true, _result);
 			    return _result;
 			    RuleEndq(false);
 			}
@@ -2654,7 +2786,7 @@ namespace Compiler.Translation.ProgramToAST
 			{
 			    RuleStartq(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register16 ] -> : q RegisterType [ register16 ]", (registerType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.RegisterType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "register16", Value = "register16" } };
-			    RuleEndq(true, _result);
+			    RuleEndq(true, true, _result);
 			    return _result;
 			    RuleEndq(false);
 			}
@@ -2665,15 +2797,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.BooleanType booleanType)
 		{
 			bool _isMatching = false;
-			if(Relationp.ContainsKey((booleanType)))
+			var key = (booleanType);
+			if(Relationp.ContainsKey(key))
 			{
-			    return Relationp[(booleanType)];
+			    var value = Relationp[key];
+			    RuleStartp(new System.Collections.Generic.List<string>() { booleanType.Name }, "", key);
+			    RuleEndp(true, false, value);
+			    return value;
 			}
 			if(booleanType != null && booleanType.Name == "BooleanType" && (booleanType.Count == 1 && booleanType[0] != null && booleanType[0].Name == "bool"))
 			{
 			    RuleStartp(new System.Collections.Generic.List<string>() { "BooleanType" }, "BooleanType [ bool ] -> : p BooleanType [ bool ]", (booleanType));
 			    var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
-			    RuleEndp(true, _result);
+			    RuleEndp(true, true, _result);
 			    return _result;
 			    RuleEndp(false);
 			}
@@ -2684,15 +2820,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.BooleanType booleanType)
 		{
 			bool _isMatching = false;
-			if(Relationq.ContainsKey((booleanType)))
+			var key = (booleanType);
+			if(Relationq.ContainsKey(key))
 			{
-			    return Relationq[(booleanType)];
+			    var value = Relationq[key];
+			    RuleStartq(new System.Collections.Generic.List<string>() { booleanType.Name }, "", key);
+			    RuleEndq(true, false, value);
+			    return value;
 			}
 			if(booleanType != null && booleanType.Name == "BooleanType" && (booleanType.Count == 1 && booleanType[0] != null && booleanType[0].Name == "bool"))
 			{
 			    RuleStartq(new System.Collections.Generic.List<string>() { "BooleanType" }, "BooleanType [ bool ] -> : q BooleanType [ bool ]", (booleanType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.BooleanType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "bool", Value = "bool" } };
-			    RuleEndq(true, _result);
+			    RuleEndq(true, true, _result);
 			    return _result;
 			    RuleEndq(false);
 			}
@@ -2703,9 +2843,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.IdentifierStatement identifierStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((identifierStatement, symbolTable)))
+			var key = (identifierStatement, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(identifierStatement, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { identifierStatement.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(identifierStatement != null && identifierStatement.Name == "IdentifierStatement" && (identifierStatement.Count == 2 && identifierStatement[0] != null && identifierStatement[0].Name == "identifier" && identifierStatement[1] != null && identifierStatement[1].Name == "IdentifierStatementP" && (identifierStatement[1].Count == 4 && identifierStatement[1][0] != null && identifierStatement[1][0].Name == "BitSelector" && (identifierStatement[1][0].Count == 3 && identifierStatement[1][0][0] != null && identifierStatement[1][0][0].Name == "{" && identifierStatement[1][0][1] != null && identifierStatement[1][0][1].Name == "Expression" && identifierStatement[1][0][2] != null && identifierStatement[1][0][2].Name == "}") && identifierStatement[1][1] != null && identifierStatement[1][1].Name == "=" && identifierStatement[1][2] != null && identifierStatement[1][2].Name == "Expression" && identifierStatement[1][3] != null && identifierStatement[1][3].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -2743,7 +2887,7 @@ namespace Compiler.Translation.ProgramToAST
 			                else if(_isMatching)
 			                {
 			                    var _result = (new Compiler.AST.Data.IndirectBitAssignment(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "{", Value = "{" }, intExpr as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = "}", Value = "}" }, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, boolExpr as Compiler.AST.Data.BooleanExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                    RuleEnd(true, _result);
+			                    RuleEnd(true, true, _result);
 			                    return _result;
 			                }
 			            }
@@ -2779,7 +2923,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.IntegerAssignment(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, intExpr as Compiler.AST.Data.IntegerExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -2814,7 +2958,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.RegisterAssignment(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, registerExpr as Compiler.AST.Data.RegisterExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -2849,7 +2993,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.BooleanAssignment(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, boolExpr as Compiler.AST.Data.BooleanExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -2884,7 +3028,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.Call(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p2 as Compiler.AST.Data.ExpressionList, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -2919,7 +3063,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.Call(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p2 as Compiler.AST.Data.ExpressionList, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -2954,7 +3098,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.Call(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p2 as Compiler.AST.Data.ExpressionList, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -2989,7 +3133,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.Call(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p2 as Compiler.AST.Data.ExpressionList, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -3003,9 +3147,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.IfStatement ifStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((ifStatement, symbolTable)))
+			var key = (ifStatement, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(ifStatement, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { ifStatement.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(ifStatement != null && ifStatement.Name == "IfStatement" && (ifStatement.Count == 8 && ifStatement[0] != null && ifStatement[0].Name == "if" && ifStatement[1] != null && ifStatement[1].Name == "(" && ifStatement[2] != null && ifStatement[2].Name == "Expression" && ifStatement[3] != null && ifStatement[3].Name == ")" && ifStatement[4] != null && ifStatement[4].Name == "indent" && ifStatement[5] != null && ifStatement[5].Name == "Statements" && ifStatement[6] != null && ifStatement[6].Name == "dedent" && ifStatement[7] != null && ifStatement[7].Name == "ElseStatement" && (ifStatement[7].Count == 1 && ifStatement[7][0] != null && ifStatement[7][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3027,7 +3175,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.IfStatement(false) { new Compiler.AST.Data.Token() { Name = "if", Value = "if" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, boolExpr as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3061,7 +3209,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.IfElseStatement(false) { new Compiler.AST.Data.Token() { Name = "if", Value = "if" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, boolExpr as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" }, new Compiler.AST.Data.Token() { Name = "else", Value = "else" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -3096,7 +3244,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.IfElseIfStatement(false) { new Compiler.AST.Data.Token() { Name = "if", Value = "if" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, boolExpr as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" }, new Compiler.AST.Data.Token() { Name = "else", Value = "else" }, ifStm1 as Compiler.AST.Data.Node }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -3110,9 +3258,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.WhileStatement whileStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((whileStatement, symbolTable)))
+			var key = (whileStatement, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(whileStatement, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { whileStatement.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(whileStatement != null && whileStatement.Name == "WhileStatement" && (whileStatement.Count == 7 && whileStatement[0] != null && whileStatement[0].Name == "while" && whileStatement[1] != null && whileStatement[1].Name == "(" && whileStatement[2] != null && whileStatement[2].Name == "Expression" && whileStatement[3] != null && whileStatement[3].Name == ")" && whileStatement[4] != null && whileStatement[4].Name == "indent" && whileStatement[5] != null && whileStatement[5].Name == "Statements" && whileStatement[6] != null && whileStatement[6].Name == "dedent") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3134,7 +3286,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.WhileStatement(false) { new Compiler.AST.Data.Token() { Name = "while", Value = "while" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, boolExpr as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3147,9 +3299,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.ForStatement forStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((forStatement, symbolTable)))
+			var key = (forStatement, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(forStatement, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { forStatement.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(forStatement != null && forStatement.Name == "ForStatement" && (forStatement.Count == 12 && forStatement[0] != null && forStatement[0].Name == "for" && forStatement[1] != null && forStatement[1].Name == "(" && forStatement[2] != null && forStatement[2].Name == "IntType" && forStatement[3] != null && forStatement[3].Name == "identifier" && forStatement[4] != null && forStatement[4].Name == "from" && forStatement[5] != null && forStatement[5].Name == "Expression" && forStatement[6] != null && forStatement[6].Name == "to" && forStatement[7] != null && forStatement[7].Name == "Expression" && forStatement[8] != null && forStatement[8].Name == ")" && forStatement[9] != null && forStatement[9].Name == "indent" && forStatement[10] != null && forStatement[10].Name == "Statements" && forStatement[11] != null && forStatement[11].Name == "dedent") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3211,7 +3367,7 @@ namespace Compiler.Translation.ProgramToAST
 			                            else if(_isMatching)
 			                            {
 			                                var _result = (new Compiler.AST.Data.ForStatement(false) { new Compiler.AST.Data.Token() { Name = "for", Value = "for" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, t1 as Compiler.AST.Data.IntType, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "from", Value = "from" }, iexpr1 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = "to", Value = "to" }, iexpr2 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stms1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                                RuleEnd(true, _result);
+			                                RuleEnd(true, true, _result);
 			                                return _result;
 			                            }
 			                        }
@@ -3229,9 +3385,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.Expression expression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((expression, symbolTable)))
+			var key = (expression, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(expression, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { expression.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(expression != null && expression.Name == "Expression" && (expression.Count == 1 && expression[0] != null && expression[0].Name == "OrExpression") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3245,7 +3405,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (expr as Compiler.AST.Data.Node, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3257,9 +3417,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.OrExpression orExpression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((orExpression, symbolTable)))
+			var key = (orExpression, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(orExpression, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { orExpression.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(orExpression != null && orExpression.Name == "OrExpression" && (orExpression.Count == 2 && orExpression[0] != null && orExpression[0].Name == "AndExpression" && orExpression[1] != null && orExpression[1].Name == "OrExpressionP" && (orExpression[1].Count == 1 && orExpression[1][0] != null && orExpression[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3273,7 +3437,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (expr as Compiler.AST.Data.Node, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3298,7 +3462,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(expr2 as Compiler.AST.Data.BooleanExpression, expr1 as Compiler.AST.Data.BooleanExpression) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3311,9 +3475,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.OrExpressionP orExpressionP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((orExpressionP, symbolTable)))
+			var key = (orExpressionP, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(orExpressionP, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { orExpressionP.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(orExpressionP != null && orExpressionP.Name == "OrExpressionP" && (orExpressionP.Count == 3 && orExpressionP[0] != null && orExpressionP[0].Name == "or" && orExpressionP[1] != null && orExpressionP[1].Name == "AndExpression" && orExpressionP[2] != null && orExpressionP[2].Name == "OrExpressionP" && (orExpressionP[2].Count == 1 && orExpressionP[2][0] != null && orExpressionP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3327,7 +3495,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.OrExpression(false) { new Compiler.AST.Data.BooleanExpression(true), new Compiler.AST.Data.Token() { Name = "or", Value = "or" }, expr as Compiler.AST.Data.BooleanExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3352,7 +3520,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(expr2 as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.OrExpression(false) { new Compiler.AST.Data.BooleanExpression(true), new Compiler.AST.Data.Token() { Name = "or", Value = "or" }, expr1 as Compiler.AST.Data.BooleanExpression } }) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3365,9 +3533,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.AndExpression andExpression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((andExpression, symbolTable)))
+			var key = (andExpression, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(andExpression, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { andExpression.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(andExpression != null && andExpression.Name == "AndExpression" && (andExpression.Count == 2 && andExpression[0] != null && andExpression[0].Name == "EqExpression" && andExpression[1] != null && andExpression[1].Name == "AndExpressionP" && (andExpression[1].Count == 1 && andExpression[1][0] != null && andExpression[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3381,7 +3553,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (expr as Compiler.AST.Data.Node, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3406,7 +3578,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(expr2 as Compiler.AST.Data.BooleanExpression, expr1 as Compiler.AST.Data.BooleanExpression) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3419,9 +3591,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.AndExpressionP andExpressionP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((andExpressionP, symbolTable)))
+			var key = (andExpressionP, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(andExpressionP, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { andExpressionP.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(andExpressionP != null && andExpressionP.Name == "AndExpressionP" && (andExpressionP.Count == 3 && andExpressionP[0] != null && andExpressionP[0].Name == "and" && andExpressionP[1] != null && andExpressionP[1].Name == "EqExpression" && andExpressionP[2] != null && andExpressionP[2].Name == "AndExpressionP" && (andExpressionP[2].Count == 1 && andExpressionP[2][0] != null && andExpressionP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3435,7 +3611,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.AndExpression(false) { new Compiler.AST.Data.BooleanExpression(true), new Compiler.AST.Data.Token() { Name = "and", Value = "and" }, expr as Compiler.AST.Data.BooleanExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3460,7 +3636,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(expr2 as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.AndExpression(false) { new Compiler.AST.Data.BooleanExpression(true), new Compiler.AST.Data.Token() { Name = "and", Value = "and" }, expr1 as Compiler.AST.Data.BooleanExpression } }) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3473,9 +3649,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.EqExpression eqExpression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((eqExpression, symbolTable)))
+			var key = (eqExpression, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(eqExpression, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { eqExpression.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(eqExpression != null && eqExpression.Name == "EqExpression" && (eqExpression.Count == 2 && eqExpression[0] != null && eqExpression[0].Name == "RelationalExpression" && eqExpression[1] != null && eqExpression[1].Name == "EqExpressionP" && (eqExpression[1].Count == 1 && eqExpression[1][0] != null && eqExpression[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3489,7 +3669,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (expr1 as Compiler.AST.Data.Node, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3514,7 +3694,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(expr3 as Compiler.AST.Data.BooleanExpression, boolExpr as Compiler.AST.Data.BooleanExpression) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3540,7 +3720,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(expr3 as Compiler.AST.Data.BooleanExpression, intExpr as Compiler.AST.Data.IntegerExpression) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3553,9 +3733,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.EqExpressionP eqExpressionP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((eqExpressionP, symbolTable)))
+			var key = (eqExpressionP, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(eqExpressionP, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { eqExpressionP.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(eqExpressionP != null && eqExpressionP.Name == "EqExpressionP" && (eqExpressionP.Count == 3 && eqExpressionP[0] != null && eqExpressionP[0].Name == "==" && eqExpressionP[1] != null && eqExpressionP[1].Name == "RelationalExpression" && eqExpressionP[2] != null && eqExpressionP[2].Name == "EqExpressionP" && (eqExpressionP[2].Count == 1 && eqExpressionP[2][0] != null && eqExpressionP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3569,7 +3753,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.IntegerEqExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "==", Value = "==" }, intExpr as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3586,7 +3770,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.BooleanEqExpression(false) { new Compiler.AST.Data.BooleanExpression(true), new Compiler.AST.Data.Token() { Name = "==", Value = "==" }, boolExpr as Compiler.AST.Data.BooleanExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3611,7 +3795,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(expr3 as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.IntegerEqExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "==", Value = "==" }, intExpr as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3637,7 +3821,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(expr3 as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.BooleanEqExpression(false) { new Compiler.AST.Data.BooleanExpression(true), new Compiler.AST.Data.Token() { Name = "==", Value = "==" }, boolExpr as Compiler.AST.Data.BooleanExpression } }) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3655,7 +3839,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.IntegerNotEqExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "!=", Value = "!=" }, intExpr as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3672,7 +3856,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.BooleanNotEqExpression(false) { new Compiler.AST.Data.BooleanExpression(true), new Compiler.AST.Data.Token() { Name = "!=", Value = "!=" }, boolExpr as Compiler.AST.Data.BooleanExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3697,7 +3881,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(expr3 as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.IntegerNotEqExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "!=", Value = "!=" }, intExpr as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3723,7 +3907,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(expr3 as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.BooleanNotEqExpression(false) { new Compiler.AST.Data.BooleanExpression(true), new Compiler.AST.Data.Token() { Name = "!=", Value = "!=" }, boolExpr as Compiler.AST.Data.BooleanExpression } }) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3736,9 +3920,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.RelationalExpression relationalExpression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((relationalExpression, symbolTable)))
+			var key = (relationalExpression, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(relationalExpression, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { relationalExpression.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(relationalExpression != null && relationalExpression.Name == "RelationalExpression" && (relationalExpression.Count == 2 && relationalExpression[0] != null && relationalExpression[0].Name == "AddSubExpression" && relationalExpression[1] != null && relationalExpression[1].Name == "RelationalExpressionP" && (relationalExpression[1].Count == 1 && relationalExpression[1][0] != null && relationalExpression[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3752,7 +3940,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (expr1 as Compiler.AST.Data.Node, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3777,7 +3965,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(expr3 as Compiler.AST.Data.BooleanExpression, intExpr as Compiler.AST.Data.IntegerExpression) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3790,9 +3978,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.RelationalExpressionP relationalExpressionP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((relationalExpressionP, symbolTable)))
+			var key = (relationalExpressionP, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(relationalExpressionP, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { relationalExpressionP.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(relationalExpressionP != null && relationalExpressionP.Name == "RelationalExpressionP" && (relationalExpressionP.Count == 3 && relationalExpressionP[0] != null && relationalExpressionP[0].Name == "<" && relationalExpressionP[1] != null && relationalExpressionP[1].Name == "AddSubExpression" && relationalExpressionP[2] != null && relationalExpressionP[2].Name == "RelationalExpressionP" && (relationalExpressionP[2].Count == 1 && relationalExpressionP[2][0] != null && relationalExpressionP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3806,7 +3998,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.LessThanExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "<", Value = "<" }, intExpr as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3823,7 +4015,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.GreaterThanExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = ">", Value = ">" }, intExpr as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3848,7 +4040,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(boolExpr as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.LessThanExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "<", Value = "<" }, intExpr as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3874,7 +4066,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(boolExpr as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.GreaterThanExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = ">", Value = ">" }, intExpr as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3892,7 +4084,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.LessThanOrEqExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "<=", Value = "<=" }, intExpr as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3909,7 +4101,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.GreaterThanOrEqExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = ">=", Value = ">=" }, intExpr as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -3934,7 +4126,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(boolExpr as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.LessThanOrEqExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "<=", Value = "<=" }, intExpr as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3960,7 +4152,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(boolExpr as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.GreaterThanOrEqExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = ">=", Value = ">=" }, intExpr as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -3973,9 +4165,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.AddSubExpression addSubExpression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((addSubExpression, symbolTable)))
+			var key = (addSubExpression, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(addSubExpression, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { addSubExpression.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(addSubExpression != null && addSubExpression.Name == "AddSubExpression" && (addSubExpression.Count == 2 && addSubExpression[0] != null && addSubExpression[0].Name == "MulDivExpression" && addSubExpression[1] != null && addSubExpression[1].Name == "AddSubExpressionP" && (addSubExpression[1].Count == 1 && addSubExpression[1][0] != null && addSubExpression[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -3989,7 +4185,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (expr1 as Compiler.AST.Data.Node, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4014,7 +4210,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(intExpr2 as Compiler.AST.Data.IntegerExpression, intExpr1 as Compiler.AST.Data.IntegerExpression) as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4027,9 +4223,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.AddSubExpressionP addSubExpressionP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((addSubExpressionP, symbolTable)))
+			var key = (addSubExpressionP, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(addSubExpressionP, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { addSubExpressionP.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(addSubExpressionP != null && addSubExpressionP.Name == "AddSubExpressionP" && (addSubExpressionP.Count == 3 && addSubExpressionP[0] != null && addSubExpressionP[0].Name == "+" && addSubExpressionP[1] != null && addSubExpressionP[1].Name == "MulDivExpression" && addSubExpressionP[2] != null && addSubExpressionP[2].Name == "AddSubExpressionP" && (addSubExpressionP[2].Count == 1 && addSubExpressionP[2][0] != null && addSubExpressionP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -4043,7 +4243,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.AddExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "+", Value = "+" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4060,7 +4260,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.SubExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "-", Value = "-" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4085,7 +4285,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(intExpr2 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.AddExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "+", Value = "+" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4111,7 +4311,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(intExpr2 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.SubExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "-", Value = "-" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4124,9 +4324,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.MulDivExpression mulDivExpression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((mulDivExpression, symbolTable)))
+			var key = (mulDivExpression, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(mulDivExpression, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { mulDivExpression.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(mulDivExpression != null && mulDivExpression.Name == "MulDivExpression" && (mulDivExpression.Count == 2 && mulDivExpression[0] != null && mulDivExpression[0].Name == "PowExpression" && mulDivExpression[1] != null && mulDivExpression[1].Name == "MulDivExpressionP" && (mulDivExpression[1].Count == 1 && mulDivExpression[1][0] != null && mulDivExpression[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -4140,7 +4344,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (expr1 as Compiler.AST.Data.Node, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4165,7 +4369,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(intExpr2 as Compiler.AST.Data.IntegerExpression, intExpr1 as Compiler.AST.Data.IntegerExpression) as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4178,9 +4382,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.MulDivExpressionP mulDivExpressionP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((mulDivExpressionP, symbolTable)))
+			var key = (mulDivExpressionP, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(mulDivExpressionP, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { mulDivExpressionP.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(mulDivExpressionP != null && mulDivExpressionP.Name == "MulDivExpressionP" && (mulDivExpressionP.Count == 3 && mulDivExpressionP[0] != null && mulDivExpressionP[0].Name == "*" && mulDivExpressionP[1] != null && mulDivExpressionP[1].Name == "PowExpression" && mulDivExpressionP[2] != null && mulDivExpressionP[2].Name == "MulDivExpressionP" && (mulDivExpressionP[2].Count == 1 && mulDivExpressionP[2][0] != null && mulDivExpressionP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -4194,7 +4402,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.MulExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "*", Value = "*" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4211,7 +4419,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.DivExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "/", Value = "/" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4228,7 +4436,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.ModExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "%", Value = "%" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4253,7 +4461,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(intExpr2 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.MulExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "*", Value = "*" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4279,7 +4487,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(intExpr2 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.DivExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "/", Value = "/" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4305,7 +4513,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(intExpr2 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.ModExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "%", Value = "%" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4318,9 +4526,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.PowExpression powExpression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((powExpression, symbolTable)))
+			var key = (powExpression, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(powExpression, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { powExpression.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(powExpression != null && powExpression.Name == "PowExpression" && (powExpression.Count == 2 && powExpression[0] != null && powExpression[0].Name == "PrimaryExpression" && powExpression[1] != null && powExpression[1].Name == "PowExpressionP" && (powExpression[1].Count == 1 && powExpression[1][0] != null && powExpression[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -4334,7 +4546,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (expr1 as Compiler.AST.Data.Node, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4359,7 +4571,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(intExpr2 as Compiler.AST.Data.IntegerExpression, intExpr1 as Compiler.AST.Data.IntegerExpression) as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4372,9 +4584,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.PowExpressionP powExpressionP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((powExpressionP, symbolTable)))
+			var key = (powExpressionP, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(powExpressionP, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { powExpressionP.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(powExpressionP != null && powExpressionP.Name == "PowExpressionP" && (powExpressionP.Count == 3 && powExpressionP[0] != null && powExpressionP[0].Name == "^" && powExpressionP[1] != null && powExpressionP[1].Name == "PrimaryExpression" && powExpressionP[2] != null && powExpressionP[2].Name == "PowExpressionP" && (powExpressionP[2].Count == 1 && powExpressionP[2][0] != null && powExpressionP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -4388,7 +4604,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.PowExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "^", Value = "^" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4413,7 +4629,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (Insert(intExpr2 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.PowExpression(false) { new Compiler.AST.Data.IntegerExpression(true), new Compiler.AST.Data.Token() { Name = "^", Value = "^" }, intExpr1 as Compiler.AST.Data.IntegerExpression } }) as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4426,9 +4642,13 @@ namespace Compiler.Translation.ProgramToAST
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.PrimaryExpression primaryExpression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relation.ContainsKey((primaryExpression, symbolTable)))
+			var key = (primaryExpression, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    return Relation[(primaryExpression, symbolTable)];
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { primaryExpression.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
 			}
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 1 && primaryExpression[0] != null && primaryExpression[0].Name == "numeral") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -4442,7 +4662,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.IntegerExpression(false) { i1 as Compiler.AST.Data.Token }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4467,7 +4687,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.IntegerExpression(false) { id1 as Compiler.AST.Data.Token }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4493,7 +4713,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.RegisterExpression(false) { id1 as Compiler.AST.Data.Token }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4519,7 +4739,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.BooleanExpression(false) { id1 as Compiler.AST.Data.Token }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4553,7 +4773,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.Call(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p2 as Compiler.AST.Data.ExpressionList, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -4588,7 +4808,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.Call(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p2 as Compiler.AST.Data.ExpressionList, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -4623,7 +4843,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.RegisterExpression(false) { new Compiler.AST.Data.Call(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p2 as Compiler.AST.Data.ExpressionList, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -4658,7 +4878,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.IndirectBitValue(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "{", Value = "{" }, intExpr as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = "}", Value = "}" } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -4677,7 +4897,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.IntegerExpression(false) { new Compiler.AST.Data.IntegerParenthesisExpression(false) { new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, intExpr as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4694,7 +4914,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.BooleanParenthesisExpression(false) { new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, boolExpr as Compiler.AST.Data.BooleanExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4711,7 +4931,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.NotExpression(false) { new Compiler.AST.Data.Token() { Name = "!", Value = "!" }, boolExpr as Compiler.AST.Data.BooleanExpression } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4736,7 +4956,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.RegisterExpression(false) { new Compiler.AST.Data.RegisterLiteral(false) { t1 as Compiler.AST.Data.RegisterType, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, intExpr as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, _result);
+			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4770,7 +4990,7 @@ namespace Compiler.Translation.ProgramToAST
 			            else if(_isMatching)
 			            {
 			                var _result = (new Compiler.AST.Data.BooleanExpression(false) { new Compiler.AST.Data.DirectBitValue(false) { t1 as Compiler.AST.Data.RegisterType, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, intExpr1 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "{", Value = "{" }, intExpr2 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = "}", Value = "}" } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, _result);
+			                RuleEnd(true, true, _result);
 			                return _result;
 			            }
 			        }
@@ -4789,7 +5009,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { t1 as Compiler.AST.Data.Token }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4806,7 +5026,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = (new Compiler.AST.Data.BooleanExpression(false) { f1 as Compiler.AST.Data.Token }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, _result);
+			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
@@ -4818,15 +5038,19 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.AST.Data.Node Translatet(Compiler.Parsing.Data.ExpressionList expressionList, Compiler.Translation.SymbolTable.Data.Parameters parameters, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relationt.ContainsKey((expressionList, parameters, symbolTable)))
+			var key = (expressionList, parameters, symbolTable);
+			if(Relationt.ContainsKey(key))
 			{
-			    return Relationt[(expressionList, parameters, symbolTable)];
+			    var value = Relationt[key];
+			    RuleStartt(new System.Collections.Generic.List<string>() { expressionList.Name, parameters.Name, symbolTable.Name }, "", key);
+			    RuleEndt(true, false, value);
+			    return value;
 			}
 			if(expressionList != null && expressionList.Name == "ExpressionList" && (expressionList.Count == 1 && expressionList[0] != null && expressionList[0].Name == "EPSILON") && parameters != null && parameters.Name == "Parameters" && (parameters.Count == 1 && parameters[0] != null && parameters[0].Name == "EPSILON") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStartt(new System.Collections.Generic.List<string>() { "ExpressionList" }, "[ ExpressionList [ EPSILON ] Parameters [ EPSILON ] SymbolTable ] -> : t ExpressionList [ EPSILON ]", (expressionList, parameters, symbolTable));
 			    var _result = new Compiler.AST.Data.ExpressionList(false) { new Compiler.AST.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
-			    RuleEndt(true, _result);
+			    RuleEndt(true, true, _result);
 			    return _result;
 			    RuleEndt(false);
 			}
@@ -4842,7 +5066,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.ExpressionList(false) { p5 as Compiler.AST.Data.ExpressionListArgs };
-			        RuleEndt(true, _result);
+			        RuleEndt(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndt(false);
@@ -4867,7 +5091,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = new Compiler.AST.Data.ExpressionList(false) { new Compiler.AST.Data.ExpressionListArgs(false) { new Compiler.AST.Data.CompoundArgs(false) { p5 as Compiler.AST.Data.ExpressionListArgs, new Compiler.AST.Data.Token() { Name = ",", Value = "," }, p6 as Compiler.AST.Data.ExpressionListArgs } } };
-			            RuleEndt(true, _result);
+			            RuleEndt(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4880,9 +5104,13 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.AST.Data.Node Translatet(Compiler.Parsing.Data.ExpressionListP expressionListP, Compiler.Translation.SymbolTable.Data.ParametersP parametersP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relationt.ContainsKey((expressionListP, parametersP, symbolTable)))
+			var key = (expressionListP, parametersP, symbolTable);
+			if(Relationt.ContainsKey(key))
 			{
-			    return Relationt[(expressionListP, parametersP, symbolTable)];
+			    var value = Relationt[key];
+			    RuleStartt(new System.Collections.Generic.List<string>() { expressionListP.Name, parametersP.Name, symbolTable.Name }, "", key);
+			    RuleEndt(true, false, value);
+			    return value;
 			}
 			if(expressionListP != null && expressionListP.Name == "ExpressionListP" && (expressionListP.Count == 3 && expressionListP[0] != null && expressionListP[0].Name == "," && expressionListP[1] != null && expressionListP[1].Name == "Expression" && expressionListP[2] != null && expressionListP[2].Name == "ExpressionListP" && (expressionListP[2].Count == 1 && expressionListP[2][0] != null && expressionListP[2][0].Name == "EPSILON")) && parametersP != null && parametersP.Name == "ParametersP" && (parametersP.Count == 3 && parametersP[0] != null && parametersP[0].Name == "," && parametersP[1] != null && parametersP[1].Name == "Parameter" && parametersP[2] != null && parametersP[2].Name == "ParametersP" && (parametersP[2].Count == 1 && parametersP[2][0] != null && parametersP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -4896,7 +5124,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = p5 as Compiler.AST.Data.ExpressionListArgs;
-			        RuleEndt(true, _result);
+			        RuleEndt(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndt(false);
@@ -4921,7 +5149,7 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = new Compiler.AST.Data.ExpressionListArgs(false) { new Compiler.AST.Data.CompoundArgs(false) { p5 as Compiler.AST.Data.ExpressionListArgs, new Compiler.AST.Data.Token() { Name = ",", Value = "," }, p6 as Compiler.AST.Data.ExpressionListArgs } };
-			            RuleEndt(true, _result);
+			            RuleEndt(true, true, _result);
 			            return _result;
 			        }
 			    }
@@ -4934,9 +5162,13 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.AST.Data.Node Translatet(Compiler.Parsing.Data.Expression expression, Compiler.Translation.SymbolTable.Data.Parameter parameter, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			if(Relationt.ContainsKey((expression, parameter, symbolTable)))
+			var key = (expression, parameter, symbolTable);
+			if(Relationt.ContainsKey(key))
 			{
-			    return Relationt[(expression, parameter, symbolTable)];
+			    var value = Relationt[key];
+			    RuleStartt(new System.Collections.Generic.List<string>() { expression.Name, parameter.Name, symbolTable.Name }, "", key);
+			    RuleEndt(true, false, value);
+			    return value;
 			}
 			if(expression != null && expression.Name == "Expression" && parameter != null && parameter.Name == "Parameter" && (parameter.Count == 2 && parameter[0] != null && parameter[0].Name == "Type" && (parameter[0].Count == 1 && parameter[0][0] != null && parameter[0][0].Name == "IntType") && parameter[1] != null && parameter[1].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -4950,7 +5182,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.ExpressionListArgs(false) { iexpr as Compiler.AST.Data.IntegerExpression };
-			        RuleEndt(true, _result);
+			        RuleEndt(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndt(false);
@@ -4967,7 +5199,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.ExpressionListArgs(false) { bexpr as Compiler.AST.Data.BooleanExpression };
-			        RuleEndt(true, _result);
+			        RuleEndt(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndt(false);
@@ -4984,7 +5216,7 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.ExpressionListArgs(false) { rexpr as Compiler.AST.Data.RegisterExpression };
-			        RuleEndt(true, _result);
+			        RuleEndt(true, true, _result);
 			        return _result;
 			    }
 			    RuleEndt(false);
@@ -5004,12 +5236,12 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEndp(bool success, Compiler.AST.Data.Node data)
+		public void RuleEndp(bool success, bool save, Compiler.AST.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.AST.Data.Node>;
 			casted.To = data;
-			if(success)
+			if(save)
 			{
 			    Relationp.Add(casted.From, casted.To);
 			}
@@ -5018,7 +5250,7 @@ namespace Compiler.Translation.ProgramToAST
 
 		public void RuleEndp(bool success)
 		{
-			RuleEndp(success, null);
+			RuleEndp(success, success, null);
 		}
 
 		public void RulesFailedp(Compiler.Parsing.Data.Node data)
@@ -5035,11 +5267,20 @@ namespace Compiler.Translation.ProgramToAST
 			casted.To = data;
 		}
 
-		public Compiler.AST.Data.Token Translatep(Compiler.Parsing.Data.Token token)
+		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.Token token)
 		{
+			bool _isMatching = false;
+			var key = (token);
+			if(Relationp.ContainsKey(key))
+			{
+			    var value = Relationp[key];
+			    RuleStartp(new System.Collections.Generic.List<string>() { token.Name }, "", key);
+			    RuleEndp(true, false, value);
+			    return value;
+			}
 			RuleStartp(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:p {token.Name}", token);
 			var result = new Compiler.AST.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
-			RuleEndp(true, result);
+			RuleEndp(true, true, result);
 			return result;
 		}
 
@@ -5054,12 +5295,12 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEndq(bool success, Compiler.Translation.SymbolTable.Data.Node data)
+		public void RuleEndq(bool success, bool save, Compiler.Translation.SymbolTable.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node>;
 			casted.To = data;
-			if(success)
+			if(save)
 			{
 			    Relationq.Add(casted.From, casted.To);
 			}
@@ -5068,7 +5309,7 @@ namespace Compiler.Translation.ProgramToAST
 
 		public void RuleEndq(bool success)
 		{
-			RuleEndq(success, null);
+			RuleEndq(success, success, null);
 		}
 
 		public void RulesFailedq(Compiler.Parsing.Data.Node data)
@@ -5085,11 +5326,20 @@ namespace Compiler.Translation.ProgramToAST
 			casted.To = data;
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Token Translateq(Compiler.Parsing.Data.Token token)
+		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.Token token)
 		{
+			bool _isMatching = false;
+			var key = (token);
+			if(Relationq.ContainsKey(key))
+			{
+			    var value = Relationq[key];
+			    RuleStartq(new System.Collections.Generic.List<string>() { token.Name }, "", key);
+			    RuleEndq(true, false, value);
+			    return value;
+			}
 			RuleStartq(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:q {token.Name}", token);
 			var result = new Compiler.Translation.SymbolTable.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
-			RuleEndq(true, result);
+			RuleEndq(true, true, result);
 			return result;
 		}
 
@@ -5104,12 +5354,12 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEndw(bool success, Compiler.Parsing.Data.Node data)
+		public void RuleEndw(bool success, bool save, Compiler.Parsing.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node>;
 			casted.To = data;
-			if(success)
+			if(save)
 			{
 			    Relationw.Add(casted.From, casted.To);
 			}
@@ -5118,7 +5368,7 @@ namespace Compiler.Translation.ProgramToAST
 
 		public void RuleEndw(bool success)
 		{
-			RuleEndw(success, null);
+			RuleEndw(success, success, null);
 		}
 
 		public void RulesFailedw(Compiler.Parsing.Data.Node data)
@@ -5135,11 +5385,20 @@ namespace Compiler.Translation.ProgramToAST
 			casted.To = data;
 		}
 
-		public Compiler.Parsing.Data.Token Translatew(Compiler.Parsing.Data.Token token)
+		public Compiler.Parsing.Data.Node Translatew(Compiler.Parsing.Data.Token token)
 		{
+			bool _isMatching = false;
+			var key = (token);
+			if(Relationw.ContainsKey(key))
+			{
+			    var value = Relationw[key];
+			    RuleStartw(new System.Collections.Generic.List<string>() { token.Name }, "", key);
+			    RuleEndw(true, false, value);
+			    return value;
+			}
 			RuleStartw(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:w {token.Name}", token);
 			var result = new Compiler.Parsing.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
-			RuleEndw(true, result);
+			RuleEndw(true, true, result);
 			return result;
 		}
 
@@ -5154,12 +5413,12 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEnds(bool success, Compiler.Translation.SymbolTable.Data.Node data)
+		public void RuleEnds(bool success, bool save, Compiler.Translation.SymbolTable.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.Translation.SymbolTable.Data.Node>;
 			casted.To = data;
-			if(success)
+			if(save)
 			{
 			    Relations.Add(casted.From, casted.To);
 			}
@@ -5168,7 +5427,7 @@ namespace Compiler.Translation.ProgramToAST
 
 		public void RuleEnds(bool success)
 		{
-			RuleEnds(success, null);
+			RuleEnds(success, success, null);
 		}
 
 		public void RulesFaileds((Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
@@ -5196,12 +5455,12 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEndf(bool success, Compiler.Translation.SymbolTable.Data.Node data)
+		public void RuleEndf(bool success, bool save, Compiler.Translation.SymbolTable.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.Translation.SymbolTable.Data.Node>;
 			casted.To = data;
-			if(success)
+			if(save)
 			{
 			    Relationf.Add(casted.From, casted.To);
 			}
@@ -5210,7 +5469,7 @@ namespace Compiler.Translation.ProgramToAST
 
 		public void RuleEndf(bool success)
 		{
-			RuleEndf(success, null);
+			RuleEndf(success, success, null);
 		}
 
 		public void RulesFailedf((Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
@@ -5238,12 +5497,12 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEndt(bool success, Compiler.AST.Data.Node data)
+		public void RuleEndt(bool success, bool save, Compiler.AST.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.AST.Data.Node>;
 			casted.To = data;
-			if(success)
+			if(save)
 			{
 			    Relationt.Add(casted.From, casted.To);
 			}
@@ -5252,7 +5511,7 @@ namespace Compiler.Translation.ProgramToAST
 
 		public void RuleEndt(bool success)
 		{
-			RuleEndt(success, null);
+			RuleEndt(success, success, null);
 		}
 
 		public void RulesFailedt((Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
@@ -5280,12 +5539,12 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEnd(bool success, (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
+		public void RuleEnd(bool success, bool save, (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node), (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node)>;
 			casted.To = data;
-			if(success)
+			if(save)
 			{
 			    Relation.Add(casted.From, casted.To);
 			}
@@ -5294,7 +5553,7 @@ namespace Compiler.Translation.ProgramToAST
 
 		public void RuleEnd(bool success)
 		{
-			RuleEnd(success, (null, null));
+			RuleEnd(success, success, (null, null));
 		}
 
 		public void RulesFailed((Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)

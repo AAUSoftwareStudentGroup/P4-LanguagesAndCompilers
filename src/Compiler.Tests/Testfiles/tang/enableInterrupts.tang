@@ -1,0 +1,7 @@
+int8 a = 2
+enableinterrupts()
+disableinterrupts()
+int8 foo()
+    return 5
+interrupt(1)
+    int8 i = 5

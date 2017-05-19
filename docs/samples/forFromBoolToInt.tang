@@ -1,0 +1,2 @@
+for(int8 i from 1 to 10)
+    int8 val = i

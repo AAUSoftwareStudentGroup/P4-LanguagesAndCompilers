@@ -11,10 +11,8 @@ namespace Compiler.LexicalAnalysis
     {
         List<LexerRule> _rules;
 
-        public Lexer(string configPath)
+        public Lexer(string TokenCfg)
         {
-            //Read json file with regular expressions
-            string TokenCfg = System.IO.File.ReadAllText(configPath);
             //Convert to a list of LexerRules
             _rules = JsonConvert.DeserializeObject<List<LexerRule>>(TokenCfg);
             foreach (LexerRule r in _rules) 

@@ -1,0 +1,4 @@
+int8 foo()
+    return 8
+
+int8 a = foo()
