@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,10 +11,9 @@ using Compiler.Parsing;
 
 namespace Compiler.Tests
 {
-    [TestClass]
     public class CodeGenerationTests
     {
-        [TestMethod]
+        [Theory]
         public void AddExpressionSpecialTestCodeGenerator()
         {
             Lexer lexer = new Lexer(File.ReadAllText(AppContext.BaseDirectory + "/../../../../../docs/tang.tokens.json"));
@@ -246,7 +245,7 @@ namespace Compiler.Tests
 
         public void TreeAsserter(C.Data.Node node, C.Data.Node nodeTest)
         {
-            Assert.AreEqual(node.Name, nodeTest.Name);
+            Assert.Equal(node.Name, nodeTest.Name);
 
             if (node is C.Data.Token) { }
             else
