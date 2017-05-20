@@ -62,7 +62,6 @@ namespace Compiler.LexicalAnalysis
                     {
                         int indentSize = match.Value.Length;
                         currentIndex += indentSize;
-                        UpdateCounters(match, ref row, ref column);
                         if (indentSize > indentationLevel.Peek())
                         {
                             token = new Token
@@ -104,12 +103,13 @@ namespace Compiler.LexicalAnalysis
                             {
                                 Name = "dedent",
                                 Value = "",
-                                Row = row++,
+                                Row = row,
                                 Column = column
                             };
-                            column += token.Value.Length;
                             yield return token;
                         }
+
+                        UpdateCounters(match, ref row, ref column);
                     }
                     continue;
                 }
@@ -120,7 +120,6 @@ namespace Compiler.LexicalAnalysis
                     if (match.Success && match.Index == currentIndex)
                     {
                         currentIndex += match.Value.Length;
-                        UpdateCounters(match, ref row, ref column);
                         token = new Token
                         {
                             Name = rule.Name,
@@ -129,6 +128,7 @@ namespace Compiler.LexicalAnalysis
                             Row = row,
                             Column = column
                         };
+                        UpdateCounters(match, ref row, ref column);
                         if (!rule.Ignore)
                         {
                             yield return token;
@@ -159,10 +159,9 @@ namespace Compiler.LexicalAnalysis
                 {
                     Name = "dedent",
                     Value = "",
-                    Row = row++,
+                    Row = row,
                     Column = column
                 };
-                column += token.Value.Length;
                 yield return token;
             }
 

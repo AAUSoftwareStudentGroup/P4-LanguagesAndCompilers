@@ -71,33 +71,42 @@ namespace Compiler
             }
             catch (Translation.TranslationException exception)
             {
-                //foreach (var err in GetUniqueErrors(exception.Error))
-                //{
-                //    Console.WriteLine(err.message);
-                //}
-                var err = (GetErrors(exception.Error).OrderByDescending(e => e.level).First().error as RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node), (AST.Data.Node, Translation.SymbolTable.Data.Node)>);
+                var err = GetErrors(exception.Error).OrderByDescending(e => e.level).First().error;
 
-                var first = err.From.Item1;
+                Parsing.Data.Node firstNode = null;
 
-                while (!(first is Parsing.Data.Token))
+                if(err is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node), Translation.SymbolTable.Data.Node> s)
                 {
-                    first = first[0];
+                    firstNode = s.From.Item1;
+                }
+                else if(err is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node), (AST.Data.Node, Translation.SymbolTable.Data.Node)> main)
+                {
+                    firstNode = main.From.Item1;
+                }
+                else if(err is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node, Translation.SymbolTable.Data.Node), AST.Data.Node> t)
+                {
+                    firstNode = t.From.Item1;
+                }
+                else if (err is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node), Translation.SymbolTable.Data.Node> f)
+                {
+                    firstNode = f.From.Item1;
                 }
 
-                var firstToken = first as Parsing.Data.Token;
+                while (!(firstNode is Parsing.Data.Token))
+                {
+                    firstNode = firstNode[0];
+                }
+
+                var firstToken = firstNode as Parsing.Data.Token;
 
                 if (firstToken.FileName != null)
                 {
-                    Console.WriteLine($"Could not translate '{err.From.Item1}' to {err.ReturnTypes[0]} in {firstToken.FileName} line {firstToken.Row + 1} column {firstToken.Column + 1}.");
+                    Console.WriteLine($"Could not translate '{firstNode}' to {err.ReturnTypes[0]} in {firstToken.FileName} line {firstToken.Row + 1} column {firstToken.Column + 1}.");
                 }
                 else
                 {
-                    Console.WriteLine($"Could not translate '{err.From.Item1}' to {err.ReturnTypes[0]} at line {firstToken.Row + 1} column {firstToken.Column + 1}.");
+                    Console.WriteLine($"Could not translate '{firstNode}' to {err.ReturnTypes[0]} at line {firstToken.Row + 1} column {firstToken.Column + 1}.");
                 }
-
-                //PrintErrorTree(exception.Error);
-                //PrintErrorTree(exception.Error);
-                //Console.WriteLine(GetUniqueErrors(exception.Error).OrderBy(e => e.message.Replace("to", "æ").Split('æ')[0].Length).First().message);
             }
         }
 
@@ -135,7 +144,7 @@ namespace Compiler
             {
                 if (error.IsError)
                 {
-                    Console.WriteLine($"{Indent(indent)}Could not translate ({error1.From.Item1}, {error1.From.Item2}) to ({string.Join(", ", error1.ReturnTypes)}) pattern { string.Join(", ", error1.PatternTypes)}");
+                    Console.WriteLine($"{Indent(indent)}Could not translate {error1.From.Item1} to {error1.ReturnTypes[0]} pattern { string.Join(", ", error1.PatternTypes)}");
                 }
                 else
                 {

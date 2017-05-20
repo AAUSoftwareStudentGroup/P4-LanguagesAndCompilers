@@ -1,0 +1,15 @@
+int32 s = 0
+bool b
+b = false
+
+for(int8 i from 1 to 6)
+    s = f(s, i)
+
+int32 f(int16 v1, int16 v2)
+    return v1 + v2
+
+if(s > 20)
+    b = true
+else
+    b = false
+

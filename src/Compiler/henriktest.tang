@@ -1,0 +1,5 @@
+register8 PORT36 = register8(36)
+register8 PORT37 = register8(37)
+
+PORT36{5} = true
+PORT37{5} = true

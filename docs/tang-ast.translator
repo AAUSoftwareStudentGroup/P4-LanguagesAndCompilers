@@ -1,6 +1,5 @@
 ->:p := Program -> AST
 ->:q := Program -> SymbolTable
-->:w := Program -> Program
 ->:s := [Program SymbolTable] -> SymbolTable
 ->:f := [Program SymbolTable] -> SymbolTable
 ->:t := [Program SymbolTable SymbolTable] -> AST
