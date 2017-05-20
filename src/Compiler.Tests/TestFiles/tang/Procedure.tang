@@ -1,6 +1,0 @@
-int16 i = 0
-nothing procedure()
-    i = 10
-
-procedure()
-// i is 10

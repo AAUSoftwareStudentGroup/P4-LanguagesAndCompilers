@@ -1,6 +1,0 @@
-if(true)
-    int8 i = 0
-else if(false)
-    int8 i = 0
-else
-    int8 i = 0

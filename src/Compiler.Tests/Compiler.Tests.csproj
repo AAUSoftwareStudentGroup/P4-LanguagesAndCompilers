@@ -15,12 +15,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Testfiles\Fail\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="../../../docs/tang.tokens.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>tang.tokens.json</Link>
     </None>
-
-    <None Update="Testfiles\tang\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Testfiles\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Testfiles\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </None>
   </ItemGroup>
 

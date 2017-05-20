@@ -1,5 +1,0 @@
-int8 num8 = 0
-bool num16 = false
-
-for(int8 i from num8 to num16)
-	int8 j = i

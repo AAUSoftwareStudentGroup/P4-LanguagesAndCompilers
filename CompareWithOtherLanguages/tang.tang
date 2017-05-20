@@ -1,0 +1,21 @@
+// registers used
+register8 DDRB = register8(36)
+register8 PORTB = register8(37)
+
+
+// setup
+DDRB{5} = true
+
+// infinite loop
+while(true)
+    PORTB{5} = true
+    wait()
+    PORTB{5} = false
+    wait()
+
+
+// functions
+nothing wait()
+    for(int32 i from 1 to 3200000)
+        // do nothing
+

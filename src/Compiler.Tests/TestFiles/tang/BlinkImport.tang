@@ -1,5 +1,0 @@
-import AllRegisters
-import BlinkImported
-DDRB{5} = true
-PORTB{5} = true
-func(5)
