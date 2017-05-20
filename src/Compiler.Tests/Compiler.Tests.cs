@@ -22,8 +22,8 @@ namespace Compiler.Xunit
         public void ProgramsCompileCorrectly(string file)
         {
             TangCompiler tc = new TangCompiler();
-            string expected = File.ReadAllText(file + ".c");
-            string actual = tc.Compile(file, "../../../../../docs/tang.tokens.json");
+            string expected = File.ReadAllText(file + ".c").Replace("\r","");
+            string actual = tc.Compile(file, "../../../../../docs/tang.tokens.json").Replace("\r", "");
             Assert.Equal(expected, actual);
         }
         [Theory]
