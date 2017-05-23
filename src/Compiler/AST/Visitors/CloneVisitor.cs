@@ -644,7 +644,7 @@ namespace Compiler.AST.Visitors
 
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.Token node)
 		{
-			return new Compiler.AST.Data.Token() { Name = node.Name, Value = node.Value, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder };
+			return new Compiler.AST.Data.Token() { Name = node.Name, Value = node.Value, FileName = node.FileName, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder };
 		}
 
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.Node node)

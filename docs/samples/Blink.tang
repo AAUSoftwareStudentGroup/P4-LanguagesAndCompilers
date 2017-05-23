@@ -1,5 +1,5 @@
 import Nano
-PinModeD(6, OUTPUT)
+PinModeD(13, OUTPUT)
 while(true)
     delay(500)
-    DigitalFlip(6)
+    DigitalFlip(13)

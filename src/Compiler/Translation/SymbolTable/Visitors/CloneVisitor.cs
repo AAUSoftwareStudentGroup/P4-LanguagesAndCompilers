@@ -144,7 +144,7 @@ namespace Compiler.Translation.SymbolTable.Visitors
 
 		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.Token node)
 		{
-			return new Compiler.Translation.SymbolTable.Data.Token() { Name = node.Name, Value = node.Value, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder };
+			return new Compiler.Translation.SymbolTable.Data.Token() { Name = node.Name, Value = node.Value, FileName = node.FileName, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder };
 		}
 
 		public override Compiler.Translation.SymbolTable.Data.Node Visit(Compiler.Translation.SymbolTable.Data.Node node)

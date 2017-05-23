@@ -306,6 +306,7 @@ InterruptStatement[disableinterrupts ( )] -> :p InterruptStatement[disableinterr
     [pp s1] -> [FormalParameter:p2 SymbolTable:s2]
 
 [FormalParameter[Type:type identifier:id] SymbolTable:s] -> [FormalParameter[t id1] s <- Declarations[Declaration[Variable[t2 id2]] %Declarations[EPSILON]]]
+    [id s] ->:s Declaration[EPSILON]
     type ->:p Type:t
     type ->:q Type:t2
     id ->:p identifier:id1

@@ -1,0 +1,5 @@
+int8 add(int8 a, int8 b)
+    return a + b
+int8 b
+int8 add2(int8 b)
+    return b

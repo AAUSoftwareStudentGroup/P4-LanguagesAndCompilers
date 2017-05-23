@@ -484,7 +484,7 @@ namespace Compiler.Parsing.Visitors
 
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.Token node)
 		{
-			return new Compiler.Parsing.Data.Token() { Name = node.Name, Value = node.Value, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder };
+			return new Compiler.Parsing.Data.Token() { Name = node.Name, Value = node.Value, FileName = node.FileName, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder };
 		}
 
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.Node node)

@@ -5,7 +5,6 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Error.RuleError RuleError { get; set; } = new Compiler.Error.RuleError();
 		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.AST.Data.Node> Relationp { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.AST.Data.Node>();
 		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Translation.SymbolTable.Data.Node> Relationq { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Translation.SymbolTable.Data.Node>();
-		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Parsing.Data.Node> Relationw { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Parsing.Data.Node>();
 		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node> Relations { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node>();
 		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node> Relationf { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node>();
 		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.AST.Data.Node> Relationt { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.AST.Data.Node>();
@@ -2321,41 +2320,50 @@ namespace Compiler.Translation.ProgramToAST
 			if(formalParameter != null && formalParameter.Name == "FormalParameter" && (formalParameter.Count == 2 && formalParameter[0] != null && formalParameter[0].Name == "Type" && formalParameter[1] != null && formalParameter[1].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "FormalParameter", "SymbolTable" }, "[ FormalParameter [ Type : type identifier : id ] SymbolTable : s ] -> [ FormalParameter [ t id1 ] s <- Declarations [ Declaration [ Variable [ t2 id2 ] ] % Declarations [ EPSILON ] ] ]", (formalParameter, symbolTable));
-			    Compiler.AST.Data.Node t = Translatep(formalParameter[0] as Compiler.Parsing.Data.Type);
-			    _isMatching = t != null && t.Name == "Type";
-			    if(t != null && !_isMatching)
+			    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(formalParameter[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
+			    if(declaration != null && !_isMatching)
 			    {
-			        WrongPatternp((t), new System.Collections.Generic.List<string>() { "Type" });
+			        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(formalParameter[0] as Compiler.Parsing.Data.Type);
-			        _isMatching = t2 != null && t2.Name == "Type";
-			        if(t2 != null && !_isMatching)
+			        Compiler.AST.Data.Node t = Translatep(formalParameter[0] as Compiler.Parsing.Data.Type);
+			        _isMatching = t != null && t.Name == "Type";
+			        if(t != null && !_isMatching)
 			        {
-			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "Type" });
+			            WrongPatternp((t), new System.Collections.Generic.List<string>() { "Type" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node id1 = Translatep(formalParameter[1] as Compiler.Parsing.Data.Token);
-			            _isMatching = id1 != null && id1.Name == "identifier";
-			            if(id1 != null && !_isMatching)
+			            Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(formalParameter[0] as Compiler.Parsing.Data.Type);
+			            _isMatching = t2 != null && t2.Name == "Type";
+			            if(t2 != null && !_isMatching)
 			            {
-			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatternq((t2), new System.Collections.Generic.List<string>() { "Type" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(formalParameter[1] as Compiler.Parsing.Data.Token);
-			                _isMatching = id2 != null && id2.Name == "identifier";
-			                if(id2 != null && !_isMatching)
+			                Compiler.AST.Data.Node id1 = Translatep(formalParameter[1] as Compiler.Parsing.Data.Token);
+			                _isMatching = id1 != null && id1.Name == "identifier";
+			                if(id1 != null && !_isMatching)
 			                {
-			                    WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                    WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			                }
 			                else if(_isMatching)
 			                {
-			                    var _result = (new Compiler.AST.Data.FormalParameter(false) { t as Compiler.AST.Data.Type, id1 as Compiler.AST.Data.Token }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { t2 as Compiler.Translation.SymbolTable.Data.Type, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                    RuleEnd(true, true, _result);
-			                    return _result;
+			                    Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(formalParameter[1] as Compiler.Parsing.Data.Token);
+			                    _isMatching = id2 != null && id2.Name == "identifier";
+			                    if(id2 != null && !_isMatching)
+			                    {
+			                        WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                    }
+			                    else if(_isMatching)
+			                    {
+			                        var _result = (new Compiler.AST.Data.FormalParameter(false) { t as Compiler.AST.Data.Type, id1 as Compiler.AST.Data.Token }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { t2 as Compiler.Translation.SymbolTable.Data.Type, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                        RuleEnd(true, true, _result);
+			                        return _result;
+			                    }
 			                }
 			            }
 			        }
@@ -5340,65 +5348,6 @@ namespace Compiler.Translation.ProgramToAST
 			RuleStartq(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:q {token.Name}", token);
 			var result = new Compiler.Translation.SymbolTable.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
 			RuleEndq(true, true, result);
-			return result;
-		}
-
-		public void RuleStartw(System.Collections.Generic.List<string> returnTypes, string rule, Compiler.Parsing.Data.Node data)
-		{
-			Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node> error = new Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node>();
-			error.ReturnTypes = returnTypes;
-			error.Parent = RuleError;
-			error.Rule = rule;
-			RuleError.Children.Add(error);
-			error.From = data;
-			RuleError = error;
-		}
-
-		public void RuleEndw(bool success, bool save, Compiler.Parsing.Data.Node data)
-		{
-			RuleError.IsError = !success;
-			var casted = RuleError as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node>;
-			casted.To = data;
-			if(save)
-			{
-			    Relationw.Add(casted.From, casted.To);
-			}
-			RuleError = RuleError.Parent;
-		}
-
-		public void RuleEndw(bool success)
-		{
-			RuleEndw(success, success, null);
-		}
-
-		public void RulesFailedw(Compiler.Parsing.Data.Node data)
-		{
-			Relationw.Add(data, null);
-		}
-
-		public void WrongPatternw(Compiler.Parsing.Data.Node data, System.Collections.Generic.List<string> returnTypes)
-		{
-			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node>;
-			casted.IsError = true;
-			casted.ReturnTypes = returnTypes;
-			casted.IsPatternError = true;
-			casted.To = data;
-		}
-
-		public Compiler.Parsing.Data.Node Translatew(Compiler.Parsing.Data.Token token)
-		{
-			bool _isMatching = false;
-			var key = (token);
-			if(Relationw.ContainsKey(key))
-			{
-			    var value = Relationw[key];
-			    RuleStartw(new System.Collections.Generic.List<string>() { token.Name }, "", key);
-			    RuleEndw(true, false, value);
-			    return value;
-			}
-			RuleStartw(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:w {token.Name}", token);
-			var result = new Compiler.Parsing.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
-			RuleEndw(true, true, result);
 			return result;
 		}
 

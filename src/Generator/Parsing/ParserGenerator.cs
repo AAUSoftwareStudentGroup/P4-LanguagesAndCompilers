@@ -233,7 +233,7 @@ namespace Generator.Parsing
                 {
                     method.Body = new List<string>()
                     {
-                        $"return new {method.Parameters[0].Type}() {{ Name = node.Name, Value = node.Value, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder }};"
+                        $"return new {method.Parameters[0].Type}() {{ Name = node.Name, Value = node.Value, FileName = node.FileName, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder }};"
                     };
                 }
                 else if (method.Parameters[0].Type.Split('.').Last() == "Node")

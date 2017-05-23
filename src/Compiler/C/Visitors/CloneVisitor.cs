@@ -704,7 +704,7 @@ namespace Compiler.C.Visitors
 
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.Token node)
 		{
-			return new Compiler.C.Data.Token() { Name = node.Name, Value = node.Value, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder };
+			return new Compiler.C.Data.Token() { Name = node.Name, Value = node.Value, FileName = node.FileName, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder };
 		}
 
 		public override Compiler.C.Data.Node Visit(Compiler.C.Data.Node node)
