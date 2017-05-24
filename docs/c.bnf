@@ -79,7 +79,6 @@ BooleanAssignment -> identifier = BooleanExpression
 
 DirectBitAssignment -> ( * ( RegisterType ) ( IntegerExpression ) ) = ( BooleanExpression ? ( ( * ( RegisterType ) ( IntegerExpression ) ) \| 1 << ( IntegerExpression ) ) : ( ( * ( RegisterType ) ( IntegerExpression ) ) & ~ ( 1 << ( IntegerExpression ) ) ) )
 
-
 IndirectBitAssignment -> * identifier = ( BooleanExpression ? ( ( * identifier ) \| 1 << ( IntegerExpression ) ) : ( ( * identifier ) & ~ ( 1 << ( IntegerExpression ) ) ) )
 
 RegisterDeclaration -> RegisterType identifier

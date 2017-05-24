@@ -486,6 +486,7 @@ BooleanType[bool] ->:q BooleanType[bool]
     t ->:q IntType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
+    [id s] ->:s Declaration[EPSILON]
     [expr1 s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]] -> [IntegerExpression:iexpr1 SymbolTable]
     [expr2 s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]] -> [IntegerExpression:iexpr2 SymbolTable]
     [stms s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]] -> [Statement:stms1 SymbolTable]
