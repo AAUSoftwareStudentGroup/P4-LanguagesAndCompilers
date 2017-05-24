@@ -17,7 +17,7 @@ namespace Compiler
             try
             {
                 string tokensPath = "../../docs/tang.tokens.json";
-                string sourcePath = "../../docs/samples/Blink.tang";
+                string sourcePath = "../../docs/samples/Register.tang";
                 string outputPath = sourcePath + ".c";
                 int debugLevel = 0;
                 TangCompiler tangCompiler = new TangCompiler();
@@ -75,22 +75,28 @@ namespace Compiler
 
                 Parsing.Data.Node firstNode = null;
 
-                if(err is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node), Translation.SymbolTable.Data.Node> s)
+                AST.Data.Node translated = null;
+
+                if (err is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node), Translation.SymbolTable.Data.Node> s)
                 {
                     firstNode = s.From.Item1;
                 }
                 else if(err is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node), (AST.Data.Node, Translation.SymbolTable.Data.Node)> main)
                 {
                     firstNode = main.From.Item1;
+                    translated = main.To.Item1;
                 }
                 else if(err is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node, Translation.SymbolTable.Data.Node), AST.Data.Node> t)
                 {
                     firstNode = t.From.Item1;
+                    translated = t.To;
                 }
                 else if (err is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node), Translation.SymbolTable.Data.Node> f)
                 {
                     firstNode = f.From.Item1;
                 }
+
+                var actualNode = firstNode;
 
                 while (!(firstNode is Parsing.Data.Token))
                 {
@@ -99,14 +105,21 @@ namespace Compiler
 
                 var firstToken = firstNode as Parsing.Data.Token;
 
-                if (firstToken.FileName != null)
+                string wasString = "";
+
+                if(translated != null)
                 {
-                    Console.WriteLine($"Could not translate '{firstNode}' to {err.ReturnTypes[0]} in {firstToken.FileName} line {firstToken.Row + 1} column {firstToken.Column + 1}.");
+                    wasString = $" was {translated.Name}";
                 }
-                else
+
+                string fileStr = "";
+
+                if(firstToken.FileName != null)
                 {
-                    Console.WriteLine($"Could not translate '{firstNode}' to {err.ReturnTypes[0]} at line {firstToken.Row + 1} column {firstToken.Column + 1}.");
+                    fileStr = $" in {firstToken.FileName}{wasString}";
                 }
+                
+                Console.WriteLine($"Could not translate '{actualNode}' to {err.ReturnTypes[0]}{wasString}{fileStr} at line {firstToken.Row + 1} column {firstToken.Column + 1}.");
             }
         }
 
@@ -161,6 +174,30 @@ namespace Compiler
                 else
                 {
                     Console.WriteLine($"{Indent(indent)}Translated ({error2.From}) to ({string.Join(", ", error2.ReturnTypes)}) pattern { string.Join(", ", error2.PatternTypes)}");
+                }
+            }
+            else if (error is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node, Translation.SymbolTable.Data.Node), AST.Data.Node> t)
+            {
+                string patternMsg = $" pattern ({ string.Join(", ", t.PatternTypes)})";
+                if (error.IsError)
+                {
+                    Console.WriteLine($"{Indent(indent)}Could not translate ({t.From}) to ({string.Join(", ", t.ReturnTypes)}) pattern { string.Join(", ", t.PatternTypes)}");
+                }
+                else
+                {
+                    Console.WriteLine($"{Indent(indent)}Translated ({t.From}) to ({string.Join(", ", t.ReturnTypes)}) pattern { string.Join(", ", t.PatternTypes)}");
+                }
+            }
+            else if (error is RuleError<(Parsing.Data.Node, Translation.SymbolTable.Data.Node), Translation.SymbolTable.Data.Node> f)
+            {
+                string patternMsg = $" pattern ({ string.Join(", ", f.PatternTypes)})";
+                if (error.IsError)
+                {
+                    Console.WriteLine($"{Indent(indent)}Could not translate ({f.From}) to ({string.Join(", ", f.ReturnTypes)}) pattern { string.Join(", ", f.PatternTypes)}");
+                }
+                else
+                {
+                    Console.WriteLine($"{Indent(indent)}Translated ({f.From}) to ({string.Join(", ", f.ReturnTypes)}) pattern { string.Join(", ", f.PatternTypes)}");
                 }
             }
 

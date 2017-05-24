@@ -32,6 +32,26 @@ namespace Compiler.Parsing.Visitors
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.Parsing.Data.RegisterSimpleStatement node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Parsing.Data.RegisterSimpleOperation node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Parsing.Data.IdentifierSimpleDeclaration node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.Parsing.Data.SimpleDefinition node)
+		{
+			return Visit((Compiler.Parsing.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.Parsing.Data.IdentifierDeclaration node)
 		{
 			return Visit((Compiler.Parsing.Data.Node)node);
@@ -53,11 +73,6 @@ namespace Compiler.Parsing.Visitors
 		}
 
 		public virtual T Visit(Compiler.Parsing.Data.Definition node)
-		{
-			return Visit((Compiler.Parsing.Data.Node)node);
-		}
-
-		public virtual T Visit(Compiler.Parsing.Data.DefinitionAssign node)
 		{
 			return Visit((Compiler.Parsing.Data.Node)node);
 		}

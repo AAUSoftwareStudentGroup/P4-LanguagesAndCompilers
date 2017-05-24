@@ -62,6 +62,46 @@ namespace Compiler.Parsing.Visitors
 			return clone;
 		}
 
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.RegisterSimpleStatement node)
+		{
+			var clone = new Compiler.Parsing.Data.RegisterSimpleStatement() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.RegisterSimpleOperation node)
+		{
+			var clone = new Compiler.Parsing.Data.RegisterSimpleOperation() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.IdentifierSimpleDeclaration node)
+		{
+			var clone = new Compiler.Parsing.Data.IdentifierSimpleDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.SimpleDefinition node)
+		{
+			var clone = new Compiler.Parsing.Data.SimpleDefinition() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.IdentifierDeclaration node)
 		{
 			var clone = new Compiler.Parsing.Data.IdentifierDeclaration() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -105,16 +145,6 @@ namespace Compiler.Parsing.Visitors
 		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.Definition node)
 		{
 			var clone = new Compiler.Parsing.Data.Definition() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
-			foreach(var child in node)
-			{
-			    clone.Add(child.Accept(this));
-			}
-			return clone;
-		}
-
-		public override Compiler.Parsing.Data.Node Visit(Compiler.Parsing.Data.DefinitionAssign node)
-		{
-			var clone = new Compiler.Parsing.Data.DefinitionAssign() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));

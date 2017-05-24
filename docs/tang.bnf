@@ -4,16 +4,24 @@ GlobalStatements -> GlobalStatement GlobalStatements
                   | EPSILON
 
 GlobalStatement -> Interrupt
-                 | Statement
+                 | IdentifierDeclaration
+                 | IdentifierStatement
+                 | RegisterStatement
+                 | IfStatement
+                 | WhileStatement
+                 | ForStatement
+                 | ReturnStatement
+                 | InterruptStatement
+                 | newline
 
 Interrupt -> interrupt ( numeral ) indent Statements dedent
 
 Statements -> Statement Statements
             | EPSILON
 
-Statement -> IdentifierDeclaration
+Statement -> IdentifierSimpleDeclaration
            | IdentifierStatement
-           | RegisterStatement
+           | RegisterSimpleStatement
            | IfStatement
            | WhileStatement
            | ForStatement
@@ -21,9 +29,20 @@ Statement -> IdentifierDeclaration
            | InterruptStatement
            | newline
 
+RegisterSimpleStatement -> RegisterType RegisterSimpleOperation
+
+RegisterSimpleOperation -> ( Expression ) { Expression } = Expression newline
+                         | identifier SimpleDefinition
+
+IdentifierSimpleDeclaration -> IntType identifier SimpleDefinition
+                             | BoolenType identifier SimpleDefinition
+
+SimpleDefinition -> = Expression newline
+                  | newline
+
 IdentifierDeclaration -> IntType identifier Definition
                        | BooleanType identifier Definition
-                       | nothing identifier ( FormalParameters ) indent Statements dedent				   
+                       | nothing identifier ( FormalParameters ) indent Statements dedent                  
 
 RegisterStatement -> RegisterType RegisterOperation
 
@@ -33,15 +52,12 @@ RegisterType -> register8
 RegisterOperation -> ( Expression ) { Expression } = Expression newline
                    | identifier Definition
 
-Definition -> = DefinitionAssign
+Definition -> = Expression newline
             | ( FormalParameters ) indent Statements dedent
             | newline
 
-DefinitionAssign -> Expression newline
-                 | [ ExpressionList ]
-
 InterruptStatement -> disableinterrupts ( )
-                           | enableinterrupts ( )
+                    | enableinterrupts ( )
                  
 ReturnStatement -> return ReturnValue newline
 

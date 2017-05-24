@@ -1,19 +1,20 @@
-unsigned long c ;
+signed char m ;
+signed char max ( signed char a , signed char b ) ;
 int Pow ( signed long a , unsigned long b ) ;
 void main ( ) ;
 int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+signed char max ( signed char a , signed char b )
+{
+    if ( ( a > b ) )
+    {
+        return ( a + m ) ;
+    }
+    else
+    {
+        return b ;
+    }
+}
 void main ( )
 {
-    ( * ( volatile unsigned char * ) ( 36 ) ) = ( 1 ? ( ( * ( volatile unsigned char * ) ( 36 ) ) | 1 << ( 5 ) ) : ( ( * ( volatile unsigned char * ) ( 36 ) ) & ~ ( 1 << ( 5 ) ) ) ) ;
-    ( * ( volatile unsigned char * ) ( 37 ) ) = ( 0 ? ( ( * ( volatile unsigned char * ) ( 37 ) ) | 1 << ( 5 ) ) : ( ( * ( volatile unsigned char * ) ( 37 ) ) & ~ ( 1 << ( 5 ) ) ) ) ;
-    c = 0 ;
-    while ( 1 )
-    {
-        if ( ( c == 300000 ) )
-        {
-            ( * ( volatile unsigned char * ) ( 37 ) ) = ( ( ! ( ( * ( volatile unsigned char * ) ( 37 ) ) & ( 1 << ( 5 ) ) ) ) ? ( ( * ( volatile unsigned char * ) ( 37 ) ) | 1 << ( ( 5 + 5 ) ) ) : ( ( * ( volatile unsigned char * ) ( 37 ) ) & ~ ( 1 << ( ( 5 + 5 ) ) ) ) ) ;
-            c = 0 ;
-        }
-        c = ( c + 1 ) ;
-    }
+    m = max ( max ( 1 , 2 ) , 3 ) ;
 }

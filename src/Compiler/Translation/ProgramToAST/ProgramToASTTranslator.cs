@@ -5,6 +5,7 @@ namespace Compiler.Translation.ProgramToAST
 		public Compiler.Error.RuleError RuleError { get; set; } = new Compiler.Error.RuleError();
 		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.AST.Data.Node> Relationp { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.AST.Data.Node>();
 		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Translation.SymbolTable.Data.Node> Relationq { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Translation.SymbolTable.Data.Node>();
+		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Parsing.Data.Node> Relationr { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Parsing.Data.Node>();
 		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node> Relations { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node>();
 		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node> Relationf { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node>();
 		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.AST.Data.Node> Relationt { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.AST.Data.Node>();
@@ -370,10 +371,10 @@ namespace Compiler.Translation.ProgramToAST
 			    return _result;
 			    RuleEndf(false);
 			}
-			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Statement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ Statement : stm ] SymbolTable : s ] -> : f s1", (globalStatement, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(globalStatement[0] as Compiler.Parsing.Data.Statement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ IdentifierDeclaration : stm ] SymbolTable : s ] -> : f s1", (globalStatement, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(globalStatement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = s1 != null && s1.Name == "SymbolTable";
 			    if(s1 != null && !_isMatching)
 			    {
@@ -385,6 +386,79 @@ namespace Compiler.Translation.ProgramToAST
 			        RuleEndf(true, true, _result);
 			        return _result;
 			    }
+			    RuleEndf(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IdentifierStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ IdentifierStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
+			    RuleEndf(true, true, _result);
+			    return _result;
+			    RuleEndf(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "RegisterStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ RegisterStatement : stm ] SymbolTable : s ] -> : f s1", (globalStatement, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(globalStatement[0] as Compiler.Parsing.Data.RegisterStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = s1 != null && s1.Name == "SymbolTable";
+			    if(s1 != null && !_isMatching)
+			    {
+			        WrongPatternf((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
+			        RuleEndf(true, true, _result);
+			        return _result;
+			    }
+			    RuleEndf(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IfStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ IfStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
+			    RuleEndf(true, true, _result);
+			    return _result;
+			    RuleEndf(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "WhileStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ WhileStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
+			    RuleEndf(true, true, _result);
+			    return _result;
+			    RuleEndf(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "ForStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ ForStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
+			    RuleEndf(true, true, _result);
+			    return _result;
+			    RuleEndf(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "ReturnStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ ReturnStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
+			    RuleEndf(true, true, _result);
+			    return _result;
+			    RuleEndf(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "InterruptStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ InterruptStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
+			    RuleEndf(true, true, _result);
+			    return _result;
+			    RuleEndf(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ newline : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
+			    RuleEndf(true, true, _result);
+			    return _result;
 			    RuleEndf(false);
 			}
 			RulesFailedf((globalStatement, symbolTable));
@@ -414,166 +488,26 @@ namespace Compiler.Translation.ProgramToAST
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.Statements statements, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.IdentifierSimpleDeclaration identifierSimpleDeclaration, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			var key = (statements, symbolTable);
+			var key = (identifierSimpleDeclaration, symbolTable);
 			if(Relationf.ContainsKey(key))
 			{
 			    var value = Relationf[key];
-			    RuleStartf(new System.Collections.Generic.List<string>() { statements.Name, symbolTable.Name }, "", key);
+			    RuleStartf(new System.Collections.Generic.List<string>() { identifierSimpleDeclaration.Name, symbolTable.Name }, "", key);
 			    RuleEndf(true, false, value);
 			    return value;
 			}
-			if(statements != null && statements.Name == "Statements" && (statements.Count == 2 && statements[0] != null && statements[0].Name == "Statement" && statements[1] != null && statements[1].Name == "Statements" && (statements[1].Count == 1 && statements[1][0] != null && statements[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(identifierSimpleDeclaration != null && identifierSimpleDeclaration.Name == "IdentifierSimpleDeclaration" && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statements [ Statement : stm Statements [ EPSILON ] ] SymbolTable : s ] -> : f s1", (statements, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(statements[0] as Compiler.Parsing.Data.Statement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = s1 != null && s1.Name == "SymbolTable";
-			    if(s1 != null && !_isMatching)
-			    {
-			        WrongPatternf((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, true, _result);
-			        return _result;
-			    }
-			    RuleEndf(false);
-			}
-			if(statements != null && statements.Name == "Statements" && (statements.Count == 2 && statements[0] != null && statements[0].Name == "Statement" && statements[1] != null && statements[1].Name == "Statements") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statements [ Statement : stm Statements : stmsp ] SymbolTable : s ] -> : f s2", (statements, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(statements[0] as Compiler.Parsing.Data.Statement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = s1 != null && s1.Name == "SymbolTable";
-			    if(s1 != null && !_isMatching)
-			    {
-			        WrongPatternf((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        Compiler.Translation.SymbolTable.Data.Node s2 = Translatef(statements[1] as Compiler.Parsing.Data.Statements, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        _isMatching = s2 != null && s2.Name == "SymbolTable";
-			        if(s2 != null && !_isMatching)
-			        {
-			            WrongPatternf((s2), new System.Collections.Generic.List<string>() { "SymbolTable" });
-			        }
-			        else if(_isMatching)
-			        {
-			            var _result = s2 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			            RuleEndf(true, true, _result);
-			            return _result;
-			        }
-			    }
-			    RuleEndf(false);
-			}
-			RulesFailedf((statements, symbolTable));
-			return (null);
-		}
-
-		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.Statement statement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
-		{
-			bool _isMatching = false;
-			var key = (statement, symbolTable);
-			if(Relationf.ContainsKey(key))
-			{
-			    var value = Relationf[key];
-			    RuleStartf(new System.Collections.Generic.List<string>() { statement.Name, symbolTable.Name }, "", key);
-			    RuleEndf(true, false, value);
-			    return value;
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ newline ] SymbolTable : s ] -> : f s", (statement, symbolTable));
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierSimpleDeclaration SymbolTable : s ] -> : f s", (identifierSimpleDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
 			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ IdentifierDeclaration : idDcl ] SymbolTable : s ] -> : f s1", (statement, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(statement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = s1 != null && s1.Name == "SymbolTable";
-			    if(s1 != null && !_isMatching)
-			    {
-			        WrongPatternf((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, true, _result);
-			        return _result;
-			    }
-			    RuleEndf(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ IdentifierStatement ] SymbolTable : s ] -> : f s", (statement, symbolTable));
-			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
-			    return _result;
-			    RuleEndf(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "ReturnStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ ReturnStatement ] SymbolTable : s ] -> : f s", (statement, symbolTable));
-			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
-			    return _result;
-			    RuleEndf(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "InterruptStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ InterruptStatement ] SymbolTable : s ] -> : f s", (statement, symbolTable));
-			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
-			    return _result;
-			    RuleEndf(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IfStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ IfStatement : ifStm ] SymbolTable : s ] -> : f s", (statement, symbolTable));
-			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
-			    return _result;
-			    RuleEndf(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "WhileStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ WhileStatement : whileStm ] SymbolTable : s ] -> : f s", (statement, symbolTable));
-			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
-			    return _result;
-			    RuleEndf(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "ForStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ ForStatement : forStm ] SymbolTable : s ] -> : f s", (statement, symbolTable));
-			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
-			    return _result;
-			    RuleEndf(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Statement [ RegisterStatement : regStm ] SymbolTable : s ] -> : f s1", (statement, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(statement[0] as Compiler.Parsing.Data.RegisterStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = s1 != null && s1.Name == "SymbolTable";
-			    if(s1 != null && !_isMatching)
-			    {
-			        WrongPatternf((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, true, _result);
-			        return _result;
-			    }
-			    RuleEndf(false);
-			}
-			RulesFailedf((statement, symbolTable));
+			RulesFailedf((identifierSimpleDeclaration, symbolTable));
 			return (null);
 		}
 
@@ -588,9 +522,9 @@ namespace Compiler.Translation.ProgramToAST
 			    RuleEndf(true, false, value);
 			    return value;
 			}
-			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 2 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "DefinitionAssign" && (identifierDeclaration[2][1].Count == 2 && identifierDeclaration[2][1][0] != null && identifierDeclaration[2][1][0].Name == "Expression" && identifierDeclaration[2][1][1] != null && identifierDeclaration[2][1][1].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 3 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ IntType identifier Definition [ = DefinitionAssign [ Expression newline ] ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ IntType identifier Definition [ = Expression newline ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
 			    RuleEndf(true, true, _result);
 			    return _result;
@@ -648,9 +582,9 @@ namespace Compiler.Translation.ProgramToAST
 			    return _result;
 			    RuleEndf(false);
 			}
-			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 2 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "DefinitionAssign" && (identifierDeclaration[2][1].Count == 2 && identifierDeclaration[2][1][0] != null && identifierDeclaration[2][1][0].Name == "Expression" && identifierDeclaration[2][1][1] != null && identifierDeclaration[2][1][1].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 3 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType identifier Definition [ = DefinitionAssign [ Expression newline ] ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType identifier Definition [ = Expression newline ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
 			    RuleEndf(true, true, _result);
 			    return _result;
@@ -980,17 +914,17 @@ namespace Compiler.Translation.ProgramToAST
 			    return _result;
 			    RuleEndf(false);
 			}
-			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 2 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "=" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "DefinitionAssign" && (registerStatement[1][1][1].Count == 2 && registerStatement[1][1][1][0] != null && registerStatement[1][1][1][0].Name == "Expression" && registerStatement[1][1][1][1] != null && registerStatement[1][1][1][1].Name == "newline")))) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 3 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "=" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "Expression" && registerStatement[1][1][2] != null && registerStatement[1][1][2].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ = DefinitionAssign [ Expression newline ] ] ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ = Expression newline ] ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
 			    RuleEndf(true, true, _result);
 			    return _result;
 			    RuleEndf(false);
 			}
-			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 2 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "=" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "DefinitionAssign" && (registerStatement[1][1][1].Count == 2 && registerStatement[1][1][1][0] != null && registerStatement[1][1][1][0].Name == "Expression" && registerStatement[1][1][1][1] != null && registerStatement[1][1][1][1].Name == "newline")))) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 3 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "=" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "Expression" && registerStatement[1][1][2] != null && registerStatement[1][1][2].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ = DefinitionAssign [ Expression newline ] ] ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
+			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ = Expression newline ] ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
 			    RuleEndf(true, true, _result);
 			    return _result;
@@ -1178,55 +1112,267 @@ namespace Compiler.Translation.ProgramToAST
 			    }
 			    RuleEnd(false);
 			}
-			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Statement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ Statement : stm ] SymbolTable : s ] -> [ GlobalStatement [ stm1 ] s1 ]", (globalStatement, symbolTable));
-			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.Statement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = stm1 != null && stm1.Name == "Statement" && s1 != null && s1.Name == "SymbolTable";
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ IdentifierDeclaration : stm ] SymbolTable : s ] -> [ GlobalStatement [ stm1 ] s1 ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == "Function" && s1 != null && s1.Name == "SymbolTable";
 			    if(stm1 != null && s1 != null && !_isMatching)
 			    {
-			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" });
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "Function", "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { stm1 as Compiler.AST.Data.Statement }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { stm1 as Compiler.AST.Data.Function }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
 			}
-			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Statement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ Statement : stm ] SymbolTable : s ] -> [ stm1 s1 ]", (globalStatement, symbolTable));
-			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.Statement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = stm1 != null && stm1.Name == "GlobalStatement" && s1 != null && s1.Name == "SymbolTable";
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ IdentifierDeclaration : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s1 ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == "IntegerDeclaration" && s1 != null && s1.Name == "SymbolTable";
 			    if(stm1 != null && s1 != null && !_isMatching)
 			    {
-			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" });
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "IntegerDeclaration", "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = (stm1 as Compiler.AST.Data.GlobalStatement, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.IntegerDeclaration } }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
 			    RuleEnd(false);
 			}
-			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Statement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ Statement : stm ] SymbolTable : s ] -> [ GlobalStatement [ func ] s1 ]", (globalStatement, symbolTable));
-			    (Compiler.AST.Data.Node func, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.Statement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = func != null && func.Name == "Function" && s1 != null && s1.Name == "SymbolTable";
-			    if(func != null && s1 != null && !_isMatching)
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ IdentifierDeclaration : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s1 ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == "IntegerDeclarationInit" && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
 			    {
-			        WrongPattern((func, s1), new System.Collections.Generic.List<string>() { "Function", "SymbolTable" });
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "IntegerDeclarationInit", "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { func as Compiler.AST.Data.Function }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.IntegerDeclarationInit } }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ IdentifierDeclaration : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s1 ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == "BooleanDeclaration" && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "BooleanDeclaration", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.BooleanDeclaration } }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ IdentifierDeclaration : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s1 ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == "BooleanDeclarationInit" && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "BooleanDeclarationInit", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.BooleanDeclarationInit } }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IdentifierStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ IdentifierStatement : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(globalStatement[0] as Compiler.Parsing.Data.IdentifierStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
+			    if(stm1 != null && symbolTable1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, symbolTable1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "RegisterStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ RegisterStatement : stm ] SymbolTable : s ] -> [ GlobalStatement [ stm1 ] s1 ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.RegisterStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == "Function" && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "Function", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { stm1 as Compiler.AST.Data.Function }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "RegisterStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ RegisterStatement : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s1 ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.RegisterStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == "RegisterDeclaration" && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "RegisterDeclaration", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.RegisterDeclaration } }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "RegisterStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ RegisterStatement : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s1 ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.RegisterStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == "RegisterDeclarationInit" && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "RegisterDeclarationInit", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.RegisterDeclarationInit } }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "RegisterStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ RegisterStatement : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s1 ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.RegisterStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == "DirectBitAssignment" && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "DirectBitAssignment", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.DirectBitAssignment } }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IfStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ IfStatement : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(globalStatement[0] as Compiler.Parsing.Data.IfStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
+			    if(stm1 != null && symbolTable1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, symbolTable1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "WhileStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ WhileStatement : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(globalStatement[0] as Compiler.Parsing.Data.WhileStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
+			    if(stm1 != null && symbolTable1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, symbolTable1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "ForStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ ForStatement : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(globalStatement[0] as Compiler.Parsing.Data.ForStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
+			    if(stm1 != null && symbolTable1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, symbolTable1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "ReturnStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ ReturnStatement : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s1 ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(globalStatement[0] as Compiler.Parsing.Data.ReturnStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node } }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "InterruptStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ InterruptStatement : stm ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ stm1 ] ] s ]", (globalStatement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(globalStatement[0] as Compiler.Parsing.Data.InterruptStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
+			    if(stm1 != null && symbolTable1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, symbolTable1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ GlobalStatement [ newline ] SymbolTable : s ] -> [ GlobalStatement [ Statement [ newline ] ] s ]", (globalStatement, symbolTable));
+			    var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.Token() { Name = "newline", Value = "newline" } } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleEnd(true, true, _result);
+			    return _result;
 			    RuleEnd(false);
 			}
 			RulesFailed((globalStatement, symbolTable));
@@ -1302,23 +1448,6 @@ namespace Compiler.Translation.ProgramToAST
 			    }
 			    RuleEnd(false);
 			}
-			if(statements != null && statements.Name == "Statements" && (statements.Count == 2 && statements[0] != null && statements[0].Name == "Statement" && statements[1] != null && statements[1].Name == "Statements" && (statements[1].Count == 1 && statements[1][0] != null && statements[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ Statements [ Statement : stm Statements [ EPSILON ] ] SymbolTable : s ] -> [ GlobalStatement [ func ] s1 ]", (statements, symbolTable));
-			    (Compiler.AST.Data.Node func, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statements[0] as Compiler.Parsing.Data.Statement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = func != null && func.Name == "Function" && s1 != null && s1.Name == "SymbolTable";
-			    if(func != null && s1 != null && !_isMatching)
-			    {
-			        WrongPattern((func, s1), new System.Collections.Generic.List<string>() { "Function", "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        var _result = (new Compiler.AST.Data.GlobalStatement(false) { func as Compiler.AST.Data.Function }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, true, _result);
-			        return _result;
-			    }
-			    RuleEnd(false);
-			}
 			if(statements != null && statements.Name == "Statements" && (statements.Count == 2 && statements[0] != null && statements[0].Name == "Statement" && statements[1] != null && statements[1].Name == "Statements") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statements [ Statement : stm Statements : stmsp ] SymbolTable : s ] -> [ Statement [ CompoundStatement [ stm1 newline stm2 ] ] s2 ]", (statements, symbolTable));
@@ -1339,58 +1468,6 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = (new Compiler.AST.Data.Statement(false) { new Compiler.AST.Data.CompoundStatement(false) { stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "newline", Value = "newline" }, stm2 as Compiler.AST.Data.Statement } }, s2 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, true, _result);
-			            return _result;
-			        }
-			    }
-			    RuleEnd(false);
-			}
-			if(statements != null && statements.Name == "Statements" && (statements.Count == 2 && statements[0] != null && statements[0].Name == "Statement" && statements[1] != null && statements[1].Name == "Statements") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ Statements [ Statement : stm Statements : stmsp ] SymbolTable : s ] -> [ GlobalStatement [ CompoundGlobalStatement [ GlobalStatement [ func ] newline GlobalStatement [ stm2 ] ] ] s2 ]", (statements, symbolTable));
-			    (Compiler.AST.Data.Node func, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statements[0] as Compiler.Parsing.Data.Statement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = func != null && func.Name == "Function" && s1 != null && s1.Name == "SymbolTable";
-			    if(func != null && s1 != null && !_isMatching)
-			    {
-			        WrongPattern((func, s1), new System.Collections.Generic.List<string>() { "Function", "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        (Compiler.AST.Data.Node stm2, Compiler.Translation.SymbolTable.Data.Node s2) = Translate(statements[1] as Compiler.Parsing.Data.Statements, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        _isMatching = stm2 != null && stm2.Name == "Statement" && s2 != null && s2.Name == "SymbolTable";
-			        if(stm2 != null && s2 != null && !_isMatching)
-			        {
-			            WrongPattern((stm2, s2), new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" });
-			        }
-			        else if(_isMatching)
-			        {
-			            var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.CompoundGlobalStatement(false) { new Compiler.AST.Data.GlobalStatement(false) { func as Compiler.AST.Data.Function }, new Compiler.AST.Data.Token() { Name = "newline", Value = "newline" }, new Compiler.AST.Data.GlobalStatement(false) { stm2 as Compiler.AST.Data.Statement } } }, s2 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            RuleEnd(true, true, _result);
-			            return _result;
-			        }
-			    }
-			    RuleEnd(false);
-			}
-			if(statements != null && statements.Name == "Statements" && (statements.Count == 2 && statements[0] != null && statements[0].Name == "Statement" && statements[1] != null && statements[1].Name == "Statements") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" }, "[ Statements [ Statement : stm Statements : stmsp ] SymbolTable : s ] -> [ GlobalStatement [ CompoundGlobalStatement [ GlobalStatement [ func ] newline stm2 ] ] s2 ]", (statements, symbolTable));
-			    (Compiler.AST.Data.Node func, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statements[0] as Compiler.Parsing.Data.Statement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = func != null && func.Name == "Function" && s1 != null && s1.Name == "SymbolTable";
-			    if(func != null && s1 != null && !_isMatching)
-			    {
-			        WrongPattern((func, s1), new System.Collections.Generic.List<string>() { "Function", "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        (Compiler.AST.Data.Node stm2, Compiler.Translation.SymbolTable.Data.Node s2) = Translate(statements[1] as Compiler.Parsing.Data.Statements, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        _isMatching = stm2 != null && stm2.Name == "GlobalStatement" && s2 != null && s2.Name == "SymbolTable";
-			        if(stm2 != null && s2 != null && !_isMatching)
-			        {
-			            WrongPattern((stm2, s2), new System.Collections.Generic.List<string>() { "GlobalStatement", "SymbolTable" });
-			        }
-			        else if(_isMatching)
-			        {
-			            var _result = (new Compiler.AST.Data.GlobalStatement(false) { new Compiler.AST.Data.CompoundGlobalStatement(false) { new Compiler.AST.Data.GlobalStatement(false) { func as Compiler.AST.Data.Function }, new Compiler.AST.Data.Token() { Name = "newline", Value = "newline" }, stm2 as Compiler.AST.Data.GlobalStatement } }, s2 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			            RuleEnd(true, true, _result);
 			            return _result;
 			        }
@@ -1420,103 +1497,18 @@ namespace Compiler.Translation.ProgramToAST
 			    return _result;
 			    RuleEnd(false);
 			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierSimpleDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ IdentifierDeclaration : idDcl ] SymbolTable : s ] -> [ Statement [ dclStm ] s1 ]", (statement, symbolTable));
-			    (Compiler.AST.Data.Node dclStm, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = dclStm != null && dclStm.Name == "IntegerDeclaration" && s1 != null && s1.Name == "SymbolTable";
-			    if(dclStm != null && s1 != null && !_isMatching)
+			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ IdentifierSimpleDeclaration : stm ] SymbolTable : s ] -> [ Statement [ stm1 ] s1 ]", (statement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IdentifierSimpleDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
 			    {
-			        WrongPattern((dclStm, s1), new System.Collections.Generic.List<string>() { "IntegerDeclaration", "SymbolTable" });
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = (new Compiler.AST.Data.Statement(false) { dclStm as Compiler.AST.Data.IntegerDeclaration }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, true, _result);
-			        return _result;
-			    }
-			    RuleEnd(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ IdentifierDeclaration : idDcl ] SymbolTable : s ] -> [ Statement [ dclStm ] s1 ]", (statement, symbolTable));
-			    (Compiler.AST.Data.Node dclStm, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = dclStm != null && dclStm.Name == "IntegerDeclarationInit" && s1 != null && s1.Name == "SymbolTable";
-			    if(dclStm != null && s1 != null && !_isMatching)
-			    {
-			        WrongPattern((dclStm, s1), new System.Collections.Generic.List<string>() { "IntegerDeclarationInit", "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        var _result = (new Compiler.AST.Data.Statement(false) { dclStm as Compiler.AST.Data.IntegerDeclarationInit }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, true, _result);
-			        return _result;
-			    }
-			    RuleEnd(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ IdentifierDeclaration : idDcl ] SymbolTable : s ] -> [ Statement [ dclStm ] s1 ]", (statement, symbolTable));
-			    (Compiler.AST.Data.Node dclStm, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = dclStm != null && dclStm.Name == "BooleanDeclaration" && s1 != null && s1.Name == "SymbolTable";
-			    if(dclStm != null && s1 != null && !_isMatching)
-			    {
-			        WrongPattern((dclStm, s1), new System.Collections.Generic.List<string>() { "BooleanDeclaration", "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        var _result = (new Compiler.AST.Data.Statement(false) { dclStm as Compiler.AST.Data.BooleanDeclaration }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, true, _result);
-			        return _result;
-			    }
-			    RuleEnd(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ IdentifierDeclaration : idDcl ] SymbolTable : s ] -> [ Statement [ dclStm ] s1 ]", (statement, symbolTable));
-			    (Compiler.AST.Data.Node dclStm, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = dclStm != null && dclStm.Name == "BooleanDeclarationInit" && s1 != null && s1.Name == "SymbolTable";
-			    if(dclStm != null && s1 != null && !_isMatching)
-			    {
-			        WrongPattern((dclStm, s1), new System.Collections.Generic.List<string>() { "BooleanDeclarationInit", "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        var _result = (new Compiler.AST.Data.Statement(false) { dclStm as Compiler.AST.Data.BooleanDeclarationInit }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, true, _result);
-			        return _result;
-			    }
-			    RuleEnd(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "InterruptStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ InterruptStatement : itrStm ] SymbolTable : s ] -> [ Statement [ itrStm1 ] s ]", (statement, symbolTable));
-			    Compiler.AST.Data.Node itrStm1 = Translatep(statement[0] as Compiler.Parsing.Data.InterruptStatement);
-			    _isMatching = itrStm1 != null && itrStm1.Name == "InterruptStatement";
-			    if(itrStm1 != null && !_isMatching)
-			    {
-			        WrongPatternp((itrStm1), new System.Collections.Generic.List<string>() { "InterruptStatement" });
-			    }
-			    else if(_isMatching)
-			    {
-			        var _result = (new Compiler.AST.Data.Statement(false) { itrStm1 as Compiler.AST.Data.InterruptStatement }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, true, _result);
-			        return _result;
-			    }
-			    RuleEnd(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Function", "SymbolTable" }, "[ Statement [ IdentifierDeclaration : idDcl ] SymbolTable : s ] -> [ f s1 ]", (statement, symbolTable));
-			    (Compiler.AST.Data.Node f, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = f != null && f.Name == "Function" && s1 != null && s1.Name == "SymbolTable";
-			    if(f != null && s1 != null && !_isMatching)
-			    {
-			        WrongPattern((f, s1), new System.Collections.Generic.List<string>() { "Function", "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        var _result = (f as Compiler.AST.Data.Function, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        var _result = (new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
@@ -1524,16 +1516,33 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IdentifierStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ IdentifierStatement : idStm ] SymbolTable : s ] -> [ Statement [ idStm1 ] s1 ]", (statement, symbolTable));
-			    (Compiler.AST.Data.Node idStm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IdentifierStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = idStm1 != null && idStm1.Name == idStm1.Name && s1 != null && s1.Name == "SymbolTable";
-			    if(idStm1 != null && s1 != null && !_isMatching)
+			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ IdentifierStatement : stm ] SymbolTable : s ] -> [ Statement [ stm1 ] s1 ]", (statement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IdentifierStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
 			    {
-			        WrongPattern((idStm1, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = (new Compiler.AST.Data.Statement(false) { idStm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        var _result = (new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterSimpleStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ RegisterSimpleStatement : stm ] SymbolTable : s ] -> [ Statement [ stm1 ] s1 ]", (statement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.RegisterSimpleStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
@@ -1541,16 +1550,16 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "IfStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ IfStatement : ifStm ] SymbolTable : s ] -> [ Statement [ ifStm1 ] s ]", (statement, symbolTable));
-			    (Compiler.AST.Data.Node ifStm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(statement[0] as Compiler.Parsing.Data.IfStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = ifStm1 != null && ifStm1.Name == ifStm1.Name && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
-			    if(ifStm1 != null && symbolTable1 != null && !_isMatching)
+			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ IfStatement : stm ] SymbolTable : s ] -> [ Statement [ stm1 ] s1 ]", (statement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.IfStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
 			    {
-			        WrongPattern((ifStm1, symbolTable1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = (new Compiler.AST.Data.Statement(false) { ifStm1 as Compiler.AST.Data.Node }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        var _result = (new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
@@ -1558,16 +1567,16 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "WhileStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ WhileStatement : whileStm ] SymbolTable : s ] -> [ Statement [ whileStm1 ] s ]", (statement, symbolTable));
-			    (Compiler.AST.Data.Node whileStm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.WhileStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = whileStm1 != null && whileStm1.Name == "WhileStatement" && s1 != null && s1.Name == "SymbolTable";
-			    if(whileStm1 != null && s1 != null && !_isMatching)
+			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ WhileStatement : stm ] SymbolTable : s ] -> [ Statement [ stm1 ] s1 ]", (statement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.WhileStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
 			    {
-			        WrongPattern((whileStm1, s1), new System.Collections.Generic.List<string>() { "WhileStatement", "SymbolTable" });
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = (new Compiler.AST.Data.Statement(false) { whileStm1 as Compiler.AST.Data.WhileStatement }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        var _result = (new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
@@ -1575,33 +1584,16 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "ForStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ ForStatement : forStm ] SymbolTable : s ] -> [ Statement [ forStm1 ] s ]", (statement, symbolTable));
-			    (Compiler.AST.Data.Node forStm1, Compiler.Translation.SymbolTable.Data.Node s) = Translate(statement[0] as Compiler.Parsing.Data.ForStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = forStm1 != null && forStm1.Name == "ForStatement" && s != null && s.Name == "SymbolTable";
-			    if(forStm1 != null && s != null && !_isMatching)
+			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ ForStatement : stm ] SymbolTable : s ] -> [ Statement [ stm1 ] s1 ]", (statement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.ForStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
 			    {
-			        WrongPattern((forStm1, s), new System.Collections.Generic.List<string>() { "ForStatement", "SymbolTable" });
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = (new Compiler.AST.Data.Statement(false) { forStm1 as Compiler.AST.Data.ForStatement }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, true, _result);
-			        return _result;
-			    }
-			    RuleEnd(false);
-			}
-			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "RegisterStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ RegisterStatement : regStm ] SymbolTable : s ] -> [ Statement [ regStm1 ] s1 ]", (statement, symbolTable));
-			    (Compiler.AST.Data.Node regStm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.RegisterStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = regStm1 != null && regStm1.Name == regStm1.Name && s1 != null && s1.Name == "SymbolTable";
-			    if(regStm1 != null && s1 != null && !_isMatching)
-			    {
-			        WrongPattern((regStm1, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
-			    }
-			    else if(_isMatching)
-			    {
-			        var _result = (new Compiler.AST.Data.Statement(false) { regStm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        var _result = (new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
@@ -1609,16 +1601,33 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "ReturnStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ ReturnStatement : ret ] SymbolTable : s ] -> [ Statement [ retStm ] s1 ]", (statement, symbolTable));
-			    (Compiler.AST.Data.Node retStm, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.ReturnStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = retStm != null && retStm.Name == retStm.Name && s1 != null && s1.Name == "SymbolTable";
-			    if(retStm != null && s1 != null && !_isMatching)
+			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ ReturnStatement : stm ] SymbolTable : s ] -> [ Statement [ stm1 ] s1 ]", (statement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.ReturnStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
 			    {
-			        WrongPattern((retStm, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = (new Compiler.AST.Data.Statement(false) { retStm as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        var _result = (new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(statement != null && statement.Name == "Statement" && (statement.Count == 1 && statement[0] != null && statement[0].Name == "InterruptStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" }, "[ Statement [ InterruptStatement : stm ] SymbolTable : s ] -> [ Statement [ stm1 ] s1 ]", (statement, symbolTable));
+			    (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(statement[0] as Compiler.Parsing.Data.InterruptStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = stm1 != null && stm1.Name == stm1.Name && s1 != null && s1.Name == "SymbolTable";
+			    if(stm1 != null && s1 != null && !_isMatching)
+			    {
+			        WrongPattern((stm1, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = (new Compiler.AST.Data.Statement(false) { stm1 as Compiler.AST.Data.Node }, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
@@ -1738,35 +1747,76 @@ namespace Compiler.Translation.ProgramToAST
 			return (null, null);
 		}
 
-		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.InterruptStatement interruptStatement)
+		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.InterruptStatement interruptStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
-			var key = (interruptStatement);
-			if(Relationp.ContainsKey(key))
+			var key = (interruptStatement, symbolTable);
+			if(Relation.ContainsKey(key))
 			{
-			    var value = Relationp[key];
-			    RuleStartp(new System.Collections.Generic.List<string>() { interruptStatement.Name }, "", key);
-			    RuleEndp(true, false, value);
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { interruptStatement.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
 			    return value;
 			}
-			if(interruptStatement != null && interruptStatement.Name == "InterruptStatement" && (interruptStatement.Count == 3 && interruptStatement[0] != null && interruptStatement[0].Name == "enableinterrupts" && interruptStatement[1] != null && interruptStatement[1].Name == "(" && interruptStatement[2] != null && interruptStatement[2].Name == ")"))
+			if(interruptStatement != null && interruptStatement.Name == "InterruptStatement" && (interruptStatement.Count == 3 && interruptStatement[0] != null && interruptStatement[0].Name == "enableinterrupts" && interruptStatement[1] != null && interruptStatement[1].Name == "(" && interruptStatement[2] != null && interruptStatement[2].Name == ")") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "InterruptStatement" }, "InterruptStatement [ enableinterrupts ( ) ] -> : p InterruptStatement [ enableinterrupts ( ) ]", (interruptStatement));
-			    var _result = new Compiler.AST.Data.InterruptStatement(false) { new Compiler.AST.Data.Token() { Name = "enableinterrupts", Value = "enableinterrupts" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } };
-			    RuleEndp(true, true, _result);
+			    RuleStart(new System.Collections.Generic.List<string>() { "InterruptStatement", "SymbolTable" }, "[ InterruptStatement [ enableinterrupts ( ) ] SymbolTable : s ] -> [ InterruptStatement [ enableinterrupts ( ) ] s ]", (interruptStatement, symbolTable));
+			    var _result = (new Compiler.AST.Data.InterruptStatement(false) { new Compiler.AST.Data.Token() { Name = "enableinterrupts", Value = "enableinterrupts" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleEnd(true, true, _result);
 			    return _result;
-			    RuleEndp(false);
+			    RuleEnd(false);
 			}
-			if(interruptStatement != null && interruptStatement.Name == "InterruptStatement" && (interruptStatement.Count == 3 && interruptStatement[0] != null && interruptStatement[0].Name == "disableinterrupts" && interruptStatement[1] != null && interruptStatement[1].Name == "(" && interruptStatement[2] != null && interruptStatement[2].Name == ")"))
+			if(interruptStatement != null && interruptStatement.Name == "InterruptStatement" && (interruptStatement.Count == 3 && interruptStatement[0] != null && interruptStatement[0].Name == "disableinterrupts" && interruptStatement[1] != null && interruptStatement[1].Name == "(" && interruptStatement[2] != null && interruptStatement[2].Name == ")") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "InterruptStatement" }, "InterruptStatement [ disableinterrupts ( ) ] -> : p InterruptStatement [ disableinterrupts ( ) ]", (interruptStatement));
-			    var _result = new Compiler.AST.Data.InterruptStatement(false) { new Compiler.AST.Data.Token() { Name = "disableinterrupts", Value = "disableinterrupts" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } };
-			    RuleEndp(true, true, _result);
+			    RuleStart(new System.Collections.Generic.List<string>() { "InterruptStatement", "SymbolTable" }, "[ InterruptStatement [ disableinterrupts ( ) ] SymbolTable : s ] -> [ InterruptStatement [ disableinterrupts ( ) ] s ]", (interruptStatement, symbolTable));
+			    var _result = (new Compiler.AST.Data.InterruptStatement(false) { new Compiler.AST.Data.Token() { Name = "disableinterrupts", Value = "disableinterrupts" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, new Compiler.AST.Data.Token() { Name = ")", Value = ")" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleEnd(true, true, _result);
 			    return _result;
-			    RuleEndp(false);
+			    RuleEnd(false);
 			}
-			RulesFailedp((interruptStatement));
-			return (null);
+			RulesFailed((interruptStatement, symbolTable));
+			return (null, null);
+		}
+
+		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.IdentifierSimpleDeclaration identifierSimpleDeclaration, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		{
+			bool _isMatching = false;
+			var key = (identifierSimpleDeclaration, symbolTable);
+			if(Relation.ContainsKey(key))
+			{
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { identifierSimpleDeclaration.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
+			}
+			if(identifierSimpleDeclaration != null && identifierSimpleDeclaration.Name == "IdentifierSimpleDeclaration" && (identifierSimpleDeclaration.Count == 3 && identifierSimpleDeclaration[0] != null && identifierSimpleDeclaration[0].Name == identifierSimpleDeclaration[0].Name && identifierSimpleDeclaration[1] != null && identifierSimpleDeclaration[1].Name == "identifier" && identifierSimpleDeclaration[2] != null && identifierSimpleDeclaration[2].Name == "SimpleDefinition") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "*", "SymbolTable" }, "[ IdentifierSimpleDeclaration [ * : t identifier : id SimpleDefinition : d ] SymbolTable : s ] -> [ dcl s1 ]", (identifierSimpleDeclaration, symbolTable));
+			    Compiler.Parsing.Data.Node def = Translater(identifierSimpleDeclaration[2] as Compiler.Parsing.Data.SimpleDefinition);
+			    _isMatching = def != null && def.Name == "Definition";
+			    if(def != null && !_isMatching)
+			    {
+			        WrongPatternr((def), new System.Collections.Generic.List<string>() { "Definition" });
+			    }
+			    else if(_isMatching)
+			    {
+			        (Compiler.AST.Data.Node dcl, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(new Compiler.Parsing.Data.IdentifierDeclaration(false) { identifierSimpleDeclaration[0] as Compiler.Parsing.Data.Node, identifierSimpleDeclaration[1] as Compiler.Parsing.Data.Token, def as Compiler.Parsing.Data.Definition }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = dcl != null && dcl.Name == dcl.Name && s1 != null && s1.Name == "SymbolTable";
+			        if(dcl != null && s1 != null && !_isMatching)
+			        {
+			            WrongPattern((dcl, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = (dcl as Compiler.AST.Data.Node, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            RuleEnd(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEnd(false);
+			}
+			RulesFailed((identifierSimpleDeclaration, symbolTable));
+			return (null, null);
 		}
 
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.IdentifierDeclaration identifierDeclaration, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
@@ -1886,9 +1936,9 @@ namespace Compiler.Translation.ProgramToAST
 			    }
 			    RuleEnd(false);
 			}
-			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 2 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "DefinitionAssign" && (identifierDeclaration[2][1].Count == 2 && identifierDeclaration[2][1][0] != null && identifierDeclaration[2][1][0].Name == "Expression" && identifierDeclaration[2][1][1] != null && identifierDeclaration[2][1][1].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 3 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "IntegerDeclarationInit", "SymbolTable" }, "[ IdentifierDeclaration [ IntType : t identifier : id Definition [ = DefinitionAssign [ Expression : expr newline ] ] ] SymbolTable : s ] -> [ IntegerDeclarationInit [ t1 id1 = iexpr ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (identifierDeclaration, symbolTable));
+			    RuleStart(new System.Collections.Generic.List<string>() { "IntegerDeclarationInit", "SymbolTable" }, "[ IdentifierDeclaration [ IntType : t identifier : id Definition [ = Expression : expr newline ] ] SymbolTable : s ] -> [ IntegerDeclarationInit [ t1 id1 = iexpr ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (identifierDeclaration, symbolTable));
 			    Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
 			    _isMatching = t1 != null && t1.Name == "IntType";
 			    if(t1 != null && !_isMatching)
@@ -1921,7 +1971,7 @@ namespace Compiler.Translation.ProgramToAST
 			                }
 			                else if(_isMatching)
 			                {
-			                    (Compiler.AST.Data.Node iexpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][1][0] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                    (Compiler.AST.Data.Node iexpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][1] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			                    _isMatching = iexpr != null && iexpr.Name == "IntegerExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
 			                    if(iexpr != null && symbolTable1 != null && !_isMatching)
 			                    {
@@ -2116,9 +2166,9 @@ namespace Compiler.Translation.ProgramToAST
 			    }
 			    RuleEnd(false);
 			}
-			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 2 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "DefinitionAssign" && (identifierDeclaration[2][1].Count == 2 && identifierDeclaration[2][1][0] != null && identifierDeclaration[2][1][0].Name == "Expression" && identifierDeclaration[2][1][1] != null && identifierDeclaration[2][1][1].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 3 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanDeclarationInit", "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType : t identifier : id Definition [ = DefinitionAssign [ Expression : expr newline ] ] ] SymbolTable : s ] -> [ BooleanDeclarationInit [ t1 id1 = bexpr ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (identifierDeclaration, symbolTable));
+			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanDeclarationInit", "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType : t identifier : id Definition [ = Expression : expr newline ] ] SymbolTable : s ] -> [ BooleanDeclarationInit [ t1 id1 = bexpr ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (identifierDeclaration, symbolTable));
 			    Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
 			    _isMatching = t1 != null && t1.Name == "BooleanType";
 			    if(t1 != null && !_isMatching)
@@ -2151,7 +2201,7 @@ namespace Compiler.Translation.ProgramToAST
 			                }
 			                else if(_isMatching)
 			                {
-			                    (Compiler.AST.Data.Node bexpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][1][0] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                    (Compiler.AST.Data.Node bexpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierDeclaration[2][1] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			                    _isMatching = bexpr != null && bexpr.Name == "BooleanExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
 			                    if(bexpr != null && symbolTable1 != null && !_isMatching)
 			                    {
@@ -2566,6 +2616,182 @@ namespace Compiler.Translation.ProgramToAST
 			return (null);
 		}
 
+		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.RegisterSimpleStatement registerSimpleStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		{
+			bool _isMatching = false;
+			var key = (registerSimpleStatement, symbolTable);
+			if(Relation.ContainsKey(key))
+			{
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { registerSimpleStatement.Name, symbolTable.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
+			}
+			if(registerSimpleStatement != null && registerSimpleStatement.Name == "RegisterSimpleStatement" && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "*", "SymbolTable" }, "[ RegisterSimpleStatement : stm SymbolTable : s ] -> [ stm2 s1 ]", (registerSimpleStatement, symbolTable));
+			    Compiler.Parsing.Data.Node stm1 = Translater(registerSimpleStatement as Compiler.Parsing.Data.RegisterSimpleStatement);
+			    _isMatching = stm1 != null && stm1.Name == "RegisterStatement";
+			    if(stm1 != null && !_isMatching)
+			    {
+			        WrongPatternr((stm1), new System.Collections.Generic.List<string>() { "RegisterStatement" });
+			    }
+			    else if(_isMatching)
+			    {
+			        (Compiler.AST.Data.Node stm2, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(stm1 as Compiler.Parsing.Data.RegisterStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = stm2 != null && stm2.Name == stm2.Name && s1 != null && s1.Name == "SymbolTable";
+			        if(stm2 != null && s1 != null && !_isMatching)
+			        {
+			            WrongPattern((stm2, s1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = (stm2 as Compiler.AST.Data.Node, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            RuleEnd(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEnd(false);
+			}
+			RulesFailed((registerSimpleStatement, symbolTable));
+			return (null, null);
+		}
+
+		public Compiler.Parsing.Data.Node Translater(Compiler.Parsing.Data.RegisterSimpleStatement registerSimpleStatement)
+		{
+			bool _isMatching = false;
+			var key = (registerSimpleStatement);
+			if(Relationr.ContainsKey(key))
+			{
+			    var value = Relationr[key];
+			    RuleStartr(new System.Collections.Generic.List<string>() { registerSimpleStatement.Name }, "", key);
+			    RuleEndr(true, false, value);
+			    return value;
+			}
+			if(registerSimpleStatement != null && registerSimpleStatement.Name == "RegisterSimpleStatement" && (registerSimpleStatement.Count == 2 && registerSimpleStatement[0] != null && registerSimpleStatement[0].Name == "RegisterType" && registerSimpleStatement[1] != null && registerSimpleStatement[1].Name == "RegisterSimpleOperation"))
+			{
+			    RuleStartr(new System.Collections.Generic.List<string>() { "RegisterStatement" }, "RegisterSimpleStatement [ RegisterType : t RegisterSimpleOperation : op ] -> : r RegisterStatement [ t operation ]", (registerSimpleStatement));
+			    Compiler.Parsing.Data.Node operation = Translater(registerSimpleStatement[1] as Compiler.Parsing.Data.RegisterSimpleOperation);
+			    _isMatching = operation != null && operation.Name == "RegisterOperation";
+			    if(operation != null && !_isMatching)
+			    {
+			        WrongPatternr((operation), new System.Collections.Generic.List<string>() { "RegisterOperation" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = new Compiler.Parsing.Data.RegisterStatement(false) { registerSimpleStatement[0] as Compiler.Parsing.Data.RegisterType, operation as Compiler.Parsing.Data.RegisterOperation };
+			        RuleEndr(true, true, _result);
+			        return _result;
+			    }
+			    RuleEndr(false);
+			}
+			RulesFailedr((registerSimpleStatement));
+			return (null);
+		}
+
+		public Compiler.Parsing.Data.Node Translater(Compiler.Parsing.Data.RegisterSimpleOperation registerSimpleOperation)
+		{
+			bool _isMatching = false;
+			var key = (registerSimpleOperation);
+			if(Relationr.ContainsKey(key))
+			{
+			    var value = Relationr[key];
+			    RuleStartr(new System.Collections.Generic.List<string>() { registerSimpleOperation.Name }, "", key);
+			    RuleEndr(true, false, value);
+			    return value;
+			}
+			if(registerSimpleOperation != null && registerSimpleOperation.Name == "RegisterSimpleOperation" && (registerSimpleOperation.Count == 9 && registerSimpleOperation[0] != null && registerSimpleOperation[0].Name == "(" && registerSimpleOperation[1] != null && registerSimpleOperation[1].Name == "Expression" && registerSimpleOperation[2] != null && registerSimpleOperation[2].Name == ")" && registerSimpleOperation[3] != null && registerSimpleOperation[3].Name == "{" && registerSimpleOperation[4] != null && registerSimpleOperation[4].Name == "Expression" && registerSimpleOperation[5] != null && registerSimpleOperation[5].Name == "}" && registerSimpleOperation[6] != null && registerSimpleOperation[6].Name == "=" && registerSimpleOperation[7] != null && registerSimpleOperation[7].Name == "Expression" && registerSimpleOperation[8] != null && registerSimpleOperation[8].Name == "newline"))
+			{
+			    RuleStartr(new System.Collections.Generic.List<string>() { "RegisterOperation" }, "RegisterSimpleOperation [ ( Expression : e1 ) { Expression : e2 } = Expression : e3 newline ] -> : r RegisterOperation [ ( e1 ) { e2 } = e3 newline ]", (registerSimpleOperation));
+			    var _result = new Compiler.Parsing.Data.RegisterOperation(false) { new Compiler.Parsing.Data.Token() { Name = "(", Value = "(" }, registerSimpleOperation[1] as Compiler.Parsing.Data.Expression, new Compiler.Parsing.Data.Token() { Name = ")", Value = ")" }, new Compiler.Parsing.Data.Token() { Name = "{", Value = "{" }, registerSimpleOperation[4] as Compiler.Parsing.Data.Expression, new Compiler.Parsing.Data.Token() { Name = "}", Value = "}" }, new Compiler.Parsing.Data.Token() { Name = "=", Value = "=" }, registerSimpleOperation[7] as Compiler.Parsing.Data.Expression, new Compiler.Parsing.Data.Token() { Name = "newline", Value = "newline" } };
+			    RuleEndr(true, true, _result);
+			    return _result;
+			    RuleEndr(false);
+			}
+			if(registerSimpleOperation != null && registerSimpleOperation.Name == "RegisterSimpleOperation" && (registerSimpleOperation.Count == 2 && registerSimpleOperation[0] != null && registerSimpleOperation[0].Name == "identifier" && registerSimpleOperation[1] != null && registerSimpleOperation[1].Name == "SimpleDefinition"))
+			{
+			    RuleStartr(new System.Collections.Generic.List<string>() { "RegisterOperation" }, "RegisterSimpleOperation [ identifier : id SimpleDefinition : d ] -> : r RegisterOperation [ id def ]", (registerSimpleOperation));
+			    Compiler.Parsing.Data.Node def = Translater(registerSimpleOperation[1] as Compiler.Parsing.Data.SimpleDefinition);
+			    _isMatching = def != null && def.Name == "Definition";
+			    if(def != null && !_isMatching)
+			    {
+			        WrongPatternr((def), new System.Collections.Generic.List<string>() { "Definition" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = new Compiler.Parsing.Data.RegisterOperation(false) { registerSimpleOperation[0] as Compiler.Parsing.Data.Token, def as Compiler.Parsing.Data.Definition };
+			        RuleEndr(true, true, _result);
+			        return _result;
+			    }
+			    RuleEndr(false);
+			}
+			RulesFailedr((registerSimpleOperation));
+			return (null);
+		}
+
+		public Compiler.Parsing.Data.Node Translater(Compiler.Parsing.Data.IdentifierSimpleDeclaration identifierSimpleDeclaration)
+		{
+			bool _isMatching = false;
+			var key = (identifierSimpleDeclaration);
+			if(Relationr.ContainsKey(key))
+			{
+			    var value = Relationr[key];
+			    RuleStartr(new System.Collections.Generic.List<string>() { identifierSimpleDeclaration.Name }, "", key);
+			    RuleEndr(true, false, value);
+			    return value;
+			}
+			if(identifierSimpleDeclaration != null && identifierSimpleDeclaration.Name == "IdentifierSimpleDeclaration" && (identifierSimpleDeclaration.Count == 3 && identifierSimpleDeclaration[0] != null && identifierSimpleDeclaration[0].Name == identifierSimpleDeclaration[0].Name && identifierSimpleDeclaration[1] != null && identifierSimpleDeclaration[1].Name == "identifier" && identifierSimpleDeclaration[2] != null && identifierSimpleDeclaration[2].Name == "SimpleDefinition"))
+			{
+			    RuleStartr(new System.Collections.Generic.List<string>() { "IdentifierDeclaration" }, "IdentifierSimpleDeclaration [ * : t identifier : id SimpleDefinition : d ] -> : r IdentifierDeclaration [ t id def ]", (identifierSimpleDeclaration));
+			    Compiler.Parsing.Data.Node def = Translater(identifierSimpleDeclaration[2] as Compiler.Parsing.Data.SimpleDefinition);
+			    _isMatching = def != null && def.Name == "Definition";
+			    if(def != null && !_isMatching)
+			    {
+			        WrongPatternr((def), new System.Collections.Generic.List<string>() { "Definition" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = new Compiler.Parsing.Data.IdentifierDeclaration(false) { identifierSimpleDeclaration[0] as Compiler.Parsing.Data.Node, identifierSimpleDeclaration[1] as Compiler.Parsing.Data.Token, def as Compiler.Parsing.Data.Definition };
+			        RuleEndr(true, true, _result);
+			        return _result;
+			    }
+			    RuleEndr(false);
+			}
+			RulesFailedr((identifierSimpleDeclaration));
+			return (null);
+		}
+
+		public Compiler.Parsing.Data.Node Translater(Compiler.Parsing.Data.SimpleDefinition simpleDefinition)
+		{
+			bool _isMatching = false;
+			var key = (simpleDefinition);
+			if(Relationr.ContainsKey(key))
+			{
+			    var value = Relationr[key];
+			    RuleStartr(new System.Collections.Generic.List<string>() { simpleDefinition.Name }, "", key);
+			    RuleEndr(true, false, value);
+			    return value;
+			}
+			if(simpleDefinition != null && simpleDefinition.Name == "SimpleDefinition" && (simpleDefinition.Count == 3 && simpleDefinition[0] != null && simpleDefinition[0].Name == "=" && simpleDefinition[1] != null && simpleDefinition[1].Name == "Expression" && simpleDefinition[2] != null && simpleDefinition[2].Name == "newline"))
+			{
+			    RuleStartr(new System.Collections.Generic.List<string>() { "Definition" }, "SimpleDefinition [ = Expression : e newline ] -> : r Definition [ = e newline ]", (simpleDefinition));
+			    var _result = new Compiler.Parsing.Data.Definition(false) { new Compiler.Parsing.Data.Token() { Name = "=", Value = "=" }, simpleDefinition[1] as Compiler.Parsing.Data.Expression, new Compiler.Parsing.Data.Token() { Name = "newline", Value = "newline" } };
+			    RuleEndr(true, true, _result);
+			    return _result;
+			    RuleEndr(false);
+			}
+			if(simpleDefinition != null && simpleDefinition.Name == "SimpleDefinition" && (simpleDefinition.Count == 1 && simpleDefinition[0] != null && simpleDefinition[0].Name == "newline"))
+			{
+			    RuleStartr(new System.Collections.Generic.List<string>() { "Definition" }, "SimpleDefinition [ newline ] -> : r Definition [ newline ]", (simpleDefinition));
+			    var _result = new Compiler.Parsing.Data.Definition(false) { new Compiler.Parsing.Data.Token() { Name = "newline", Value = "newline" } };
+			    RuleEndr(true, true, _result);
+			    return _result;
+			    RuleEndr(false);
+			}
+			RulesFailedr((simpleDefinition));
+			return (null);
+		}
+
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.RegisterStatement registerStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
@@ -2576,6 +2802,68 @@ namespace Compiler.Translation.ProgramToAST
 			    RuleStart(new System.Collections.Generic.List<string>() { registerStatement.Name, symbolTable.Name }, "", key);
 			    RuleEnd(true, false, value);
 			    return value;
+			}
+			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 6 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "(" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "FormalParameters" && registerStatement[1][1][2] != null && registerStatement[1][1][2].Name == ")" && registerStatement[1][1][3] != null && registerStatement[1][1][3].Name == "indent" && registerStatement[1][1][4] != null && registerStatement[1][1][4].Name == "Statements" && registerStatement[1][1][5] != null && registerStatement[1][1][5].Name == "dedent"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "Function", "SymbolTable" }, "[ RegisterStatement [ RegisterType : t RegisterOperation [ identifier : id Definition [ ( FormalParameters : params ) indent Statements : stms dedent ] ] ] SymbolTable : s ] -> [ Function [ Type [ t1 ] id1 ( p ) indent stm1 dedent ] s ]", (registerStatement, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatep(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
+			    _isMatching = t1 != null && t1.Name == "RegisterType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
+			        _isMatching = t2 != null && t2.Name == "RegisterType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node id1 = Translatep(registerStatement[1][0] as Compiler.Parsing.Data.Token);
+			            _isMatching = id1 != null && id1.Name == "identifier";
+			            if(id1 != null && !_isMatching)
+			            {
+			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			            }
+			            else if(_isMatching)
+			            {
+			                Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(registerStatement[1][0] as Compiler.Parsing.Data.Token);
+			                _isMatching = id2 != null && id2.Name == "identifier";
+			                if(id2 != null && !_isMatching)
+			                {
+			                    WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                }
+			                else if(_isMatching)
+			                {
+			                    (Compiler.AST.Data.Node p, Compiler.Translation.SymbolTable.Data.Node s1) = Translate(registerStatement[1][1][1] as Compiler.Parsing.Data.FormalParameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                    _isMatching = p != null && p.Name == "FormalParameters" && s1 != null && s1.Name == "SymbolTable";
+			                    if(p != null && s1 != null && !_isMatching)
+			                    {
+			                        WrongPattern((p, s1), new System.Collections.Generic.List<string>() { "FormalParameters", "SymbolTable" });
+			                    }
+			                    else if(_isMatching)
+			                    {
+			                        (Compiler.AST.Data.Node stm1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(registerStatement[1][1][4] as Compiler.Parsing.Data.Statements, Insert(s1 as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.RegisterType }, new Compiler.Translation.SymbolTable.Data.Token() { Name = "return", Value = "return" } } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                        _isMatching = stm1 != null && stm1.Name == "Statement" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
+			                        if(stm1 != null && symbolTable1 != null && !_isMatching)
+			                        {
+			                            WrongPattern((stm1, symbolTable1), new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" });
+			                        }
+			                        else if(_isMatching)
+			                        {
+			                            var _result = (new Compiler.AST.Data.Function(false) { new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.RegisterType }, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, p as Compiler.AST.Data.FormalParameters, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stm1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                            RuleEnd(true, true, _result);
+			                            return _result;
+			                        }
+			                    }
+			                }
+			            }
+			        }
+			    }
+			    RuleEnd(false);
 			}
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 1 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
@@ -2630,9 +2918,9 @@ namespace Compiler.Translation.ProgramToAST
 			    }
 			    RuleEnd(false);
 			}
-			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 2 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "=" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "DefinitionAssign" && (registerStatement[1][1][1].Count == 2 && registerStatement[1][1][1][0] != null && registerStatement[1][1][1][0].Name == "Expression" && registerStatement[1][1][1][1] != null && registerStatement[1][1][1][1].Name == "newline")))) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 3 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "=" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "Expression" && registerStatement[1][1][2] != null && registerStatement[1][1][2].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterDeclarationInit", "SymbolTable" }, "[ RegisterStatement [ RegisterType : t RegisterOperation [ identifier : id Definition [ = DefinitionAssign [ Expression : expr newline ] ] ] ] SymbolTable : s ] -> [ RegisterDeclarationInit [ t1 id1 = rexpr ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (registerStatement, symbolTable));
+			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterDeclarationInit", "SymbolTable" }, "[ RegisterStatement [ RegisterType : t RegisterOperation [ identifier : id Definition [ = Expression : expr newline ] ] ] SymbolTable : s ] -> [ RegisterDeclarationInit [ t1 id1 = rexpr ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (registerStatement, symbolTable));
 			    Compiler.AST.Data.Node t1 = Translatep(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 			    _isMatching = t1 != null && t1.Name == "RegisterType";
 			    if(t1 != null && !_isMatching)
@@ -2665,7 +2953,7 @@ namespace Compiler.Translation.ProgramToAST
 			                }
 			                else if(_isMatching)
 			                {
-			                    (Compiler.AST.Data.Node rexpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(registerStatement[1][1][1][0] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                    (Compiler.AST.Data.Node rexpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(registerStatement[1][1][1] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			                    _isMatching = rexpr != null && rexpr.Name == "RegisterExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
 			                    if(rexpr != null && symbolTable1 != null && !_isMatching)
 			                    {
@@ -5348,6 +5636,65 @@ namespace Compiler.Translation.ProgramToAST
 			RuleStartq(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:q {token.Name}", token);
 			var result = new Compiler.Translation.SymbolTable.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
 			RuleEndq(true, true, result);
+			return result;
+		}
+
+		public void RuleStartr(System.Collections.Generic.List<string> returnTypes, string rule, Compiler.Parsing.Data.Node data)
+		{
+			Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node> error = new Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node>();
+			error.ReturnTypes = returnTypes;
+			error.Parent = RuleError;
+			error.Rule = rule;
+			RuleError.Children.Add(error);
+			error.From = data;
+			RuleError = error;
+		}
+
+		public void RuleEndr(bool success, bool save, Compiler.Parsing.Data.Node data)
+		{
+			RuleError.IsError = !success;
+			var casted = RuleError as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node>;
+			casted.To = data;
+			if(save)
+			{
+			    Relationr.Add(casted.From, casted.To);
+			}
+			RuleError = RuleError.Parent;
+		}
+
+		public void RuleEndr(bool success)
+		{
+			RuleEndr(success, success, null);
+		}
+
+		public void RulesFailedr(Compiler.Parsing.Data.Node data)
+		{
+			Relationr.Add(data, null);
+		}
+
+		public void WrongPatternr(Compiler.Parsing.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		{
+			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node>;
+			casted.IsError = true;
+			casted.ReturnTypes = returnTypes;
+			casted.IsPatternError = true;
+			casted.To = data;
+		}
+
+		public Compiler.Parsing.Data.Node Translater(Compiler.Parsing.Data.Token token)
+		{
+			bool _isMatching = false;
+			var key = (token);
+			if(Relationr.ContainsKey(key))
+			{
+			    var value = Relationr[key];
+			    RuleStartr(new System.Collections.Generic.List<string>() { token.Name }, "", key);
+			    RuleEndr(true, false, value);
+			    return value;
+			}
+			RuleStartr(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:r {token.Name}", token);
+			var result = new Compiler.Parsing.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
+			RuleEndr(true, true, result);
 			return result;
 		}
 
