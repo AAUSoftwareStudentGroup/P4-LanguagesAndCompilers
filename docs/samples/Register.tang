@@ -1,9 +1,15 @@
-register8(36){5} = true
-register8(37){5} = false
-uint32 c
-c = 0
-while(true)
-    if(c == 300000)
-        register8(37){5+5} = !register8(37){5}
-        c = 0
-    c = c + 1
+int8 m = max(max(1, 2), 3)
+
+int8 max(int8 a, int8 b)
+    if(a > b)
+        return a + m
+    else
+        return b
+        int8 m = 0
+
+int8 max(int8 a, int8 b)
+    if(a > b)
+        return a + m
+    else
+        return b
+        int8 m = 0

@@ -1,5 +1,6 @@
 ->:p := Program -> AST
 ->:q := Program -> SymbolTable
+->:r := Program -> Program
 ->:s := [Program SymbolTable] -> SymbolTable
 ->:f := [Program SymbolTable] -> SymbolTable
 ->:t := [Program SymbolTable SymbolTable] -> AST
@@ -53,6 +54,7 @@ Program:p ->:p ast
 //Fill all functions into SymbolTable
 
 [Program[GlobalStatements[EPSILON] eof] SymbolTable:s] ->:f s
+
 [Program[GlobalStatements:stms eof] SymbolTable:s] ->:f s1
     [stms s] ->:f SymbolTable:s1
 
@@ -65,24 +67,31 @@ Program:p ->:p ast
 
 [GlobalStatement[Interrupt:inter] SymbolTable:s] ->:f s
 
-[GlobalStatement[Statement:stm] SymbolTable:s] ->:f s1
-    [stm s] ->:f SymbolTable:s1
+[GlobalStatement[IdentifierDeclaration:stm] SymbolTable:s] ->:f s1
+    [stm s] ->:f SymbolTable:s1    
+
+[GlobalStatement[IdentifierStatement:stm] SymbolTable:s] ->:f s
+
+[GlobalStatement[RegisterStatement:stm] SymbolTable:s] ->:f s1
+    [stm s] ->:f SymbolTable:s1    
+
+[GlobalStatement[IfStatement:stm] SymbolTable:s] ->:f s
+
+[GlobalStatement[WhileStatement:stm] SymbolTable:s] ->:f s
+
+[GlobalStatement[ForStatement:stm] SymbolTable:s] ->:f s
+
+[GlobalStatement[ReturnStatement:stm] SymbolTable:s] ->:f s
+
+[GlobalStatement[InterruptStatement:stm] SymbolTable:s] ->:f s
+
+[GlobalStatement[newline:stm] SymbolTable:s] ->:f s
 
 [Interrupt[interrupt ( numeral:i ) indent Statements:stms dedent] SymbolTable:s] ->:f s
 
-[Statements[Statement:stm Statements[EPSILON]] SymbolTable:s] ->:f s1
-    [stm s] ->:f SymbolTable:s1
+[IdentifierSimpleDeclaration SymbolTable:s] ->:f s
 
-[Statements[Statement:stm Statements:stmsp] SymbolTable:s] ->:f s2
-    [stm s] ->:f SymbolTable:s1
-    [stmsp s1] ->:f SymbolTable:s2
-
-[Statement[newline] SymbolTable:s] ->:f s
-
-[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] ->:f s1
-    [idDcl s] ->:f SymbolTable:s1
-
-[IdentifierDeclaration[IntType identifier Definition[= DefinitionAssign[Expression newline]]] SymbolTable:s] ->:f s
+[IdentifierDeclaration[IntType identifier Definition[= Expression newline]] SymbolTable:s] ->:f s
 
 [IdentifierDeclaration[IntType:intType identifier:id Definition[( FormalParameters:params ) indent Statements dedent]] SymbolTable:s] 
 ->:f s <- Declarations[Declaration[Function[ReturnType[Type[it]] id1 p]] %Declarations[EPSILON]]
@@ -90,6 +99,8 @@ Program:p ->:p ast
     intType ->:q IntType:it
     id ->:q identifier:id1
     params ->:q Parameters:p
+
+[IdentifierDeclaration[IntType identifier Definition[newline]] SymbolTable:s] ->:f s
 
 FormalParameters[EPSILON] ->:q Parameters[EPSILON]
 
@@ -116,10 +127,7 @@ Type[BooleanType:t] ->:q Type[t1]
 Type[RegisterType:t] ->:q Type[t1]
     t ->:q RegisterType:t1
 
-[IdentifierDeclaration[IntType identifier Definition[newline]] SymbolTable:s] ->:f s
-
-
-[IdentifierDeclaration[BooleanType identifier Definition[= DefinitionAssign[Expression newline]]] SymbolTable:s] ->:f s
+[IdentifierDeclaration[BooleanType identifier Definition[= Expression newline]] SymbolTable:s] ->:f s
 
 [IdentifierDeclaration[BooleanType:boolType identifier:id Definition[( FormalParameters:params ) indent Statements dedent]] SymbolTable:s] 
 ->:f s <- Declarations[Declaration[Function[ReturnType[Type[t]] id1 p]] %Declarations[EPSILON]]
@@ -130,7 +138,6 @@ Type[RegisterType:t] ->:q Type[t1]
 
 [IdentifierDeclaration[BooleanType identifier Definition[newline]] SymbolTable:s] ->:f s
 
-
 [IdentifierDeclaration[nothing:n identifier:id ( FormalParameters:params ) indent Statements dedent] SymbolTable:s] 
 ->:f s <- Declarations[Declaration[Function[ReturnType[t] id1 p]] %Declarations[EPSILON]]
     [id s] ->:s Declaration[EPSILON]
@@ -138,29 +145,13 @@ Type[RegisterType:t] ->:q Type[t1]
     id ->:q identifier:id1
     params ->:q Parameters:p
 
-[Statement[IdentifierStatement] SymbolTable:s] ->:f s
-
-[Statement[ReturnStatement] SymbolTable:s] ->:f s
-
-[Statement[InterruptStatement] SymbolTable:s] ->:f s
-
-[Statement[IfStatement:ifStm] SymbolTable:s] ->:f s
-
-[Statement[WhileStatement:whileStm] SymbolTable:s] ->:f s
-
-[Statement[ForStatement:forStm] SymbolTable:s] ->:f s
-
-[Statement[RegisterStatement:regStm] SymbolTable:s] ->:f s1
-    [regStm s] ->:f SymbolTable:s1
-
 [RegisterStatement[RegisterType RegisterOperation[( Expression ) { Expression } = Expression newline]] SymbolTable:s] ->:f s
 
-[RegisterStatement[RegisterType RegisterOperation[identifier Definition[= DefinitionAssign[Expression newline]]]] SymbolTable:s] ->:f s
+[RegisterStatement[RegisterType RegisterOperation[identifier Definition[= Expression newline]]] SymbolTable:s] ->:f s
 
-[RegisterStatement[RegisterType RegisterOperation[identifier Definition[= DefinitionAssign[Expression newline]]]] SymbolTable:s] ->:f s
+[RegisterStatement[RegisterType RegisterOperation[identifier Definition[= Expression newline]]] SymbolTable:s] ->:f s
 
 [RegisterStatement[RegisterType RegisterOperation[identifier Definition[newline]]] SymbolTable:s] ->:f s
-
 
 [RegisterStatement[RegisterType:regType RegisterOperation[identifier:id Definition[( FormalParameters:params ) indent Statements dedent]]] SymbolTable:s] 
 ->:f s <- Declarations[Declaration[Function[ReturnType[Type[t]] id1 p]] %Declarations[EPSILON]]
@@ -184,15 +175,37 @@ Type[RegisterType:t] ->:q Type[t1]
 
 [GlobalStatement[Interrupt:inter] SymbolTable:s] -> [GlobalStatement[inter1] s]
     [inter s] -> [Interrupt:inter1 SymbolTable]
-
-[GlobalStatement[Statement:stm] SymbolTable:s] -> [GlobalStatement[stm1] s1]
-    [stm s] -> [Statement:stm1 SymbolTable:s1]
-
-[GlobalStatement[Statement:stm] SymbolTable:s] -> [stm1 s1]
-    [stm s] -> [GlobalStatement:stm1 SymbolTable:s1]
-
-[GlobalStatement[Statement:stm] SymbolTable:s] -> [GlobalStatement[func] s1]
-    [stm s] -> [Function:func SymbolTable:s1]
+[GlobalStatement[IdentifierDeclaration:stm] SymbolTable:s] -> [GlobalStatement[stm1] s1]
+    [stm s] -> [Function:stm1 SymbolTable:s1]
+[GlobalStatement[IdentifierDeclaration:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s1]
+    [stm s] -> [IntegerDeclaration:stm1 SymbolTable:s1]
+[GlobalStatement[IdentifierDeclaration:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s1]
+    [stm s] -> [IntegerDeclarationInit:stm1 SymbolTable:s1]
+[GlobalStatement[IdentifierDeclaration:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s1]
+    [stm s] -> [BooleanDeclaration:stm1 SymbolTable:s1]
+[GlobalStatement[IdentifierDeclaration:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s1]
+    [stm s] -> [BooleanDeclarationInit:stm1 SymbolTable:s1]
+[GlobalStatement[IdentifierStatement:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s]
+    [stm s] -> [*:stm1 SymbolTable]
+[GlobalStatement[RegisterStatement:stm] SymbolTable:s] -> [GlobalStatement[stm1] s1]
+    [stm s] -> [Function:stm1 SymbolTable:s1]
+[GlobalStatement[RegisterStatement:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s1]
+    [stm s] -> [RegisterDeclaration:stm1 SymbolTable:s1]
+[GlobalStatement[RegisterStatement:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s1]
+    [stm s] -> [RegisterDeclarationInit:stm1 SymbolTable:s1]
+[GlobalStatement[RegisterStatement:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s1]
+    [stm s] -> [DirectBitAssignment:stm1 SymbolTable:s1]
+[GlobalStatement[IfStatement:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s]
+    [stm s] -> [*:stm1 SymbolTable]
+[GlobalStatement[WhileStatement:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s]
+    [stm s] -> [*:stm1 SymbolTable]
+[GlobalStatement[ForStatement:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s]
+    [stm s] -> [*:stm1 SymbolTable]
+[GlobalStatement[ReturnStatement:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s1]
+    [stm s] -> [*:stm1 SymbolTable:s1]
+[GlobalStatement[InterruptStatement:stm] SymbolTable:s] -> [GlobalStatement[Statement[stm1]] s]
+    [stm s] -> [*:stm1 SymbolTable]
+[GlobalStatement[newline] SymbolTable:s] -> [GlobalStatement[Statement[newline]] s]
 
 [Interrupt[interrupt ( numeral:i ) indent Statements:stms dedent] SymbolTable:s] -> [Interrupt[interrupt ( i1 ) indent stm dedent] s]
     i ->:p numeral:i1
@@ -201,60 +214,27 @@ Type[RegisterType:t] ->:q Type[t1]
 [Statements[Statement:stm Statements[EPSILON]] SymbolTable:s] -> [stm1 s1]
     [stm s] -> [Statement:stm1 SymbolTable:s1]
 
-[Statements[Statement:stm Statements[EPSILON]] SymbolTable:s] -> [GlobalStatement[func] s1]
-    [stm s] -> [Function:func SymbolTable:s1]
-
 [Statements[Statement:stm Statements:stmsp] SymbolTable:s] -> [Statement[CompoundStatement[stm1 newline stm2]] s2]
     [stm s] -> [Statement:stm1 SymbolTable:s1]
     [stmsp s1] -> [Statement:stm2 SymbolTable:s2]
 
-[Statements[Statement:stm Statements:stmsp] SymbolTable:s] 
--> [GlobalStatement[CompoundGlobalStatement[GlobalStatement[func] newline GlobalStatement[stm2]]] s2]
-    [stm s] -> [Function:func SymbolTable:s1]
-    [stmsp s1] -> [Statement:stm2 SymbolTable:s2]
-
-[Statements[Statement:stm Statements:stmsp] SymbolTable:s] 
--> [GlobalStatement[CompoundGlobalStatement[GlobalStatement[func] newline stm2]] s2]
-    [stm s] -> [Function:func SymbolTable:s1]
-    [stmsp s1] -> [GlobalStatement:stm2 SymbolTable:s2]
-
 [Statement[newline] SymbolTable:s] -> [Statement[newline] s]
-
-[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
-    [idDcl s] -> [IntegerDeclaration:dclStm SymbolTable:s1]
-
-[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
-    [idDcl s] -> [IntegerDeclarationInit:dclStm SymbolTable:s1]
-
-[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
-    [idDcl s] -> [BooleanDeclaration:dclStm SymbolTable:s1]
-
-[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [Statement[dclStm] s1]
-    [idDcl s] -> [BooleanDeclarationInit:dclStm SymbolTable:s1]
-
-[Statement[InterruptStatement:itrStm] SymbolTable:s] -> [Statement[itrStm1] s]
-    itrStm ->:p InterruptStatement:itrStm1 
-    
-[Statement[IdentifierDeclaration:idDcl] SymbolTable:s] -> [f s1]
-    [idDcl s] -> [Function:f SymbolTable:s1]
-
-[Statement[IdentifierStatement:idStm] SymbolTable:s] -> [Statement[idStm1] s1]
-    [idStm s] -> [*:idStm1 SymbolTable:s1]
-
-[Statement[IfStatement:ifStm] SymbolTable:s] -> [Statement[ifStm1] s]
-    [ifStm s] -> [*:ifStm1 SymbolTable]
-
-[Statement[WhileStatement:whileStm] SymbolTable:s] -> [Statement[whileStm1] s]
-    [whileStm s] -> [WhileStatement:whileStm1 SymbolTable:s1]
-
-[Statement[ForStatement:forStm] SymbolTable:s] -> [Statement[forStm1] s]
-    [forStm s] -> [ForStatement:forStm1 SymbolTable:s]
-
-[Statement[RegisterStatement:regStm] SymbolTable:s] -> [Statement[regStm1] s1]
-    [regStm s] -> [*:regStm1 SymbolTable:s1]
-
-[Statement[ReturnStatement:ret] SymbolTable:s] -> [Statement[retStm] s1]
-    [ret s] -> [*:retStm SymbolTable:s1]
+[Statement[IdentifierSimpleDeclaration:stm] SymbolTable:s] -> [Statement[stm1] s1]
+    [stm s] -> [*:stm1 SymbolTable:s1]
+[Statement[IdentifierStatement:stm] SymbolTable:s] -> [Statement[stm1] s1]
+    [stm s] -> [*:stm1 SymbolTable:s1]
+[Statement[RegisterSimpleStatement:stm] SymbolTable:s] -> [Statement[stm1] s1]
+    [stm s] -> [*:stm1 SymbolTable:s1]
+[Statement[IfStatement:stm] SymbolTable:s] -> [Statement[stm1] s1]
+    [stm s] -> [*:stm1 SymbolTable:s1]
+[Statement[WhileStatement:stm] SymbolTable:s] -> [Statement[stm1] s1]
+    [stm s] -> [*:stm1 SymbolTable:s1]
+[Statement[ForStatement:stm] SymbolTable:s] -> [Statement[stm1] s1]
+    [stm s] -> [*:stm1 SymbolTable:s1]
+[Statement[ReturnStatement:stm] SymbolTable:s] -> [Statement[stm1] s1]
+    [stm s] -> [*:stm1 SymbolTable:s1]
+[Statement[InterruptStatement:stm] SymbolTable:s] -> [Statement[stm1] s1]
+    [stm s] -> [*:stm1 SymbolTable:s1]
 
 [ReturnStatement[return ReturnValue[Expression:expr] newline] SymbolTable:s] -> [IntegerReturn[return iret] s]
     [return s] ->:s Declaration[Variable[Type[IntType] return]]
@@ -271,9 +251,14 @@ Type[RegisterType:t] ->:q Type[t1]
 [ReturnStatement[return ReturnValue[EPSILON] newline] SymbolTable:s] -> [EmptyReturn[return] s]
     [return s] ->:s Declaration[Variable[Type[nothing] return]]
 
-InterruptStatement[enableinterrupts ( )] -> :p InterruptStatement[enableinterrupts ( )]
-InterruptStatement[disableinterrupts ( )] -> :p InterruptStatement[disableinterrupts ( )]
-    
+[InterruptStatement[enableinterrupts ( )] SymbolTable:s] -> [InterruptStatement[enableinterrupts ( )] s]
+
+[InterruptStatement[disableinterrupts ( )] SymbolTable:s] -> [InterruptStatement[disableinterrupts ( )] s]
+
+[IdentifierSimpleDeclaration[*:t identifier:id SimpleDefinition:d] SymbolTable:s] -> [dcl s1]
+    d ->:r Definition:def
+    [IdentifierDeclaration[t id def] s] -> [*:dcl SymbolTable:s1]
+
 [IdentifierDeclaration[IntType:t  identifier:id Definition[newline]] SymbolTable:s] -> [IntegerDeclaration[t1 id1] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     [id s] ->:s Declaration[EPSILON]
     t ->:p IntType:t1
@@ -321,7 +306,7 @@ Type[BooleanType:t] ->:p Type[t1]
 Type[RegisterType:t] ->:p Type[t1]
     t ->:p RegisterType:t1
 
-[IdentifierDeclaration[IntType:t identifier:id Definition[= DefinitionAssign[Expression:expr newline]]] SymbolTable:s] -> [IntegerDeclarationInit[t1 id1 = iexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
+[IdentifierDeclaration[IntType:t identifier:id Definition[= Expression:expr newline]] SymbolTable:s] -> [IntegerDeclarationInit[t1 id1 = iexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p IntType:t1
     t ->:q IntType:t2
     id ->:p identifier:id1
@@ -351,6 +336,34 @@ IntType[int8] ->:q IntType[int8]
 IntType[int16] ->:q IntType[int16]  
 IntType[int32] ->:q IntType[int32]  
 
+[RegisterSimpleStatement:stm SymbolTable:s] -> [stm2 s1]
+    stm ->:r RegisterStatement:stm1
+    [stm1 s] -> [*:stm2 SymbolTable:s1]
+
+RegisterSimpleStatement[RegisterType:t RegisterSimpleOperation:op] ->:r RegisterStatement[t operation]
+    op ->:r RegisterOperation:operation
+
+RegisterSimpleOperation[( Expression:e1 ) { Expression:e2 } = Expression:e3 newline] ->:r RegisterOperation[( e1 ) { e2 } = e3 newline]
+
+RegisterSimpleOperation[identifier:id SimpleDefinition:d] ->:r RegisterOperation[id def]
+    d ->:r Definition:def
+
+IdentifierSimpleDeclaration[*:t identifier:id SimpleDefinition:d] ->:r IdentifierDeclaration[t id def]
+    d ->:r Definition:def
+
+SimpleDefinition[= Expression:e newline] ->:r Definition[= e newline]
+
+SimpleDefinition[newline] ->:r Definition[newline]
+
+[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Definition[( FormalParameters:params ) indent Statements:stms dedent]]] SymbolTable:s] 
+-> [Function[Type[t1] id1 ( p ) indent stm1 dedent] s]
+    t ->:p RegisterType:t1
+    t ->:q RegisterType:t2
+    id ->:p identifier:id1
+    id ->:q identifier:id2
+    [params s] -> [FormalParameters:p SymbolTable:s1]
+    [stms s1 <- Declarations[Declaration[Variable[Type[t2] return]] %Declarations[EPSILON]]] -> [Statement:stm1 SymbolTable]
+
 [RegisterStatement[RegisterType:t RegisterOperation[identifier:id Definition[newline]]] SymbolTable:s] -> [RegisterDeclaration[t1 id1] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p RegisterType:t1
     t ->:q RegisterType:t2
@@ -358,13 +371,20 @@ IntType[int32] ->:q IntType[int32]
     id ->:q identifier:id2
     [id s] ->:s Declaration[EPSILON]
 	
-[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Definition[= DefinitionAssign[Expression:expr newline]]]] SymbolTable:s] -> [RegisterDeclarationInit[t1 id1 = rexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
+[RegisterStatement[RegisterType:t RegisterOperation[identifier:id Definition[= Expression:expr newline]]] SymbolTable:s] -> [RegisterDeclarationInit[t1 id1 = rexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p RegisterType:t1
     t ->:q RegisterType:t2
     id ->:p identifier:id1
     id ->:q identifier:id2
     [expr s] -> [RegisterExpression:rexpr SymbolTable]
     [id s] ->:s Declaration[EPSILON]
+
+[RegisterStatement[RegisterType:t RegisterOperation[( Expression:expr1 ) { Expression:expr2 } = Expression:expr3 newline]] SymbolTable:s] 
+-> [DirectBitAssignment[regType ( intExpr1 ) { intExpr2 } = boolExpr] s]
+    t ->:p RegisterType:regType
+    [expr1 s] -> [IntegerExpression:intExpr1 SymbolTable:s1]
+    [expr2 s] -> [IntegerExpression:intExpr2 SymbolTable:s2]
+    [expr3 s] -> [BooleanExpression:boolExpr SymbolTable:s3]
 
 RegisterType[register8] ->:p RegisterType[register8]
 RegisterType[register16] ->:p RegisterType[register16]
@@ -388,7 +408,7 @@ RegisterType[register16] ->:q RegisterType[register16]
     [params s] -> [FormalParameters:p SymbolTable:s1]
     [stms s1 <- Declarations[Declaration[Variable[Type[t2] return]] %Declarations[EPSILON]]] -> [Statement:stm1 SymbolTable]
 
-[IdentifierDeclaration[BooleanType:t identifier:id Definition[= DefinitionAssign[Expression:expr newline]]] SymbolTable:s] -> [BooleanDeclarationInit[t1 id1 = bexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
+[IdentifierDeclaration[BooleanType:t identifier:id Definition[= Expression:expr newline]] SymbolTable:s] -> [BooleanDeclarationInit[t1 id1 = bexpr] s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]]
     t ->:p BooleanType:t1
     t ->:q BooleanType:t2
     id ->:p identifier:id1
@@ -399,13 +419,6 @@ RegisterType[register16] ->:q RegisterType[register16]
 BooleanType[bool] ->:p BooleanType[bool]
 
 BooleanType[bool] ->:q BooleanType[bool]
-
-[RegisterStatement[RegisterType:t RegisterOperation[( Expression:expr1 ) { Expression:expr2 } = Expression:expr3 newline]] SymbolTable:s] 
--> [DirectBitAssignment[regType ( intExpr1 ) { intExpr2 } = boolExpr] s]
-    t ->:p RegisterType:regType
-    [expr1 s] -> [IntegerExpression:intExpr1 SymbolTable:s1]
-    [expr2 s] -> [IntegerExpression:intExpr2 SymbolTable:s2]
-    [expr3 s] -> [BooleanExpression:boolExpr SymbolTable:s3]
 
 [IdentifierStatement[identifier:id IdentifierStatementP[BitSelector[{ Expression:expr1 }] = Expression:expr2 newline]] SymbolTable:s] -> [IndirectBitAssignment[id1 { intExpr } = boolExpr] s]
     id ->:p identifier:id1

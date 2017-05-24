@@ -21,7 +21,7 @@ Statements -> Statement Statements
 
 Statement -> IdentifierSimpleDeclaration
            | IdentifierStatement
-           | RegisterType RegisterSimpleOperation
+           | RegisterSimpleStatement
            | IfStatement
            | WhileStatement
            | ForStatement
@@ -29,15 +29,16 @@ Statement -> IdentifierSimpleDeclaration
            | InterruptStatement
            | newline
 
+RegisterSimpleStatement -> RegisterType RegisterSimpleOperation
+
 RegisterSimpleOperation -> ( Expression ) { Expression } = Expression newline
-                        | identifier SimpleDefinition
+                         | identifier SimpleDefinition
 
 IdentifierSimpleDeclaration -> IntType identifier SimpleDefinition
-                            | BoolenType identifier SimpleDefinition
+                             | BoolenType identifier SimpleDefinition
 
-SimpleDefinition -> = DefinitionAssign
+SimpleDefinition -> = Expression newline
                   | newline
-
 
 IdentifierDeclaration -> IntType identifier Definition
                        | BooleanType identifier Definition
@@ -51,15 +52,12 @@ RegisterType -> register8
 RegisterOperation -> ( Expression ) { Expression } = Expression newline
                    | identifier Definition
 
-Definition -> = DefinitionAssign
+Definition -> = Expression newline
             | ( FormalParameters ) indent Statements dedent
             | newline
 
-DefinitionAssign -> Expression newline
-                 | [ ExpressionList ]
-
 InterruptStatement -> disableinterrupts ( )
-                           | enableinterrupts ( )
+                    | enableinterrupts ( )
                  
 ReturnStatement -> return ReturnValue newline
 

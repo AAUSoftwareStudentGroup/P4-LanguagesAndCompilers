@@ -977,7 +977,7 @@ namespace Generator.Translation
                     foreach (string child in children)
                     {
                         string expectedName = expansions[expansionIndex][index];
-                        if (expectedName != child)
+                        if (expectedName != child && expectedName != "*" && child != "*")
                         {
                             isValid = false;
                             break;
@@ -1110,7 +1110,7 @@ namespace Generator.Translation
                     foreach(string name in names)
                     {
                         string expectedName = expansions[expansionIndex][index];
-                        if(expectedName != name)
+                        if(expectedName != name && expectedName != "*" && name != "*")
                         {
                             isValid = false;
                             break;
