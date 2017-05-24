@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="../../../docs/tang.tokens.json">
+    <None Update="../../docs/tang.tokens.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>tang.tokens.json</Link>
     </None>
@@ -23,6 +23,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>Testfiles\%(RecursiveDir)%(Filename)%(Extension)</Link>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
 </Project>

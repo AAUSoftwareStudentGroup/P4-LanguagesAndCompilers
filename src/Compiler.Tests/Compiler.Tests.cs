@@ -23,16 +23,17 @@ namespace Compiler.Xunit
         {
             TangCompiler tc = new TangCompiler();
             string expected = File.ReadAllText(file + ".c").Replace("\r","");
-            string actual = tc.Compile(file, "../../../../../docs/tang.tokens.json").Replace("\r", "");
+            string actual = tc.Compile(file, "tang.tokens.json").Replace("\r", "");
             Assert.Equal(expected, actual);
         }
+
         [Theory]
         [MemberData("FilesFailingInTang", MemberType = typeof(CompilerTestsData))]
         // Method to test that all programs does not compile correctly in Fail folder
         public void ProgramsDoesntCompileCorrectly(string file)
         {
             TangCompiler tc = new TangCompiler();   
-            Assert.ThrowsAny<Exception>(() => tc.Compile(file, "../../../../../docs/tang.tokens.json"));
+            Assert.ThrowsAny<Exception>(() => tc.Compile(file, "tang.tokens.json"));
         }
     }
 }
