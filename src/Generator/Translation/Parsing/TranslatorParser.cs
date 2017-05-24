@@ -20,7 +20,7 @@ namespace Generator.Translation.Parsing
 			}
 			else
 			{
-			    throw new Exception();
+			    throw new UnexpectedTokenException(token);
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "eof"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -66,7 +66,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -100,7 +100,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseDomain(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -117,7 +117,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTreeDomain(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -132,7 +132,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "]"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -150,7 +150,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -164,7 +164,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseSymbol(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -180,7 +180,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "escapedSymbol"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -198,7 +198,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseRulesP(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -216,7 +216,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -236,7 +236,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -254,7 +254,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseStructure(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -271,7 +271,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "goto"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -291,7 +291,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -309,7 +309,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -330,7 +330,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -349,7 +349,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseNotEqual(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -364,7 +364,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParsePattern(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -379,7 +379,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseStructure(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -394,7 +394,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseStructure(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -411,7 +411,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTreePattern(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -426,7 +426,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "]"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -442,7 +442,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseChildrenPattern(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -456,7 +456,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseSymbol(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -481,7 +481,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -504,7 +504,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -522,7 +522,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -540,7 +540,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTreeStructure(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -555,7 +555,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "]"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -573,7 +573,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseInsertion(tokens));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -590,7 +590,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -617,7 +617,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -646,7 +646,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 
@@ -665,7 +665,7 @@ namespace Generator.Translation.Parsing
 			        node.Add(ParseTerminal(tokens, "EPSILON"));
 			        return node;
 			    default:
-			        throw new Exception();
+			        throw new UnexpectedTokenException(tokens.Current);
 			}
 		}
 	}

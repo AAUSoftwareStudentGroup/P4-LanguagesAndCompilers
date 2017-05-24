@@ -7,10 +7,12 @@ namespace Generator.Translation.Data
 	{
 		public  Patterns()
 		{
+			Id = NextId;
 		}
 
 		public  Patterns(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Patterns";
 		}

@@ -7,10 +7,12 @@ namespace Generator.Translation.Data
 	{
 		public  Equal()
 		{
+			Id = NextId;
 		}
 
 		public  Equal(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Equal";
 		}

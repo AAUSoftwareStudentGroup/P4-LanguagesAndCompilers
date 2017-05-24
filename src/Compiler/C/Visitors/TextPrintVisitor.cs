@@ -14,16 +14,19 @@ namespace Compiler.C.Visitors
 
             bool first = true;
 
+            bool lastUnderscore = false;
+
             foreach (var child in node)
             {
                 foreach (var str in child.Accept(this).Where(s => !string.IsNullOrWhiteSpace(s)))
                 {
-                    if(!first)
+                    if(!first && !lastUnderscore)
                     {
                         strBuilder.Append(" ");
                     }
                     first = false;
                     strBuilder.Append(str);
+                    lastUnderscore = str == "_";
                 }
             }
             yield return strBuilder.ToString();
@@ -52,7 +55,7 @@ namespace Compiler.C.Visitors
         {
             if (node[0].Name != "EPSILON")
             {
-                if(node.Count > 2 && node[1].Name == "Pow")
+                if(node.Count > 2 && node[2].Name == "Pow")
                 {
                     yield return string.Join(" ", node.Select(c => c.Name));
                 }
@@ -189,29 +192,29 @@ namespace Compiler.C.Visitors
             yield return "}";
         }
 
-        public override IEnumerable<string> Visit(ForStatement node)
-        {
-            StringBuilder first = new StringBuilder("for (");
-            foreach (var c in node.Skip(2).TakeWhile(t => t.Name != ")"))
-            {
-                foreach (var str in c.Accept(this).Where(s => !string.IsNullOrWhiteSpace(s)))
-                {
-                    first.Append(" " + str);
-                }
-            }
-            first.Append(" )");
-            yield return first.ToString();
-            yield return "{";
-            foreach (var str in node.Nodes<Declaration>()[0].Accept(this))
-            {
-                yield return $"    {str}";
-            }
-            foreach (var str in node.Nodes<Statement>()[0].Accept(this))
-            {
-                yield return $"    {str}";
-            }
-            yield return "}";
-        }
+        //public override IEnumerable<string> Visit(ForStatement node)
+        //{
+        //    StringBuilder first = new StringBuilder("for (");
+        //    foreach (var c in node.Skip(2).TakeWhile(t => t.Name != ")"))
+        //    {
+        //        foreach (var str in c.Accept(this).Where(s => !string.IsNullOrWhiteSpace(s)))
+        //        {
+        //            first.Append(" " + str);
+        //        }
+        //    }
+        //    first.Append(" )");
+        //    yield return first.ToString();
+        //    yield return "{";
+        //    foreach (var str in node.Nodes<Declaration>()[0].Accept(this))
+        //    {
+        //        yield return $"    {str}";
+        //    }
+        //    foreach (var str in node.Nodes<Statement>()[0].Accept(this))
+        //    {
+        //        yield return $"    {str}";
+        //    }
+        //    yield return "}";
+        //}
 
         public override IEnumerable<string> Visit(IfElseStatement node)
         {

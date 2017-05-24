@@ -1,3 +1,1 @@
-int8 a = 0
-for(int8 a from 1 to 19)
-    a = 5
+register16 sum = sum

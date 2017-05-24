@@ -12,13 +12,13 @@ CompoundDeclaration -> Declaration Declaration
 FunctionPrototype -> Type identifier ( FormalParameters )
                   |  Type main ( )
                   |  Type __vector_ numeral ( ) __attribute__ ( ( signal , used , externally_visible ) )
-                  |  int Pow ( signed long a , unsigned long b )
+                  |  signed long Pow ( signed long a , signed long b )
 
 Function -> CompoundFunction
           | Type identifier ( FormalParameters ) { Declaration Statement }
           | Type main ( ) { Declaration Statement }
           | Type __vector_ numeral ( ) { Declaration Statement }
-          | int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+          | signed long Pow ( signed long a , signed long b ) { signed long r = 1, i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
           | EPSILON        
 
 CompoundFunction -> Function Function
@@ -106,7 +106,7 @@ IfElseIfStatement -> if ( BooleanExpression ) { Declaration Statement } else IfS
 
 WhileStatement -> while ( BooleanExpression ) { Declaration Statement }
 
-ForStatement -> for ( IntType identifier = IntegerExpression ; identifier <= IntegerExpression ; identifier ++ ) { Declaration Statement }
+ForStatement -> IntType _ identifier [ ] = { IntegerExpression , IntegerExpression , 1 } ; _ identifier [ 2 ] = ( _ identifier [ 0 ] < _ identifier [ 1 ] ? 1 : -1 ) ; IntType identifier = _ identifier [ 0 ] ; do { Declaration Statement _ identifier [ 0 ] += _ identifier [ 2 ] ; identifier = _ identifier [ 0 ] ; } while ( identifier != _ identifier [ 1 ] + _ identifier [ 2 ] ) ;
 
 Call -> identifier ( ExpressionList )
 

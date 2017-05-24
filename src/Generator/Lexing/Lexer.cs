@@ -27,7 +27,7 @@ namespace Generator.Lexing
             }
         }
 
-        public IEnumerable<Token> Analyse(String source)
+        public IEnumerable<Token> Analyse(String source, string fileName)
         {
             Token token = null;
             Match match = null;
@@ -127,8 +127,7 @@ namespace Generator.Lexing
 
                 if(token == null)
                 {
-                    Console.WriteLine("Error before: ..."+source.Substring(currentIndex, 10));
-                    throw new Exception("Error before: ..."+source.Substring(currentIndex, 10));
+                    throw new LexicalException(source.Substring(currentIndex, Math.Min(source.Length - currentIndex, 10)).Split(' ')[0] + "...", fileName, row, column);
                 }
             }
             while(indentationLevel.Peek() > 0)

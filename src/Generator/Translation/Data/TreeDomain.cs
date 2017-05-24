@@ -7,10 +7,12 @@ namespace Generator.Translation.Data
 	{
 		public  TreeDomain()
 		{
+			Id = NextId;
 		}
 
 		public  TreeDomain(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "TreeDomain";
 		}

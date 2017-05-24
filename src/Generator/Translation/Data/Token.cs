@@ -11,10 +11,12 @@ namespace Generator.Translation.Data
 		public int Column { get; set; }
 		public  Token()
 		{
+			Id = NextId;
 		}
 
 		public  Token(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Token";
 		}
@@ -22,6 +24,11 @@ namespace Generator.Translation.Data
 		public override T Accept<T>(Generator.Translation.Visitors.TranslatorVisitor<T> visitor)
 		{
 			return visitor.Visit(this);
+		}
+
+		public override string ToString()
+		{
+			return Value;
 		}
 	}
 }

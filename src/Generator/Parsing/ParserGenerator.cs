@@ -165,6 +165,98 @@ namespace Generator.Parsing
             return visitorClasses.ToArray();
         }
 
+        public ClassType[] GenerateSyntaxTreeClasses(BNF bnf, string visitorName, string dataNamespace, string visitorNamespace)
+        {
+            List<ClassType> classes = new List<ClassType>();
+
+            foreach (var production in bnf)
+            {
+                ClassType classType = CreateParseTreeClass(dataNamespace, visitorNamespace, visitorName, $"{production.Key}");
+                classes.Add(classType);
+            }
+
+            ClassType nodeClass = new ClassType(dataNamespace, "public abstract", "Node", "List<Node>")
+            {
+                Usings = new List<string>()
+                {
+                    "using System.Collections.Generic;",
+                    "using System.Collections;",
+                    "using System.Linq;",
+                },
+                Fields = new List<FieldType>()
+                {
+                    new FieldType("public", "string", "Name") { Expression = "{ get; set; }"},
+                    new FieldType("private static", "int", "_nextId") { Expression = "= 0;"},
+                    new FieldType("public static", "int", "NextId") { Expression = "{ get { return _nextId++; } }"},
+                    new FieldType("public", "int", "Id") { Expression = "{ get; set; }"},
+                    new FieldType("public", "bool", "IsPlaceholder") { Expression = "{ get; set; } = false;"}
+                },
+                Methods = new List<MethodType>()
+                {
+                    new MethodType("public abstract", "T", "Accept<T>")
+                    {
+                        Parameters = new List<ParameterType>()
+                        {
+                            new ParameterType($"{visitorNamespace}.{visitorName}<T>", "visitor")
+                        }
+                    },
+                    new MethodType("public", "T[]", "Nodes<T>")
+                    {
+                        Constraints = "where T : class",
+                        Body = new List<string>()
+                        {
+                            "return this.Where(c => c is T).Select(c => c as T).ToArray();"
+                        }
+                    },
+                    new MethodType("public override", "string", "ToString")
+                    {
+                        Body = new List<string>()
+                        {
+                            "return string.Join(\" \", this.Select(child => child.ToString()).Where(str => !string.IsNullOrWhiteSpace(str)));"
+                        }
+                    },
+                    new MethodType("public override", "int", "GetHashCode")
+                    {
+                        Body = new List<string>()
+                        {
+                            "return Id;"
+                        }
+                    },
+                    new MethodType("public override", "bool", "Equals")
+                    {
+                        Parameters = new List<ParameterType>()
+                        {
+                            new ParameterType("object", "obj")
+                        },
+                        Body = new List<string>()
+                        {
+                            $"return obj is {dataNamespace}.Node && (obj as {dataNamespace}.Node).Id == Id;"
+                        }
+                    }
+                }
+            };
+
+            classes.Add(nodeClass);
+
+            ClassType tokenClass = CreateParseTreeClass(dataNamespace, visitorNamespace, visitorName, "Token");
+            tokenClass.Fields.Add(new FieldType("public", "string", "Value") { Expression = "{ get; set; }" });
+            tokenClass.Fields.Add(new FieldType("public", "string", "FileName") { Expression = "{ get; set; }" });
+            tokenClass.Fields.Add(new FieldType("public", "int", "Row") { Expression = "{ get; set; }" });
+            tokenClass.Fields.Add(new FieldType("public", "int", "Column") { Expression = "{ get; set; }" });
+
+            tokenClass.Methods.Add(new MethodType("public override", "string", "ToString")
+            {
+                Body = new List<string>()
+                {
+                    "return Value;"
+                }
+            });
+
+            classes.Add(tokenClass);
+
+            return classes.ToArray();
+        }
+
         private static ClassType CreatePrintVisitorClass(string visitorName, string dataNamespace, string visitorNamespace)
         {
             ClassType printVisitorClass = new ClassType(visitorNamespace, "public", "TreePrintVisitor", $"{visitorName}<IEnumerable<string>>")
@@ -284,98 +376,6 @@ namespace Generator.Parsing
             visitorClass.Methods.Add(visitNode);
 
             return visitorClass;
-        }
-
-        public ClassType[] GenerateParseTreeClasses(BNF bnf, string visitorName, string dataNamespace, string visitorNamespace)
-        {
-            List<ClassType> classes = new List<ClassType>();
-
-            foreach (var production in bnf)
-            {
-                ClassType classType = CreateParseTreeClass(dataNamespace, visitorNamespace, visitorName, $"{production.Key}");
-                classes.Add(classType);
-            }
-
-            ClassType nodeClass = new ClassType(dataNamespace, "public abstract", "Node", "List<Node>")
-            {
-                Usings = new List<string>()
-                {
-                    "using System.Collections.Generic;",
-                    "using System.Collections;",
-                    "using System.Linq;",
-                },
-                Fields = new List<FieldType>()
-                {
-                    new FieldType("public", "string", "Name") { Expression = "{ get; set; }"},
-                    new FieldType("private static", "int", "_nextId") { Expression = "= 0;"},
-                    new FieldType("public static", "int", "NextId") { Expression = "{ get { return _nextId++; } }"},
-                    new FieldType("public", "int", "Id") { Expression = "{ get; set; }"},
-                    new FieldType("public", "bool", "IsPlaceholder") { Expression = "{ get; set; } = false;"}
-                },
-                Methods = new List<MethodType>()
-                {
-                    new MethodType("public abstract", "T", "Accept<T>")
-                    {
-                        Parameters = new List<ParameterType>()
-                        {
-                            new ParameterType($"{visitorNamespace}.{visitorName}<T>", "visitor")
-                        }
-                    },
-                    new MethodType("public", "T[]", "Nodes<T>")
-                    {
-                        Constraints = "where T : class",
-                        Body = new List<string>()
-                        {
-                            "return this.Where(c => c is T).Select(c => c as T).ToArray();"
-                        }
-                    },
-                    new MethodType("public override", "string", "ToString")
-                    {
-                        Body = new List<string>()
-                        {
-                            "return string.Join(\" \", this.Select(child => child.ToString()).Where(str => !string.IsNullOrWhiteSpace(str)));"
-                        }
-                    },
-                    new MethodType("public override", "int", "GetHashCode")
-                    {
-                        Body = new List<string>()
-                        {
-                            "return Id;"
-                        }
-                    },
-                    new MethodType("public override", "bool", "Equals")
-                    {
-                        Parameters = new List<ParameterType>()
-                        {
-                            new ParameterType("object", "obj")
-                        },
-                        Body = new List<string>()
-                        {
-                            $"return obj is {dataNamespace}.Node && (obj as {dataNamespace}.Node).Id == Id;"
-                        }
-                    }
-                }
-            };
-
-            classes.Add(nodeClass);
-
-            ClassType tokenClass = CreateParseTreeClass(dataNamespace, visitorNamespace, visitorName, "Token");
-            tokenClass.Fields.Add(new FieldType("public", "string", "Value") { Expression = "{ get; set; }" });
-            tokenClass.Fields.Add(new FieldType("public", "string", "FileName") { Expression = "{ get; set; }" });
-            tokenClass.Fields.Add(new FieldType("public", "int", "Row") { Expression = "{ get; set; }" });
-            tokenClass.Fields.Add(new FieldType("public", "int", "Column") { Expression = "{ get; set; }" });
-
-            tokenClass.Methods.Add(new MethodType("public override", "string", "ToString")
-            {
-                Body = new List<string>()
-                {
-                    "return Value;"
-                }
-            });
-
-            classes.Add(tokenClass);
-
-            return classes.ToArray();
         }
 
         private static ClassType CreateParseTreeClass(string dataNamespace, string visitorNamespace, string visitorName, string name)

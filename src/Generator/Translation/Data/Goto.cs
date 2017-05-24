@@ -7,10 +7,12 @@ namespace Generator.Translation.Data
 	{
 		public  Goto()
 		{
+			Id = NextId;
 		}
 
 		public  Goto(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Goto";
 		}

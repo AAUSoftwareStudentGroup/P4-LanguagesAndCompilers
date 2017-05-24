@@ -7,10 +7,12 @@ namespace Generator.Translation.Data
 	{
 		public  TreeStructure()
 		{
+			Id = NextId;
 		}
 
 		public  TreeStructure(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "TreeStructure";
 		}

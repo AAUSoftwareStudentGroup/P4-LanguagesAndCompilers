@@ -344,7 +344,7 @@ namespace Generator.Translation.Visitors
 
 		public override Generator.Translation.Data.Node Visit(Generator.Translation.Data.Token node)
 		{
-			return new Generator.Translation.Data.Token() { Name = node.Name, Value = node.Value, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder };
+			return new Generator.Translation.Data.Token() { Name = node.Name, Value = node.Value, FileName = node.FileName, Row = node.Row, Column = node.Column, IsPlaceholder = node.IsPlaceholder };
 		}
 
 		public override Generator.Translation.Data.Node Visit(Generator.Translation.Data.Node node)

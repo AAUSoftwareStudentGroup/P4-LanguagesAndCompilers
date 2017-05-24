@@ -3,7 +3,7 @@
 
 AST[eof] -> C[Declaration[EPSILON] Function[EPSILON]]
 
-AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration[CompoundDeclaration[Declaration[FunctionPrototype[int Pow ( signed long a , unsigned long b )] ;] Declaration[FunctionPrototype[Type[void] main ( )] ;]]]]] Function[CompoundFunction[Function[CompoundFunction[Function[int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }] f]] Function[Type[void] main ( ) { Declaration[EPSILON] s }]]]]
+AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration[CompoundDeclaration[Declaration[FunctionPrototype[signed long Pow ( signed long a , signed long b )] ;] Declaration[FunctionPrototype[Type[void] main ( )] ;]]]]] Function[CompoundFunction[Function[CompoundFunction[Function[signed long Pow ( signed long a , signed long b ) { signed long r = 1, i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }] f]] Function[Type[void] main ( ) { Declaration[EPSILON] s }]]]]
     [gs Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl Function:f Statement:s]
 
 [GlobalStatement[CompoundGlobalStatement:cgs] Declaration:dcl Function:f Statement:s] ->:a [dcl1 f1 s1]
@@ -241,7 +241,9 @@ RegisterLiteral[RegisterType:regType ( IntegerExpression:iexpr )] -> RegisterLit
     bexpr -> BooleanExpression:bexpr1
     [s Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl3 Function:f3 Statement:si3]
 
-[ForStatement[for ( IntType:intType identifier:id from IntegerExpression:expr1 to IntegerExpression:expr2 ) indent Statement:s dedent] Declaration:dcl Function:f Statement:si] ->:a [dcl f Statement[CompoundStatement[si Statement[ForStatement[for ( intType1 id1 = iexpr1 ; id1 <= iexpr2 ; id1 ++ ) { dcl3 si3 }]]]]]
+
+[ForStatement[for ( IntType:intType identifier:id from IntegerExpression:expr1 to IntegerExpression:expr2 ) indent Statement:s dedent] Declaration:dcl Function:f Statement:si] 
+->:a [dcl f Statement[CompoundStatement[si Statement[ForStatement[intType1 _ id1 \[ \] = { iexpr1 , iexpr2 , 1 } ; _ id1 \[ 2 \] = ( _ id1 \[ 0 \] < _ id1 \[ 1 \] ? 1 \: -1 ) ; intType1 id1 = _ id1 \[ 0 \] ; do { dcl3 si3 _ id1 \[ 0 \] += _ id1 \[ 2 \] ; id1 = _ id1 \[ 0 \] ; } while ( id1 != _ id1 \[ 1 \] + _ id1 \[ 2 \] ) ;]]]]]
     intType -> IntType:intType1
     id -> identifier:id1
     expr1 -> IntegerExpression:iexpr1

@@ -7,10 +7,12 @@ namespace Generator.Translation.Data
 	{
 		public  Alias()
 		{
+			Id = NextId;
 		}
 
 		public  Alias(bool isPlaceholder)
 		{
+			Id = NextId;
 			IsPlaceholder = isPlaceholder;
 			Name = "Alias";
 		}
