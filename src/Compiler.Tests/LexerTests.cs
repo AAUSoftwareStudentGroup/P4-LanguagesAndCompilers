@@ -1,13 +1,9 @@
 using Xunit;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
-//using Compiler.Data;
-//using Compiler.Shared;
 using Compiler.LexicalAnalysis;
 using System.Linq;
-using System.Diagnostics;
 
 namespace Compiler.Tests
 {
