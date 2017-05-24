@@ -1,5 +1,7 @@
 void wait() {
-	for(long long i = 0; i < 3200000; i++) {}
+	for(int i = 0; i < 3200; i++) {
+		for(int j = 0; j < 1000; j++) {}
+	}
 }
 
 void main() {

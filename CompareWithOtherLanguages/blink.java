@@ -6,7 +6,8 @@ import static haiku.avr.AVRConstants.*;
 public class blink {
 
 	public static void _wait() {
-		for(long i = 0; i < 3200000; i++) {}
+		for(long i = 0; i < 3200; i++) {
+		for(long j = 0; j < 100; j++) {}}
 	}
 
 	public static void main(String[] args) {

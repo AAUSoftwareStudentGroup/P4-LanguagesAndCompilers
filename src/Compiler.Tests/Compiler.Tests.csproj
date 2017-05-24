@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="../../../docs/tang.tokens.json">
+    <None Update="../../docs/tang.tokens.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>tang.tokens.json</Link>
     </None>
