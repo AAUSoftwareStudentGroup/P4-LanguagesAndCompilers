@@ -1,4 +1,0 @@
-int8 bool(int16 num)
-	return num
-
-func(10)

@@ -1,4 +1,0 @@
-int16 func()
-    int8 i = 0
-
-func()
