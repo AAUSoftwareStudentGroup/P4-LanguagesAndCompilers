@@ -147,7 +147,7 @@ namespace Generator.Translation
 
         public ClassType GenerateTranslatorClass(Translator translator, string translatorName, List<RelationDomain> translationDomains, string translatorNamespace)
         {
-            ClassType translatorClass = new ClassType(translatorNamespace, "public", translatorName, null);
+            ClassType translatorClass = new ClassType(translatorNamespace, "public partial", translatorName, null);
 
             Node systems = translator.Nodes<Systems>()[0];
 

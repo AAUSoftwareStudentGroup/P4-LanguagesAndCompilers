@@ -1,6 +1,6 @@
 namespace Compiler.Translation.ProgramToAST
 {
-	public class ProgramToASTTranslator 
+	public partial class ProgramToASTTranslator 
 	{
 		public Compiler.Error.RuleError RuleError { get; set; } = new Compiler.Error.RuleError();
 		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.AST.Data.Node> RelationtoAST { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.AST.Data.Node>();
@@ -2527,30 +2527,6 @@ namespace Compiler.Translation.ProgramToAST
 			    RuleEndtoAST(true, false, value);
 			    return value;
 			}
-			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint8"))
-			{
-			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint8 ] -> : toAST IntType [ uint8 ]", (intType));
-			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "uint8", Value = "uint8" } };
-			    RuleEndtoAST(true, true, _result);
-			    return _result;
-			    RuleEndtoAST(false);
-			}
-			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint16"))
-			{
-			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint16 ] -> : toAST IntType [ uint16 ]", (intType));
-			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "uint16", Value = "uint16" } };
-			    RuleEndtoAST(true, true, _result);
-			    return _result;
-			    RuleEndtoAST(false);
-			}
-			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint32"))
-			{
-			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint32 ] -> : toAST IntType [ uint32 ]", (intType));
-			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "uint32", Value = "uint32" } };
-			    RuleEndtoAST(true, true, _result);
-			    return _result;
-			    RuleEndtoAST(false);
-			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int8"))
 			{
 			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int8 ] -> : toAST IntType [ int8 ]", (intType));
@@ -2589,30 +2565,6 @@ namespace Compiler.Translation.ProgramToAST
 			    RuleStarttoSym(new System.Collections.Generic.List<string>() { intType.Name }, "", key);
 			    RuleEndtoSym(true, false, value);
 			    return value;
-			}
-			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint8"))
-			{
-			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint8 ] -> : toSym IntType [ uint8 ]", (intType));
-			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "uint8", Value = "uint8" } };
-			    RuleEndtoSym(true, true, _result);
-			    return _result;
-			    RuleEndtoSym(false);
-			}
-			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint16"))
-			{
-			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint16 ] -> : toSym IntType [ uint16 ]", (intType));
-			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "uint16", Value = "uint16" } };
-			    RuleEndtoSym(true, true, _result);
-			    return _result;
-			    RuleEndtoSym(false);
-			}
-			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint32"))
-			{
-			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint32 ] -> : toSym IntType [ uint32 ]", (intType));
-			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "uint32", Value = "uint32" } };
-			    RuleEndtoSym(true, true, _result);
-			    return _result;
-			    RuleEndtoSym(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int8"))
 			{
@@ -5673,10 +5625,19 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "numeral") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ numeral ] SymbolTable : s ] -> : type IntType [ int8 ]", (integerExpression, symbolTable));
-			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int8", Value = "int8" } };
-			    RuleEndtype(true, true, _result);
-			    return _result;
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ numeral : n ] SymbolTable : s ] -> : type IntType [ t ]", (integerExpression, symbolTable));
+			    Compiler.AST.Data.Node t = Translatetype(integerExpression[0] as Compiler.AST.Data.Token);
+			    _isMatching = t != null && t.Name == t.Name;
+			    if(t != null && !_isMatching)
+			    {
+			        WrongPatterntype((t), new System.Collections.Generic.List<string>() { "*" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = new Compiler.AST.Data.IntType(false) { t as Compiler.AST.Data.Node };
+			        RuleEndtype(true, true, _result);
+			        return _result;
+			    }
 			    RuleEndtype(false);
 			}
 			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "IntegerParenthesisExpression" && (integerExpression[0].Count == 3 && integerExpression[0][0] != null && integerExpression[0][0].Name == "(" && integerExpression[0][1] != null && integerExpression[0][1].Name == "IntegerExpression" && integerExpression[0][2] != null && integerExpression[0][2].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")

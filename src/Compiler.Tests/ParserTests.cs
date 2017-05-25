@@ -27,7 +27,7 @@ namespace Compiler.Tests
 
             //Tokens for the program "Alias", written in tang.
             string[] testTokens = {
-                "uint8", "identifier", "newline", "identifier", "=", "numeral", "newline", "uint8", "identifier", "newline", "identifier", "=", "identifier", "newline", "eof"
+                "int8", "identifier", "newline", "identifier", "=", "numeral", "newline", "int8", "identifier", "newline", "identifier", "=", "identifier", "newline", "eof"
             };
 
             var list = testTokens.Select(t => new Parsing.Data.Token() { Name = t});
@@ -41,7 +41,7 @@ namespace Compiler.Tests
                     new Parsing.Data.GlobalStatement(true){
                         new Parsing.Data.IdentifierDeclaration(true){
                             new Parsing.Data.IntType(true){
-                                new Parsing.Data.Token(){ Name = "uint8" }
+                                new Parsing.Data.Token(){ Name = "int8" }
                             },
                             new Parsing.Data.Token(){Name = "identifier"},
                             new Parsing.Data.Definition(true){
@@ -106,7 +106,7 @@ namespace Compiler.Tests
                             new Parsing.Data.GlobalStatement(true){
                                 new Parsing.Data.IdentifierDeclaration(true){
                                     new Parsing.Data.IntType(true){
-                                        new Parsing.Data.Token(){ Name = "uint8" }
+                                        new Parsing.Data.Token(){ Name = "int8" }
                                     },
                                     new Parsing.Data.Token(){ Name = "identifier" },
                                     new Parsing.Data.Definition(true){

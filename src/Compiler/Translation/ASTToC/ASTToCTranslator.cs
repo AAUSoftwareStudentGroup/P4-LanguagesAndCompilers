@@ -1,6 +1,6 @@
 namespace Compiler.Translation.ASTToC
 {
-	public class ASTToCTranslator 
+	public partial class ASTToCTranslator 
 	{
 		public Compiler.Error.RuleError RuleError { get; set; } = new Compiler.Error.RuleError();
 		public System.Collections.Generic.Dictionary<Compiler.AST.Data.Node,Compiler.C.Data.Node> Relation { get; set; } = new System.Collections.Generic.Dictionary<Compiler.AST.Data.Node,Compiler.C.Data.Node>();
@@ -2277,30 +2277,6 @@ namespace Compiler.Translation.ASTToC
 			    RuleStart(new System.Collections.Generic.List<string>() { intType.Name }, "", key);
 			    RuleEnd(true, false, value);
 			    return value;
-			}
-			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint8"))
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint8 ] -> IntType [ unsigned char ]", (intType));
-			    var _result = new Compiler.C.Data.IntType(false) { new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "char", Value = "char" } };
-			    RuleEnd(true, true, _result);
-			    return _result;
-			    RuleEnd(false);
-			}
-			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint16"))
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint16 ] -> IntType [ unsigned int ]", (intType));
-			    var _result = new Compiler.C.Data.IntType(false) { new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "int", Value = "int" } };
-			    RuleEnd(true, true, _result);
-			    return _result;
-			    RuleEnd(false);
-			}
-			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint32"))
-			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint32 ] -> IntType [ unsigned long ]", (intType));
-			    var _result = new Compiler.C.Data.IntType(false) { new Compiler.C.Data.Token() { Name = "unsigned", Value = "unsigned" }, new Compiler.C.Data.Token() { Name = "long", Value = "long" } };
-			    RuleEnd(true, true, _result);
-			    return _result;
-			    RuleEnd(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int8"))
 			{

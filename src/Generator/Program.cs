@@ -55,7 +55,7 @@ namespace Generator
             ClassType[] programVisitors = parserGenerator.GenerateVisitorClasses(bnf, programVisitorName, dataNamespace, visitorNamespace);
             ClassType[] programData = parserGenerator.GenerateSyntaxTreeClasses(bnf, programVisitorName, dataNamespace, visitorNamespace);
             IEnumerable<ClassType> classesToGenerate = programData.Union(programVisitors).Union(programParserClasses);
-            Console.WriteLine("\tGenerating Program to AST translator...");
+            Console.WriteLine("\tGenerating Translators...");
             Lexer lexer = new Lexer("../../docs/translator.tokens.json");
 
             try

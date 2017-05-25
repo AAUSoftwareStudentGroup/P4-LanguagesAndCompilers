@@ -733,7 +733,8 @@ IntType[int32] ->:symAST IntType[int32]
     id ->:astProg identifier:id1
     [id1 s] ->:lookup Declaration[Variable[Type[IntType:t] identifier]]
     t ->:symAST IntType:tres
-[IntegerExpression[numeral] SymbolTable:s] ->:type IntType[int8]
+[IntegerExpression[numeral:n] SymbolTable:s] ->:type IntType[t]
+    n ->:type *:t
 [IntegerExpression[IntegerParenthesisExpression[( IntegerExpression:e )]] SymbolTable:s] ->:type t
     [e s] ->:type IntType:t
 [IntegerExpression[AddExpression[IntegerExpression:e1 + IntegerExpression:e2]] SymbolTable:s] ->:type t3

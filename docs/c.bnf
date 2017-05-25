@@ -18,7 +18,7 @@ Function -> CompoundFunction
           | Type identifier ( FormalParameters ) { Declaration Statement }
           | Type main ( ) { Declaration Statement }
           | Type __vector_ numeral ( ) { Declaration Statement }
-          | signed long Pow ( signed long a , signed long b ) { signed long r = 1, i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+          | signed long Pow ( signed long a , signed long b ) { signed long r = 1 , i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
           | EPSILON        
 
 CompoundFunction -> Function Function

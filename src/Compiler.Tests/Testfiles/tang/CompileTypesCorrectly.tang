@@ -1,4 +1,4 @@
 bool on = true
 int8 sc = 127
 int16 si = 32767
-int32 sl = 9223372036854775807
+int32 sl = 2147483647

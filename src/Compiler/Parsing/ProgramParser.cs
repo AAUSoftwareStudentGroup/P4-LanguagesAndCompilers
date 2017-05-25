@@ -33,9 +33,6 @@ namespace Compiler.Parsing
 			    case "int8":
 			    case "int16":
 			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
 			    case "bool":
 			    case "nothing":
 			    case "identifier":
@@ -66,9 +63,6 @@ namespace Compiler.Parsing
 			    case "int8":
 			    case "int16":
 			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
 			    case "bool":
 			    case "nothing":
 			    case "identifier":
@@ -103,9 +97,6 @@ namespace Compiler.Parsing
 			    case "int8":
 			    case "int16":
 			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
 			    case "bool":
 			    case "nothing":
 			        node.Add(ParseIdentifierDeclaration(tokens));
@@ -168,9 +159,6 @@ namespace Compiler.Parsing
 			    case "int8":
 			    case "int16":
 			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
 			    case "BoolenType":
 			    case "identifier":
 			    case "register8":
@@ -201,9 +189,6 @@ namespace Compiler.Parsing
 			    case "int8":
 			    case "int16":
 			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
 			    case "BoolenType":
 			        node.Add(ParseIdentifierSimpleDeclaration(tokens));
 			        return node;
@@ -286,9 +271,6 @@ namespace Compiler.Parsing
 			    case "int8":
 			    case "int16":
 			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
 			        node.Add(ParseIntType(tokens));
 			        node.Add(ParseTerminal(tokens, "identifier"));
 			        node.Add(ParseSimpleDefinition(tokens));
@@ -329,9 +311,6 @@ namespace Compiler.Parsing
 			    case "int8":
 			    case "int16":
 			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
 			        node.Add(ParseIntType(tokens));
 			        node.Add(ParseTerminal(tokens, "identifier"));
 			        node.Add(ParseDefinition(tokens));
@@ -504,9 +483,6 @@ namespace Compiler.Parsing
 			    case "int8":
 			    case "int16":
 			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
 			    case "register8":
 			    case "register16":
 			    case "bool":
@@ -547,9 +523,6 @@ namespace Compiler.Parsing
 			    case "int8":
 			    case "int16":
 			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
 			    case "register8":
 			    case "register16":
 			    case "bool":
@@ -569,9 +542,6 @@ namespace Compiler.Parsing
 			    case "int8":
 			    case "int16":
 			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
 			        node.Add(ParseIntType(tokens));
 			        return node;
 			    case "register8":
@@ -692,9 +662,6 @@ namespace Compiler.Parsing
 			    case "int8":
 			    case "int16":
 			    case "int32":
-			    case "uint8":
-			    case "uint16":
-			    case "uint32":
 			    case "bool":
 			    case "nothing":
 			    case "identifier":
@@ -791,15 +758,6 @@ namespace Compiler.Parsing
 			        return node;
 			    case "int32":
 			        node.Add(ParseTerminal(tokens, "int32"));
-			        return node;
-			    case "uint8":
-			        node.Add(ParseTerminal(tokens, "uint8"));
-			        return node;
-			    case "uint16":
-			        node.Add(ParseTerminal(tokens, "uint16"));
-			        return node;
-			    case "uint32":
-			        node.Add(ParseTerminal(tokens, "uint32"));
 			        return node;
 			    default:
 			        throw new UnexpectedTokenException(tokens.Current);
