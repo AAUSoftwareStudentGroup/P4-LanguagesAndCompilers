@@ -3,7 +3,7 @@
 
 AST[eof] -> C[Declaration[EPSILON] Function[EPSILON]]
 
-AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration[CompoundDeclaration[Declaration[FunctionPrototype[signed long Pow ( signed long a , signed long b )] ;] Declaration[FunctionPrototype[Type[void] main ( )] ;]]]]] Function[CompoundFunction[Function[CompoundFunction[Function[signed long Pow ( signed long a , signed long b ) { signed long r = 1, i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }] f]] Function[Type[void] main ( ) { Declaration[EPSILON] s }]]]]
+AST[GlobalStatement:gs eof] -> C[Declaration[CompoundDeclaration[dcl Declaration[CompoundDeclaration[Declaration[FunctionPrototype[signed long Pow ( signed long a , signed long b )] ;] Declaration[FunctionPrototype[Type[void] main ( )] ;]]]]] Function[CompoundFunction[Function[CompoundFunction[Function[signed long Pow ( signed long a , signed long b ) { signed long r = 1 , i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }] f]] Function[Type[void] main ( ) { Declaration[EPSILON] s }]]]]
     [gs Declaration[EPSILON] Function[EPSILON] Statement[EPSILON]] ->:a [Declaration:dcl Function:f Statement:s]
 
 [GlobalStatement[CompoundGlobalStatement:cgs] Declaration:dcl Function:f Statement:s] ->:a [dcl1 f1 s1]
