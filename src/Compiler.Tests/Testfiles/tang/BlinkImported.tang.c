@@ -136,7 +136,7 @@ unsigned char INT1 ;
 signed char func ( signed char portBit ) ;
 signed long Pow ( signed long a , signed long b ) ;
 void main ( ) ;
-signed long Pow ( signed long a , signed long b ) { signed long r = 1, i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+signed long Pow ( signed long a , signed long b ) { signed long r = 1 , i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
 signed int ADC ( )
 {
     signed int result ;
