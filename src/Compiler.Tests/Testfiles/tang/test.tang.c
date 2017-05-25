@@ -152,27 +152,15 @@ signed char DigitalFlip ( unsigned char pin ) ;
 void SetFastPWMPin6 ( signed int dutyCycle ) ;
 signed int dutyCycle ;
 signed long counter ;
-int Pow ( signed long a , unsigned long b ) ;
+signed long Pow ( signed long a , signed long b ) ;
 void main ( ) ;
-int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+signed long Pow ( signed long a , signed long b ) { signed long r = 1 , i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
 signed int ADC ( )
 {
     signed int result ;
     result = 0 ;
-    for ( signed char i = 0 ; i <= 7 ; i ++ )
-    {
-        if ( ( * ADCL & ( 1 << ( i ) ) ) )
-        {
-            result = ( result + Pow ( 2 , ( i ) ) ) ;
-        }
-    }
-    for ( signed char i = 0 ; i <= 1 ; i ++ )
-    {
-        if ( ( * ADCH & ( 1 << ( i ) ) ) )
-        {
-            result = ( result + Pow ( 2 , ( ( 8 + i ) ) ) ) ;
-        }
-    }
+    signed char _i [ ] = { 0 , 7 , 1 } ; _i [ 2 ] = ( _i [ 0 ] < _i [ 1 ] ? 1 : -1 ) ; signed char i = _i [ 0 ] ; do { if ( ( * ADCL & ( 1 << ( i ) ) ) ) {     result = ( result + Pow ( 2 , ( i ) ) ) ; } _i [ 0 ] += _i [ 2 ] ; i = _i [ 0 ] ; } while ( i != _i [ 1 ] + _i [ 2 ] ) ;
+    signed char _i [ ] = { 0 , 1 , 1 } ; _i [ 2 ] = ( _i [ 0 ] < _i [ 1 ] ? 1 : -1 ) ; signed char i = _i [ 0 ] ; do { if ( ( * ADCH & ( 1 << ( i ) ) ) ) {     result = ( result + Pow ( 2 , ( ( 8 + i ) ) ) ) ; } _i [ 0 ] += _i [ 2 ] ; i = _i [ 0 ] ; } while ( i != _i [ 1 ] + _i [ 2 ] ) ;
     return result ;
 }
 void INT0_enable ( )
@@ -364,19 +352,7 @@ void SetFastPWMPin6 ( signed int dutyCycle )
     signed char bit ;
     * DDRD = ( 1 ? ( ( * DDRD ) | 1 << ( 6 ) ) : ( ( * DDRD ) & ~ ( 1 << ( 6 ) ) ) ) ;
     bit = 2 ;
-    for ( signed char i = 0 ; i <= 7 ; i ++ )
-    {
-        if ( ( ( dutyCycle % bit ) > 0 ) )
-        {
-            * OCR0A = ( 1 ? ( ( * OCR0A ) | 1 << ( i ) ) : ( ( * OCR0A ) & ~ ( 1 << ( i ) ) ) ) ;
-            dutyCycle = ( dutyCycle - ( dutyCycle % bit ) ) ;
-        }
-        else
-        {
-            * OCR0A = ( 0 ? ( ( * OCR0A ) | 1 << ( i ) ) : ( ( * OCR0A ) & ~ ( 1 << ( i ) ) ) ) ;
-        }
-        bit = ( bit * 2 ) ;
-    }
+    signed char _i [ ] = { 0 , 7 , 1 } ; _i [ 2 ] = ( _i [ 0 ] < _i [ 1 ] ? 1 : -1 ) ; signed char i = _i [ 0 ] ; do { if ( ( ( dutyCycle % bit ) > 0 ) ) {     * OCR0A = ( 1 ? ( ( * OCR0A ) | 1 << ( i ) ) : ( ( * OCR0A ) & ~ ( 1 << ( i ) ) ) ) ;     dutyCycle = ( dutyCycle - ( dutyCycle % bit ) ) ; } else {     * OCR0A = ( 0 ? ( ( * OCR0A ) | 1 << ( i ) ) : ( ( * OCR0A ) & ~ ( 1 << ( i ) ) ) ) ; } bit = ( bit * 2 ) ; _i [ 0 ] += _i [ 2 ] ; i = _i [ 0 ] ; } while ( i != _i [ 1 ] + _i [ 2 ] ) ;
     * TCCR0A = ( 1 ? ( ( * TCCR0A ) | 1 << ( 7 ) ) : ( ( * TCCR0A ) & ~ ( 1 << ( 7 ) ) ) ) ;
     * TCCR0A = ( 1 ? ( ( * TCCR0A ) | 1 << ( 0 ) ) : ( ( * TCCR0A ) & ~ ( 1 << ( 0 ) ) ) ) ;
     * TCCR0A = ( 1 ? ( ( * TCCR0A ) | 1 << ( 1 ) ) : ( ( * TCCR0A ) & ~ ( 1 << ( 1 ) ) ) ) ;

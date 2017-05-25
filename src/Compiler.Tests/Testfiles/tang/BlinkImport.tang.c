@@ -134,27 +134,15 @@ unsigned char SPM_READY_vect ;
 unsigned char INT0 ;
 unsigned char INT1 ;
 signed char func ( signed char portBit ) ;
-int Pow ( signed long a , unsigned long b ) ;
+signed long Pow ( signed long a , signed long b ) ;
 void main ( ) ;
-int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+signed long Pow ( signed long a , signed long b ) { signed long r = 1 , i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
 signed int ADC ( )
 {
     signed int result ;
     result = 0 ;
-    for ( signed char i = 0 ; i <= 7 ; i ++ )
-    {
-        if ( ( * ADCL & ( 1 << ( i ) ) ) )
-        {
-            result = ( result + Pow ( 2 , ( i ) ) ) ;
-        }
-    }
-    for ( signed char i = 0 ; i <= 1 ; i ++ )
-    {
-        if ( ( * ADCH & ( 1 << ( i ) ) ) )
-        {
-            result = ( result + Pow ( 2 , ( ( 8 + i ) ) ) ) ;
-        }
-    }
+    signed char _i [ ] = { 0 , 7 , 1 } ; _i [ 2 ] = ( _i [ 0 ] < _i [ 1 ] ? 1 : -1 ) ; signed char i = _i [ 0 ] ; do { if ( ( * ADCL & ( 1 << ( i ) ) ) ) {     result = ( result + Pow ( 2 , ( i ) ) ) ; } _i [ 0 ] += _i [ 2 ] ; i = _i [ 0 ] ; } while ( i != _i [ 1 ] + _i [ 2 ] ) ;
+    signed char _i [ ] = { 0 , 1 , 1 } ; _i [ 2 ] = ( _i [ 0 ] < _i [ 1 ] ? 1 : -1 ) ; signed char i = _i [ 0 ] ; do { if ( ( * ADCH & ( 1 << ( i ) ) ) ) {     result = ( result + Pow ( 2 , ( ( 8 + i ) ) ) ) ; } _i [ 0 ] += _i [ 2 ] ; i = _i [ 0 ] ; } while ( i != _i [ 1 ] + _i [ 2 ] ) ;
     return result ;
 }
 signed char func ( signed char portBit )
