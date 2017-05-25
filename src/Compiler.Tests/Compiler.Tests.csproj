@@ -19,6 +19,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>tang.tokens.json</Link>
     </None>
+    <None Update="tang.tokens.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Testfiles\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>Testfiles\%(RecursiveDir)%(Filename)%(Extension)</Link>
