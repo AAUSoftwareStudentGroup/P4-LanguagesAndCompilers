@@ -101,7 +101,7 @@ namespace Compiler
             if(DebugLevel >= 1)
                 Console.WriteLine("Running Ast Translator");
             var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
-            AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
+            AST.Data.AST ast = astTranslator.TranslatetoAST(parseTree) as AST.Data.AST;
             if (ast == null)
             {
                 throw new Translation.TranslationException(astTranslator.RuleError);

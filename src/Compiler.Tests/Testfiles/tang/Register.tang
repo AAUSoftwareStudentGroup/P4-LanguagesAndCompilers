@@ -1,6 +1,6 @@
 register8(36){5} = true
 register8(37){5} = false
-uint32 c
+int32 c
 c = 0
 while(true)
     if(c == 300000)

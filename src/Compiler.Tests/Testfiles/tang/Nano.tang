@@ -9,7 +9,7 @@ bool LOW = false
 nothing INT0_enable()
     EIMSK{0} = true
 
-nothing INT0_init(uint8 edge)
+nothing INT0_init(int8 edge)
     INT0_enable()
     if(edge ==  INTERRUPT_LOW)
         EICRA{0} = false
@@ -26,7 +26,7 @@ nothing INT0_init(uint8 edge)
     DDRD{INT0} = false
     enableinterrupts()
 
-nothing delay(uint32 ms)
+nothing delay(int32 ms)
     ms = ms * 16000 / 33
     while(ms > 0)   
         ms = ms - 1
@@ -58,7 +58,7 @@ nothing PinModeA(int8 pin, bool mode)
     if(pin < 8 or pin >= 0)
         DDRC{pin} = mode
 
-uint16 AnalogRead(int8 pin)
+int16 AnalogRead(int8 pin)
     if(ADCSRA{7})
         // Set Multiplexer
         if(pin % 2 == 1)
@@ -91,7 +91,7 @@ int8 PinModeD(int8 pin, bool mode)
         return 0
 
 
-int8 DigitalWrite(uint8 pin, bool value)
+int8 DigitalWrite(int8 pin, bool value)
     if(pin < 0)
         return 0
     else if(pin <= 7)
@@ -101,7 +101,7 @@ int8 DigitalWrite(uint8 pin, bool value)
     else if(pin <= 20)
         PORTC{pin - 14} = value
 
-int8 DigitalFlip(uint8 pin)
+int8 DigitalFlip(int8 pin)
     if(pin < 0)
         return 0
     else if(pin <= 7)

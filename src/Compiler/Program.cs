@@ -18,7 +18,6 @@ namespace Compiler
             {
                 string tokensPath = "../../docs/tang.tokens.json";
                 string sourcePath = "../../docs/samples/Register.tang";
-                sourcePath = "Test.tang";
                 string outputPath = sourcePath + ".c";
                 int debugLevel = 0;
                 TangCompiler tangCompiler = new TangCompiler();

@@ -258,9 +258,6 @@ Type[BooleanType:t] -> Type[t1]
     t -> BooleanType:t1
 Type[nothing] -> Type[void]
 
-IntType[uint8] -> IntType[unsigned char]  
-IntType[uint16] -> IntType[unsigned int]  
-IntType[uint32] -> IntType[unsigned long]  
 IntType[int8] -> IntType[signed char]  
 IntType[int16] -> IntType[signed int]  
 IntType[int32] -> IntType[signed long] 

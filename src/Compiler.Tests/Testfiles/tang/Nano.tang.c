@@ -87,52 +87,52 @@ volatile unsigned char * UCSR0C ;
 volatile unsigned char * UBRR0L ;
 volatile unsigned char * UBRR0H ;
 volatile unsigned char * UDR0 ;
-unsigned char INTERRUPT_LOW ;
-unsigned char ANY_EDGE ;
-unsigned char RISING_EDGE ;
-unsigned char FALLING_EDGE ;
-unsigned char INDEX_INT0 ;
-unsigned char INDEX_INT1 ;
-unsigned char INDEX_TIMER2_OCA ;
-unsigned char INDEX_TIMER2_OCB ;
-unsigned char INDEX_TIMER2_OF ;
-unsigned char INDEX_TIMER1_IC ;
-unsigned char INDEX_TIMER1_OCA ;
-unsigned char INDEX_TIMER1_OCB ;
-unsigned char INDEX_TIMER1_OF ;
-unsigned char INDEX_TIMER0_OCA ;
-unsigned char INDEX_TIMER0_OCB ;
-unsigned char INDEX_TIMER0_OF ;
-unsigned char INDEX_USART_RXC ;
-unsigned char INDEX_USART_DRE ;
-unsigned char INDEX_USART_TXC ;
-unsigned char INT0_vect ;
-unsigned char INT1_vect ;
-unsigned char PCINT0_vect ;
-unsigned char PCINT1_vect ;
-unsigned char PCINT2_vect ;
-unsigned char WDT_vect ;
-unsigned char TIMER2_COMPA_vect ;
-unsigned char TIMER2_COMPB_vect ;
-unsigned char TIMER2_OVF_vect ;
-unsigned char TIMER1_CAPT_vect ;
-unsigned char TIMER1_COMPA_vect ;
-unsigned char TIMER1_COMPB_vect ;
-unsigned char TIMER1_OVF_vect ;
-unsigned char TIMER0_COMPA_vect ;
-unsigned char TIMER0_COMPB_vect ;
-unsigned char TIMER0_OVF_vect ;
-unsigned char SPI_STC_vect ;
-unsigned char USART_RX_vect ;
-unsigned char USART_UDRE_vect ;
-unsigned char USART_TX_vect ;
-unsigned char ADC_vect ;
-unsigned char EE_READY_vect ;
-unsigned char ANALOG_COMP_vect ;
-unsigned char TWI_vect ;
-unsigned char SPM_READY_vect ;
-unsigned char INT0 ;
-unsigned char INT1 ;
+signed char INTERRUPT_LOW ;
+signed char ANY_EDGE ;
+signed char RISING_EDGE ;
+signed char FALLING_EDGE ;
+signed char INDEX_INT0 ;
+signed char INDEX_INT1 ;
+signed char INDEX_TIMER2_OCA ;
+signed char INDEX_TIMER2_OCB ;
+signed char INDEX_TIMER2_OF ;
+signed char INDEX_TIMER1_IC ;
+signed char INDEX_TIMER1_OCA ;
+signed char INDEX_TIMER1_OCB ;
+signed char INDEX_TIMER1_OF ;
+signed char INDEX_TIMER0_OCA ;
+signed char INDEX_TIMER0_OCB ;
+signed char INDEX_TIMER0_OF ;
+signed char INDEX_USART_RXC ;
+signed char INDEX_USART_DRE ;
+signed char INDEX_USART_TXC ;
+signed char INT0_vect ;
+signed char INT1_vect ;
+signed char PCINT0_vect ;
+signed char PCINT1_vect ;
+signed char PCINT2_vect ;
+signed char WDT_vect ;
+signed char TIMER2_COMPA_vect ;
+signed char TIMER2_COMPB_vect ;
+signed char TIMER2_OVF_vect ;
+signed char TIMER1_CAPT_vect ;
+signed char TIMER1_COMPA_vect ;
+signed char TIMER1_COMPB_vect ;
+signed char TIMER1_OVF_vect ;
+signed char TIMER0_COMPA_vect ;
+signed char TIMER0_COMPB_vect ;
+signed char TIMER0_OVF_vect ;
+signed char SPI_STC_vect ;
+signed char USART_RX_vect ;
+signed char USART_UDRE_vect ;
+signed char USART_TX_vect ;
+signed char ADC_vect ;
+signed char EE_READY_vect ;
+signed char ANALOG_COMP_vect ;
+signed char TWI_vect ;
+signed char SPM_READY_vect ;
+signed char INT0 ;
+signed char INT1 ;
 unsigned char INPUT ;
 unsigned char OUTPUT ;
 unsigned char PULLUP ;
@@ -140,15 +140,15 @@ unsigned char NO_PULLUP ;
 unsigned char HIGH ;
 unsigned char LOW ;
 void INT0_enable ( ) ;
-void INT0_init ( unsigned char edge ) ;
-void delay ( unsigned long ms ) ;
+void INT0_init ( signed char edge ) ;
+void delay ( signed long ms ) ;
 unsigned char DigitalRead ( signed char pin ) ;
 void SetAnalogMode ( unsigned char mode ) ;
 void PinModeA ( signed char pin , unsigned char mode ) ;
-unsigned int AnalogRead ( signed char pin ) ;
+signed int AnalogRead ( signed char pin ) ;
 signed char PinModeD ( signed char pin , unsigned char mode ) ;
-signed char DigitalWrite ( unsigned char pin , unsigned char value ) ;
-signed char DigitalFlip ( unsigned char pin ) ;
+signed char DigitalWrite ( signed char pin , unsigned char value ) ;
+signed char DigitalFlip ( signed char pin ) ;
 void SetFastPWMPin6 ( signed int dutyCycle ) ;
 signed long Pow ( signed long a , signed long b ) ;
 void main ( ) ;
@@ -165,7 +165,7 @@ void INT0_enable ( )
 {
     * EIMSK = ( 1 ? ( ( * EIMSK ) | 1 << ( 0 ) ) : ( ( * EIMSK ) & ~ ( 1 << ( 0 ) ) ) ) ;
 }
-void INT0_init ( unsigned char edge )
+void INT0_init ( signed char edge )
 {
     INT0_enable ( ) ;
     if ( ( edge == INTERRUPT_LOW ) )
@@ -194,7 +194,7 @@ void INT0_init ( unsigned char edge )
     * DDRD = ( 0 ? ( ( * DDRD ) | 1 << ( INT0 ) ) : ( ( * DDRD ) & ~ ( 1 << ( INT0 ) ) ) ) ;
     __asm__ __volatile__ ("sei" ::: "memory") ;
 }
-void delay ( unsigned long ms )
+void delay ( signed long ms )
 {
     ms = ( ( ms * 16000 ) / 33 ) ;
     while ( ( ms > 0 ) )
@@ -245,7 +245,7 @@ void PinModeA ( signed char pin , unsigned char mode )
         * DDRC = ( mode ? ( ( * DDRC ) | 1 << ( pin ) ) : ( ( * DDRC ) & ~ ( 1 << ( pin ) ) ) ) ;
     }
 }
-unsigned int AnalogRead ( signed char pin )
+signed int AnalogRead ( signed char pin )
 {
     if ( ( * ADCSRA & ( 1 << ( 7 ) ) ) )
     {
@@ -301,7 +301,7 @@ signed char PinModeD ( signed char pin , unsigned char mode )
         return 0 ;
     }
 }
-signed char DigitalWrite ( unsigned char pin , unsigned char value )
+signed char DigitalWrite ( signed char pin , unsigned char value )
 {
     if ( ( pin < 0 ) )
     {
@@ -323,7 +323,7 @@ signed char DigitalWrite ( unsigned char pin , unsigned char value )
         * PORTC = ( value ? ( ( * PORTC ) | 1 << ( ( pin - 14 ) ) ) : ( ( * PORTC ) & ~ ( 1 << ( ( pin - 14 ) ) ) ) ) ;
     }
 }
-signed char DigitalFlip ( unsigned char pin )
+signed char DigitalFlip ( signed char pin )
 {
     if ( ( pin < 0 ) )
     {

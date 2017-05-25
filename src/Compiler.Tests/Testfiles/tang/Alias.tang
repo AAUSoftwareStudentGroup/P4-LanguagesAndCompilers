@@ -1,4 +1,4 @@
-uint8 a
+int8 a
 a = 2
-uint8 b
+int8 b
 b = a

@@ -16,14 +16,14 @@ namespace Compiler.Tests
         public void ConvertToASTCorrectly()
         {
             /* Alias.tang file:
-             * uint8 a
+             * int8 a
              * a = 2
-             * uint8 b
+             * int8 b
              * b = a
              * tokens:
-             * uint8 identifier newline
+             * int8 identifier newline
              * identifier = numeral newline
-             * uint8 identifier newline
+             * int8 identifier newline
              * identifier = identifier newline eof
              */
 
@@ -45,7 +45,7 @@ namespace Compiler.Tests
             // Create a new instance of the ProgramToASTTranslator class
             var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
             // Use the ProgramToASTTranslator with parseTree as parameter to get the AST
-            AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
+            AST.Data.AST ast = astTranslator.TranslatetoAST(parseTree) as AST.Data.AST;
 
             // Below is a hardcoded tree of how the AST is expected to look
             var astExpected = new AST.Data.AST(true)
@@ -62,7 +62,7 @@ namespace Compiler.Tests
                                 {
                                     new AST.Data.IntType(true)
                                     {
-                                        new AST.Data.Token(){ Name = "uint8" }
+                                        new AST.Data.Token(){ Name = "int8" }
                                     },
                                     new AST.Data.Token(){ Name = "identifier" }
                                 }
@@ -101,7 +101,7 @@ namespace Compiler.Tests
                                                 {
                                                     new AST.Data.IntType(true)
                                                     {
-                                                        new AST.Data.Token(){ Name = "uint8" }
+                                                        new AST.Data.Token(){ Name = "int8" }
                                                     },
                                                     new AST.Data.Token(){ Name = "identifier" }
                                                 }
@@ -162,7 +162,7 @@ namespace Compiler.Tests
             var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
 
             // Use the ProgramToASTTranslator with parseTree as parameter to get the AST
-            AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
+            AST.Data.AST ast = astTranslator.TranslatetoAST(parseTree) as AST.Data.AST;
 
             // Below is a hardcoded tree of how the AST is expected to look
             var astExpected = new AST.Data.AST(true)
