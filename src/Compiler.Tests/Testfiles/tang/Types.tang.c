@@ -8,9 +8,9 @@ unsigned char b ;
 volatile unsigned char * r8 ;
 volatile unsigned short * r16 ;
 void __vector_10 ( ) __attribute__ ( ( signal , used , externally_visible ) ) ;
-int Pow ( signed long a , unsigned long b ) ;
+signed long Pow ( signed long a , signed long b ) ;
 void main ( ) ;
-int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+signed long Pow ( signed long a , signed long b ) { signed long r = 1, i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
 void __vector_10 ( )
 {
     ui8 = 10 ;
