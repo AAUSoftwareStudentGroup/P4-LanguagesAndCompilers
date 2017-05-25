@@ -1,15 +1,1 @@
-int8 m = max(max(1, 2), 3)
-
-int8 max(int8 a, int8 b)
-    if(a > b)
-        return a + m
-    else
-        return b
-        int8 m = 0
-
-int8 max(int8 a, int8 b)
-    if(a > b)
-        return a + m
-    else
-        return b
-        int8 m = 0
+register8 ddrb = register8(36)

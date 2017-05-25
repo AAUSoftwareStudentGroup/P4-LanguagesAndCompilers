@@ -277,21 +277,23 @@ namespace Generator.Translation
 
                                         string compareMethod = compareEqual ? "AreEqual" : "!AreEqual";
 
+                                        string op = compareEqual ? "<=>" : "</>";
+
                                         if (structure.Nodes<ListStructure>().Count() > 0 && compareStructure.Nodes<ListStructure>().Count() > 0)
                                         {
                                             ListStructure left = structure.Nodes<ListStructure>()[0];
                                             ListStructure right = compareStructure.Nodes<ListStructure>()[0];
-                                            string leftStructure = $"({string.Join(", ", CreateListStructure(left, relations[(premisAlias, "<=>")].LeftDomains, symbols))})";
-                                            string rightStructure = $"({string.Join(", ", CreateListStructure(right, relations[(premisAlias, "<=>")].RightDomains, symbols))})";
-                                            method.Body.Add($"{Indent(indentLevel)}if({compareMethod}({leftStructure}, {rightStructure}))");
+                                            string leftStructure = $"({string.Join(", ", CreateListStructure(left, relations[(premisAlias, op)].LeftDomains, symbols))})";
+                                            string rightStructure = $"({string.Join(", ", CreateListStructure(right, relations[(premisAlias, op)].RightDomains, symbols))})";
+                                            method.Body.Add($"{Indent(indentLevel)}if({compareMethod}{premisAlias}({leftStructure}, {rightStructure}))");
                                         }
                                         else if (structure.Nodes<TreeStructure>().Count() > 0 && compareStructure.Nodes<TreeStructure>().Count() > 0)
                                         {
                                             TreeStructure left = structure.Nodes<TreeStructure>()[0];
                                             TreeStructure right = compareStructure.Nodes<TreeStructure>()[0];
-                                            string leftStructure = $"({string.Join(", ", CreateTreeStructure(left, relations[(premisAlias, "</>")].LeftDomains[0], symbols))})";
-                                            string rightStructure = $"({string.Join(", ", CreateTreeStructure(right, relations[(premisAlias, "</>")].RightDomains[0], symbols))})";
-                                            method.Body.Add($"{Indent(indentLevel)}if({compareMethod}({leftStructure}, {rightStructure}))");
+                                            string leftStructure = $"({string.Join(", ", CreateTreeStructure(left, relations[(premisAlias, op)].LeftDomains[0], symbols))})";
+                                            string rightStructure = $"({string.Join(", ", CreateTreeStructure(right, relations[(premisAlias, op)].RightDomains[0], symbols))})";
+                                            method.Body.Add($"{Indent(indentLevel)}if({compareMethod}{premisAlias}({leftStructure}, {rightStructure}))");
                                         }
 
                                         method.Body.Add($"{Indent(indentLevel)}{{");
@@ -351,7 +353,7 @@ namespace Generator.Translation
 
                     method.Body.Add("}");
 
-                    MethodType exisitingMethod = translatorClass.Methods.FirstOrDefault(m => m.Identifier == method.Identifier && m.Type == method.Type && m.Parameters.Count == parameters.Count && m.Parameters.Count == m.Parameters.Select(p => p.Type).Intersect(parameters.Select(p => p.Type)).Count());
+                    MethodType exisitingMethod = translatorClass.Methods.FirstOrDefault(m => m.Identifier == method.Identifier && m.Type == method.Type && m.Parameters.Select(p => p.Type).SequenceEqual(parameters.Select(p => p.Type)));
 
                     if (exisitingMethod != null)
                     {
@@ -647,7 +649,7 @@ namespace Generator.Translation
                         "}",
                         "for (int index = 0; index < left.Count; index++)",
                         "{",
-                        "    if (!AreEqual(left[index], right[index]))",
+                        $"    if (!AreEqual{alias}(left[index], right[index]))",
                         "    {",
                         "        return false;",
                         "    }",
@@ -670,7 +672,7 @@ namespace Generator.Translation
                         RelationDomain leftDomain = leftDomains[i];
                         RelationDomain rightDomain = rightDomains[i];
                         AddAreEqualMethod("", new List<RelationDomain>() { leftDomain }, new List<RelationDomain>() { rightDomain }, methods);
-                        compareMethod.Body.Add($"if(!AreEqual(left.left{i}, right.right{i})");
+                        compareMethod.Body.Add($"if(!AreEqual{alias}(left.left{i}, right.right{i})");
                         compareMethod.Body.Add("{");
                         compareMethod.Body.Add("\treturn false;");
                         compareMethod.Body.Add("}");

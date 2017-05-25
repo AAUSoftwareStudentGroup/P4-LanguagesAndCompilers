@@ -3,32 +3,37 @@ namespace Compiler.Translation.ProgramToAST
 	public class ProgramToASTTranslator 
 	{
 		public Compiler.Error.RuleError RuleError { get; set; } = new Compiler.Error.RuleError();
-		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.AST.Data.Node> Relationp { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.AST.Data.Node>();
-		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Translation.SymbolTable.Data.Node> Relationq { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Translation.SymbolTable.Data.Node>();
-		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Parsing.Data.Node> Relationr { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Parsing.Data.Node>();
-		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node> Relations { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node>();
-		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node> Relationf { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node>();
-		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.AST.Data.Node> Relationt { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.AST.Data.Node>();
+		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.AST.Data.Node> RelationtoAST { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.AST.Data.Node>();
+		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Translation.SymbolTable.Data.Node> RelationtoSym { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Translation.SymbolTable.Data.Node>();
+		public System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Parsing.Data.Node> Relationrewrite { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Parsing.Data.Node,Compiler.Parsing.Data.Node>();
+		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node> Relationlookup { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node>();
+		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node> Relationscan { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.Translation.SymbolTable.Data.Node>();
+		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.AST.Data.Node> Relationparams { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.AST.Data.Node>();
+		public System.Collections.Generic.Dictionary<(Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.AST.Data.Node> Relationtype { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node),Compiler.AST.Data.Node>();
+		public System.Collections.Generic.Dictionary<(Compiler.AST.Data.Node, Compiler.AST.Data.Node),Compiler.AST.Data.Node> Relationlargest { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.AST.Data.Node, Compiler.AST.Data.Node),Compiler.AST.Data.Node>();
+		public System.Collections.Generic.Dictionary<Compiler.AST.Data.Node,Compiler.Translation.SymbolTable.Data.Node> RelationastSym { get; set; } = new System.Collections.Generic.Dictionary<Compiler.AST.Data.Node,Compiler.Translation.SymbolTable.Data.Node>();
+		public System.Collections.Generic.Dictionary<Compiler.AST.Data.Node,Compiler.Parsing.Data.Node> RelationastProg { get; set; } = new System.Collections.Generic.Dictionary<Compiler.AST.Data.Node,Compiler.Parsing.Data.Node>();
+		public System.Collections.Generic.Dictionary<Compiler.Translation.SymbolTable.Data.Node,Compiler.AST.Data.Node> RelationsymAST { get; set; } = new System.Collections.Generic.Dictionary<Compiler.Translation.SymbolTable.Data.Node,Compiler.AST.Data.Node>();
 		public System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),(Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node)> Relation { get; set; } = new System.Collections.Generic.Dictionary<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node),(Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node)>();
-		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.Program program)
+		public Compiler.AST.Data.Node TranslatetoAST(Compiler.Parsing.Data.Program program)
 		{
 			bool _isMatching = false;
 			var key = (program);
-			if(Relationp.ContainsKey(key))
+			if(RelationtoAST.ContainsKey(key))
 			{
-			    var value = Relationp[key];
-			    RuleStartp(new System.Collections.Generic.List<string>() { program.Name }, "", key);
-			    RuleEndp(true, false, value);
+			    var value = RelationtoAST[key];
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { program.Name }, "", key);
+			    RuleEndtoAST(true, false, value);
 			    return value;
 			}
 			if(program != null && program.Name == "Program")
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "AST" }, "Program : p -> : p ast", (program));
-			    Compiler.Translation.SymbolTable.Data.Node s = Translatef(program as Compiler.Parsing.Data.Program, new Compiler.Translation.SymbolTable.Data.SymbolTable(false) { new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } });
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "AST" }, "Program : p -> : toAST ast", (program));
+			    Compiler.Translation.SymbolTable.Data.Node s = Translatescan(program as Compiler.Parsing.Data.Program, new Compiler.Translation.SymbolTable.Data.SymbolTable(false) { new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } });
 			    _isMatching = s != null && s.Name == "SymbolTable";
 			    if(s != null && !_isMatching)
 			    {
-			        WrongPatternf((s), new System.Collections.Generic.List<string>() { "SymbolTable" });
+			        WrongPatternscan((s), new System.Collections.Generic.List<string>() { "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -41,948 +46,948 @@ namespace Compiler.Translation.ProgramToAST
 			        else if(_isMatching)
 			        {
 			            var _result = ast as Compiler.AST.Data.AST;
-			            RuleEndp(true, true, _result);
+			            RuleEndtoAST(true, true, _result);
 			            return _result;
 			        }
 			    }
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
-			RulesFailedp((program));
+			RulesFailedtoAST((program));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translates(Compiler.Parsing.Data.Token identifier, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.Translation.SymbolTable.Data.Node Translatelookup(Compiler.Parsing.Data.Token identifier, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
 			var key = (identifier, symbolTable);
-			if(Relations.ContainsKey(key))
+			if(Relationlookup.ContainsKey(key))
 			{
-			    var value = Relations[key];
-			    RuleStarts(new System.Collections.Generic.List<string>() { identifier.Name, symbolTable.Name }, "", key);
-			    RuleEnds(true, false, value);
+			    var value = Relationlookup[key];
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { identifier.Name, symbolTable.Name }, "", key);
+			    RuleEndlookup(true, false, value);
 			    return value;
 			}
 			if(identifier != null && identifier.Name == "identifier" && symbolTable != null && symbolTable.Name == "SymbolTable" && (symbolTable.Count == 1 && symbolTable[0] != null && symbolTable[0].Name == "Declarations"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id SymbolTable [ Declarations : vars ] ] -> : s dcl", (identifier, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node dcl = Translates(identifier as Compiler.Parsing.Data.Token, symbolTable[0] as Compiler.Translation.SymbolTable.Data.Declarations);
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id SymbolTable [ Declarations : vars ] ] -> : lookup dcl", (identifier, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node dcl = Translatelookup(identifier as Compiler.Parsing.Data.Token, symbolTable[0] as Compiler.Translation.SymbolTable.Data.Declarations);
 			    _isMatching = dcl != null && dcl.Name == "Declaration";
 			    if(dcl != null && !_isMatching)
 			    {
-			        WrongPatterns((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, true, _result);
+			        RuleEndlookup(true, true, _result);
 			        return _result;
 			    }
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
 			Compiler.Parsing.Data.Token _return = identifier;
 			if(_return != null && _return.Name == "return" && symbolTable != null && symbolTable.Name == "SymbolTable" && (symbolTable.Count == 1 && symbolTable[0] != null && symbolTable[0].Name == "Declarations"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return SymbolTable [ Declarations : vars ] ] -> : s dcl", (_return, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node dcl = Translates(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable[0] as Compiler.Translation.SymbolTable.Data.Declarations);
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return SymbolTable [ Declarations : vars ] ] -> : lookup dcl", (_return, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node dcl = Translatelookup(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable[0] as Compiler.Translation.SymbolTable.Data.Declarations);
 			    _isMatching = dcl != null && dcl.Name == "Declaration";
 			    if(dcl != null && !_isMatching)
 			    {
-			        WrongPatterns((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, true, _result);
+			        RuleEndlookup(true, true, _result);
 			        return _result;
 			    }
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
-			RulesFaileds((identifier, symbolTable));
+			RulesFailedlookup((identifier, symbolTable));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translates(Compiler.Parsing.Data.Token _return, Compiler.Translation.SymbolTable.Data.Declarations declarations)
+		public Compiler.Translation.SymbolTable.Data.Node Translatelookup(Compiler.Parsing.Data.Token _return, Compiler.Translation.SymbolTable.Data.Declarations declarations)
 		{
 			bool _isMatching = false;
 			var key = (_return, declarations);
-			if(Relations.ContainsKey(key))
+			if(Relationlookup.ContainsKey(key))
 			{
-			    var value = Relations[key];
-			    RuleStarts(new System.Collections.Generic.List<string>() { _return.Name, declarations.Name }, "", key);
-			    RuleEnds(true, false, value);
+			    var value = Relationlookup[key];
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { _return.Name, declarations.Name }, "", key);
+			    RuleEndlookup(true, false, value);
 			    return value;
 			}
 			if(_return != null && _return.Name == "return" && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 1 && declarations[0] != null && declarations[0].Name == "EPSILON"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return Declarations [ EPSILON ] ] -> : s Declaration [ EPSILON ]", (_return, declarations));
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return Declarations [ EPSILON ] ] -> : lookup Declaration [ EPSILON ]", (_return, declarations));
 			    var _result = new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
-			    RuleEnds(true, true, _result);
+			    RuleEndlookup(true, true, _result);
 			    return _result;
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
 			Compiler.Parsing.Data.Token identifier = _return;
 			if(identifier != null && identifier.Name == "identifier" && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 1 && declarations[0] != null && declarations[0].Name == "EPSILON"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier Declarations [ EPSILON ] ] -> : s Declaration [ EPSILON ]", (identifier, declarations));
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier Declarations [ EPSILON ] ] -> : lookup Declaration [ EPSILON ]", (identifier, declarations));
 			    var _result = new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
-			    RuleEnds(true, true, _result);
+			    RuleEndlookup(true, true, _result);
 			    return _result;
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
 			if(identifier != null && identifier.Name == "identifier" && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier")) && declarations[1] != null && declarations[1].Name == "Declarations"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id1 Declarations [ Declaration : dcl [ Variable [ Type identifier : id2 ] ] Declarations ] ] -> : s dcl", (identifier, declarations));
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id1 Declarations [ Declaration : dcl [ Variable [ Type identifier : id2 ] ] Declarations ] ] -> : lookup dcl", (identifier, declarations));
 			    if(AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
 			    {
 			        var _result = declarations[0] as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, true, _result);
+			        RuleEndlookup(true, true, _result);
 			        return _result;
 			    }
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
 			if(identifier != null && identifier.Name == "identifier" && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier")) && declarations[1] != null && declarations[1].Name == "Declarations"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id1 Declarations [ Declaration [ Variable [ Type identifier : id2 ] ] Declarations : dcls ] ] -> : s dcl", (identifier, declarations));
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id1 Declarations [ Declaration [ Variable [ Type identifier : id2 ] ] Declarations : dcls ] ] -> : lookup dcl", (identifier, declarations));
 			    if(!AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node dcl = Translates(identifier as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
+			        Compiler.Translation.SymbolTable.Data.Node dcl = Translatelookup(identifier as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
 			        _isMatching = dcl != null && dcl.Name == "Declaration";
 			        if(dcl != null && !_isMatching)
 			        {
-			            WrongPatterns((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
 			            var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			            RuleEnds(true, true, _result);
+			            RuleEndlookup(true, true, _result);
 			            return _result;
 			        }
 			    }
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
 			if(identifier != null && identifier.Name == "identifier" && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && declarations[0][0][1] != null && declarations[0][0][1].Name == "return")) && declarations[1] != null && declarations[1].Name == "Declarations"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id1 Declarations [ Declaration [ Variable [ Type return ] ] Declarations : dcls ] ] -> : s dcl", (identifier, declarations));
-			    Compiler.Translation.SymbolTable.Data.Node dcl = Translates(identifier as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id1 Declarations [ Declaration [ Variable [ Type return ] ] Declarations : dcls ] ] -> : lookup dcl", (identifier, declarations));
+			    Compiler.Translation.SymbolTable.Data.Node dcl = Translatelookup(identifier as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
 			    _isMatching = dcl != null && dcl.Name == "Declaration";
 			    if(dcl != null && !_isMatching)
 			    {
-			        WrongPatterns((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, true, _result);
+			        RuleEndlookup(true, true, _result);
 			        return _result;
 			    }
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
 			if(identifier != null && identifier.Name == "identifier" && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Function" && (declarations[0][0].Count == 3 && declarations[0][0][0] != null && declarations[0][0][0].Name == "ReturnType" && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && declarations[0][0][2] != null && declarations[0][0][2].Name == "Parameters")) && declarations[1] != null && declarations[1].Name == "Declarations"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id1 Declarations [ Declaration : dcl [ Function [ ReturnType identifier : id2 Parameters ] ] Declarations ] ] -> : s dcl", (identifier, declarations));
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id1 Declarations [ Declaration : dcl [ Function [ ReturnType identifier : id2 Parameters ] ] Declarations ] ] -> : lookup dcl", (identifier, declarations));
 			    if(AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
 			    {
 			        var _result = declarations[0] as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, true, _result);
+			        RuleEndlookup(true, true, _result);
 			        return _result;
 			    }
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
 			if(identifier != null && identifier.Name == "identifier" && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Function" && (declarations[0][0].Count == 3 && declarations[0][0][0] != null && declarations[0][0][0].Name == "ReturnType" && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && declarations[0][0][2] != null && declarations[0][0][2].Name == "Parameters")) && declarations[1] != null && declarations[1].Name == "Declarations"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id1 Declarations [ Declaration [ Function [ ReturnType identifier : id2 Parameters ] ] Declarations : dcls ] ] -> : s dcl", (identifier, declarations));
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ identifier : id1 Declarations [ Declaration [ Function [ ReturnType identifier : id2 Parameters ] ] Declarations : dcls ] ] -> : lookup dcl", (identifier, declarations));
 			    if(!AreEqual((identifier as Compiler.Parsing.Data.Token), (declarations[0][0][1] as Compiler.Translation.SymbolTable.Data.Token)))
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node dcl = Translates(identifier as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
+			        Compiler.Translation.SymbolTable.Data.Node dcl = Translatelookup(identifier as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
 			        _isMatching = dcl != null && dcl.Name == "Declaration";
 			        if(dcl != null && !_isMatching)
 			        {
-			            WrongPatterns((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
 			            var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			            RuleEnds(true, true, _result);
+			            RuleEndlookup(true, true, _result);
 			            return _result;
 			        }
 			    }
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
 			if(_return != null && _return.Name == "return" && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && declarations[0][0][1] != null && declarations[0][0][1].Name == "return")) && declarations[1] != null && declarations[1].Name == "Declarations"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return Declarations [ Declaration : dcl [ Variable [ Type return ] ] Declarations ] ] -> : s dcl", (_return, declarations));
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return Declarations [ Declaration : dcl [ Variable [ Type return ] ] Declarations ] ] -> : lookup dcl", (_return, declarations));
 			    var _result = declarations[0] as Compiler.Translation.SymbolTable.Data.Declaration;
-			    RuleEnds(true, true, _result);
+			    RuleEndlookup(true, true, _result);
 			    return _result;
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
 			if(_return != null && _return.Name == "return" && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Variable" && (declarations[0][0].Count == 2 && declarations[0][0][0] != null && declarations[0][0][0].Name == "Type" && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier")) && declarations[1] != null && declarations[1].Name == "Declarations"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return : r Declarations [ Declaration [ Variable [ Type identifier ] ] Declarations : dcls ] ] -> : s dcl", (_return, declarations));
-			    Compiler.Translation.SymbolTable.Data.Node dcl = Translates(_return as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return : r Declarations [ Declaration [ Variable [ Type identifier ] ] Declarations : dcls ] ] -> : lookup dcl", (_return, declarations));
+			    Compiler.Translation.SymbolTable.Data.Node dcl = Translatelookup(_return as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
 			    _isMatching = dcl != null && dcl.Name == "Declaration";
 			    if(dcl != null && !_isMatching)
 			    {
-			        WrongPatterns((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, true, _result);
+			        RuleEndlookup(true, true, _result);
 			        return _result;
 			    }
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
 			if(_return != null && _return.Name == "return" && declarations != null && declarations.Name == "Declarations" && (declarations.Count == 2 && declarations[0] != null && declarations[0].Name == "Declaration" && (declarations[0].Count == 1 && declarations[0][0] != null && declarations[0][0].Name == "Function" && (declarations[0][0].Count == 3 && declarations[0][0][0] != null && declarations[0][0][0].Name == "ReturnType" && declarations[0][0][1] != null && declarations[0][0][1].Name == "identifier" && declarations[0][0][2] != null && declarations[0][0][2].Name == "Parameters")) && declarations[1] != null && declarations[1].Name == "Declarations"))
 			{
-			    RuleStarts(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return : r Declarations [ Declaration [ Function [ ReturnType identifier Parameters ] ] Declarations : dcls ] ] -> : s dcl", (_return, declarations));
-			    Compiler.Translation.SymbolTable.Data.Node dcl = Translates(_return as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
+			    RuleStartlookup(new System.Collections.Generic.List<string>() { "Declaration" }, "[ return : r Declarations [ Declaration [ Function [ ReturnType identifier Parameters ] ] Declarations : dcls ] ] -> : lookup dcl", (_return, declarations));
+			    Compiler.Translation.SymbolTable.Data.Node dcl = Translatelookup(_return as Compiler.Parsing.Data.Token, declarations[1] as Compiler.Translation.SymbolTable.Data.Declarations);
 			    _isMatching = dcl != null && dcl.Name == "Declaration";
 			    if(dcl != null && !_isMatching)
 			    {
-			        WrongPatterns((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((dcl), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = dcl as Compiler.Translation.SymbolTable.Data.Declaration;
-			        RuleEnds(true, true, _result);
+			        RuleEndlookup(true, true, _result);
 			        return _result;
 			    }
-			    RuleEnds(false);
+			    RuleEndlookup(false);
 			}
-			RulesFaileds((_return, declarations));
+			RulesFailedlookup((_return, declarations));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.Program program, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.Translation.SymbolTable.Data.Node Translatescan(Compiler.Parsing.Data.Program program, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
 			var key = (program, symbolTable);
-			if(Relationf.ContainsKey(key))
+			if(Relationscan.ContainsKey(key))
 			{
-			    var value = Relationf[key];
-			    RuleStartf(new System.Collections.Generic.List<string>() { program.Name, symbolTable.Name }, "", key);
-			    RuleEndf(true, false, value);
+			    var value = Relationscan[key];
+			    RuleStartscan(new System.Collections.Generic.List<string>() { program.Name, symbolTable.Name }, "", key);
+			    RuleEndscan(true, false, value);
 			    return value;
 			}
 			if(program != null && program.Name == "Program" && (program.Count == 2 && program[0] != null && program[0].Name == "GlobalStatements" && (program[0].Count == 1 && program[0][0] != null && program[0][0].Name == "EPSILON") && program[1] != null && program[1].Name == "eof") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Program [ GlobalStatements [ EPSILON ] eof ] SymbolTable : s ] -> : f s", (program, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Program [ GlobalStatements [ EPSILON ] eof ] SymbolTable : s ] -> : scan s", (program, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(program != null && program.Name == "Program" && (program.Count == 2 && program[0] != null && program[0].Name == "GlobalStatements" && program[1] != null && program[1].Name == "eof") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Program [ GlobalStatements : stms eof ] SymbolTable : s ] -> : f s1", (program, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(program[0] as Compiler.Parsing.Data.GlobalStatements, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Program [ GlobalStatements : stms eof ] SymbolTable : s ] -> : scan s1", (program, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatescan(program[0] as Compiler.Parsing.Data.GlobalStatements, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = s1 != null && s1.Name == "SymbolTable";
 			    if(s1 != null && !_isMatching)
 			    {
-			        WrongPatternf((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
+			        WrongPatternscan((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, true, _result);
+			        RuleEndscan(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
-			RulesFailedf((program, symbolTable));
+			RulesFailedscan((program, symbolTable));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.GlobalStatements globalStatements, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.Translation.SymbolTable.Data.Node Translatescan(Compiler.Parsing.Data.GlobalStatements globalStatements, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
 			var key = (globalStatements, symbolTable);
-			if(Relationf.ContainsKey(key))
+			if(Relationscan.ContainsKey(key))
 			{
-			    var value = Relationf[key];
-			    RuleStartf(new System.Collections.Generic.List<string>() { globalStatements.Name, symbolTable.Name }, "", key);
-			    RuleEndf(true, false, value);
+			    var value = Relationscan[key];
+			    RuleStartscan(new System.Collections.Generic.List<string>() { globalStatements.Name, symbolTable.Name }, "", key);
+			    RuleEndscan(true, false, value);
 			    return value;
 			}
 			if(globalStatements != null && globalStatements.Name == "GlobalStatements" && (globalStatements.Count == 2 && globalStatements[0] != null && globalStatements[0].Name == "GlobalStatement" && globalStatements[1] != null && globalStatements[1].Name == "GlobalStatements" && (globalStatements[1].Count == 1 && globalStatements[1][0] != null && globalStatements[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatements [ GlobalStatement : stm GlobalStatements [ EPSILON ] ] SymbolTable : s ] -> : f s1", (globalStatements, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(globalStatements[0] as Compiler.Parsing.Data.GlobalStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatements [ GlobalStatement : stm GlobalStatements [ EPSILON ] ] SymbolTable : s ] -> : scan s1", (globalStatements, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatescan(globalStatements[0] as Compiler.Parsing.Data.GlobalStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = s1 != null && s1.Name == "SymbolTable";
 			    if(s1 != null && !_isMatching)
 			    {
-			        WrongPatternf((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
+			        WrongPatternscan((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, true, _result);
+			        RuleEndscan(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(globalStatements != null && globalStatements.Name == "GlobalStatements" && (globalStatements.Count == 2 && globalStatements[0] != null && globalStatements[0].Name == "GlobalStatement" && globalStatements[1] != null && globalStatements[1].Name == "GlobalStatements") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatements [ GlobalStatement : stm GlobalStatements : stmsp ] SymbolTable : s ] -> : f s2", (globalStatements, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(globalStatements[0] as Compiler.Parsing.Data.GlobalStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatements [ GlobalStatement : stm GlobalStatements : stmsp ] SymbolTable : s ] -> : scan s2", (globalStatements, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatescan(globalStatements[0] as Compiler.Parsing.Data.GlobalStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = s1 != null && s1.Name == "SymbolTable";
 			    if(s1 != null && !_isMatching)
 			    {
-			        WrongPatternf((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
+			        WrongPatternscan((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node s2 = Translatef(globalStatements[1] as Compiler.Parsing.Data.GlobalStatements, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node s2 = Translatescan(globalStatements[1] as Compiler.Parsing.Data.GlobalStatements, s1 as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = s2 != null && s2.Name == "SymbolTable";
 			        if(s2 != null && !_isMatching)
 			        {
-			            WrongPatternf((s2), new System.Collections.Generic.List<string>() { "SymbolTable" });
+			            WrongPatternscan((s2), new System.Collections.Generic.List<string>() { "SymbolTable" });
 			        }
 			        else if(_isMatching)
 			        {
 			            var _result = s2 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			            RuleEndf(true, true, _result);
+			            RuleEndscan(true, true, _result);
 			            return _result;
 			        }
 			    }
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
-			RulesFailedf((globalStatements, symbolTable));
+			RulesFailedscan((globalStatements, symbolTable));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.GlobalStatement globalStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.Translation.SymbolTable.Data.Node Translatescan(Compiler.Parsing.Data.GlobalStatement globalStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
 			var key = (globalStatement, symbolTable);
-			if(Relationf.ContainsKey(key))
+			if(Relationscan.ContainsKey(key))
 			{
-			    var value = Relationf[key];
-			    RuleStartf(new System.Collections.Generic.List<string>() { globalStatement.Name, symbolTable.Name }, "", key);
-			    RuleEndf(true, false, value);
+			    var value = Relationscan[key];
+			    RuleStartscan(new System.Collections.Generic.List<string>() { globalStatement.Name, symbolTable.Name }, "", key);
+			    RuleEndscan(true, false, value);
 			    return value;
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "Interrupt") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ Interrupt : inter ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ Interrupt : inter ] SymbolTable : s ] -> : scan s", (globalStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IdentifierDeclaration") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ IdentifierDeclaration : stm ] SymbolTable : s ] -> : f s1", (globalStatement, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(globalStatement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ IdentifierDeclaration : stm ] SymbolTable : s ] -> : scan s1", (globalStatement, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatescan(globalStatement[0] as Compiler.Parsing.Data.IdentifierDeclaration, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = s1 != null && s1.Name == "SymbolTable";
 			    if(s1 != null && !_isMatching)
 			    {
-			        WrongPatternf((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
+			        WrongPatternscan((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, true, _result);
+			        RuleEndscan(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IdentifierStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ IdentifierStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ IdentifierStatement : stm ] SymbolTable : s ] -> : scan s", (globalStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "RegisterStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ RegisterStatement : stm ] SymbolTable : s ] -> : f s1", (globalStatement, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatef(globalStatement[0] as Compiler.Parsing.Data.RegisterStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ RegisterStatement : stm ] SymbolTable : s ] -> : scan s1", (globalStatement, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node s1 = Translatescan(globalStatement[0] as Compiler.Parsing.Data.RegisterStatement, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = s1 != null && s1.Name == "SymbolTable";
 			    if(s1 != null && !_isMatching)
 			    {
-			        WrongPatternf((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
+			        WrongPatternscan((s1), new System.Collections.Generic.List<string>() { "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = s1 as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			        RuleEndf(true, true, _result);
+			        RuleEndscan(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "IfStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ IfStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ IfStatement : stm ] SymbolTable : s ] -> : scan s", (globalStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "WhileStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ WhileStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ WhileStatement : stm ] SymbolTable : s ] -> : scan s", (globalStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "ForStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ ForStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ ForStatement : stm ] SymbolTable : s ] -> : scan s", (globalStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "ReturnStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ ReturnStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ ReturnStatement : stm ] SymbolTable : s ] -> : scan s", (globalStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "InterruptStatement") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ InterruptStatement : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ InterruptStatement : stm ] SymbolTable : s ] -> : scan s", (globalStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(globalStatement != null && globalStatement.Name == "GlobalStatement" && (globalStatement.Count == 1 && globalStatement[0] != null && globalStatement[0].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ newline : stm ] SymbolTable : s ] -> : f s", (globalStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ GlobalStatement [ newline : stm ] SymbolTable : s ] -> : scan s", (globalStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
-			RulesFailedf((globalStatement, symbolTable));
+			RulesFailedscan((globalStatement, symbolTable));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.Interrupt interrupt, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.Translation.SymbolTable.Data.Node Translatescan(Compiler.Parsing.Data.Interrupt interrupt, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
 			var key = (interrupt, symbolTable);
-			if(Relationf.ContainsKey(key))
+			if(Relationscan.ContainsKey(key))
 			{
-			    var value = Relationf[key];
-			    RuleStartf(new System.Collections.Generic.List<string>() { interrupt.Name, symbolTable.Name }, "", key);
-			    RuleEndf(true, false, value);
+			    var value = Relationscan[key];
+			    RuleStartscan(new System.Collections.Generic.List<string>() { interrupt.Name, symbolTable.Name }, "", key);
+			    RuleEndscan(true, false, value);
 			    return value;
 			}
 			if(interrupt != null && interrupt.Name == "Interrupt" && (interrupt.Count == 7 && interrupt[0] != null && interrupt[0].Name == "interrupt" && interrupt[1] != null && interrupt[1].Name == "(" && interrupt[2] != null && interrupt[2].Name == "numeral" && interrupt[3] != null && interrupt[3].Name == ")" && interrupt[4] != null && interrupt[4].Name == "indent" && interrupt[5] != null && interrupt[5].Name == "Statements" && interrupt[6] != null && interrupt[6].Name == "dedent") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Interrupt [ interrupt ( numeral : i ) indent Statements : stms dedent ] SymbolTable : s ] -> : f s", (interrupt, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ Interrupt [ interrupt ( numeral : i ) indent Statements : stms dedent ] SymbolTable : s ] -> : scan s", (interrupt, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
-			RulesFailedf((interrupt, symbolTable));
+			RulesFailedscan((interrupt, symbolTable));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.IdentifierSimpleDeclaration identifierSimpleDeclaration, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.Translation.SymbolTable.Data.Node Translatescan(Compiler.Parsing.Data.IdentifierSimpleDeclaration identifierSimpleDeclaration, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
 			var key = (identifierSimpleDeclaration, symbolTable);
-			if(Relationf.ContainsKey(key))
+			if(Relationscan.ContainsKey(key))
 			{
-			    var value = Relationf[key];
-			    RuleStartf(new System.Collections.Generic.List<string>() { identifierSimpleDeclaration.Name, symbolTable.Name }, "", key);
-			    RuleEndf(true, false, value);
+			    var value = Relationscan[key];
+			    RuleStartscan(new System.Collections.Generic.List<string>() { identifierSimpleDeclaration.Name, symbolTable.Name }, "", key);
+			    RuleEndscan(true, false, value);
 			    return value;
 			}
 			if(identifierSimpleDeclaration != null && identifierSimpleDeclaration.Name == "IdentifierSimpleDeclaration" && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierSimpleDeclaration SymbolTable : s ] -> : f s", (identifierSimpleDeclaration, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierSimpleDeclaration SymbolTable : s ] -> : scan s", (identifierSimpleDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
-			RulesFailedf((identifierSimpleDeclaration, symbolTable));
+			RulesFailedscan((identifierSimpleDeclaration, symbolTable));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.IdentifierDeclaration identifierDeclaration, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.Translation.SymbolTable.Data.Node Translatescan(Compiler.Parsing.Data.IdentifierDeclaration identifierDeclaration, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
 			var key = (identifierDeclaration, symbolTable);
-			if(Relationf.ContainsKey(key))
+			if(Relationscan.ContainsKey(key))
 			{
-			    var value = Relationf[key];
-			    RuleStartf(new System.Collections.Generic.List<string>() { identifierDeclaration.Name, symbolTable.Name }, "", key);
-			    RuleEndf(true, false, value);
+			    var value = Relationscan[key];
+			    RuleStartscan(new System.Collections.Generic.List<string>() { identifierDeclaration.Name, symbolTable.Name }, "", key);
+			    RuleEndscan(true, false, value);
 			    return value;
 			}
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 3 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ IntType identifier Definition [ = Expression newline ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ IntType identifier Definition [ = Expression newline ] ] SymbolTable : s ] -> : scan s", (identifierDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 6 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "(" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "FormalParameters" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == ")" && identifierDeclaration[2][3] != null && identifierDeclaration[2][3].Name == "indent" && identifierDeclaration[2][4] != null && identifierDeclaration[2][4].Name == "Statements" && identifierDeclaration[2][5] != null && identifierDeclaration[2][5].Name == "dedent")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ IntType : intType identifier : id Definition [ ( FormalParameters : params ) indent Statements dedent ] ] SymbolTable : s ] -> : f s <- Declarations [ Declaration [ Function [ ReturnType [ Type [ it ] ] id1 p ] ] % Declarations [ EPSILON ] ]", (identifierDeclaration, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ IntType : intType identifier : id Definition [ ( FormalParameters : params ) indent Statements dedent ] ] SymbolTable : s ] -> : scan s <- Declarations [ Declaration [ Function [ ReturnType [ Type [ it ] ] id1 p ] ] % Declarations [ EPSILON ] ]", (identifierDeclaration, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			    if(declaration != null && !_isMatching)
 			    {
-			        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node it = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
+			        Compiler.Translation.SymbolTable.Data.Node it = TranslatetoSym(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
 			        _isMatching = it != null && it.Name == "IntType";
 			        if(it != null && !_isMatching)
 			        {
-			            WrongPatternq((it), new System.Collections.Generic.List<string>() { "IntType" });
+			            WrongPatterntoSym((it), new System.Collections.Generic.List<string>() { "IntType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.Translation.SymbolTable.Data.Node id1 = Translateq(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			            Compiler.Translation.SymbolTable.Data.Node id1 = TranslatetoSym(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternq((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoSym((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node p = Translateq(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters);
+			                Compiler.Translation.SymbolTable.Data.Node p = TranslatetoSym(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters);
 			                _isMatching = p != null && p.Name == "Parameters";
 			                if(p != null && !_isMatching)
 			                {
-			                    WrongPatternq((p), new System.Collections.Generic.List<string>() { "Parameters" });
+			                    WrongPatterntoSym((p), new System.Collections.Generic.List<string>() { "Parameters" });
 			                }
 			                else if(_isMatching)
 			                {
 			                    var _result = Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Function(false) { new Compiler.Translation.SymbolTable.Data.ReturnType(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { it as Compiler.Translation.SymbolTable.Data.IntType } }, id1 as Compiler.Translation.SymbolTable.Data.Token, p as Compiler.Translation.SymbolTable.Data.Parameters } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			                    RuleEndf(true, true, _result);
+			                    RuleEndscan(true, true, _result);
 			                    return _result;
 			                }
 			            }
 			        }
 			    }
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 1 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ IntType identifier Definition [ newline ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ IntType identifier Definition [ newline ] ] SymbolTable : s ] -> : scan s", (identifierDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 3 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType identifier Definition [ = Expression newline ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType identifier Definition [ = Expression newline ] ] SymbolTable : s ] -> : scan s", (identifierDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 6 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "(" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "FormalParameters" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == ")" && identifierDeclaration[2][3] != null && identifierDeclaration[2][3].Name == "indent" && identifierDeclaration[2][4] != null && identifierDeclaration[2][4].Name == "Statements" && identifierDeclaration[2][5] != null && identifierDeclaration[2][5].Name == "dedent")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType : boolType identifier : id Definition [ ( FormalParameters : params ) indent Statements dedent ] ] SymbolTable : s ] -> : f s <- Declarations [ Declaration [ Function [ ReturnType [ Type [ t ] ] id1 p ] ] % Declarations [ EPSILON ] ]", (identifierDeclaration, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType : boolType identifier : id Definition [ ( FormalParameters : params ) indent Statements dedent ] ] SymbolTable : s ] -> : scan s <- Declarations [ Declaration [ Function [ ReturnType [ Type [ t ] ] id1 p ] ] % Declarations [ EPSILON ] ]", (identifierDeclaration, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			    if(declaration != null && !_isMatching)
 			    {
-			        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
+			        Compiler.Translation.SymbolTable.Data.Node t = TranslatetoSym(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
 			        _isMatching = t != null && t.Name == "BooleanType";
 			        if(t != null && !_isMatching)
 			        {
-			            WrongPatternq((t), new System.Collections.Generic.List<string>() { "BooleanType" });
+			            WrongPatterntoSym((t), new System.Collections.Generic.List<string>() { "BooleanType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.Translation.SymbolTable.Data.Node id1 = Translateq(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			            Compiler.Translation.SymbolTable.Data.Node id1 = TranslatetoSym(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternq((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoSym((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node p = Translateq(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters);
+			                Compiler.Translation.SymbolTable.Data.Node p = TranslatetoSym(identifierDeclaration[2][1] as Compiler.Parsing.Data.FormalParameters);
 			                _isMatching = p != null && p.Name == "Parameters";
 			                if(p != null && !_isMatching)
 			                {
-			                    WrongPatternq((p), new System.Collections.Generic.List<string>() { "Parameters" });
+			                    WrongPatterntoSym((p), new System.Collections.Generic.List<string>() { "Parameters" });
 			                }
 			                else if(_isMatching)
 			                {
 			                    var _result = Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Function(false) { new Compiler.Translation.SymbolTable.Data.ReturnType(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t as Compiler.Translation.SymbolTable.Data.BooleanType } }, id1 as Compiler.Translation.SymbolTable.Data.Token, p as Compiler.Translation.SymbolTable.Data.Parameters } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			                    RuleEndf(true, true, _result);
+			                    RuleEndscan(true, true, _result);
 			                    return _result;
 			                }
 			            }
 			        }
 			    }
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 1 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType identifier Definition [ newline ] ] SymbolTable : s ] -> : f s", (identifierDeclaration, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType identifier Definition [ newline ] ] SymbolTable : s ] -> : scan s", (identifierDeclaration, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 8 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "nothing" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "(" && identifierDeclaration[3] != null && identifierDeclaration[3].Name == "FormalParameters" && identifierDeclaration[4] != null && identifierDeclaration[4].Name == ")" && identifierDeclaration[5] != null && identifierDeclaration[5].Name == "indent" && identifierDeclaration[6] != null && identifierDeclaration[6].Name == "Statements" && identifierDeclaration[7] != null && identifierDeclaration[7].Name == "dedent") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ nothing : n identifier : id ( FormalParameters : params ) indent Statements dedent ] SymbolTable : s ] -> : f s <- Declarations [ Declaration [ Function [ ReturnType [ t ] id1 p ] ] % Declarations [ EPSILON ] ]", (identifierDeclaration, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ IdentifierDeclaration [ nothing : n identifier : id ( FormalParameters : params ) indent Statements dedent ] SymbolTable : s ] -> : scan s <- Declarations [ Declaration [ Function [ ReturnType [ t ] id1 p ] ] % Declarations [ EPSILON ] ]", (identifierDeclaration, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			    if(declaration != null && !_isMatching)
 			    {
-			        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.Token);
+			        Compiler.Translation.SymbolTable.Data.Node t = TranslatetoSym(identifierDeclaration[0] as Compiler.Parsing.Data.Token);
 			        _isMatching = t != null && t.Name == "nothing";
 			        if(t != null && !_isMatching)
 			        {
-			            WrongPatternq((t), new System.Collections.Generic.List<string>() { "nothing" });
+			            WrongPatterntoSym((t), new System.Collections.Generic.List<string>() { "nothing" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.Translation.SymbolTable.Data.Node id1 = Translateq(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			            Compiler.Translation.SymbolTable.Data.Node id1 = TranslatetoSym(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternq((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoSym((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node p = Translateq(identifierDeclaration[3] as Compiler.Parsing.Data.FormalParameters);
+			                Compiler.Translation.SymbolTable.Data.Node p = TranslatetoSym(identifierDeclaration[3] as Compiler.Parsing.Data.FormalParameters);
 			                _isMatching = p != null && p.Name == "Parameters";
 			                if(p != null && !_isMatching)
 			                {
-			                    WrongPatternq((p), new System.Collections.Generic.List<string>() { "Parameters" });
+			                    WrongPatterntoSym((p), new System.Collections.Generic.List<string>() { "Parameters" });
 			                }
 			                else if(_isMatching)
 			                {
 			                    var _result = Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Function(false) { new Compiler.Translation.SymbolTable.Data.ReturnType(false) { t as Compiler.Translation.SymbolTable.Data.Token }, id1 as Compiler.Translation.SymbolTable.Data.Token, p as Compiler.Translation.SymbolTable.Data.Parameters } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			                    RuleEndf(true, true, _result);
+			                    RuleEndscan(true, true, _result);
 			                    return _result;
 			                }
 			            }
 			        }
 			    }
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
-			RulesFailedf((identifierDeclaration, symbolTable));
+			RulesFailedscan((identifierDeclaration, symbolTable));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.FormalParameters formalParameters)
+		public Compiler.Translation.SymbolTable.Data.Node TranslatetoSym(Compiler.Parsing.Data.FormalParameters formalParameters)
 		{
 			bool _isMatching = false;
 			var key = (formalParameters);
-			if(Relationq.ContainsKey(key))
+			if(RelationtoSym.ContainsKey(key))
 			{
-			    var value = Relationq[key];
-			    RuleStartq(new System.Collections.Generic.List<string>() { formalParameters.Name }, "", key);
-			    RuleEndq(true, false, value);
+			    var value = RelationtoSym[key];
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { formalParameters.Name }, "", key);
+			    RuleEndtoSym(true, false, value);
 			    return value;
 			}
 			if(formalParameters != null && formalParameters.Name == "FormalParameters" && (formalParameters.Count == 1 && formalParameters[0] != null && formalParameters[0].Name == "EPSILON"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "Parameters" }, "FormalParameters [ EPSILON ] -> : q Parameters [ EPSILON ]", (formalParameters));
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "Parameters" }, "FormalParameters [ EPSILON ] -> : toSym Parameters [ EPSILON ]", (formalParameters));
 			    var _result = new Compiler.Translation.SymbolTable.Data.Parameters(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
-			    RuleEndq(true, true, _result);
+			    RuleEndtoSym(true, true, _result);
 			    return _result;
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
 			if(formalParameters != null && formalParameters.Name == "FormalParameters" && (formalParameters.Count == 2 && formalParameters[0] != null && formalParameters[0].Name == "FormalParameter" && formalParameters[1] != null && formalParameters[1].Name == "FormalParametersP"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "Parameters" }, "FormalParameters [ FormalParameter : p1 FormalParametersP : p2 ] -> : q Parameters [ p3 p4 ]", (formalParameters));
-			    Compiler.Translation.SymbolTable.Data.Node p3 = Translateq(formalParameters[0] as Compiler.Parsing.Data.FormalParameter);
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "Parameters" }, "FormalParameters [ FormalParameter : p1 FormalParametersP : p2 ] -> : toSym Parameters [ p3 p4 ]", (formalParameters));
+			    Compiler.Translation.SymbolTable.Data.Node p3 = TranslatetoSym(formalParameters[0] as Compiler.Parsing.Data.FormalParameter);
 			    _isMatching = p3 != null && p3.Name == "Parameter";
 			    if(p3 != null && !_isMatching)
 			    {
-			        WrongPatternq((p3), new System.Collections.Generic.List<string>() { "Parameter" });
+			        WrongPatterntoSym((p3), new System.Collections.Generic.List<string>() { "Parameter" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node p4 = Translateq(formalParameters[1] as Compiler.Parsing.Data.FormalParametersP);
+			        Compiler.Translation.SymbolTable.Data.Node p4 = TranslatetoSym(formalParameters[1] as Compiler.Parsing.Data.FormalParametersP);
 			        _isMatching = p4 != null && p4.Name == "ParametersP";
 			        if(p4 != null && !_isMatching)
 			        {
-			            WrongPatternq((p4), new System.Collections.Generic.List<string>() { "ParametersP" });
+			            WrongPatterntoSym((p4), new System.Collections.Generic.List<string>() { "ParametersP" });
 			        }
 			        else if(_isMatching)
 			        {
 			            var _result = new Compiler.Translation.SymbolTable.Data.Parameters(false) { p3 as Compiler.Translation.SymbolTable.Data.Parameter, p4 as Compiler.Translation.SymbolTable.Data.ParametersP };
-			            RuleEndq(true, true, _result);
+			            RuleEndtoSym(true, true, _result);
 			            return _result;
 			        }
 			    }
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
-			RulesFailedq((formalParameters));
+			RulesFailedtoSym((formalParameters));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.FormalParametersP formalParametersP)
+		public Compiler.Translation.SymbolTable.Data.Node TranslatetoSym(Compiler.Parsing.Data.FormalParametersP formalParametersP)
 		{
 			bool _isMatching = false;
 			var key = (formalParametersP);
-			if(Relationq.ContainsKey(key))
+			if(RelationtoSym.ContainsKey(key))
 			{
-			    var value = Relationq[key];
-			    RuleStartq(new System.Collections.Generic.List<string>() { formalParametersP.Name }, "", key);
-			    RuleEndq(true, false, value);
+			    var value = RelationtoSym[key];
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { formalParametersP.Name }, "", key);
+			    RuleEndtoSym(true, false, value);
 			    return value;
 			}
 			if(formalParametersP != null && formalParametersP.Name == "FormalParametersP" && (formalParametersP.Count == 1 && formalParametersP[0] != null && formalParametersP[0].Name == "EPSILON"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "ParametersP" }, "FormalParametersP [ EPSILON ] -> : q ParametersP [ EPSILON ]", (formalParametersP));
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "ParametersP" }, "FormalParametersP [ EPSILON ] -> : toSym ParametersP [ EPSILON ]", (formalParametersP));
 			    var _result = new Compiler.Translation.SymbolTable.Data.ParametersP(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
-			    RuleEndq(true, true, _result);
+			    RuleEndtoSym(true, true, _result);
 			    return _result;
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
 			if(formalParametersP != null && formalParametersP.Name == "FormalParametersP" && (formalParametersP.Count == 3 && formalParametersP[0] != null && formalParametersP[0].Name == "," && formalParametersP[1] != null && formalParametersP[1].Name == "FormalParameter" && formalParametersP[2] != null && formalParametersP[2].Name == "FormalParametersP"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "ParametersP" }, "FormalParametersP [ , FormalParameter : p1 FormalParametersP : p2 ] -> : q ParametersP [ , p3 p4 ]", (formalParametersP));
-			    Compiler.Translation.SymbolTable.Data.Node p3 = Translateq(formalParametersP[1] as Compiler.Parsing.Data.FormalParameter);
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "ParametersP" }, "FormalParametersP [ , FormalParameter : p1 FormalParametersP : p2 ] -> : toSym ParametersP [ , p3 p4 ]", (formalParametersP));
+			    Compiler.Translation.SymbolTable.Data.Node p3 = TranslatetoSym(formalParametersP[1] as Compiler.Parsing.Data.FormalParameter);
 			    _isMatching = p3 != null && p3.Name == "Parameter";
 			    if(p3 != null && !_isMatching)
 			    {
-			        WrongPatternq((p3), new System.Collections.Generic.List<string>() { "Parameter" });
+			        WrongPatterntoSym((p3), new System.Collections.Generic.List<string>() { "Parameter" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node p4 = Translateq(formalParametersP[2] as Compiler.Parsing.Data.FormalParametersP);
+			        Compiler.Translation.SymbolTable.Data.Node p4 = TranslatetoSym(formalParametersP[2] as Compiler.Parsing.Data.FormalParametersP);
 			        _isMatching = p4 != null && p4.Name == "ParametersP";
 			        if(p4 != null && !_isMatching)
 			        {
-			            WrongPatternq((p4), new System.Collections.Generic.List<string>() { "ParametersP" });
+			            WrongPatterntoSym((p4), new System.Collections.Generic.List<string>() { "ParametersP" });
 			        }
 			        else if(_isMatching)
 			        {
 			            var _result = new Compiler.Translation.SymbolTable.Data.ParametersP(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = ",", Value = "," }, p3 as Compiler.Translation.SymbolTable.Data.Parameter, p4 as Compiler.Translation.SymbolTable.Data.ParametersP };
-			            RuleEndq(true, true, _result);
+			            RuleEndtoSym(true, true, _result);
 			            return _result;
 			        }
 			    }
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
-			RulesFailedq((formalParametersP));
+			RulesFailedtoSym((formalParametersP));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.FormalParameter formalParameter)
+		public Compiler.Translation.SymbolTable.Data.Node TranslatetoSym(Compiler.Parsing.Data.FormalParameter formalParameter)
 		{
 			bool _isMatching = false;
 			var key = (formalParameter);
-			if(Relationq.ContainsKey(key))
+			if(RelationtoSym.ContainsKey(key))
 			{
-			    var value = Relationq[key];
-			    RuleStartq(new System.Collections.Generic.List<string>() { formalParameter.Name }, "", key);
-			    RuleEndq(true, false, value);
+			    var value = RelationtoSym[key];
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { formalParameter.Name }, "", key);
+			    RuleEndtoSym(true, false, value);
 			    return value;
 			}
 			if(formalParameter != null && formalParameter.Name == "FormalParameter" && (formalParameter.Count == 2 && formalParameter[0] != null && formalParameter[0].Name == "Type" && formalParameter[1] != null && formalParameter[1].Name == "identifier"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "Parameter" }, "FormalParameter [ Type : type identifier : id ] -> : q Parameter [ t id1 ]", (formalParameter));
-			    Compiler.Translation.SymbolTable.Data.Node t = Translateq(formalParameter[0] as Compiler.Parsing.Data.Type);
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "Parameter" }, "FormalParameter [ Type : type identifier : id ] -> : toSym Parameter [ t id1 ]", (formalParameter));
+			    Compiler.Translation.SymbolTable.Data.Node t = TranslatetoSym(formalParameter[0] as Compiler.Parsing.Data.Type);
 			    _isMatching = t != null && t.Name == "Type";
 			    if(t != null && !_isMatching)
 			    {
-			        WrongPatternq((t), new System.Collections.Generic.List<string>() { "Type" });
+			        WrongPatterntoSym((t), new System.Collections.Generic.List<string>() { "Type" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node id1 = Translateq(formalParameter[1] as Compiler.Parsing.Data.Token);
+			        Compiler.Translation.SymbolTable.Data.Node id1 = TranslatetoSym(formalParameter[1] as Compiler.Parsing.Data.Token);
 			        _isMatching = id1 != null && id1.Name == "identifier";
 			        if(id1 != null && !_isMatching)
 			        {
-			            WrongPatternq((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			            WrongPatterntoSym((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			        }
 			        else if(_isMatching)
 			        {
 			            var _result = new Compiler.Translation.SymbolTable.Data.Parameter(false) { t as Compiler.Translation.SymbolTable.Data.Type, id1 as Compiler.Translation.SymbolTable.Data.Token };
-			            RuleEndq(true, true, _result);
+			            RuleEndtoSym(true, true, _result);
 			            return _result;
 			        }
 			    }
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
-			RulesFailedq((formalParameter));
+			RulesFailedtoSym((formalParameter));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.Type type)
+		public Compiler.Translation.SymbolTable.Data.Node TranslatetoSym(Compiler.Parsing.Data.Type type)
 		{
 			bool _isMatching = false;
 			var key = (type);
-			if(Relationq.ContainsKey(key))
+			if(RelationtoSym.ContainsKey(key))
 			{
-			    var value = Relationq[key];
-			    RuleStartq(new System.Collections.Generic.List<string>() { type.Name }, "", key);
-			    RuleEndq(true, false, value);
+			    var value = RelationtoSym[key];
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { type.Name }, "", key);
+			    RuleEndtoSym(true, false, value);
 			    return value;
 			}
 			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "IntType"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "Type" }, "Type [ IntType : t ] -> : q Type [ t1 ]", (type));
-			    Compiler.Translation.SymbolTable.Data.Node t1 = Translateq(type[0] as Compiler.Parsing.Data.IntType);
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "Type" }, "Type [ IntType : t ] -> : toSym Type [ t1 ]", (type));
+			    Compiler.Translation.SymbolTable.Data.Node t1 = TranslatetoSym(type[0] as Compiler.Parsing.Data.IntType);
 			    _isMatching = t1 != null && t1.Name == "IntType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternq((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			        WrongPatterntoSym((t1), new System.Collections.Generic.List<string>() { "IntType" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.Translation.SymbolTable.Data.Type(false) { t1 as Compiler.Translation.SymbolTable.Data.IntType };
-			        RuleEndq(true, true, _result);
+			        RuleEndtoSym(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
 			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "BooleanType"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "Type" }, "Type [ BooleanType : t ] -> : q Type [ t1 ]", (type));
-			    Compiler.Translation.SymbolTable.Data.Node t1 = Translateq(type[0] as Compiler.Parsing.Data.BooleanType);
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "Type" }, "Type [ BooleanType : t ] -> : toSym Type [ t1 ]", (type));
+			    Compiler.Translation.SymbolTable.Data.Node t1 = TranslatetoSym(type[0] as Compiler.Parsing.Data.BooleanType);
 			    _isMatching = t1 != null && t1.Name == "BooleanType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternq((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
+			        WrongPatterntoSym((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.Translation.SymbolTable.Data.Type(false) { t1 as Compiler.Translation.SymbolTable.Data.BooleanType };
-			        RuleEndq(true, true, _result);
+			        RuleEndtoSym(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
 			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "RegisterType"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "Type" }, "Type [ RegisterType : t ] -> : q Type [ t1 ]", (type));
-			    Compiler.Translation.SymbolTable.Data.Node t1 = Translateq(type[0] as Compiler.Parsing.Data.RegisterType);
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "Type" }, "Type [ RegisterType : t ] -> : toSym Type [ t1 ]", (type));
+			    Compiler.Translation.SymbolTable.Data.Node t1 = TranslatetoSym(type[0] as Compiler.Parsing.Data.RegisterType);
 			    _isMatching = t1 != null && t1.Name == "RegisterType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternq((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        WrongPatterntoSym((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.Translation.SymbolTable.Data.Type(false) { t1 as Compiler.Translation.SymbolTable.Data.RegisterType };
-			        RuleEndq(true, true, _result);
+			        RuleEndtoSym(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
-			RulesFailedq((type));
+			RulesFailedtoSym((type));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translatef(Compiler.Parsing.Data.RegisterStatement registerStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.Translation.SymbolTable.Data.Node Translatescan(Compiler.Parsing.Data.RegisterStatement registerStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
 			var key = (registerStatement, symbolTable);
-			if(Relationf.ContainsKey(key))
+			if(Relationscan.ContainsKey(key))
 			{
-			    var value = Relationf[key];
-			    RuleStartf(new System.Collections.Generic.List<string>() { registerStatement.Name, symbolTable.Name }, "", key);
-			    RuleEndf(true, false, value);
+			    var value = Relationscan[key];
+			    RuleStartscan(new System.Collections.Generic.List<string>() { registerStatement.Name, symbolTable.Name }, "", key);
+			    RuleEndscan(true, false, value);
 			    return value;
 			}
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 9 && registerStatement[1][0] != null && registerStatement[1][0].Name == "(" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Expression" && registerStatement[1][2] != null && registerStatement[1][2].Name == ")" && registerStatement[1][3] != null && registerStatement[1][3].Name == "{" && registerStatement[1][4] != null && registerStatement[1][4].Name == "Expression" && registerStatement[1][5] != null && registerStatement[1][5].Name == "}" && registerStatement[1][6] != null && registerStatement[1][6].Name == "=" && registerStatement[1][7] != null && registerStatement[1][7].Name == "Expression" && registerStatement[1][8] != null && registerStatement[1][8].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ ( Expression ) { Expression } = Expression newline ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ ( Expression ) { Expression } = Expression newline ] ] SymbolTable : s ] -> : scan s", (registerStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 3 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "=" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "Expression" && registerStatement[1][1][2] != null && registerStatement[1][1][2].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ = Expression newline ] ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ = Expression newline ] ] ] SymbolTable : s ] -> : scan s", (registerStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 3 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "=" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "Expression" && registerStatement[1][1][2] != null && registerStatement[1][1][2].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ = Expression newline ] ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ = Expression newline ] ] ] SymbolTable : s ] -> : scan s", (registerStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 1 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ newline ] ] ] SymbolTable : s ] -> : f s", (registerStatement, symbolTable));
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType RegisterOperation [ identifier Definition [ newline ] ] ] SymbolTable : s ] -> : scan s", (registerStatement, symbolTable));
 			    var _result = symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			    RuleEndf(true, true, _result);
+			    RuleEndscan(true, true, _result);
 			    return _result;
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 6 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "(" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "FormalParameters" && registerStatement[1][1][2] != null && registerStatement[1][1][2].Name == ")" && registerStatement[1][1][3] != null && registerStatement[1][1][3].Name == "indent" && registerStatement[1][1][4] != null && registerStatement[1][1][4].Name == "Statements" && registerStatement[1][1][5] != null && registerStatement[1][1][5].Name == "dedent"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartf(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType : regType RegisterOperation [ identifier : id Definition [ ( FormalParameters : params ) indent Statements dedent ] ] ] SymbolTable : s ] -> : f s <- Declarations [ Declaration [ Function [ ReturnType [ Type [ t ] ] id1 p ] ] % Declarations [ EPSILON ] ]", (registerStatement, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(registerStatement[1][0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartscan(new System.Collections.Generic.List<string>() { "SymbolTable" }, "[ RegisterStatement [ RegisterType : regType RegisterOperation [ identifier : id Definition [ ( FormalParameters : params ) indent Statements dedent ] ] ] SymbolTable : s ] -> : scan s <- Declarations [ Declaration [ Function [ ReturnType [ Type [ t ] ] id1 p ] ] % Declarations [ EPSILON ] ]", (registerStatement, symbolTable));
+			    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(registerStatement[1][0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			    if(declaration != null && !_isMatching)
 			    {
-			        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t = Translateq(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
+			        Compiler.Translation.SymbolTable.Data.Node t = TranslatetoSym(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 			        _isMatching = t != null && t.Name == "RegisterType";
 			        if(t != null && !_isMatching)
 			        {
-			            WrongPatternq((t), new System.Collections.Generic.List<string>() { "RegisterType" });
+			            WrongPatterntoSym((t), new System.Collections.Generic.List<string>() { "RegisterType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.Translation.SymbolTable.Data.Node id1 = Translateq(registerStatement[1][0] as Compiler.Parsing.Data.Token);
+			            Compiler.Translation.SymbolTable.Data.Node id1 = TranslatetoSym(registerStatement[1][0] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternq((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoSym((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node p = Translateq(registerStatement[1][1][1] as Compiler.Parsing.Data.FormalParameters);
+			                Compiler.Translation.SymbolTable.Data.Node p = TranslatetoSym(registerStatement[1][1][1] as Compiler.Parsing.Data.FormalParameters);
 			                _isMatching = p != null && p.Name == "Parameters";
 			                if(p != null && !_isMatching)
 			                {
-			                    WrongPatternq((p), new System.Collections.Generic.List<string>() { "Parameters" });
+			                    WrongPatterntoSym((p), new System.Collections.Generic.List<string>() { "Parameters" });
 			                }
 			                else if(_isMatching)
 			                {
 			                    var _result = Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Function(false) { new Compiler.Translation.SymbolTable.Data.ReturnType(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t as Compiler.Translation.SymbolTable.Data.RegisterType } }, id1 as Compiler.Translation.SymbolTable.Data.Token, p as Compiler.Translation.SymbolTable.Data.Parameters } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable;
-			                    RuleEndf(true, true, _result);
+			                    RuleEndscan(true, true, _result);
 			                    return _result;
 			                }
 			            }
 			        }
 			    }
-			    RuleEndf(false);
+			    RuleEndscan(false);
 			}
-			RulesFailedf((registerStatement, symbolTable));
+			RulesFailedscan((registerStatement, symbolTable));
 			return (null);
 		}
 
@@ -1393,11 +1398,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(interrupt != null && interrupt.Name == "Interrupt" && (interrupt.Count == 7 && interrupt[0] != null && interrupt[0].Name == "interrupt" && interrupt[1] != null && interrupt[1].Name == "(" && interrupt[2] != null && interrupt[2].Name == "numeral" && interrupt[3] != null && interrupt[3].Name == ")" && interrupt[4] != null && interrupt[4].Name == "indent" && interrupt[5] != null && interrupt[5].Name == "Statements" && interrupt[6] != null && interrupt[6].Name == "dedent") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "Interrupt", "SymbolTable" }, "[ Interrupt [ interrupt ( numeral : i ) indent Statements : stms dedent ] SymbolTable : s ] -> [ Interrupt [ interrupt ( i1 ) indent stm dedent ] s ]", (interrupt, symbolTable));
-			    Compiler.AST.Data.Node i1 = Translatep(interrupt[2] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node i1 = TranslatetoAST(interrupt[2] as Compiler.Parsing.Data.Token);
 			    _isMatching = i1 != null && i1.Name == "numeral";
 			    if(i1 != null && !_isMatching)
 			    {
-			        WrongPatternp((i1), new System.Collections.Generic.List<string>() { "numeral" });
+			        WrongPatterntoAST((i1), new System.Collections.Generic.List<string>() { "numeral" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -1651,11 +1656,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(returnStatement != null && returnStatement.Name == "ReturnStatement" && (returnStatement.Count == 3 && returnStatement[0] != null && returnStatement[0].Name == "return" && returnStatement[1] != null && returnStatement[1].Name == "ReturnValue" && (returnStatement[1].Count == 1 && returnStatement[1][0] != null && returnStatement[1][0].Name == "Expression") && returnStatement[2] != null && returnStatement[2].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "IntegerReturn", "SymbolTable" }, "[ ReturnStatement [ return ReturnValue [ Expression : expr ] newline ] SymbolTable : s ] -> [ IntegerReturn [ return iret ] s ]", (returnStatement, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "IntType") && declaration[0][1] != null && declaration[0][1].Name == "return"));
 			    if(declaration != null && !_isMatching)
 			    {
-			        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -1677,11 +1682,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(returnStatement != null && returnStatement.Name == "ReturnStatement" && (returnStatement.Count == 3 && returnStatement[0] != null && returnStatement[0].Name == "return" && returnStatement[1] != null && returnStatement[1].Name == "ReturnValue" && (returnStatement[1].Count == 1 && returnStatement[1][0] != null && returnStatement[1][0].Name == "Expression") && returnStatement[2] != null && returnStatement[2].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanReturn", "SymbolTable" }, "[ ReturnStatement [ return ReturnValue [ Expression : expr ] newline ] SymbolTable : s ] -> [ BooleanReturn [ return bret ] s ]", (returnStatement, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "BooleanType") && declaration[0][1] != null && declaration[0][1].Name == "return"));
 			    if(declaration != null && !_isMatching)
 			    {
-			        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -1703,11 +1708,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(returnStatement != null && returnStatement.Name == "ReturnStatement" && (returnStatement.Count == 3 && returnStatement[0] != null && returnStatement[0].Name == "return" && returnStatement[1] != null && returnStatement[1].Name == "ReturnValue" && (returnStatement[1].Count == 1 && returnStatement[1][0] != null && returnStatement[1][0].Name == "Expression") && returnStatement[2] != null && returnStatement[2].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterReturn", "SymbolTable" }, "[ ReturnStatement [ return ReturnValue [ Expression : expr ] newline ] SymbolTable : s ] -> [ RegisterReturn [ return rret ] s ]", (returnStatement, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "RegisterType") && declaration[0][1] != null && declaration[0][1].Name == "return"));
 			    if(declaration != null && !_isMatching)
 			    {
-			        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -1729,11 +1734,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(returnStatement != null && returnStatement.Name == "ReturnStatement" && (returnStatement.Count == 3 && returnStatement[0] != null && returnStatement[0].Name == "return" && returnStatement[1] != null && returnStatement[1].Name == "ReturnValue" && (returnStatement[1].Count == 1 && returnStatement[1][0] != null && returnStatement[1][0].Name == "EPSILON") && returnStatement[2] != null && returnStatement[2].Name == "newline") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "EmptyReturn", "SymbolTable" }, "[ ReturnStatement [ return ReturnValue [ EPSILON ] newline ] SymbolTable : s ] -> [ EmptyReturn [ return ] s ]", (returnStatement, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(new Compiler.Parsing.Data.Token() { Name = "return", Value = "return" }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "nothing") && declaration[0][1] != null && declaration[0][1].Name == "return"));
 			    if(declaration != null && !_isMatching)
 			    {
-			        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -1792,11 +1797,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierSimpleDeclaration != null && identifierSimpleDeclaration.Name == "IdentifierSimpleDeclaration" && (identifierSimpleDeclaration.Count == 3 && identifierSimpleDeclaration[0] != null && identifierSimpleDeclaration[0].Name == identifierSimpleDeclaration[0].Name && identifierSimpleDeclaration[1] != null && identifierSimpleDeclaration[1].Name == "identifier" && identifierSimpleDeclaration[2] != null && identifierSimpleDeclaration[2].Name == "SimpleDefinition") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "*", "SymbolTable" }, "[ IdentifierSimpleDeclaration [ * : t identifier : id SimpleDefinition : d ] SymbolTable : s ] -> [ dcl s1 ]", (identifierSimpleDeclaration, symbolTable));
-			    Compiler.Parsing.Data.Node def = Translater(identifierSimpleDeclaration[2] as Compiler.Parsing.Data.SimpleDefinition);
+			    Compiler.Parsing.Data.Node def = Translaterewrite(identifierSimpleDeclaration[2] as Compiler.Parsing.Data.SimpleDefinition);
 			    _isMatching = def != null && def.Name == "Definition";
 			    if(def != null && !_isMatching)
 			    {
-			        WrongPatternr((def), new System.Collections.Generic.List<string>() { "Definition" });
+			        WrongPatternrewrite((def), new System.Collections.Generic.List<string>() { "Definition" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -1833,43 +1838,43 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 1 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "IntegerDeclaration", "SymbolTable" }, "[ IdentifierDeclaration [ IntType : t identifier : id Definition [ newline ] ] SymbolTable : s ] -> [ IntegerDeclaration [ t1 id1 ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (identifierDeclaration, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			    if(declaration != null && !_isMatching)
 			    {
-			        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
+			        Compiler.AST.Data.Node t1 = TranslatetoAST(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
 			        _isMatching = t1 != null && t1.Name == "IntType";
 			        if(t1 != null && !_isMatching)
 			        {
-			            WrongPatternp((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			            WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "IntType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
+			            Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
 			            _isMatching = t2 != null && t2.Name == "IntType";
 			            if(t2 != null && !_isMatching)
 			            {
-			                WrongPatternq((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			                WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "IntType" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			                Compiler.AST.Data.Node id1 = TranslatetoAST(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			                _isMatching = id1 != null && id1.Name == "identifier";
 			                if(id1 != null && !_isMatching)
 			                {
-			                    WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                    WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			                }
 			                else if(_isMatching)
 			                {
-			                    Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			                    Compiler.Translation.SymbolTable.Data.Node id2 = TranslatetoSym(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			                    _isMatching = id2 != null && id2.Name == "identifier";
 			                    if(id2 != null && !_isMatching)
 			                    {
-			                        WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                        WrongPatterntoSym((id2), new System.Collections.Generic.List<string>() { "identifier" });
 			                    }
 			                    else if(_isMatching)
 			                    {
@@ -1886,27 +1891,27 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 6 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "(" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "FormalParameters" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == ")" && identifierDeclaration[2][3] != null && identifierDeclaration[2][3].Name == "indent" && identifierDeclaration[2][4] != null && identifierDeclaration[2][4].Name == "Statements" && identifierDeclaration[2][5] != null && identifierDeclaration[2][5].Name == "dedent")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "Function", "SymbolTable" }, "[ IdentifierDeclaration [ IntType : t identifier : id Definition [ ( FormalParameters : params ) indent Statements : stms dedent ] ] SymbolTable : s ] -> [ Function [ Type [ t1 ] id1 ( p ) indent stm1 dedent ] s ]", (identifierDeclaration, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
 			    _isMatching = t1 != null && t1.Name == "IntType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "IntType" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
+			        Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
 			        _isMatching = t2 != null && t2.Name == "IntType";
 			        if(t2 != null && !_isMatching)
 			        {
-			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			            WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "IntType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			            Compiler.AST.Data.Node id1 = TranslatetoAST(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
@@ -1939,35 +1944,35 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "IntType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 3 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "IntegerDeclarationInit", "SymbolTable" }, "[ IdentifierDeclaration [ IntType : t identifier : id Definition [ = Expression : expr newline ] ] SymbolTable : s ] -> [ IntegerDeclarationInit [ t1 id1 = iexpr ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (identifierDeclaration, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
 			    _isMatching = t1 != null && t1.Name == "IntType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "IntType" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
+			        Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(identifierDeclaration[0] as Compiler.Parsing.Data.IntType);
 			        _isMatching = t2 != null && t2.Name == "IntType";
 			        if(t2 != null && !_isMatching)
 			        {
-			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			            WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "IntType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			            Compiler.AST.Data.Node id1 = TranslatetoAST(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			                Compiler.Translation.SymbolTable.Data.Node id2 = TranslatetoSym(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			                _isMatching = id2 != null && id2.Name == "identifier";
 			                if(id2 != null && !_isMatching)
 			                {
-			                    WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                    WrongPatterntoSym((id2), new System.Collections.Generic.List<string>() { "identifier" });
 			                }
 			                else if(_isMatching)
 			                {
@@ -1979,17 +1984,38 @@ namespace Compiler.Translation.ProgramToAST
 			                    }
 			                    else if(_isMatching)
 			                    {
-			                        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			                        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			                        if(declaration != null && !_isMatching)
 			                        {
-			                            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			                            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			                        }
 			                        else if(_isMatching)
 			                        {
-			                            var _result = (new Compiler.AST.Data.IntegerDeclarationInit(false) { t1 as Compiler.AST.Data.IntType, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, iexpr as Compiler.AST.Data.IntegerExpression }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                            RuleEnd(true, true, _result);
-			                            return _result;
+			                            Compiler.AST.Data.Node inttype = Translatetype(iexpr as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                            _isMatching = inttype != null && inttype.Name == "IntType";
+			                            if(inttype != null && !_isMatching)
+			                            {
+			                                WrongPatterntype((inttype), new System.Collections.Generic.List<string>() { "IntType" });
+			                            }
+			                            else if(_isMatching)
+			                            {
+			                                Compiler.AST.Data.Node largesttype = Translatelargest(t1 as Compiler.AST.Data.IntType, inttype as Compiler.AST.Data.IntType);
+			                                _isMatching = largesttype != null && largesttype.Name == "IntType";
+			                                if(largesttype != null && !_isMatching)
+			                                {
+			                                    WrongPatternlargest((largesttype), new System.Collections.Generic.List<string>() { "IntType" });
+			                                }
+			                                else if(_isMatching)
+			                                {
+			                                    if(AreEqualast((largesttype as Compiler.AST.Data.IntType), (t1 as Compiler.AST.Data.IntType)))
+			                                    {
+			                                        var _result = (new Compiler.AST.Data.IntegerDeclarationInit(false) { t1 as Compiler.AST.Data.IntType, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, iexpr as Compiler.AST.Data.IntegerExpression }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                                        RuleEnd(true, true, _result);
+			                                        return _result;
+			                                    }
+			                                }
+			                            }
 			                        }
 			                    }
 			                }
@@ -2001,27 +2027,27 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 8 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "nothing" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "(" && identifierDeclaration[3] != null && identifierDeclaration[3].Name == "FormalParameters" && identifierDeclaration[4] != null && identifierDeclaration[4].Name == ")" && identifierDeclaration[5] != null && identifierDeclaration[5].Name == "indent" && identifierDeclaration[6] != null && identifierDeclaration[6].Name == "Statements" && identifierDeclaration[7] != null && identifierDeclaration[7].Name == "dedent") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "Function", "SymbolTable" }, "[ IdentifierDeclaration [ nothing : t identifier : id ( FormalParameters : params ) indent Statements : stms dedent ] SymbolTable : s ] -> [ Function [ Type [ t1 ] id1 ( p ) indent stm1 dedent ] s ]", (identifierDeclaration, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(identifierDeclaration[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = t1 != null && t1.Name == "nothing";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "nothing" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "nothing" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.Token);
+			        Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(identifierDeclaration[0] as Compiler.Parsing.Data.Token);
 			        _isMatching = t2 != null && t2.Name == "nothing";
 			        if(t2 != null && !_isMatching)
 			        {
-			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "nothing" });
+			            WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "nothing" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			            Compiler.AST.Data.Node id1 = TranslatetoAST(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
@@ -2054,43 +2080,43 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 1 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanDeclaration", "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType : t identifier : id Definition [ newline ] ] SymbolTable : s ] -> [ BooleanDeclaration [ t1 id1 ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (identifierDeclaration, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
 			    _isMatching = t1 != null && t1.Name == "BooleanType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
+			        Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
 			        _isMatching = t2 != null && t2.Name == "BooleanType";
 			        if(t2 != null && !_isMatching)
 			        {
-			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "BooleanType" });
+			            WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "BooleanType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			            Compiler.AST.Data.Node id1 = TranslatetoAST(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			                Compiler.Translation.SymbolTable.Data.Node id2 = TranslatetoSym(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			                _isMatching = id2 != null && id2.Name == "identifier";
 			                if(id2 != null && !_isMatching)
 			                {
-			                    WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                    WrongPatterntoSym((id2), new System.Collections.Generic.List<string>() { "identifier" });
 			                }
 			                else if(_isMatching)
 			                {
-			                    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			                    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			                    if(declaration != null && !_isMatching)
 			                    {
-			                        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			                        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			                    }
 			                    else if(_isMatching)
 			                    {
@@ -2107,35 +2133,35 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 6 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "(" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "FormalParameters" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == ")" && identifierDeclaration[2][3] != null && identifierDeclaration[2][3].Name == "indent" && identifierDeclaration[2][4] != null && identifierDeclaration[2][4].Name == "Statements" && identifierDeclaration[2][5] != null && identifierDeclaration[2][5].Name == "dedent")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "Function", "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType : t identifier : id Definition [ ( FormalParameters : params ) indent Statements : stms dedent ] ] SymbolTable : s ] -> [ Function [ Type [ t1 ] id1 ( p ) indent stm1 dedent ] s ]", (identifierDeclaration, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
 			    _isMatching = t1 != null && t1.Name == "BooleanType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
+			        Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
 			        _isMatching = t2 != null && t2.Name == "BooleanType";
 			        if(t2 != null && !_isMatching)
 			        {
-			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "BooleanType" });
+			            WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "BooleanType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			            Compiler.AST.Data.Node id1 = TranslatetoAST(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			                Compiler.Translation.SymbolTable.Data.Node id2 = TranslatetoSym(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			                _isMatching = id2 != null && id2.Name == "identifier";
 			                if(id2 != null && !_isMatching)
 			                {
-			                    WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                    WrongPatterntoSym((id2), new System.Collections.Generic.List<string>() { "identifier" });
 			                }
 			                else if(_isMatching)
 			                {
@@ -2169,35 +2195,35 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierDeclaration != null && identifierDeclaration.Name == "IdentifierDeclaration" && (identifierDeclaration.Count == 3 && identifierDeclaration[0] != null && identifierDeclaration[0].Name == "BooleanType" && identifierDeclaration[1] != null && identifierDeclaration[1].Name == "identifier" && identifierDeclaration[2] != null && identifierDeclaration[2].Name == "Definition" && (identifierDeclaration[2].Count == 3 && identifierDeclaration[2][0] != null && identifierDeclaration[2][0].Name == "=" && identifierDeclaration[2][1] != null && identifierDeclaration[2][1].Name == "Expression" && identifierDeclaration[2][2] != null && identifierDeclaration[2][2].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanDeclarationInit", "SymbolTable" }, "[ IdentifierDeclaration [ BooleanType : t identifier : id Definition [ = Expression : expr newline ] ] SymbolTable : s ] -> [ BooleanDeclarationInit [ t1 id1 = bexpr ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (identifierDeclaration, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
 			    _isMatching = t1 != null && t1.Name == "BooleanType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
+			        Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(identifierDeclaration[0] as Compiler.Parsing.Data.BooleanType);
 			        _isMatching = t2 != null && t2.Name == "BooleanType";
 			        if(t2 != null && !_isMatching)
 			        {
-			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "BooleanType" });
+			            WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "BooleanType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node id1 = Translatep(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			            Compiler.AST.Data.Node id1 = TranslatetoAST(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
+			                Compiler.Translation.SymbolTable.Data.Node id2 = TranslatetoSym(identifierDeclaration[1] as Compiler.Parsing.Data.Token);
 			                _isMatching = id2 != null && id2.Name == "identifier";
 			                if(id2 != null && !_isMatching)
 			                {
-			                    WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                    WrongPatterntoSym((id2), new System.Collections.Generic.List<string>() { "identifier" });
 			                }
 			                else if(_isMatching)
 			                {
@@ -2209,11 +2235,11 @@ namespace Compiler.Translation.ProgramToAST
 			                    }
 			                    else if(_isMatching)
 			                    {
-			                        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierDeclaration[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			                        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			                        if(declaration != null && !_isMatching)
 			                        {
-			                            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			                            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			                        }
 			                        else if(_isMatching)
 			                        {
@@ -2370,43 +2396,43 @@ namespace Compiler.Translation.ProgramToAST
 			if(formalParameter != null && formalParameter.Name == "FormalParameter" && (formalParameter.Count == 2 && formalParameter[0] != null && formalParameter[0].Name == "Type" && formalParameter[1] != null && formalParameter[1].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "FormalParameter", "SymbolTable" }, "[ FormalParameter [ Type : type identifier : id ] SymbolTable : s ] -> [ FormalParameter [ t id1 ] s <- Declarations [ Declaration [ Variable [ t2 id2 ] ] % Declarations [ EPSILON ] ] ]", (formalParameter, symbolTable));
-			    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(formalParameter[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(formalParameter[1] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			    if(declaration != null && !_isMatching)
 			    {
-			        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.AST.Data.Node t = Translatep(formalParameter[0] as Compiler.Parsing.Data.Type);
+			        Compiler.AST.Data.Node t = TranslatetoAST(formalParameter[0] as Compiler.Parsing.Data.Type);
 			        _isMatching = t != null && t.Name == "Type";
 			        if(t != null && !_isMatching)
 			        {
-			            WrongPatternp((t), new System.Collections.Generic.List<string>() { "Type" });
+			            WrongPatterntoAST((t), new System.Collections.Generic.List<string>() { "Type" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(formalParameter[0] as Compiler.Parsing.Data.Type);
+			            Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(formalParameter[0] as Compiler.Parsing.Data.Type);
 			            _isMatching = t2 != null && t2.Name == "Type";
 			            if(t2 != null && !_isMatching)
 			            {
-			                WrongPatternq((t2), new System.Collections.Generic.List<string>() { "Type" });
+			                WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "Type" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.AST.Data.Node id1 = Translatep(formalParameter[1] as Compiler.Parsing.Data.Token);
+			                Compiler.AST.Data.Node id1 = TranslatetoAST(formalParameter[1] as Compiler.Parsing.Data.Token);
 			                _isMatching = id1 != null && id1.Name == "identifier";
 			                if(id1 != null && !_isMatching)
 			                {
-			                    WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                    WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			                }
 			                else if(_isMatching)
 			                {
-			                    Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(formalParameter[1] as Compiler.Parsing.Data.Token);
+			                    Compiler.Translation.SymbolTable.Data.Node id2 = TranslatetoSym(formalParameter[1] as Compiler.Parsing.Data.Token);
 			                    _isMatching = id2 != null && id2.Name == "identifier";
 			                    if(id2 != null && !_isMatching)
 			                    {
-			                        WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                        WrongPatterntoSym((id2), new System.Collections.Generic.List<string>() { "identifier" });
 			                    }
 			                    else if(_isMatching)
 			                    {
@@ -2424,195 +2450,195 @@ namespace Compiler.Translation.ProgramToAST
 			return (null, null);
 		}
 
-		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.Type type)
+		public Compiler.AST.Data.Node TranslatetoAST(Compiler.Parsing.Data.Type type)
 		{
 			bool _isMatching = false;
 			var key = (type);
-			if(Relationp.ContainsKey(key))
+			if(RelationtoAST.ContainsKey(key))
 			{
-			    var value = Relationp[key];
-			    RuleStartp(new System.Collections.Generic.List<string>() { type.Name }, "", key);
-			    RuleEndp(true, false, value);
+			    var value = RelationtoAST[key];
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { type.Name }, "", key);
+			    RuleEndtoAST(true, false, value);
 			    return value;
 			}
 			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "IntType"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "Type" }, "Type [ IntType : t ] -> : p Type [ t1 ]", (type));
-			    Compiler.AST.Data.Node t1 = Translatep(type[0] as Compiler.Parsing.Data.IntType);
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "Type" }, "Type [ IntType : t ] -> : toAST Type [ t1 ]", (type));
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(type[0] as Compiler.Parsing.Data.IntType);
 			    _isMatching = t1 != null && t1.Name == "IntType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "IntType" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.IntType };
-			        RuleEndp(true, true, _result);
+			        RuleEndtoAST(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
 			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "BooleanType"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "Type" }, "Type [ BooleanType : t ] -> : p Type [ t1 ]", (type));
-			    Compiler.AST.Data.Node t1 = Translatep(type[0] as Compiler.Parsing.Data.BooleanType);
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "Type" }, "Type [ BooleanType : t ] -> : toAST Type [ t1 ]", (type));
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(type[0] as Compiler.Parsing.Data.BooleanType);
 			    _isMatching = t1 != null && t1.Name == "BooleanType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.BooleanType };
-			        RuleEndp(true, true, _result);
+			        RuleEndtoAST(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
 			if(type != null && type.Name == "Type" && (type.Count == 1 && type[0] != null && type[0].Name == "RegisterType"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "Type" }, "Type [ RegisterType : t ] -> : p Type [ t1 ]", (type));
-			    Compiler.AST.Data.Node t1 = Translatep(type[0] as Compiler.Parsing.Data.RegisterType);
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "Type" }, "Type [ RegisterType : t ] -> : toAST Type [ t1 ]", (type));
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(type[0] as Compiler.Parsing.Data.RegisterType);
 			    _isMatching = t1 != null && t1.Name == "RegisterType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.Type(false) { t1 as Compiler.AST.Data.RegisterType };
-			        RuleEndp(true, true, _result);
+			        RuleEndtoAST(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
-			RulesFailedp((type));
+			RulesFailedtoAST((type));
 			return (null);
 		}
 
-		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.IntType intType)
+		public Compiler.AST.Data.Node TranslatetoAST(Compiler.Parsing.Data.IntType intType)
 		{
 			bool _isMatching = false;
 			var key = (intType);
-			if(Relationp.ContainsKey(key))
+			if(RelationtoAST.ContainsKey(key))
 			{
-			    var value = Relationp[key];
-			    RuleStartp(new System.Collections.Generic.List<string>() { intType.Name }, "", key);
-			    RuleEndp(true, false, value);
+			    var value = RelationtoAST[key];
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { intType.Name }, "", key);
+			    RuleEndtoAST(true, false, value);
 			    return value;
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint8"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint8 ] -> : p IntType [ uint8 ]", (intType));
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint8 ] -> : toAST IntType [ uint8 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "uint8", Value = "uint8" } };
-			    RuleEndp(true, true, _result);
+			    RuleEndtoAST(true, true, _result);
 			    return _result;
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint16"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint16 ] -> : p IntType [ uint16 ]", (intType));
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint16 ] -> : toAST IntType [ uint16 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "uint16", Value = "uint16" } };
-			    RuleEndp(true, true, _result);
+			    RuleEndtoAST(true, true, _result);
 			    return _result;
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint32"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint32 ] -> : p IntType [ uint32 ]", (intType));
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint32 ] -> : toAST IntType [ uint32 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "uint32", Value = "uint32" } };
-			    RuleEndp(true, true, _result);
+			    RuleEndtoAST(true, true, _result);
 			    return _result;
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int8"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int8 ] -> : p IntType [ int8 ]", (intType));
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int8 ] -> : toAST IntType [ int8 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int8", Value = "int8" } };
-			    RuleEndp(true, true, _result);
+			    RuleEndtoAST(true, true, _result);
 			    return _result;
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int16"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int16 ] -> : p IntType [ int16 ]", (intType));
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int16 ] -> : toAST IntType [ int16 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int16", Value = "int16" } };
-			    RuleEndp(true, true, _result);
+			    RuleEndtoAST(true, true, _result);
 			    return _result;
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int32"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int32 ] -> : p IntType [ int32 ]", (intType));
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int32 ] -> : toAST IntType [ int32 ]", (intType));
 			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int32", Value = "int32" } };
-			    RuleEndp(true, true, _result);
+			    RuleEndtoAST(true, true, _result);
 			    return _result;
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
-			RulesFailedp((intType));
+			RulesFailedtoAST((intType));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.IntType intType)
+		public Compiler.Translation.SymbolTable.Data.Node TranslatetoSym(Compiler.Parsing.Data.IntType intType)
 		{
 			bool _isMatching = false;
 			var key = (intType);
-			if(Relationq.ContainsKey(key))
+			if(RelationtoSym.ContainsKey(key))
 			{
-			    var value = Relationq[key];
-			    RuleStartq(new System.Collections.Generic.List<string>() { intType.Name }, "", key);
-			    RuleEndq(true, false, value);
+			    var value = RelationtoSym[key];
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { intType.Name }, "", key);
+			    RuleEndtoSym(true, false, value);
 			    return value;
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint8"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint8 ] -> : q IntType [ uint8 ]", (intType));
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint8 ] -> : toSym IntType [ uint8 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "uint8", Value = "uint8" } };
-			    RuleEndq(true, true, _result);
+			    RuleEndtoSym(true, true, _result);
 			    return _result;
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint16"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint16 ] -> : q IntType [ uint16 ]", (intType));
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint16 ] -> : toSym IntType [ uint16 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "uint16", Value = "uint16" } };
-			    RuleEndq(true, true, _result);
+			    RuleEndtoSym(true, true, _result);
 			    return _result;
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "uint32"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint32 ] -> : q IntType [ uint32 ]", (intType));
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ uint32 ] -> : toSym IntType [ uint32 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "uint32", Value = "uint32" } };
-			    RuleEndq(true, true, _result);
+			    RuleEndtoSym(true, true, _result);
 			    return _result;
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int8"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int8 ] -> : q IntType [ int8 ]", (intType));
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int8 ] -> : toSym IntType [ int8 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "int8", Value = "int8" } };
-			    RuleEndq(true, true, _result);
+			    RuleEndtoSym(true, true, _result);
 			    return _result;
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int16"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int16 ] -> : q IntType [ int16 ]", (intType));
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int16 ] -> : toSym IntType [ int16 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "int16", Value = "int16" } };
-			    RuleEndq(true, true, _result);
+			    RuleEndtoSym(true, true, _result);
 			    return _result;
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
 			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int32"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int32 ] -> : q IntType [ int32 ]", (intType));
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int32 ] -> : toSym IntType [ int32 ]", (intType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.IntType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "int32", Value = "int32" } };
-			    RuleEndq(true, true, _result);
+			    RuleEndtoSym(true, true, _result);
 			    return _result;
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
-			RulesFailedq((intType));
+			RulesFailedtoSym((intType));
 			return (null);
 		}
 
@@ -2630,11 +2656,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(registerSimpleStatement != null && registerSimpleStatement.Name == "RegisterSimpleStatement" && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "*", "SymbolTable" }, "[ RegisterSimpleStatement : stm SymbolTable : s ] -> [ stm2 s1 ]", (registerSimpleStatement, symbolTable));
-			    Compiler.Parsing.Data.Node stm1 = Translater(registerSimpleStatement as Compiler.Parsing.Data.RegisterSimpleStatement);
+			    Compiler.Parsing.Data.Node stm1 = Translaterewrite(registerSimpleStatement as Compiler.Parsing.Data.RegisterSimpleStatement);
 			    _isMatching = stm1 != null && stm1.Name == "RegisterStatement";
 			    if(stm1 != null && !_isMatching)
 			    {
-			        WrongPatternr((stm1), new System.Collections.Generic.List<string>() { "RegisterStatement" });
+			        WrongPatternrewrite((stm1), new System.Collections.Generic.List<string>() { "RegisterStatement" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -2657,138 +2683,138 @@ namespace Compiler.Translation.ProgramToAST
 			return (null, null);
 		}
 
-		public Compiler.Parsing.Data.Node Translater(Compiler.Parsing.Data.RegisterSimpleStatement registerSimpleStatement)
+		public Compiler.Parsing.Data.Node Translaterewrite(Compiler.Parsing.Data.RegisterSimpleStatement registerSimpleStatement)
 		{
 			bool _isMatching = false;
 			var key = (registerSimpleStatement);
-			if(Relationr.ContainsKey(key))
+			if(Relationrewrite.ContainsKey(key))
 			{
-			    var value = Relationr[key];
-			    RuleStartr(new System.Collections.Generic.List<string>() { registerSimpleStatement.Name }, "", key);
-			    RuleEndr(true, false, value);
+			    var value = Relationrewrite[key];
+			    RuleStartrewrite(new System.Collections.Generic.List<string>() { registerSimpleStatement.Name }, "", key);
+			    RuleEndrewrite(true, false, value);
 			    return value;
 			}
 			if(registerSimpleStatement != null && registerSimpleStatement.Name == "RegisterSimpleStatement" && (registerSimpleStatement.Count == 2 && registerSimpleStatement[0] != null && registerSimpleStatement[0].Name == "RegisterType" && registerSimpleStatement[1] != null && registerSimpleStatement[1].Name == "RegisterSimpleOperation"))
 			{
-			    RuleStartr(new System.Collections.Generic.List<string>() { "RegisterStatement" }, "RegisterSimpleStatement [ RegisterType : t RegisterSimpleOperation : op ] -> : r RegisterStatement [ t operation ]", (registerSimpleStatement));
-			    Compiler.Parsing.Data.Node operation = Translater(registerSimpleStatement[1] as Compiler.Parsing.Data.RegisterSimpleOperation);
+			    RuleStartrewrite(new System.Collections.Generic.List<string>() { "RegisterStatement" }, "RegisterSimpleStatement [ RegisterType : t RegisterSimpleOperation : op ] -> : rewrite RegisterStatement [ t operation ]", (registerSimpleStatement));
+			    Compiler.Parsing.Data.Node operation = Translaterewrite(registerSimpleStatement[1] as Compiler.Parsing.Data.RegisterSimpleOperation);
 			    _isMatching = operation != null && operation.Name == "RegisterOperation";
 			    if(operation != null && !_isMatching)
 			    {
-			        WrongPatternr((operation), new System.Collections.Generic.List<string>() { "RegisterOperation" });
+			        WrongPatternrewrite((operation), new System.Collections.Generic.List<string>() { "RegisterOperation" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.Parsing.Data.RegisterStatement(false) { registerSimpleStatement[0] as Compiler.Parsing.Data.RegisterType, operation as Compiler.Parsing.Data.RegisterOperation };
-			        RuleEndr(true, true, _result);
+			        RuleEndrewrite(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndr(false);
+			    RuleEndrewrite(false);
 			}
-			RulesFailedr((registerSimpleStatement));
+			RulesFailedrewrite((registerSimpleStatement));
 			return (null);
 		}
 
-		public Compiler.Parsing.Data.Node Translater(Compiler.Parsing.Data.RegisterSimpleOperation registerSimpleOperation)
+		public Compiler.Parsing.Data.Node Translaterewrite(Compiler.Parsing.Data.RegisterSimpleOperation registerSimpleOperation)
 		{
 			bool _isMatching = false;
 			var key = (registerSimpleOperation);
-			if(Relationr.ContainsKey(key))
+			if(Relationrewrite.ContainsKey(key))
 			{
-			    var value = Relationr[key];
-			    RuleStartr(new System.Collections.Generic.List<string>() { registerSimpleOperation.Name }, "", key);
-			    RuleEndr(true, false, value);
+			    var value = Relationrewrite[key];
+			    RuleStartrewrite(new System.Collections.Generic.List<string>() { registerSimpleOperation.Name }, "", key);
+			    RuleEndrewrite(true, false, value);
 			    return value;
 			}
 			if(registerSimpleOperation != null && registerSimpleOperation.Name == "RegisterSimpleOperation" && (registerSimpleOperation.Count == 9 && registerSimpleOperation[0] != null && registerSimpleOperation[0].Name == "(" && registerSimpleOperation[1] != null && registerSimpleOperation[1].Name == "Expression" && registerSimpleOperation[2] != null && registerSimpleOperation[2].Name == ")" && registerSimpleOperation[3] != null && registerSimpleOperation[3].Name == "{" && registerSimpleOperation[4] != null && registerSimpleOperation[4].Name == "Expression" && registerSimpleOperation[5] != null && registerSimpleOperation[5].Name == "}" && registerSimpleOperation[6] != null && registerSimpleOperation[6].Name == "=" && registerSimpleOperation[7] != null && registerSimpleOperation[7].Name == "Expression" && registerSimpleOperation[8] != null && registerSimpleOperation[8].Name == "newline"))
 			{
-			    RuleStartr(new System.Collections.Generic.List<string>() { "RegisterOperation" }, "RegisterSimpleOperation [ ( Expression : e1 ) { Expression : e2 } = Expression : e3 newline ] -> : r RegisterOperation [ ( e1 ) { e2 } = e3 newline ]", (registerSimpleOperation));
+			    RuleStartrewrite(new System.Collections.Generic.List<string>() { "RegisterOperation" }, "RegisterSimpleOperation [ ( Expression : e1 ) { Expression : e2 } = Expression : e3 newline ] -> : rewrite RegisterOperation [ ( e1 ) { e2 } = e3 newline ]", (registerSimpleOperation));
 			    var _result = new Compiler.Parsing.Data.RegisterOperation(false) { new Compiler.Parsing.Data.Token() { Name = "(", Value = "(" }, registerSimpleOperation[1] as Compiler.Parsing.Data.Expression, new Compiler.Parsing.Data.Token() { Name = ")", Value = ")" }, new Compiler.Parsing.Data.Token() { Name = "{", Value = "{" }, registerSimpleOperation[4] as Compiler.Parsing.Data.Expression, new Compiler.Parsing.Data.Token() { Name = "}", Value = "}" }, new Compiler.Parsing.Data.Token() { Name = "=", Value = "=" }, registerSimpleOperation[7] as Compiler.Parsing.Data.Expression, new Compiler.Parsing.Data.Token() { Name = "newline", Value = "newline" } };
-			    RuleEndr(true, true, _result);
+			    RuleEndrewrite(true, true, _result);
 			    return _result;
-			    RuleEndr(false);
+			    RuleEndrewrite(false);
 			}
 			if(registerSimpleOperation != null && registerSimpleOperation.Name == "RegisterSimpleOperation" && (registerSimpleOperation.Count == 2 && registerSimpleOperation[0] != null && registerSimpleOperation[0].Name == "identifier" && registerSimpleOperation[1] != null && registerSimpleOperation[1].Name == "SimpleDefinition"))
 			{
-			    RuleStartr(new System.Collections.Generic.List<string>() { "RegisterOperation" }, "RegisterSimpleOperation [ identifier : id SimpleDefinition : d ] -> : r RegisterOperation [ id def ]", (registerSimpleOperation));
-			    Compiler.Parsing.Data.Node def = Translater(registerSimpleOperation[1] as Compiler.Parsing.Data.SimpleDefinition);
+			    RuleStartrewrite(new System.Collections.Generic.List<string>() { "RegisterOperation" }, "RegisterSimpleOperation [ identifier : id SimpleDefinition : d ] -> : rewrite RegisterOperation [ id def ]", (registerSimpleOperation));
+			    Compiler.Parsing.Data.Node def = Translaterewrite(registerSimpleOperation[1] as Compiler.Parsing.Data.SimpleDefinition);
 			    _isMatching = def != null && def.Name == "Definition";
 			    if(def != null && !_isMatching)
 			    {
-			        WrongPatternr((def), new System.Collections.Generic.List<string>() { "Definition" });
+			        WrongPatternrewrite((def), new System.Collections.Generic.List<string>() { "Definition" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.Parsing.Data.RegisterOperation(false) { registerSimpleOperation[0] as Compiler.Parsing.Data.Token, def as Compiler.Parsing.Data.Definition };
-			        RuleEndr(true, true, _result);
+			        RuleEndrewrite(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndr(false);
+			    RuleEndrewrite(false);
 			}
-			RulesFailedr((registerSimpleOperation));
+			RulesFailedrewrite((registerSimpleOperation));
 			return (null);
 		}
 
-		public Compiler.Parsing.Data.Node Translater(Compiler.Parsing.Data.IdentifierSimpleDeclaration identifierSimpleDeclaration)
+		public Compiler.Parsing.Data.Node Translaterewrite(Compiler.Parsing.Data.IdentifierSimpleDeclaration identifierSimpleDeclaration)
 		{
 			bool _isMatching = false;
 			var key = (identifierSimpleDeclaration);
-			if(Relationr.ContainsKey(key))
+			if(Relationrewrite.ContainsKey(key))
 			{
-			    var value = Relationr[key];
-			    RuleStartr(new System.Collections.Generic.List<string>() { identifierSimpleDeclaration.Name }, "", key);
-			    RuleEndr(true, false, value);
+			    var value = Relationrewrite[key];
+			    RuleStartrewrite(new System.Collections.Generic.List<string>() { identifierSimpleDeclaration.Name }, "", key);
+			    RuleEndrewrite(true, false, value);
 			    return value;
 			}
 			if(identifierSimpleDeclaration != null && identifierSimpleDeclaration.Name == "IdentifierSimpleDeclaration" && (identifierSimpleDeclaration.Count == 3 && identifierSimpleDeclaration[0] != null && identifierSimpleDeclaration[0].Name == identifierSimpleDeclaration[0].Name && identifierSimpleDeclaration[1] != null && identifierSimpleDeclaration[1].Name == "identifier" && identifierSimpleDeclaration[2] != null && identifierSimpleDeclaration[2].Name == "SimpleDefinition"))
 			{
-			    RuleStartr(new System.Collections.Generic.List<string>() { "IdentifierDeclaration" }, "IdentifierSimpleDeclaration [ * : t identifier : id SimpleDefinition : d ] -> : r IdentifierDeclaration [ t id def ]", (identifierSimpleDeclaration));
-			    Compiler.Parsing.Data.Node def = Translater(identifierSimpleDeclaration[2] as Compiler.Parsing.Data.SimpleDefinition);
+			    RuleStartrewrite(new System.Collections.Generic.List<string>() { "IdentifierDeclaration" }, "IdentifierSimpleDeclaration [ * : t identifier : id SimpleDefinition : d ] -> : rewrite IdentifierDeclaration [ t id def ]", (identifierSimpleDeclaration));
+			    Compiler.Parsing.Data.Node def = Translaterewrite(identifierSimpleDeclaration[2] as Compiler.Parsing.Data.SimpleDefinition);
 			    _isMatching = def != null && def.Name == "Definition";
 			    if(def != null && !_isMatching)
 			    {
-			        WrongPatternr((def), new System.Collections.Generic.List<string>() { "Definition" });
+			        WrongPatternrewrite((def), new System.Collections.Generic.List<string>() { "Definition" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.Parsing.Data.IdentifierDeclaration(false) { identifierSimpleDeclaration[0] as Compiler.Parsing.Data.Node, identifierSimpleDeclaration[1] as Compiler.Parsing.Data.Token, def as Compiler.Parsing.Data.Definition };
-			        RuleEndr(true, true, _result);
+			        RuleEndrewrite(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndr(false);
+			    RuleEndrewrite(false);
 			}
-			RulesFailedr((identifierSimpleDeclaration));
+			RulesFailedrewrite((identifierSimpleDeclaration));
 			return (null);
 		}
 
-		public Compiler.Parsing.Data.Node Translater(Compiler.Parsing.Data.SimpleDefinition simpleDefinition)
+		public Compiler.Parsing.Data.Node Translaterewrite(Compiler.Parsing.Data.SimpleDefinition simpleDefinition)
 		{
 			bool _isMatching = false;
 			var key = (simpleDefinition);
-			if(Relationr.ContainsKey(key))
+			if(Relationrewrite.ContainsKey(key))
 			{
-			    var value = Relationr[key];
-			    RuleStartr(new System.Collections.Generic.List<string>() { simpleDefinition.Name }, "", key);
-			    RuleEndr(true, false, value);
+			    var value = Relationrewrite[key];
+			    RuleStartrewrite(new System.Collections.Generic.List<string>() { simpleDefinition.Name }, "", key);
+			    RuleEndrewrite(true, false, value);
 			    return value;
 			}
 			if(simpleDefinition != null && simpleDefinition.Name == "SimpleDefinition" && (simpleDefinition.Count == 3 && simpleDefinition[0] != null && simpleDefinition[0].Name == "=" && simpleDefinition[1] != null && simpleDefinition[1].Name == "Expression" && simpleDefinition[2] != null && simpleDefinition[2].Name == "newline"))
 			{
-			    RuleStartr(new System.Collections.Generic.List<string>() { "Definition" }, "SimpleDefinition [ = Expression : e newline ] -> : r Definition [ = e newline ]", (simpleDefinition));
+			    RuleStartrewrite(new System.Collections.Generic.List<string>() { "Definition" }, "SimpleDefinition [ = Expression : e newline ] -> : rewrite Definition [ = e newline ]", (simpleDefinition));
 			    var _result = new Compiler.Parsing.Data.Definition(false) { new Compiler.Parsing.Data.Token() { Name = "=", Value = "=" }, simpleDefinition[1] as Compiler.Parsing.Data.Expression, new Compiler.Parsing.Data.Token() { Name = "newline", Value = "newline" } };
-			    RuleEndr(true, true, _result);
+			    RuleEndrewrite(true, true, _result);
 			    return _result;
-			    RuleEndr(false);
+			    RuleEndrewrite(false);
 			}
 			if(simpleDefinition != null && simpleDefinition.Name == "SimpleDefinition" && (simpleDefinition.Count == 1 && simpleDefinition[0] != null && simpleDefinition[0].Name == "newline"))
 			{
-			    RuleStartr(new System.Collections.Generic.List<string>() { "Definition" }, "SimpleDefinition [ newline ] -> : r Definition [ newline ]", (simpleDefinition));
+			    RuleStartrewrite(new System.Collections.Generic.List<string>() { "Definition" }, "SimpleDefinition [ newline ] -> : rewrite Definition [ newline ]", (simpleDefinition));
 			    var _result = new Compiler.Parsing.Data.Definition(false) { new Compiler.Parsing.Data.Token() { Name = "newline", Value = "newline" } };
-			    RuleEndr(true, true, _result);
+			    RuleEndrewrite(true, true, _result);
 			    return _result;
-			    RuleEndr(false);
+			    RuleEndrewrite(false);
 			}
-			RulesFailedr((simpleDefinition));
+			RulesFailedrewrite((simpleDefinition));
 			return (null);
 		}
 
@@ -2806,35 +2832,35 @@ namespace Compiler.Translation.ProgramToAST
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 6 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "(" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "FormalParameters" && registerStatement[1][1][2] != null && registerStatement[1][1][2].Name == ")" && registerStatement[1][1][3] != null && registerStatement[1][1][3].Name == "indent" && registerStatement[1][1][4] != null && registerStatement[1][1][4].Name == "Statements" && registerStatement[1][1][5] != null && registerStatement[1][1][5].Name == "dedent"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "Function", "SymbolTable" }, "[ RegisterStatement [ RegisterType : t RegisterOperation [ identifier : id Definition [ ( FormalParameters : params ) indent Statements : stms dedent ] ] ] SymbolTable : s ] -> [ Function [ Type [ t1 ] id1 ( p ) indent stm1 dedent ] s ]", (registerStatement, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 			    _isMatching = t1 != null && t1.Name == "RegisterType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
+			        Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 			        _isMatching = t2 != null && t2.Name == "RegisterType";
 			        if(t2 != null && !_isMatching)
 			        {
-			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "RegisterType" });
+			            WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "RegisterType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node id1 = Translatep(registerStatement[1][0] as Compiler.Parsing.Data.Token);
+			            Compiler.AST.Data.Node id1 = TranslatetoAST(registerStatement[1][0] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(registerStatement[1][0] as Compiler.Parsing.Data.Token);
+			                Compiler.Translation.SymbolTable.Data.Node id2 = TranslatetoSym(registerStatement[1][0] as Compiler.Parsing.Data.Token);
 			                _isMatching = id2 != null && id2.Name == "identifier";
 			                if(id2 != null && !_isMatching)
 			                {
-			                    WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                    WrongPatterntoSym((id2), new System.Collections.Generic.List<string>() { "identifier" });
 			                }
 			                else if(_isMatching)
 			                {
@@ -2868,43 +2894,43 @@ namespace Compiler.Translation.ProgramToAST
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 1 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterDeclaration", "SymbolTable" }, "[ RegisterStatement [ RegisterType : t RegisterOperation [ identifier : id Definition [ newline ] ] ] SymbolTable : s ] -> [ RegisterDeclaration [ t1 id1 ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (registerStatement, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 			    _isMatching = t1 != null && t1.Name == "RegisterType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
+			        Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 			        _isMatching = t2 != null && t2.Name == "RegisterType";
 			        if(t2 != null && !_isMatching)
 			        {
-			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "RegisterType" });
+			            WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "RegisterType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node id1 = Translatep(registerStatement[1][0] as Compiler.Parsing.Data.Token);
+			            Compiler.AST.Data.Node id1 = TranslatetoAST(registerStatement[1][0] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(registerStatement[1][0] as Compiler.Parsing.Data.Token);
+			                Compiler.Translation.SymbolTable.Data.Node id2 = TranslatetoSym(registerStatement[1][0] as Compiler.Parsing.Data.Token);
 			                _isMatching = id2 != null && id2.Name == "identifier";
 			                if(id2 != null && !_isMatching)
 			                {
-			                    WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                    WrongPatterntoSym((id2), new System.Collections.Generic.List<string>() { "identifier" });
 			                }
 			                else if(_isMatching)
 			                {
-			                    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(registerStatement[1][0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(registerStatement[1][0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			                    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			                    if(declaration != null && !_isMatching)
 			                    {
-			                        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			                        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			                    }
 			                    else if(_isMatching)
 			                    {
@@ -2921,35 +2947,35 @@ namespace Compiler.Translation.ProgramToAST
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 2 && registerStatement[1][0] != null && registerStatement[1][0].Name == "identifier" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Definition" && (registerStatement[1][1].Count == 3 && registerStatement[1][1][0] != null && registerStatement[1][1][0].Name == "=" && registerStatement[1][1][1] != null && registerStatement[1][1][1].Name == "Expression" && registerStatement[1][1][2] != null && registerStatement[1][1][2].Name == "newline"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterDeclarationInit", "SymbolTable" }, "[ RegisterStatement [ RegisterType : t RegisterOperation [ identifier : id Definition [ = Expression : expr newline ] ] ] SymbolTable : s ] -> [ RegisterDeclarationInit [ t1 id1 = rexpr ] s <- Declarations [ Declaration [ Variable [ Type [ t2 ] id2 ] ] % Declarations [ EPSILON ] ] ]", (registerStatement, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 			    _isMatching = t1 != null && t1.Name == "RegisterType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
+			        Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 			        _isMatching = t2 != null && t2.Name == "RegisterType";
 			        if(t2 != null && !_isMatching)
 			        {
-			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "RegisterType" });
+			            WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "RegisterType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node id1 = Translatep(registerStatement[1][0] as Compiler.Parsing.Data.Token);
+			            Compiler.AST.Data.Node id1 = TranslatetoAST(registerStatement[1][0] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(registerStatement[1][0] as Compiler.Parsing.Data.Token);
+			                Compiler.Translation.SymbolTable.Data.Node id2 = TranslatetoSym(registerStatement[1][0] as Compiler.Parsing.Data.Token);
 			                _isMatching = id2 != null && id2.Name == "identifier";
 			                if(id2 != null && !_isMatching)
 			                {
-			                    WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                    WrongPatterntoSym((id2), new System.Collections.Generic.List<string>() { "identifier" });
 			                }
 			                else if(_isMatching)
 			                {
@@ -2961,11 +2987,11 @@ namespace Compiler.Translation.ProgramToAST
 			                    }
 			                    else if(_isMatching)
 			                    {
-			                        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(registerStatement[1][0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(registerStatement[1][0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			                        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			                        if(declaration != null && !_isMatching)
 			                        {
-			                            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			                            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			                        }
 			                        else if(_isMatching)
 			                        {
@@ -2983,11 +3009,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(registerStatement != null && registerStatement.Name == "RegisterStatement" && (registerStatement.Count == 2 && registerStatement[0] != null && registerStatement[0].Name == "RegisterType" && registerStatement[1] != null && registerStatement[1].Name == "RegisterOperation" && (registerStatement[1].Count == 9 && registerStatement[1][0] != null && registerStatement[1][0].Name == "(" && registerStatement[1][1] != null && registerStatement[1][1].Name == "Expression" && registerStatement[1][2] != null && registerStatement[1][2].Name == ")" && registerStatement[1][3] != null && registerStatement[1][3].Name == "{" && registerStatement[1][4] != null && registerStatement[1][4].Name == "Expression" && registerStatement[1][5] != null && registerStatement[1][5].Name == "}" && registerStatement[1][6] != null && registerStatement[1][6].Name == "=" && registerStatement[1][7] != null && registerStatement[1][7].Name == "Expression" && registerStatement[1][8] != null && registerStatement[1][8].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "DirectBitAssignment", "SymbolTable" }, "[ RegisterStatement [ RegisterType : t RegisterOperation [ ( Expression : expr1 ) { Expression : expr2 } = Expression : expr3 newline ] ] SymbolTable : s ] -> [ DirectBitAssignment [ regType ( intExpr1 ) { intExpr2 } = boolExpr ] s ]", (registerStatement, symbolTable));
-			    Compiler.AST.Data.Node regType = Translatep(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
+			    Compiler.AST.Data.Node regType = TranslatetoAST(registerStatement[0] as Compiler.Parsing.Data.RegisterType);
 			    _isMatching = regType != null && regType.Name == "RegisterType";
 			    if(regType != null && !_isMatching)
 			    {
-			        WrongPatternp((regType), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        WrongPatterntoAST((regType), new System.Collections.Generic.List<string>() { "RegisterType" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -3028,111 +3054,111 @@ namespace Compiler.Translation.ProgramToAST
 			return (null, null);
 		}
 
-		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.RegisterType registerType)
+		public Compiler.AST.Data.Node TranslatetoAST(Compiler.Parsing.Data.RegisterType registerType)
 		{
 			bool _isMatching = false;
 			var key = (registerType);
-			if(Relationp.ContainsKey(key))
+			if(RelationtoAST.ContainsKey(key))
 			{
-			    var value = Relationp[key];
-			    RuleStartp(new System.Collections.Generic.List<string>() { registerType.Name }, "", key);
-			    RuleEndp(true, false, value);
+			    var value = RelationtoAST[key];
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { registerType.Name }, "", key);
+			    RuleEndtoAST(true, false, value);
 			    return value;
 			}
 			if(registerType != null && registerType.Name == "RegisterType" && (registerType.Count == 1 && registerType[0] != null && registerType[0].Name == "register8"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register8 ] -> : p RegisterType [ register8 ]", (registerType));
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register8 ] -> : toAST RegisterType [ register8 ]", (registerType));
 			    var _result = new Compiler.AST.Data.RegisterType(false) { new Compiler.AST.Data.Token() { Name = "register8", Value = "register8" } };
-			    RuleEndp(true, true, _result);
+			    RuleEndtoAST(true, true, _result);
 			    return _result;
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
 			if(registerType != null && registerType.Name == "RegisterType" && (registerType.Count == 1 && registerType[0] != null && registerType[0].Name == "register16"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register16 ] -> : p RegisterType [ register16 ]", (registerType));
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register16 ] -> : toAST RegisterType [ register16 ]", (registerType));
 			    var _result = new Compiler.AST.Data.RegisterType(false) { new Compiler.AST.Data.Token() { Name = "register16", Value = "register16" } };
-			    RuleEndp(true, true, _result);
+			    RuleEndtoAST(true, true, _result);
 			    return _result;
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
-			RulesFailedp((registerType));
+			RulesFailedtoAST((registerType));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.RegisterType registerType)
+		public Compiler.Translation.SymbolTable.Data.Node TranslatetoSym(Compiler.Parsing.Data.RegisterType registerType)
 		{
 			bool _isMatching = false;
 			var key = (registerType);
-			if(Relationq.ContainsKey(key))
+			if(RelationtoSym.ContainsKey(key))
 			{
-			    var value = Relationq[key];
-			    RuleStartq(new System.Collections.Generic.List<string>() { registerType.Name }, "", key);
-			    RuleEndq(true, false, value);
+			    var value = RelationtoSym[key];
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { registerType.Name }, "", key);
+			    RuleEndtoSym(true, false, value);
 			    return value;
 			}
 			if(registerType != null && registerType.Name == "RegisterType" && (registerType.Count == 1 && registerType[0] != null && registerType[0].Name == "register8"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register8 ] -> : q RegisterType [ register8 ]", (registerType));
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register8 ] -> : toSym RegisterType [ register8 ]", (registerType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.RegisterType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "register8", Value = "register8" } };
-			    RuleEndq(true, true, _result);
+			    RuleEndtoSym(true, true, _result);
 			    return _result;
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
 			if(registerType != null && registerType.Name == "RegisterType" && (registerType.Count == 1 && registerType[0] != null && registerType[0].Name == "register16"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register16 ] -> : q RegisterType [ register16 ]", (registerType));
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register16 ] -> : toSym RegisterType [ register16 ]", (registerType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.RegisterType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "register16", Value = "register16" } };
-			    RuleEndq(true, true, _result);
+			    RuleEndtoSym(true, true, _result);
 			    return _result;
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
-			RulesFailedq((registerType));
+			RulesFailedtoSym((registerType));
 			return (null);
 		}
 
-		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.BooleanType booleanType)
+		public Compiler.AST.Data.Node TranslatetoAST(Compiler.Parsing.Data.BooleanType booleanType)
 		{
 			bool _isMatching = false;
 			var key = (booleanType);
-			if(Relationp.ContainsKey(key))
+			if(RelationtoAST.ContainsKey(key))
 			{
-			    var value = Relationp[key];
-			    RuleStartp(new System.Collections.Generic.List<string>() { booleanType.Name }, "", key);
-			    RuleEndp(true, false, value);
+			    var value = RelationtoAST[key];
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { booleanType.Name }, "", key);
+			    RuleEndtoAST(true, false, value);
 			    return value;
 			}
 			if(booleanType != null && booleanType.Name == "BooleanType" && (booleanType.Count == 1 && booleanType[0] != null && booleanType[0].Name == "bool"))
 			{
-			    RuleStartp(new System.Collections.Generic.List<string>() { "BooleanType" }, "BooleanType [ bool ] -> : p BooleanType [ bool ]", (booleanType));
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { "BooleanType" }, "BooleanType [ bool ] -> : toAST BooleanType [ bool ]", (booleanType));
 			    var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
-			    RuleEndp(true, true, _result);
+			    RuleEndtoAST(true, true, _result);
 			    return _result;
-			    RuleEndp(false);
+			    RuleEndtoAST(false);
 			}
-			RulesFailedp((booleanType));
+			RulesFailedtoAST((booleanType));
 			return (null);
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.BooleanType booleanType)
+		public Compiler.Translation.SymbolTable.Data.Node TranslatetoSym(Compiler.Parsing.Data.BooleanType booleanType)
 		{
 			bool _isMatching = false;
 			var key = (booleanType);
-			if(Relationq.ContainsKey(key))
+			if(RelationtoSym.ContainsKey(key))
 			{
-			    var value = Relationq[key];
-			    RuleStartq(new System.Collections.Generic.List<string>() { booleanType.Name }, "", key);
-			    RuleEndq(true, false, value);
+			    var value = RelationtoSym[key];
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { booleanType.Name }, "", key);
+			    RuleEndtoSym(true, false, value);
 			    return value;
 			}
 			if(booleanType != null && booleanType.Name == "BooleanType" && (booleanType.Count == 1 && booleanType[0] != null && booleanType[0].Name == "bool"))
 			{
-			    RuleStartq(new System.Collections.Generic.List<string>() { "BooleanType" }, "BooleanType [ bool ] -> : q BooleanType [ bool ]", (booleanType));
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { "BooleanType" }, "BooleanType [ bool ] -> : toSym BooleanType [ bool ]", (booleanType));
 			    var _result = new Compiler.Translation.SymbolTable.Data.BooleanType(false) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "bool", Value = "bool" } };
-			    RuleEndq(true, true, _result);
+			    RuleEndtoSym(true, true, _result);
 			    return _result;
-			    RuleEndq(false);
+			    RuleEndtoSym(false);
 			}
-			RulesFailedq((booleanType));
+			RulesFailedtoSym((booleanType));
 			return (null);
 		}
 
@@ -3150,19 +3176,19 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierStatement != null && identifierStatement.Name == "IdentifierStatement" && (identifierStatement.Count == 2 && identifierStatement[0] != null && identifierStatement[0].Name == "identifier" && identifierStatement[1] != null && identifierStatement[1].Name == "IdentifierStatementP" && (identifierStatement[1].Count == 4 && identifierStatement[1][0] != null && identifierStatement[1][0].Name == "BitSelector" && (identifierStatement[1][0].Count == 3 && identifierStatement[1][0][0] != null && identifierStatement[1][0][0].Name == "{" && identifierStatement[1][0][1] != null && identifierStatement[1][0][1].Name == "Expression" && identifierStatement[1][0][2] != null && identifierStatement[1][0][2].Name == "}") && identifierStatement[1][1] != null && identifierStatement[1][1].Name == "=" && identifierStatement[1][2] != null && identifierStatement[1][2].Name == "Expression" && identifierStatement[1][3] != null && identifierStatement[1][3].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "IndirectBitAssignment", "SymbolTable" }, "[ IdentifierStatement [ identifier : id IdentifierStatementP [ BitSelector [ { Expression : expr1 } ] = Expression : expr2 newline ] ] SymbolTable : s ] -> [ IndirectBitAssignment [ id1 { intExpr } = boolExpr ] s ]", (identifierStatement, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(identifierStatement[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(identifierStatement[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "RegisterType") && declaration[0][1] != null && declaration[0][1].Name == "identifier"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
@@ -3194,19 +3220,19 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierStatement != null && identifierStatement.Name == "IdentifierStatement" && (identifierStatement.Count == 2 && identifierStatement[0] != null && identifierStatement[0].Name == "identifier" && identifierStatement[1] != null && identifierStatement[1].Name == "IdentifierStatementP" && (identifierStatement[1].Count == 4 && identifierStatement[1][0] != null && identifierStatement[1][0].Name == "BitSelector" && (identifierStatement[1][0].Count == 1 && identifierStatement[1][0][0] != null && identifierStatement[1][0][0].Name == "EPSILON") && identifierStatement[1][1] != null && identifierStatement[1][1].Name == "=" && identifierStatement[1][2] != null && identifierStatement[1][2].Name == "Expression" && identifierStatement[1][3] != null && identifierStatement[1][3].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "IntegerAssignment", "SymbolTable" }, "[ IdentifierStatement [ identifier : id IdentifierStatementP [ BitSelector [ EPSILON ] = Expression : expr newline ] ] SymbolTable : s ] -> [ IntegerAssignment [ id1 = intExpr ] s ]", (identifierStatement, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(identifierStatement[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(identifierStatement[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "IntType") && declaration[0][1] != null && declaration[0][1].Name == "identifier"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
@@ -3218,9 +3244,39 @@ namespace Compiler.Translation.ProgramToAST
 			            }
 			            else if(_isMatching)
 			            {
-			                var _result = (new Compiler.AST.Data.IntegerAssignment(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, intExpr as Compiler.AST.Data.IntegerExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, true, _result);
-			                return _result;
+			                Compiler.AST.Data.Node inttype = Translatetype(intExpr as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                _isMatching = inttype != null && inttype.Name == "IntType";
+			                if(inttype != null && !_isMatching)
+			                {
+			                    WrongPatterntype((inttype), new System.Collections.Generic.List<string>() { "IntType" });
+			                }
+			                else if(_isMatching)
+			                {
+			                    Compiler.AST.Data.Node idtypeAst = TranslatesymAST(declaration[0][0][0] as Compiler.Translation.SymbolTable.Data.IntType);
+			                    _isMatching = idtypeAst != null && idtypeAst.Name == "IntType";
+			                    if(idtypeAst != null && !_isMatching)
+			                    {
+			                        WrongPatternsymAST((idtypeAst), new System.Collections.Generic.List<string>() { "IntType" });
+			                    }
+			                    else if(_isMatching)
+			                    {
+			                        Compiler.AST.Data.Node largesttype = Translatelargest(idtypeAst as Compiler.AST.Data.IntType, inttype as Compiler.AST.Data.IntType);
+			                        _isMatching = largesttype != null && largesttype.Name == "IntType";
+			                        if(largesttype != null && !_isMatching)
+			                        {
+			                            WrongPatternlargest((largesttype), new System.Collections.Generic.List<string>() { "IntType" });
+			                        }
+			                        else if(_isMatching)
+			                        {
+			                            if(AreEqualast((largesttype as Compiler.AST.Data.IntType), (idtypeAst as Compiler.AST.Data.IntType)))
+			                            {
+			                                var _result = (new Compiler.AST.Data.IntegerAssignment(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, intExpr as Compiler.AST.Data.IntegerExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                                RuleEnd(true, true, _result);
+			                                return _result;
+			                            }
+			                        }
+			                    }
+			                }
 			            }
 			        }
 			    }
@@ -3229,19 +3285,19 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierStatement != null && identifierStatement.Name == "IdentifierStatement" && (identifierStatement.Count == 2 && identifierStatement[0] != null && identifierStatement[0].Name == "identifier" && identifierStatement[1] != null && identifierStatement[1].Name == "IdentifierStatementP" && (identifierStatement[1].Count == 4 && identifierStatement[1][0] != null && identifierStatement[1][0].Name == "BitSelector" && (identifierStatement[1][0].Count == 1 && identifierStatement[1][0][0] != null && identifierStatement[1][0][0].Name == "EPSILON") && identifierStatement[1][1] != null && identifierStatement[1][1].Name == "=" && identifierStatement[1][2] != null && identifierStatement[1][2].Name == "Expression" && identifierStatement[1][3] != null && identifierStatement[1][3].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterAssignment", "SymbolTable" }, "[ IdentifierStatement [ identifier : id IdentifierStatementP [ BitSelector [ EPSILON ] = Expression : expr newline ] ] SymbolTable : s ] -> [ RegisterAssignment [ id1 = registerExpr ] s ]", (identifierStatement, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(identifierStatement[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(identifierStatement[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "RegisterType") && declaration[0][1] != null && declaration[0][1].Name == "identifier"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
@@ -3264,19 +3320,19 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierStatement != null && identifierStatement.Name == "IdentifierStatement" && (identifierStatement.Count == 2 && identifierStatement[0] != null && identifierStatement[0].Name == "identifier" && identifierStatement[1] != null && identifierStatement[1].Name == "IdentifierStatementP" && (identifierStatement[1].Count == 4 && identifierStatement[1][0] != null && identifierStatement[1][0].Name == "BitSelector" && (identifierStatement[1][0].Count == 1 && identifierStatement[1][0][0] != null && identifierStatement[1][0][0].Name == "EPSILON") && identifierStatement[1][1] != null && identifierStatement[1][1].Name == "=" && identifierStatement[1][2] != null && identifierStatement[1][2].Name == "Expression" && identifierStatement[1][3] != null && identifierStatement[1][3].Name == "newline")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanAssignment", "SymbolTable" }, "[ IdentifierStatement [ identifier : id IdentifierStatementP [ BitSelector [ EPSILON ] = Expression : expr newline ] ] SymbolTable : s ] -> [ BooleanAssignment [ id1 = boolExpr ] s ]", (identifierStatement, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(identifierStatement[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(identifierStatement[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "BooleanType") && declaration[0][1] != null && declaration[0][1].Name == "identifier"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
@@ -3299,27 +3355,27 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierStatement != null && identifierStatement.Name == "IdentifierStatement" && (identifierStatement.Count == 2 && identifierStatement[0] != null && identifierStatement[0].Name == "identifier" && identifierStatement[1] != null && identifierStatement[1].Name == "IdentifierStatementP" && (identifierStatement[1].Count == 3 && identifierStatement[1][0] != null && identifierStatement[1][0].Name == "(" && identifierStatement[1][1] != null && identifierStatement[1][1].Name == "ExpressionList" && identifierStatement[1][2] != null && identifierStatement[1][2].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "Call", "SymbolTable" }, "[ IdentifierStatement [ identifier : id IdentifierStatementP [ ( ExpressionList : p ) ] ] SymbolTable : s ] -> [ Call [ id1 ( p2 ) ] s ]", (identifierStatement, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(identifierStatement[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(identifierStatement[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "Type" && (declaration[0][0][0].Count == 1 && declaration[0][0][0][0] != null && declaration[0][0][0][0].Name == "IntType")) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && declaration[0][2] != null && declaration[0][2].Name == "Parameters"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node p2 = Translatet(identifierStatement[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            Compiler.AST.Data.Node p2 = Translateparams(identifierStatement[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			            _isMatching = p2 != null && p2.Name == "ExpressionList";
 			            if(p2 != null && !_isMatching)
 			            {
-			                WrongPatternt((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
+			                WrongPatternparams((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
 			            }
 			            else if(_isMatching)
 			            {
@@ -3334,27 +3390,27 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierStatement != null && identifierStatement.Name == "IdentifierStatement" && (identifierStatement.Count == 2 && identifierStatement[0] != null && identifierStatement[0].Name == "identifier" && identifierStatement[1] != null && identifierStatement[1].Name == "IdentifierStatementP" && (identifierStatement[1].Count == 3 && identifierStatement[1][0] != null && identifierStatement[1][0].Name == "(" && identifierStatement[1][1] != null && identifierStatement[1][1].Name == "ExpressionList" && identifierStatement[1][2] != null && identifierStatement[1][2].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "Call", "SymbolTable" }, "[ IdentifierStatement [ identifier : id IdentifierStatementP [ ( ExpressionList : p ) ] ] SymbolTable : s ] -> [ Call [ id1 ( p2 ) ] s ]", (identifierStatement, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(identifierStatement[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(identifierStatement[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "Type" && (declaration[0][0][0].Count == 1 && declaration[0][0][0][0] != null && declaration[0][0][0][0].Name == "BooleanType")) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && declaration[0][2] != null && declaration[0][2].Name == "Parameters"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node p2 = Translatet(identifierStatement[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            Compiler.AST.Data.Node p2 = Translateparams(identifierStatement[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			            _isMatching = p2 != null && p2.Name == "ExpressionList";
 			            if(p2 != null && !_isMatching)
 			            {
-			                WrongPatternt((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
+			                WrongPatternparams((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
 			            }
 			            else if(_isMatching)
 			            {
@@ -3369,27 +3425,27 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierStatement != null && identifierStatement.Name == "IdentifierStatement" && (identifierStatement.Count == 2 && identifierStatement[0] != null && identifierStatement[0].Name == "identifier" && identifierStatement[1] != null && identifierStatement[1].Name == "IdentifierStatementP" && (identifierStatement[1].Count == 3 && identifierStatement[1][0] != null && identifierStatement[1][0].Name == "(" && identifierStatement[1][1] != null && identifierStatement[1][1].Name == "ExpressionList" && identifierStatement[1][2] != null && identifierStatement[1][2].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "Call", "SymbolTable" }, "[ IdentifierStatement [ identifier : id IdentifierStatementP [ ( ExpressionList : p ) ] ] SymbolTable : s ] -> [ Call [ id1 ( p2 ) ] s ]", (identifierStatement, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(identifierStatement[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(identifierStatement[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "Type" && (declaration[0][0][0].Count == 1 && declaration[0][0][0][0] != null && declaration[0][0][0][0].Name == "RegisterType")) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && declaration[0][2] != null && declaration[0][2].Name == "Parameters"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node p2 = Translatet(identifierStatement[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            Compiler.AST.Data.Node p2 = Translateparams(identifierStatement[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			            _isMatching = p2 != null && p2.Name == "ExpressionList";
 			            if(p2 != null && !_isMatching)
 			            {
-			                WrongPatternt((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
+			                WrongPatternparams((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
 			            }
 			            else if(_isMatching)
 			            {
@@ -3404,27 +3460,27 @@ namespace Compiler.Translation.ProgramToAST
 			if(identifierStatement != null && identifierStatement.Name == "IdentifierStatement" && (identifierStatement.Count == 2 && identifierStatement[0] != null && identifierStatement[0].Name == "identifier" && identifierStatement[1] != null && identifierStatement[1].Name == "IdentifierStatementP" && (identifierStatement[1].Count == 3 && identifierStatement[1][0] != null && identifierStatement[1][0].Name == "(" && identifierStatement[1][1] != null && identifierStatement[1][1].Name == "ExpressionList" && identifierStatement[1][2] != null && identifierStatement[1][2].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "Call", "SymbolTable" }, "[ IdentifierStatement [ identifier : id IdentifierStatementP [ ( ExpressionList : p ) ] ] SymbolTable : s ] -> [ Call [ id1 ( p2 ) ] s ]", (identifierStatement, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(identifierStatement[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(identifierStatement[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(identifierStatement[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "nothing") && declaration[0][1] != null && declaration[0][1].Name == "identifier" && declaration[0][2] != null && declaration[0][2].Name == "Parameters"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node p2 = Translatet(identifierStatement[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            Compiler.AST.Data.Node p2 = Translateparams(identifierStatement[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			            _isMatching = p2 != null && p2.Name == "ExpressionList";
 			            if(p2 != null && !_isMatching)
 			            {
-			                WrongPatternt((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
+			                WrongPatternparams((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
 			            }
 			            else if(_isMatching)
 			            {
@@ -3438,6 +3494,45 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			RulesFailed((identifierStatement, symbolTable));
 			return (null, null);
+		}
+
+		public Compiler.AST.Data.Node TranslatesymAST(Compiler.Translation.SymbolTable.Data.IntType intType)
+		{
+			bool _isMatching = false;
+			var key = (intType);
+			if(RelationsymAST.ContainsKey(key))
+			{
+			    var value = RelationsymAST[key];
+			    RuleStartsymAST(new System.Collections.Generic.List<string>() { intType.Name }, "", key);
+			    RuleEndsymAST(true, false, value);
+			    return value;
+			}
+			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int8"))
+			{
+			    RuleStartsymAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int8 ] -> : symAST IntType [ int8 ]", (intType));
+			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int8", Value = "int8" } };
+			    RuleEndsymAST(true, true, _result);
+			    return _result;
+			    RuleEndsymAST(false);
+			}
+			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int16"))
+			{
+			    RuleStartsymAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int16 ] -> : symAST IntType [ int16 ]", (intType));
+			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int16", Value = "int16" } };
+			    RuleEndsymAST(true, true, _result);
+			    return _result;
+			    RuleEndsymAST(false);
+			}
+			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int32"))
+			{
+			    RuleStartsymAST(new System.Collections.Generic.List<string>() { "IntType" }, "IntType [ int32 ] -> : symAST IntType [ int32 ]", (intType));
+			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int32", Value = "int32" } };
+			    RuleEndsymAST(true, true, _result);
+			    return _result;
+			    RuleEndsymAST(false);
+			}
+			RulesFailedsymAST((intType));
+			return (null);
 		}
 
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.IfStatement ifStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
@@ -3606,47 +3701,47 @@ namespace Compiler.Translation.ProgramToAST
 			if(forStatement != null && forStatement.Name == "ForStatement" && (forStatement.Count == 12 && forStatement[0] != null && forStatement[0].Name == "for" && forStatement[1] != null && forStatement[1].Name == "(" && forStatement[2] != null && forStatement[2].Name == "IntType" && forStatement[3] != null && forStatement[3].Name == "identifier" && forStatement[4] != null && forStatement[4].Name == "from" && forStatement[5] != null && forStatement[5].Name == "Expression" && forStatement[6] != null && forStatement[6].Name == "to" && forStatement[7] != null && forStatement[7].Name == "Expression" && forStatement[8] != null && forStatement[8].Name == ")" && forStatement[9] != null && forStatement[9].Name == "indent" && forStatement[10] != null && forStatement[10].Name == "Statements" && forStatement[11] != null && forStatement[11].Name == "dedent") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "ForStatement", "SymbolTable" }, "[ ForStatement [ for ( IntType : t identifier : id from Expression : expr1 to Expression : expr2 ) indent Statements : stms dedent ] SymbolTable : s ] -> [ ForStatement [ for ( t1 id1 from iexpr1 to iexpr2 ) indent stms1 dedent ] s ]", (forStatement, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(forStatement[2] as Compiler.Parsing.Data.IntType);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(forStatement[2] as Compiler.Parsing.Data.IntType);
 			    _isMatching = t1 != null && t1.Name == "IntType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "IntType" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node t2 = Translateq(forStatement[2] as Compiler.Parsing.Data.IntType);
+			        Compiler.Translation.SymbolTable.Data.Node t2 = TranslatetoSym(forStatement[2] as Compiler.Parsing.Data.IntType);
 			        _isMatching = t2 != null && t2.Name == "IntType";
 			        if(t2 != null && !_isMatching)
 			        {
-			            WrongPatternq((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			            WrongPatterntoSym((t2), new System.Collections.Generic.List<string>() { "IntType" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node id1 = Translatep(forStatement[3] as Compiler.Parsing.Data.Token);
+			            Compiler.AST.Data.Node id1 = TranslatetoAST(forStatement[3] as Compiler.Parsing.Data.Token);
 			            _isMatching = id1 != null && id1.Name == "identifier";
 			            if(id1 != null && !_isMatching)
 			            {
-			                WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			                WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			            }
 			            else if(_isMatching)
 			            {
-			                Compiler.Translation.SymbolTable.Data.Node id2 = Translateq(forStatement[3] as Compiler.Parsing.Data.Token);
+			                Compiler.Translation.SymbolTable.Data.Node id2 = TranslatetoSym(forStatement[3] as Compiler.Parsing.Data.Token);
 			                _isMatching = id2 != null && id2.Name == "identifier";
 			                if(id2 != null && !_isMatching)
 			                {
-			                    WrongPatternq((id2), new System.Collections.Generic.List<string>() { "identifier" });
+			                    WrongPatterntoSym((id2), new System.Collections.Generic.List<string>() { "identifier" });
 			                }
 			                else if(_isMatching)
 			                {
-			                    Compiler.Translation.SymbolTable.Data.Node declaration = Translates(forStatement[3] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                    Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(forStatement[3] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			                    _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "EPSILON");
 			                    if(declaration != null && !_isMatching)
 			                    {
-			                        WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			                        WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			                    }
 			                    else if(_isMatching)
 			                    {
-			                        (Compiler.AST.Data.Node iexpr1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(forStatement[5] as Compiler.Parsing.Data.Expression, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                        (Compiler.AST.Data.Node iexpr1, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(forStatement[5] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			                        _isMatching = iexpr1 != null && iexpr1.Name == "IntegerExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
 			                        if(iexpr1 != null && symbolTable1 != null && !_isMatching)
 			                        {
@@ -3654,7 +3749,7 @@ namespace Compiler.Translation.ProgramToAST
 			                        }
 			                        else if(_isMatching)
 			                        {
-			                            (Compiler.AST.Data.Node iexpr2, Compiler.Translation.SymbolTable.Data.Node symbolTable2) = Translate(forStatement[7] as Compiler.Parsing.Data.Expression, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                            (Compiler.AST.Data.Node iexpr2, Compiler.Translation.SymbolTable.Data.Node symbolTable2) = Translate(forStatement[7] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			                            _isMatching = iexpr2 != null && iexpr2.Name == "IntegerExpression" && symbolTable2 != null && symbolTable2.Name == "SymbolTable";
 			                            if(iexpr2 != null && symbolTable2 != null && !_isMatching)
 			                            {
@@ -4958,11 +5053,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 1 && primaryExpression[0] != null && primaryExpression[0].Name == "numeral") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "IntegerExpression", "SymbolTable" }, "[ PrimaryExpression [ numeral : i ] SymbolTable : s ] -> [ IntegerExpression [ i1 ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node i1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node i1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = i1 != null && i1.Name == "numeral";
 			    if(i1 != null && !_isMatching)
 			    {
-			        WrongPatternp((i1), new System.Collections.Generic.List<string>() { "numeral" });
+			        WrongPatterntoAST((i1), new System.Collections.Generic.List<string>() { "numeral" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -4975,19 +5070,19 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 2 && primaryExpression[0] != null && primaryExpression[0].Name == "identifier" && primaryExpression[1] != null && primaryExpression[1].Name == "IdentifierOperation" && (primaryExpression[1].Count == 1 && primaryExpression[1][0] != null && primaryExpression[1][0].Name == "BitSelector" && (primaryExpression[1][0].Count == 1 && primaryExpression[1][0][0] != null && primaryExpression[1][0][0].Name == "EPSILON"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "IntegerExpression", "SymbolTable" }, "[ PrimaryExpression [ identifier : id IdentifierOperation [ BitSelector [ EPSILON ] ] ] SymbolTable : s ] -> [ IntegerExpression [ id1 ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "IntType") && declaration[0][1] != null && declaration[0][1].Name == "identifier"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
@@ -5001,19 +5096,19 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 2 && primaryExpression[0] != null && primaryExpression[0].Name == "identifier" && primaryExpression[1] != null && primaryExpression[1].Name == "IdentifierOperation" && (primaryExpression[1].Count == 1 && primaryExpression[1][0] != null && primaryExpression[1][0].Name == "BitSelector" && (primaryExpression[1][0].Count == 1 && primaryExpression[1][0][0] != null && primaryExpression[1][0][0].Name == "EPSILON"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterExpression", "SymbolTable" }, "[ PrimaryExpression [ identifier : id IdentifierOperation [ BitSelector [ EPSILON ] ] ] SymbolTable : s ] -> [ RegisterExpression [ id1 ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "RegisterType") && declaration[0][1] != null && declaration[0][1].Name == "identifier"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
@@ -5027,19 +5122,19 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 2 && primaryExpression[0] != null && primaryExpression[0].Name == "identifier" && primaryExpression[1] != null && primaryExpression[1].Name == "IdentifierOperation" && (primaryExpression[1].Count == 1 && primaryExpression[1][0] != null && primaryExpression[1][0].Name == "BitSelector" && (primaryExpression[1][0].Count == 1 && primaryExpression[1][0][0] != null && primaryExpression[1][0][0].Name == "EPSILON"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanExpression", "SymbolTable" }, "[ PrimaryExpression [ identifier : id IdentifierOperation [ BitSelector [ EPSILON ] ] ] SymbolTable : s ] -> [ BooleanExpression [ id1 ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "BooleanType") && declaration[0][1] != null && declaration[0][1].Name == "identifier"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
@@ -5053,27 +5148,27 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 2 && primaryExpression[0] != null && primaryExpression[0].Name == "identifier" && primaryExpression[1] != null && primaryExpression[1].Name == "IdentifierOperation" && (primaryExpression[1].Count == 3 && primaryExpression[1][0] != null && primaryExpression[1][0].Name == "(" && primaryExpression[1][1] != null && primaryExpression[1][1].Name == "ExpressionList" && primaryExpression[1][2] != null && primaryExpression[1][2].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "IntegerExpression", "SymbolTable" }, "[ PrimaryExpression [ identifier : id IdentifierOperation [ ( ExpressionList : p ) ] ] SymbolTable : s ] -> [ IntegerExpression [ Call [ id1 ( p2 ) ] ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "Type" && (declaration[0][0][0].Count == 1 && declaration[0][0][0][0] != null && declaration[0][0][0][0].Name == "IntType")) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && declaration[0][2] != null && declaration[0][2].Name == "Parameters"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node p2 = Translatet(primaryExpression[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            Compiler.AST.Data.Node p2 = Translateparams(primaryExpression[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			            _isMatching = p2 != null && p2.Name == "ExpressionList";
 			            if(p2 != null && !_isMatching)
 			            {
-			                WrongPatternt((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
+			                WrongPatternparams((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
 			            }
 			            else if(_isMatching)
 			            {
@@ -5088,27 +5183,27 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 2 && primaryExpression[0] != null && primaryExpression[0].Name == "identifier" && primaryExpression[1] != null && primaryExpression[1].Name == "IdentifierOperation" && (primaryExpression[1].Count == 3 && primaryExpression[1][0] != null && primaryExpression[1][0].Name == "(" && primaryExpression[1][1] != null && primaryExpression[1][1].Name == "ExpressionList" && primaryExpression[1][2] != null && primaryExpression[1][2].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanExpression", "SymbolTable" }, "[ PrimaryExpression [ identifier : id IdentifierOperation [ ( ExpressionList : p ) ] ] SymbolTable : s ] -> [ BooleanExpression [ Call [ id1 ( p2 ) ] ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "Type" && (declaration[0][0][0].Count == 1 && declaration[0][0][0][0] != null && declaration[0][0][0][0].Name == "BooleanType")) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && declaration[0][2] != null && declaration[0][2].Name == "Parameters"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node p2 = Translatet(primaryExpression[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            Compiler.AST.Data.Node p2 = Translateparams(primaryExpression[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			            _isMatching = p2 != null && p2.Name == "ExpressionList";
 			            if(p2 != null && !_isMatching)
 			            {
-			                WrongPatternt((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
+			                WrongPatternparams((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
 			            }
 			            else if(_isMatching)
 			            {
@@ -5123,27 +5218,27 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 2 && primaryExpression[0] != null && primaryExpression[0].Name == "identifier" && primaryExpression[1] != null && primaryExpression[1].Name == "IdentifierOperation" && (primaryExpression[1].Count == 3 && primaryExpression[1][0] != null && primaryExpression[1][0].Name == "(" && primaryExpression[1][1] != null && primaryExpression[1][1].Name == "ExpressionList" && primaryExpression[1][2] != null && primaryExpression[1][2].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterExpression", "SymbolTable" }, "[ PrimaryExpression [ identifier : id IdentifierOperation [ ( ExpressionList : p ) ] ] SymbolTable : s ] -> [ RegisterExpression [ Call [ id1 ( p2 ) ] ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "Type" && (declaration[0][0][0].Count == 1 && declaration[0][0][0][0] != null && declaration[0][0][0][0].Name == "RegisterType")) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && declaration[0][2] != null && declaration[0][2].Name == "Parameters"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
-			            Compiler.AST.Data.Node p2 = Translatet(primaryExpression[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            Compiler.AST.Data.Node p2 = Translateparams(primaryExpression[1][1] as Compiler.Parsing.Data.ExpressionList, declaration[0][2] as Compiler.Translation.SymbolTable.Data.Parameters, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			            _isMatching = p2 != null && p2.Name == "ExpressionList";
 			            if(p2 != null && !_isMatching)
 			            {
-			                WrongPatternt((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
+			                WrongPatternparams((p2), new System.Collections.Generic.List<string>() { "ExpressionList" });
 			            }
 			            else if(_isMatching)
 			            {
@@ -5158,19 +5253,19 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 2 && primaryExpression[0] != null && primaryExpression[0].Name == "identifier" && primaryExpression[1] != null && primaryExpression[1].Name == "IdentifierOperation" && (primaryExpression[1].Count == 1 && primaryExpression[1][0] != null && primaryExpression[1][0].Name == "BitSelector" && (primaryExpression[1][0].Count == 3 && primaryExpression[1][0][0] != null && primaryExpression[1][0][0].Name == "{" && primaryExpression[1][0][1] != null && primaryExpression[1][0][1].Name == "Expression" && primaryExpression[1][0][2] != null && primaryExpression[1][0][2].Name == "}"))) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanExpression", "SymbolTable" }, "[ PrimaryExpression [ identifier : id IdentifierOperation [ BitSelector [ { Expression : expr } ] ] ] SymbolTable : s ] -> [ BooleanExpression [ IndirectBitValue [ id1 { intExpr } ] ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node id1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node id1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = id1 != null && id1.Name == "identifier";
 			    if(id1 != null && !_isMatching)
 			    {
-			        WrongPatternp((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			        WrongPatterntoAST((id1), new System.Collections.Generic.List<string>() { "identifier" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.Translation.SymbolTable.Data.Node declaration = Translates(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(primaryExpression[0] as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "RegisterType") && declaration[0][1] != null && declaration[0][1].Name == "identifier"));
 			        if(declaration != null && !_isMatching)
 			        {
-			            WrongPatterns((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
 			        }
 			        else if(_isMatching)
 			        {
@@ -5244,11 +5339,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 5 && primaryExpression[0] != null && primaryExpression[0].Name == "RegisterType" && primaryExpression[1] != null && primaryExpression[1].Name == "(" && primaryExpression[2] != null && primaryExpression[2].Name == "Expression" && primaryExpression[3] != null && primaryExpression[3].Name == ")" && primaryExpression[4] != null && primaryExpression[4].Name == "BitSelector" && (primaryExpression[4].Count == 1 && primaryExpression[4][0] != null && primaryExpression[4][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterExpression", "SymbolTable" }, "[ PrimaryExpression [ RegisterType : t ( Expression : expr ) BitSelector [ EPSILON ] ] SymbolTable : s ] -> [ RegisterExpression [ RegisterLiteral [ t1 ( intExpr ) ] ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.RegisterType);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.RegisterType);
 			    _isMatching = t1 != null && t1.Name == "RegisterType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -5270,11 +5365,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 5 && primaryExpression[0] != null && primaryExpression[0].Name == "RegisterType" && primaryExpression[1] != null && primaryExpression[1].Name == "(" && primaryExpression[2] != null && primaryExpression[2].Name == "Expression" && primaryExpression[3] != null && primaryExpression[3].Name == ")" && primaryExpression[4] != null && primaryExpression[4].Name == "BitSelector" && (primaryExpression[4].Count == 3 && primaryExpression[4][0] != null && primaryExpression[4][0].Name == "{" && primaryExpression[4][1] != null && primaryExpression[4][1].Name == "Expression" && primaryExpression[4][2] != null && primaryExpression[4][2].Name == "}")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanExpression", "SymbolTable" }, "[ PrimaryExpression [ RegisterType : t ( Expression : expr1 ) BitSelector [ { Expression : expr2 } ] ] SymbolTable : s ] -> [ BooleanExpression [ DirectBitValue [ t1 ( intExpr1 ) { intExpr2 } ] ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.RegisterType);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.RegisterType);
 			    _isMatching = t1 != null && t1.Name == "RegisterType";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -5305,11 +5400,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 1 && primaryExpression[0] != null && primaryExpression[0].Name == "true") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanExpression", "SymbolTable" }, "[ PrimaryExpression [ true : t ] SymbolTable : s ] -> [ BooleanExpression [ t1 ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node t1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node t1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = t1 != null && t1.Name == "true";
 			    if(t1 != null && !_isMatching)
 			    {
-			        WrongPatternp((t1), new System.Collections.Generic.List<string>() { "true" });
+			        WrongPatterntoAST((t1), new System.Collections.Generic.List<string>() { "true" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -5322,11 +5417,11 @@ namespace Compiler.Translation.ProgramToAST
 			if(primaryExpression != null && primaryExpression.Name == "PrimaryExpression" && (primaryExpression.Count == 1 && primaryExpression[0] != null && primaryExpression[0].Name == "false") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanExpression", "SymbolTable" }, "[ PrimaryExpression [ false : f ] SymbolTable : s ] -> [ BooleanExpression [ f1 ] s ]", (primaryExpression, symbolTable));
-			    Compiler.AST.Data.Node f1 = Translatep(primaryExpression[0] as Compiler.Parsing.Data.Token);
+			    Compiler.AST.Data.Node f1 = TranslatetoAST(primaryExpression[0] as Compiler.Parsing.Data.Token);
 			    _isMatching = f1 != null && f1.Name == "false";
 			    if(f1 != null && !_isMatching)
 			    {
-			        WrongPatternp((f1), new System.Collections.Generic.List<string>() { "false" });
+			        WrongPatterntoAST((f1), new System.Collections.Generic.List<string>() { "false" });
 			    }
 			    else if(_isMatching)
 			    {
@@ -5340,144 +5435,144 @@ namespace Compiler.Translation.ProgramToAST
 			return (null, null);
 		}
 
-		public Compiler.AST.Data.Node Translatet(Compiler.Parsing.Data.ExpressionList expressionList, Compiler.Translation.SymbolTable.Data.Parameters parameters, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.AST.Data.Node Translateparams(Compiler.Parsing.Data.ExpressionList expressionList, Compiler.Translation.SymbolTable.Data.Parameters parameters, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
 			var key = (expressionList, parameters, symbolTable);
-			if(Relationt.ContainsKey(key))
+			if(Relationparams.ContainsKey(key))
 			{
-			    var value = Relationt[key];
-			    RuleStartt(new System.Collections.Generic.List<string>() { expressionList.Name, parameters.Name, symbolTable.Name }, "", key);
-			    RuleEndt(true, false, value);
+			    var value = Relationparams[key];
+			    RuleStartparams(new System.Collections.Generic.List<string>() { expressionList.Name, parameters.Name, symbolTable.Name }, "", key);
+			    RuleEndparams(true, false, value);
 			    return value;
 			}
 			if(expressionList != null && expressionList.Name == "ExpressionList" && (expressionList.Count == 1 && expressionList[0] != null && expressionList[0].Name == "EPSILON") && parameters != null && parameters.Name == "Parameters" && (parameters.Count == 1 && parameters[0] != null && parameters[0].Name == "EPSILON") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartt(new System.Collections.Generic.List<string>() { "ExpressionList" }, "[ ExpressionList [ EPSILON ] Parameters [ EPSILON ] SymbolTable ] -> : t ExpressionList [ EPSILON ]", (expressionList, parameters, symbolTable));
+			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionList" }, "[ ExpressionList [ EPSILON ] Parameters [ EPSILON ] SymbolTable ] -> : params ExpressionList [ EPSILON ]", (expressionList, parameters, symbolTable));
 			    var _result = new Compiler.AST.Data.ExpressionList(false) { new Compiler.AST.Data.Token() { Name = "EPSILON", Value = "EPSILON" } };
-			    RuleEndt(true, true, _result);
+			    RuleEndparams(true, true, _result);
 			    return _result;
-			    RuleEndt(false);
+			    RuleEndparams(false);
 			}
 			if(expressionList != null && expressionList.Name == "ExpressionList" && (expressionList.Count == 2 && expressionList[0] != null && expressionList[0].Name == "Expression" && expressionList[1] != null && expressionList[1].Name == "ExpressionListP" && (expressionList[1].Count == 1 && expressionList[1][0] != null && expressionList[1][0].Name == "EPSILON")) && parameters != null && parameters.Name == "Parameters" && (parameters.Count == 2 && parameters[0] != null && parameters[0].Name == "Parameter" && parameters[1] != null && parameters[1].Name == "ParametersP" && (parameters[1].Count == 1 && parameters[1][0] != null && parameters[1][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartt(new System.Collections.Generic.List<string>() { "ExpressionList" }, "[ ExpressionList [ Expression : p1 ExpressionListP [ EPSILON ] ] Parameters [ Parameter : p3 ParametersP [ EPSILON ] ] SymbolTable : s ] -> : t ExpressionList [ p5 ]", (expressionList, parameters, symbolTable));
-			    Compiler.AST.Data.Node p5 = Translatet(expressionList[0] as Compiler.Parsing.Data.Expression, parameters[0] as Compiler.Translation.SymbolTable.Data.Parameter, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionList" }, "[ ExpressionList [ Expression : p1 ExpressionListP [ EPSILON ] ] Parameters [ Parameter : p3 ParametersP [ EPSILON ] ] SymbolTable : s ] -> : params ExpressionList [ p5 ]", (expressionList, parameters, symbolTable));
+			    Compiler.AST.Data.Node p5 = Translateparams(expressionList[0] as Compiler.Parsing.Data.Expression, parameters[0] as Compiler.Translation.SymbolTable.Data.Parameter, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = p5 != null && p5.Name == "ExpressionListArgs";
 			    if(p5 != null && !_isMatching)
 			    {
-			        WrongPatternt((p5), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
+			        WrongPatternparams((p5), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.ExpressionList(false) { p5 as Compiler.AST.Data.ExpressionListArgs };
-			        RuleEndt(true, true, _result);
+			        RuleEndparams(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndt(false);
+			    RuleEndparams(false);
 			}
 			if(expressionList != null && expressionList.Name == "ExpressionList" && (expressionList.Count == 2 && expressionList[0] != null && expressionList[0].Name == "Expression" && expressionList[1] != null && expressionList[1].Name == "ExpressionListP") && parameters != null && parameters.Name == "Parameters" && (parameters.Count == 2 && parameters[0] != null && parameters[0].Name == "Parameter" && parameters[1] != null && parameters[1].Name == "ParametersP") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartt(new System.Collections.Generic.List<string>() { "ExpressionList" }, "[ ExpressionList [ Expression : p1 ExpressionListP : p2 ] Parameters [ Parameter : p3 ParametersP : p4 ] SymbolTable : s ] -> : t ExpressionList [ ExpressionListArgs [ CompoundArgs [ p5 , p6 ] ] ]", (expressionList, parameters, symbolTable));
-			    Compiler.AST.Data.Node p5 = Translatet(expressionList[0] as Compiler.Parsing.Data.Expression, parameters[0] as Compiler.Translation.SymbolTable.Data.Parameter, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionList" }, "[ ExpressionList [ Expression : p1 ExpressionListP : p2 ] Parameters [ Parameter : p3 ParametersP : p4 ] SymbolTable : s ] -> : params ExpressionList [ ExpressionListArgs [ CompoundArgs [ p5 , p6 ] ] ]", (expressionList, parameters, symbolTable));
+			    Compiler.AST.Data.Node p5 = Translateparams(expressionList[0] as Compiler.Parsing.Data.Expression, parameters[0] as Compiler.Translation.SymbolTable.Data.Parameter, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = p5 != null && p5.Name == "ExpressionListArgs";
 			    if(p5 != null && !_isMatching)
 			    {
-			        WrongPatternt((p5), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
+			        WrongPatternparams((p5), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.AST.Data.Node p6 = Translatet(expressionList[1] as Compiler.Parsing.Data.ExpressionListP, parameters[1] as Compiler.Translation.SymbolTable.Data.ParametersP, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.AST.Data.Node p6 = Translateparams(expressionList[1] as Compiler.Parsing.Data.ExpressionListP, parameters[1] as Compiler.Translation.SymbolTable.Data.ParametersP, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = p6 != null && p6.Name == "ExpressionListArgs";
 			        if(p6 != null && !_isMatching)
 			        {
-			            WrongPatternt((p6), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
+			            WrongPatternparams((p6), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
 			        }
 			        else if(_isMatching)
 			        {
 			            var _result = new Compiler.AST.Data.ExpressionList(false) { new Compiler.AST.Data.ExpressionListArgs(false) { new Compiler.AST.Data.CompoundArgs(false) { p5 as Compiler.AST.Data.ExpressionListArgs, new Compiler.AST.Data.Token() { Name = ",", Value = "," }, p6 as Compiler.AST.Data.ExpressionListArgs } } };
-			            RuleEndt(true, true, _result);
+			            RuleEndparams(true, true, _result);
 			            return _result;
 			        }
 			    }
-			    RuleEndt(false);
+			    RuleEndparams(false);
 			}
-			RulesFailedt((expressionList, parameters, symbolTable));
+			RulesFailedparams((expressionList, parameters, symbolTable));
 			return (null);
 		}
 
-		public Compiler.AST.Data.Node Translatet(Compiler.Parsing.Data.ExpressionListP expressionListP, Compiler.Translation.SymbolTable.Data.ParametersP parametersP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.AST.Data.Node Translateparams(Compiler.Parsing.Data.ExpressionListP expressionListP, Compiler.Translation.SymbolTable.Data.ParametersP parametersP, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
 			var key = (expressionListP, parametersP, symbolTable);
-			if(Relationt.ContainsKey(key))
+			if(Relationparams.ContainsKey(key))
 			{
-			    var value = Relationt[key];
-			    RuleStartt(new System.Collections.Generic.List<string>() { expressionListP.Name, parametersP.Name, symbolTable.Name }, "", key);
-			    RuleEndt(true, false, value);
+			    var value = Relationparams[key];
+			    RuleStartparams(new System.Collections.Generic.List<string>() { expressionListP.Name, parametersP.Name, symbolTable.Name }, "", key);
+			    RuleEndparams(true, false, value);
 			    return value;
 			}
 			if(expressionListP != null && expressionListP.Name == "ExpressionListP" && (expressionListP.Count == 3 && expressionListP[0] != null && expressionListP[0].Name == "," && expressionListP[1] != null && expressionListP[1].Name == "Expression" && expressionListP[2] != null && expressionListP[2].Name == "ExpressionListP" && (expressionListP[2].Count == 1 && expressionListP[2][0] != null && expressionListP[2][0].Name == "EPSILON")) && parametersP != null && parametersP.Name == "ParametersP" && (parametersP.Count == 3 && parametersP[0] != null && parametersP[0].Name == "," && parametersP[1] != null && parametersP[1].Name == "Parameter" && parametersP[2] != null && parametersP[2].Name == "ParametersP" && (parametersP[2].Count == 1 && parametersP[2][0] != null && parametersP[2][0].Name == "EPSILON")) && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartt(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ ExpressionListP [ , Expression : p1 ExpressionListP [ EPSILON ] ] ParametersP [ , Parameter : p3 ParametersP [ EPSILON ] ] SymbolTable : s ] -> : t p5", (expressionListP, parametersP, symbolTable));
-			    Compiler.AST.Data.Node p5 = Translatet(expressionListP[1] as Compiler.Parsing.Data.Expression, parametersP[1] as Compiler.Translation.SymbolTable.Data.Parameter, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ ExpressionListP [ , Expression : p1 ExpressionListP [ EPSILON ] ] ParametersP [ , Parameter : p3 ParametersP [ EPSILON ] ] SymbolTable : s ] -> : params p5", (expressionListP, parametersP, symbolTable));
+			    Compiler.AST.Data.Node p5 = Translateparams(expressionListP[1] as Compiler.Parsing.Data.Expression, parametersP[1] as Compiler.Translation.SymbolTable.Data.Parameter, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = p5 != null && p5.Name == "ExpressionListArgs";
 			    if(p5 != null && !_isMatching)
 			    {
-			        WrongPatternt((p5), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
+			        WrongPatternparams((p5), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
 			    }
 			    else if(_isMatching)
 			    {
 			        var _result = p5 as Compiler.AST.Data.ExpressionListArgs;
-			        RuleEndt(true, true, _result);
+			        RuleEndparams(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndt(false);
+			    RuleEndparams(false);
 			}
 			if(expressionListP != null && expressionListP.Name == "ExpressionListP" && (expressionListP.Count == 3 && expressionListP[0] != null && expressionListP[0].Name == "," && expressionListP[1] != null && expressionListP[1].Name == "Expression" && expressionListP[2] != null && expressionListP[2].Name == "ExpressionListP") && parametersP != null && parametersP.Name == "ParametersP" && (parametersP.Count == 3 && parametersP[0] != null && parametersP[0].Name == "," && parametersP[1] != null && parametersP[1].Name == "Parameter" && parametersP[2] != null && parametersP[2].Name == "ParametersP") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartt(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ ExpressionListP [ , Expression : p1 ExpressionListP : p2 ] ParametersP [ , Parameter : p3 ParametersP : p4 ] SymbolTable : s ] -> : t ExpressionListArgs [ CompoundArgs [ p5 , p6 ] ]", (expressionListP, parametersP, symbolTable));
-			    Compiler.AST.Data.Node p5 = Translatet(expressionListP[1] as Compiler.Parsing.Data.Expression, parametersP[1] as Compiler.Translation.SymbolTable.Data.Parameter, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ ExpressionListP [ , Expression : p1 ExpressionListP : p2 ] ParametersP [ , Parameter : p3 ParametersP : p4 ] SymbolTable : s ] -> : params ExpressionListArgs [ CompoundArgs [ p5 , p6 ] ]", (expressionListP, parametersP, symbolTable));
+			    Compiler.AST.Data.Node p5 = Translateparams(expressionListP[1] as Compiler.Parsing.Data.Expression, parametersP[1] as Compiler.Translation.SymbolTable.Data.Parameter, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = p5 != null && p5.Name == "ExpressionListArgs";
 			    if(p5 != null && !_isMatching)
 			    {
-			        WrongPatternt((p5), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
+			        WrongPatternparams((p5), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
 			    }
 			    else if(_isMatching)
 			    {
-			        Compiler.AST.Data.Node p6 = Translatet(expressionListP[2] as Compiler.Parsing.Data.ExpressionListP, parametersP[2] as Compiler.Translation.SymbolTable.Data.ParametersP, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        Compiler.AST.Data.Node p6 = Translateparams(expressionListP[2] as Compiler.Parsing.Data.ExpressionListP, parametersP[2] as Compiler.Translation.SymbolTable.Data.ParametersP, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			        _isMatching = p6 != null && p6.Name == "ExpressionListArgs";
 			        if(p6 != null && !_isMatching)
 			        {
-			            WrongPatternt((p6), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
+			            WrongPatternparams((p6), new System.Collections.Generic.List<string>() { "ExpressionListArgs" });
 			        }
 			        else if(_isMatching)
 			        {
 			            var _result = new Compiler.AST.Data.ExpressionListArgs(false) { new Compiler.AST.Data.CompoundArgs(false) { p5 as Compiler.AST.Data.ExpressionListArgs, new Compiler.AST.Data.Token() { Name = ",", Value = "," }, p6 as Compiler.AST.Data.ExpressionListArgs } };
-			            RuleEndt(true, true, _result);
+			            RuleEndparams(true, true, _result);
 			            return _result;
 			        }
 			    }
-			    RuleEndt(false);
+			    RuleEndparams(false);
 			}
-			RulesFailedt((expressionListP, parametersP, symbolTable));
+			RulesFailedparams((expressionListP, parametersP, symbolTable));
 			return (null);
 		}
 
-		public Compiler.AST.Data.Node Translatet(Compiler.Parsing.Data.Expression expression, Compiler.Translation.SymbolTable.Data.Parameter parameter, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		public Compiler.AST.Data.Node Translateparams(Compiler.Parsing.Data.Expression expression, Compiler.Translation.SymbolTable.Data.Parameter parameter, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
 			var key = (expression, parameter, symbolTable);
-			if(Relationt.ContainsKey(key))
+			if(Relationparams.ContainsKey(key))
 			{
-			    var value = Relationt[key];
-			    RuleStartt(new System.Collections.Generic.List<string>() { expression.Name, parameter.Name, symbolTable.Name }, "", key);
-			    RuleEndt(true, false, value);
+			    var value = Relationparams[key];
+			    RuleStartparams(new System.Collections.Generic.List<string>() { expression.Name, parameter.Name, symbolTable.Name }, "", key);
+			    RuleEndparams(true, false, value);
 			    return value;
 			}
 			if(expression != null && expression.Name == "Expression" && parameter != null && parameter.Name == "Parameter" && (parameter.Count == 2 && parameter[0] != null && parameter[0].Name == "Type" && (parameter[0].Count == 1 && parameter[0][0] != null && parameter[0][0].Name == "IntType") && parameter[1] != null && parameter[1].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartt(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ Expression : expr Parameter [ Type [ IntType ] identifier ] SymbolTable : s ] -> : t ExpressionListArgs [ iexpr ]", (expression, parameter, symbolTable));
+			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ Expression : expr Parameter [ Type [ IntType ] identifier ] SymbolTable : s ] -> : params ExpressionListArgs [ iexpr ]", (expression, parameter, symbolTable));
 			    (Compiler.AST.Data.Node iexpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expression as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = iexpr != null && iexpr.Name == "IntegerExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
 			    if(iexpr != null && symbolTable1 != null && !_isMatching)
@@ -5487,14 +5582,14 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.ExpressionListArgs(false) { iexpr as Compiler.AST.Data.IntegerExpression };
-			        RuleEndt(true, true, _result);
+			        RuleEndparams(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndt(false);
+			    RuleEndparams(false);
 			}
 			if(expression != null && expression.Name == "Expression" && parameter != null && parameter.Name == "Parameter" && (parameter.Count == 2 && parameter[0] != null && parameter[0].Name == "Type" && (parameter[0].Count == 1 && parameter[0][0] != null && parameter[0][0].Name == "BooleanType") && parameter[1] != null && parameter[1].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartt(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ Expression : expr Parameter [ Type [ BooleanType ] identifier ] SymbolTable : s ] -> : t ExpressionListArgs [ bexpr ]", (expression, parameter, symbolTable));
+			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ Expression : expr Parameter [ Type [ BooleanType ] identifier ] SymbolTable : s ] -> : params ExpressionListArgs [ bexpr ]", (expression, parameter, symbolTable));
 			    (Compiler.AST.Data.Node bexpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expression as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = bexpr != null && bexpr.Name == "BooleanExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
 			    if(bexpr != null && symbolTable1 != null && !_isMatching)
@@ -5504,14 +5599,14 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.ExpressionListArgs(false) { bexpr as Compiler.AST.Data.BooleanExpression };
-			        RuleEndt(true, true, _result);
+			        RuleEndparams(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndt(false);
+			    RuleEndparams(false);
 			}
 			if(expression != null && expression.Name == "Expression" && parameter != null && parameter.Name == "Parameter" && (parameter.Count == 2 && parameter[0] != null && parameter[0].Name == "Type" && (parameter[0].Count == 1 && parameter[0][0] != null && parameter[0][0].Name == "RegisterType") && parameter[1] != null && parameter[1].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartt(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ Expression : expr Parameter [ Type [ RegisterType ] identifier ] SymbolTable : s ] -> : t ExpressionListArgs [ rexpr ]", (expression, parameter, symbolTable));
+			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ Expression : expr Parameter [ Type [ RegisterType ] identifier ] SymbolTable : s ] -> : params ExpressionListArgs [ rexpr ]", (expression, parameter, symbolTable));
 			    (Compiler.AST.Data.Node rexpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expression as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = rexpr != null && rexpr.Name == "RegisterExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
 			    if(rexpr != null && symbolTable1 != null && !_isMatching)
@@ -5521,16 +5616,394 @@ namespace Compiler.Translation.ProgramToAST
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.AST.Data.ExpressionListArgs(false) { rexpr as Compiler.AST.Data.RegisterExpression };
-			        RuleEndt(true, true, _result);
+			        RuleEndparams(true, true, _result);
 			        return _result;
 			    }
-			    RuleEndt(false);
+			    RuleEndparams(false);
 			}
-			RulesFailedt((expression, parameter, symbolTable));
+			RulesFailedparams((expression, parameter, symbolTable));
 			return (null);
 		}
 
-		public void RuleStartp(System.Collections.Generic.List<string> returnTypes, string rule, Compiler.Parsing.Data.Node data)
+		public Compiler.AST.Data.Node Translatetype(Compiler.AST.Data.IntegerExpression integerExpression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		{
+			bool _isMatching = false;
+			var key = (integerExpression, symbolTable);
+			if(Relationtype.ContainsKey(key))
+			{
+			    var value = Relationtype[key];
+			    RuleStarttype(new System.Collections.Generic.List<string>() { integerExpression.Name, symbolTable.Name }, "", key);
+			    RuleEndtype(true, false, value);
+			    return value;
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ identifier : id ] SymbolTable : s ] -> : type tres", (integerExpression, symbolTable));
+			    Compiler.Parsing.Data.Node id1 = TranslateastProg(integerExpression[0] as Compiler.AST.Data.Token);
+			    _isMatching = id1 != null && id1.Name == "identifier";
+			    if(id1 != null && !_isMatching)
+			    {
+			        WrongPatternastProg((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(id1 as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "IntType") && declaration[0][1] != null && declaration[0][1].Name == "identifier"));
+			        if(declaration != null && !_isMatching)
+			        {
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node tres = TranslatesymAST(declaration[0][0][0] as Compiler.Translation.SymbolTable.Data.IntType);
+			            _isMatching = tres != null && tres.Name == "IntType";
+			            if(tres != null && !_isMatching)
+			            {
+			                WrongPatternsymAST((tres), new System.Collections.Generic.List<string>() { "IntType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                var _result = tres as Compiler.AST.Data.IntType;
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "numeral") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ numeral ] SymbolTable : s ] -> : type IntType [ int8 ]", (integerExpression, symbolTable));
+			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int8", Value = "int8" } };
+			    RuleEndtype(true, true, _result);
+			    return _result;
+			    RuleEndtype(false);
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "IntegerParenthesisExpression" && (integerExpression[0].Count == 3 && integerExpression[0][0] != null && integerExpression[0][0].Name == "(" && integerExpression[0][1] != null && integerExpression[0][1].Name == "IntegerExpression" && integerExpression[0][2] != null && integerExpression[0][2].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ IntegerParenthesisExpression [ ( IntegerExpression : e ) ] ] SymbolTable : s ] -> : type t", (integerExpression, symbolTable));
+			    Compiler.AST.Data.Node t = Translatetype(integerExpression[0][1] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t != null && t.Name == "IntType";
+			    if(t != null && !_isMatching)
+			    {
+			        WrongPatterntype((t), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = t as Compiler.AST.Data.IntType;
+			        RuleEndtype(true, true, _result);
+			        return _result;
+			    }
+			    RuleEndtype(false);
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "AddExpression" && (integerExpression[0].Count == 3 && integerExpression[0][0] != null && integerExpression[0][0].Name == "IntegerExpression" && integerExpression[0][1] != null && integerExpression[0][1].Name == "+" && integerExpression[0][2] != null && integerExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ AddExpression [ IntegerExpression : e1 + IntegerExpression : e2 ] ] SymbolTable : s ] -> : type t3", (integerExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(integerExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(integerExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node t3 = Translatelargest(t1 as Compiler.AST.Data.IntType, t2 as Compiler.AST.Data.IntType);
+			            _isMatching = t3 != null && t3.Name == "IntType";
+			            if(t3 != null && !_isMatching)
+			            {
+			                WrongPatternlargest((t3), new System.Collections.Generic.List<string>() { "IntType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                var _result = t3 as Compiler.AST.Data.IntType;
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "SubExpression" && (integerExpression[0].Count == 3 && integerExpression[0][0] != null && integerExpression[0][0].Name == "IntegerExpression" && integerExpression[0][1] != null && integerExpression[0][1].Name == "-" && integerExpression[0][2] != null && integerExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ SubExpression [ IntegerExpression : e1 - IntegerExpression : e2 ] ] SymbolTable : s ] -> : type t3", (integerExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(integerExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(integerExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node t3 = Translatelargest(t1 as Compiler.AST.Data.IntType, t2 as Compiler.AST.Data.IntType);
+			            _isMatching = t3 != null && t3.Name == "IntType";
+			            if(t3 != null && !_isMatching)
+			            {
+			                WrongPatternlargest((t3), new System.Collections.Generic.List<string>() { "IntType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                var _result = t3 as Compiler.AST.Data.IntType;
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "MulExpression" && (integerExpression[0].Count == 3 && integerExpression[0][0] != null && integerExpression[0][0].Name == "IntegerExpression" && integerExpression[0][1] != null && integerExpression[0][1].Name == "*" && integerExpression[0][2] != null && integerExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ MulExpression [ IntegerExpression : e1 \\* IntegerExpression : e2 ] ] SymbolTable : s ] -> : type t3", (integerExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(integerExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(integerExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node t3 = Translatelargest(t1 as Compiler.AST.Data.IntType, t2 as Compiler.AST.Data.IntType);
+			            _isMatching = t3 != null && t3.Name == "IntType";
+			            if(t3 != null && !_isMatching)
+			            {
+			                WrongPatternlargest((t3), new System.Collections.Generic.List<string>() { "IntType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                var _result = t3 as Compiler.AST.Data.IntType;
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "DivExpression" && (integerExpression[0].Count == 3 && integerExpression[0][0] != null && integerExpression[0][0].Name == "IntegerExpression" && integerExpression[0][1] != null && integerExpression[0][1].Name == "/" && integerExpression[0][2] != null && integerExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ DivExpression [ IntegerExpression : e1 / IntegerExpression : e2 ] ] SymbolTable : s ] -> : type t3", (integerExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(integerExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(integerExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node t3 = Translatelargest(t1 as Compiler.AST.Data.IntType, t2 as Compiler.AST.Data.IntType);
+			            _isMatching = t3 != null && t3.Name == "IntType";
+			            if(t3 != null && !_isMatching)
+			            {
+			                WrongPatternlargest((t3), new System.Collections.Generic.List<string>() { "IntType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                var _result = t3 as Compiler.AST.Data.IntType;
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "ModExpression" && (integerExpression[0].Count == 3 && integerExpression[0][0] != null && integerExpression[0][0].Name == "IntegerExpression" && integerExpression[0][1] != null && integerExpression[0][1].Name == "%" && integerExpression[0][2] != null && integerExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ ModExpression [ IntegerExpression : e1 \\% IntegerExpression : e2 ] ] SymbolTable : s ] -> : type t3", (integerExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(integerExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(integerExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node t3 = Translatelargest(t1 as Compiler.AST.Data.IntType, t2 as Compiler.AST.Data.IntType);
+			            _isMatching = t3 != null && t3.Name == "IntType";
+			            if(t3 != null && !_isMatching)
+			            {
+			                WrongPatternlargest((t3), new System.Collections.Generic.List<string>() { "IntType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                var _result = t3 as Compiler.AST.Data.IntType;
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "PowExpression" && (integerExpression[0].Count == 3 && integerExpression[0][0] != null && integerExpression[0][0].Name == "IntegerExpression" && integerExpression[0][1] != null && integerExpression[0][1].Name == "^" && integerExpression[0][2] != null && integerExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ PowExpression [ IntegerExpression : e1 ^ IntegerExpression : e2 ] ] SymbolTable : s ] -> : type t3", (integerExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(integerExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(integerExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node t3 = Translatelargest(t1 as Compiler.AST.Data.IntType, t2 as Compiler.AST.Data.IntType);
+			            _isMatching = t3 != null && t3.Name == "IntType";
+			            if(t3 != null && !_isMatching)
+			            {
+			                WrongPatternlargest((t3), new System.Collections.Generic.List<string>() { "IntType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                var _result = t3 as Compiler.AST.Data.IntType;
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(integerExpression != null && integerExpression.Name == "IntegerExpression" && (integerExpression.Count == 1 && integerExpression[0] != null && integerExpression[0].Name == "Call" && (integerExpression[0].Count == 4 && integerExpression[0][0] != null && integerExpression[0][0].Name == "identifier" && integerExpression[0][1] != null && integerExpression[0][1].Name == "(" && integerExpression[0][2] != null && integerExpression[0][2].Name == "ExpressionList" && integerExpression[0][3] != null && integerExpression[0][3].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntegerExpression [ Call [ identifier : id ( ExpressionList ) ] ] SymbolTable : s ] -> : type tres", (integerExpression, symbolTable));
+			    Compiler.Parsing.Data.Node id1 = TranslateastProg(integerExpression[0][0] as Compiler.AST.Data.Token);
+			    _isMatching = id1 != null && id1.Name == "identifier";
+			    if(id1 != null && !_isMatching)
+			    {
+			        WrongPatternastProg((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(id1 as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "Type" && (declaration[0][0][0].Count == 1 && declaration[0][0][0][0] != null && declaration[0][0][0][0].Name == "IntType")) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && declaration[0][2] != null && declaration[0][2].Name == "Parameters"));
+			        if(declaration != null && !_isMatching)
+			        {
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node tres = TranslatesymAST(declaration[0][0][0][0] as Compiler.Translation.SymbolTable.Data.IntType);
+			            _isMatching = tres != null && tres.Name == "IntType";
+			            if(tres != null && !_isMatching)
+			            {
+			                WrongPatternsymAST((tres), new System.Collections.Generic.List<string>() { "IntType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                var _result = tres as Compiler.AST.Data.IntType;
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			RulesFailedtype((integerExpression, symbolTable));
+			return (null);
+		}
+
+		public Compiler.AST.Data.Node Translatelargest(Compiler.AST.Data.IntType intType, Compiler.AST.Data.IntType intType1)
+		{
+			bool _isMatching = false;
+			var key = (intType, intType1);
+			if(Relationlargest.ContainsKey(key))
+			{
+			    var value = Relationlargest[key];
+			    RuleStartlargest(new System.Collections.Generic.List<string>() { intType.Name, intType1.Name }, "", key);
+			    RuleEndlargest(true, false, value);
+			    return value;
+			}
+			if(intType != null && intType.Name == "IntType" && intType1 != null && intType1.Name == "IntType" && (intType1.Count == 1 && intType1[0] != null && intType1[0].Name == "int32"))
+			{
+			    RuleStartlargest(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntType IntType : t [ int32 ] ] -> : largest IntType [ int32 ]", (intType, intType1));
+			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int32", Value = "int32" } };
+			    RuleEndlargest(true, true, _result);
+			    return _result;
+			    RuleEndlargest(false);
+			}
+			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int32") && intType1 != null && intType1.Name == "IntType")
+			{
+			    RuleStartlargest(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntType : t [ int32 ] IntType ] -> : largest IntType [ int32 ]", (intType, intType1));
+			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int32", Value = "int32" } };
+			    RuleEndlargest(true, true, _result);
+			    return _result;
+			    RuleEndlargest(false);
+			}
+			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int16") && intType1 != null && intType1.Name == "IntType" && (intType1.Count == 1 && intType1[0] != null && intType1[0].Name == "int8"))
+			{
+			    RuleStartlargest(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntType [ int16 ] IntType [ int8 ] ] -> : largest IntType [ int16 ]", (intType, intType1));
+			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int16", Value = "int16" } };
+			    RuleEndlargest(true, true, _result);
+			    return _result;
+			    RuleEndlargest(false);
+			}
+			if(intType != null && intType.Name == "IntType" && (intType.Count == 1 && intType[0] != null && intType[0].Name == "int8") && intType1 != null && intType1.Name == "IntType" && (intType1.Count == 1 && intType1[0] != null && intType1[0].Name == "int16"))
+			{
+			    RuleStartlargest(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntType [ int8 ] IntType [ int16 ] ] -> : largest IntType [ int16 ]", (intType, intType1));
+			    var _result = new Compiler.AST.Data.IntType(false) { new Compiler.AST.Data.Token() { Name = "int16", Value = "int16" } };
+			    RuleEndlargest(true, true, _result);
+			    return _result;
+			    RuleEndlargest(false);
+			}
+			if(intType != null && intType.Name == "IntType" && intType1 != null && intType1.Name == "IntType")
+			{
+			    RuleStartlargest(new System.Collections.Generic.List<string>() { "IntType" }, "[ IntType : t1 IntType : t2 ] -> : largest t2", (intType, intType1));
+			    if(AreEqualast((intType as Compiler.AST.Data.IntType), (intType1 as Compiler.AST.Data.IntType)))
+			    {
+			        var _result = intType1 as Compiler.AST.Data.IntType;
+			        RuleEndlargest(true, true, _result);
+			        return _result;
+			    }
+			    RuleEndlargest(false);
+			}
+			RulesFailedlargest((intType, intType1));
+			return (null);
+		}
+
+		public void RuleStarttoAST(System.Collections.Generic.List<string> returnTypes, string rule, Compiler.Parsing.Data.Node data)
 		{
 			Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.AST.Data.Node> error = new Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.AST.Data.Node>();
 			error.ReturnTypes = returnTypes;
@@ -5541,29 +6014,29 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEndp(bool success, bool save, Compiler.AST.Data.Node data)
+		public void RuleEndtoAST(bool success, bool save, Compiler.AST.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.AST.Data.Node>;
 			casted.To = data;
 			if(save)
 			{
-			    Relationp.Add(casted.From, casted.To);
+			    RelationtoAST.Add(casted.From, casted.To);
 			}
 			RuleError = RuleError.Parent;
 		}
 
-		public void RuleEndp(bool success)
+		public void RuleEndtoAST(bool success)
 		{
-			RuleEndp(success, success, null);
+			RuleEndtoAST(success, success, null);
 		}
 
-		public void RulesFailedp(Compiler.Parsing.Data.Node data)
+		public void RulesFailedtoAST(Compiler.Parsing.Data.Node data)
 		{
-			Relationp.Add(data, null);
+			RelationtoAST.Add(data, null);
 		}
 
-		public void WrongPatternp(Compiler.AST.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		public void WrongPatterntoAST(Compiler.AST.Data.Node data, System.Collections.Generic.List<string> returnTypes)
 		{
 			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.AST.Data.Node>;
 			casted.IsError = true;
@@ -5572,24 +6045,24 @@ namespace Compiler.Translation.ProgramToAST
 			casted.To = data;
 		}
 
-		public Compiler.AST.Data.Node Translatep(Compiler.Parsing.Data.Token token)
+		public Compiler.AST.Data.Node TranslatetoAST(Compiler.Parsing.Data.Token token)
 		{
 			bool _isMatching = false;
 			var key = (token);
-			if(Relationp.ContainsKey(key))
+			if(RelationtoAST.ContainsKey(key))
 			{
-			    var value = Relationp[key];
-			    RuleStartp(new System.Collections.Generic.List<string>() { token.Name }, "", key);
-			    RuleEndp(true, false, value);
+			    var value = RelationtoAST[key];
+			    RuleStarttoAST(new System.Collections.Generic.List<string>() { token.Name }, "", key);
+			    RuleEndtoAST(true, false, value);
 			    return value;
 			}
-			RuleStartp(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:p {token.Name}", token);
+			RuleStarttoAST(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:toAST {token.Name}", token);
 			var result = new Compiler.AST.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
-			RuleEndp(true, true, result);
+			RuleEndtoAST(true, true, result);
 			return result;
 		}
 
-		public void RuleStartq(System.Collections.Generic.List<string> returnTypes, string rule, Compiler.Parsing.Data.Node data)
+		public void RuleStarttoSym(System.Collections.Generic.List<string> returnTypes, string rule, Compiler.Parsing.Data.Node data)
 		{
 			Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node> error = new Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node>();
 			error.ReturnTypes = returnTypes;
@@ -5600,29 +6073,29 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEndq(bool success, bool save, Compiler.Translation.SymbolTable.Data.Node data)
+		public void RuleEndtoSym(bool success, bool save, Compiler.Translation.SymbolTable.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node>;
 			casted.To = data;
 			if(save)
 			{
-			    Relationq.Add(casted.From, casted.To);
+			    RelationtoSym.Add(casted.From, casted.To);
 			}
 			RuleError = RuleError.Parent;
 		}
 
-		public void RuleEndq(bool success)
+		public void RuleEndtoSym(bool success)
 		{
-			RuleEndq(success, success, null);
+			RuleEndtoSym(success, success, null);
 		}
 
-		public void RulesFailedq(Compiler.Parsing.Data.Node data)
+		public void RulesFailedtoSym(Compiler.Parsing.Data.Node data)
 		{
-			Relationq.Add(data, null);
+			RelationtoSym.Add(data, null);
 		}
 
-		public void WrongPatternq(Compiler.Translation.SymbolTable.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		public void WrongPatterntoSym(Compiler.Translation.SymbolTable.Data.Node data, System.Collections.Generic.List<string> returnTypes)
 		{
 			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node>;
 			casted.IsError = true;
@@ -5631,24 +6104,24 @@ namespace Compiler.Translation.ProgramToAST
 			casted.To = data;
 		}
 
-		public Compiler.Translation.SymbolTable.Data.Node Translateq(Compiler.Parsing.Data.Token token)
+		public Compiler.Translation.SymbolTable.Data.Node TranslatetoSym(Compiler.Parsing.Data.Token token)
 		{
 			bool _isMatching = false;
 			var key = (token);
-			if(Relationq.ContainsKey(key))
+			if(RelationtoSym.ContainsKey(key))
 			{
-			    var value = Relationq[key];
-			    RuleStartq(new System.Collections.Generic.List<string>() { token.Name }, "", key);
-			    RuleEndq(true, false, value);
+			    var value = RelationtoSym[key];
+			    RuleStarttoSym(new System.Collections.Generic.List<string>() { token.Name }, "", key);
+			    RuleEndtoSym(true, false, value);
 			    return value;
 			}
-			RuleStartq(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:q {token.Name}", token);
+			RuleStarttoSym(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:toSym {token.Name}", token);
 			var result = new Compiler.Translation.SymbolTable.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
-			RuleEndq(true, true, result);
+			RuleEndtoSym(true, true, result);
 			return result;
 		}
 
-		public void RuleStartr(System.Collections.Generic.List<string> returnTypes, string rule, Compiler.Parsing.Data.Node data)
+		public void RuleStartrewrite(System.Collections.Generic.List<string> returnTypes, string rule, Compiler.Parsing.Data.Node data)
 		{
 			Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node> error = new Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node>();
 			error.ReturnTypes = returnTypes;
@@ -5659,29 +6132,29 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEndr(bool success, bool save, Compiler.Parsing.Data.Node data)
+		public void RuleEndrewrite(bool success, bool save, Compiler.Parsing.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node>;
 			casted.To = data;
 			if(save)
 			{
-			    Relationr.Add(casted.From, casted.To);
+			    Relationrewrite.Add(casted.From, casted.To);
 			}
 			RuleError = RuleError.Parent;
 		}
 
-		public void RuleEndr(bool success)
+		public void RuleEndrewrite(bool success)
 		{
-			RuleEndr(success, success, null);
+			RuleEndrewrite(success, success, null);
 		}
 
-		public void RulesFailedr(Compiler.Parsing.Data.Node data)
+		public void RulesFailedrewrite(Compiler.Parsing.Data.Node data)
 		{
-			Relationr.Add(data, null);
+			Relationrewrite.Add(data, null);
 		}
 
-		public void WrongPatternr(Compiler.Parsing.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		public void WrongPatternrewrite(Compiler.Parsing.Data.Node data, System.Collections.Generic.List<string> returnTypes)
 		{
 			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<Compiler.Parsing.Data.Node, Compiler.Parsing.Data.Node>;
 			casted.IsError = true;
@@ -5690,24 +6163,24 @@ namespace Compiler.Translation.ProgramToAST
 			casted.To = data;
 		}
 
-		public Compiler.Parsing.Data.Node Translater(Compiler.Parsing.Data.Token token)
+		public Compiler.Parsing.Data.Node Translaterewrite(Compiler.Parsing.Data.Token token)
 		{
 			bool _isMatching = false;
 			var key = (token);
-			if(Relationr.ContainsKey(key))
+			if(Relationrewrite.ContainsKey(key))
 			{
-			    var value = Relationr[key];
-			    RuleStartr(new System.Collections.Generic.List<string>() { token.Name }, "", key);
-			    RuleEndr(true, false, value);
+			    var value = Relationrewrite[key];
+			    RuleStartrewrite(new System.Collections.Generic.List<string>() { token.Name }, "", key);
+			    RuleEndrewrite(true, false, value);
 			    return value;
 			}
-			RuleStartr(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:r {token.Name}", token);
+			RuleStartrewrite(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:rewrite {token.Name}", token);
 			var result = new Compiler.Parsing.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
-			RuleEndr(true, true, result);
+			RuleEndrewrite(true, true, result);
 			return result;
 		}
 
-		public void RuleStarts(System.Collections.Generic.List<string> returnTypes, string rule, (Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
+		public void RuleStartlookup(System.Collections.Generic.List<string> returnTypes, string rule, (Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
 		{
 			Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.Translation.SymbolTable.Data.Node> error = new Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.Translation.SymbolTable.Data.Node>();
 			error.ReturnTypes = returnTypes;
@@ -5718,29 +6191,29 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEnds(bool success, bool save, Compiler.Translation.SymbolTable.Data.Node data)
+		public void RuleEndlookup(bool success, bool save, Compiler.Translation.SymbolTable.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.Translation.SymbolTable.Data.Node>;
 			casted.To = data;
 			if(save)
 			{
-			    Relations.Add(casted.From, casted.To);
+			    Relationlookup.Add(casted.From, casted.To);
 			}
 			RuleError = RuleError.Parent;
 		}
 
-		public void RuleEnds(bool success)
+		public void RuleEndlookup(bool success)
 		{
-			RuleEnds(success, success, null);
+			RuleEndlookup(success, success, null);
 		}
 
-		public void RulesFaileds((Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
+		public void RulesFailedlookup((Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
 		{
-			Relations.Add(data, null);
+			Relationlookup.Add(data, null);
 		}
 
-		public void WrongPatterns(Compiler.Translation.SymbolTable.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		public void WrongPatternlookup(Compiler.Translation.SymbolTable.Data.Node data, System.Collections.Generic.List<string> returnTypes)
 		{
 			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.Translation.SymbolTable.Data.Node>;
 			casted.IsError = true;
@@ -5749,7 +6222,7 @@ namespace Compiler.Translation.ProgramToAST
 			casted.To = data;
 		}
 
-		public void RuleStartf(System.Collections.Generic.List<string> returnTypes, string rule, (Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
+		public void RuleStartscan(System.Collections.Generic.List<string> returnTypes, string rule, (Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
 		{
 			Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.Translation.SymbolTable.Data.Node> error = new Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.Translation.SymbolTable.Data.Node>();
 			error.ReturnTypes = returnTypes;
@@ -5760,29 +6233,29 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEndf(bool success, bool save, Compiler.Translation.SymbolTable.Data.Node data)
+		public void RuleEndscan(bool success, bool save, Compiler.Translation.SymbolTable.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.Translation.SymbolTable.Data.Node>;
 			casted.To = data;
 			if(save)
 			{
-			    Relationf.Add(casted.From, casted.To);
+			    Relationscan.Add(casted.From, casted.To);
 			}
 			RuleError = RuleError.Parent;
 		}
 
-		public void RuleEndf(bool success)
+		public void RuleEndscan(bool success)
 		{
-			RuleEndf(success, success, null);
+			RuleEndscan(success, success, null);
 		}
 
-		public void RulesFailedf((Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
+		public void RulesFailedscan((Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
 		{
-			Relationf.Add(data, null);
+			Relationscan.Add(data, null);
 		}
 
-		public void WrongPatternf(Compiler.Translation.SymbolTable.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		public void WrongPatternscan(Compiler.Translation.SymbolTable.Data.Node data, System.Collections.Generic.List<string> returnTypes)
 		{
 			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.Translation.SymbolTable.Data.Node>;
 			casted.IsError = true;
@@ -5791,7 +6264,7 @@ namespace Compiler.Translation.ProgramToAST
 			casted.To = data;
 		}
 
-		public void RuleStartt(System.Collections.Generic.List<string> returnTypes, string rule, (Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
+		public void RuleStartparams(System.Collections.Generic.List<string> returnTypes, string rule, (Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
 		{
 			Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.AST.Data.Node> error = new Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.AST.Data.Node>();
 			error.ReturnTypes = returnTypes;
@@ -5802,35 +6275,296 @@ namespace Compiler.Translation.ProgramToAST
 			RuleError = error;
 		}
 
-		public void RuleEndt(bool success, bool save, Compiler.AST.Data.Node data)
+		public void RuleEndparams(bool success, bool save, Compiler.AST.Data.Node data)
 		{
 			RuleError.IsError = !success;
 			var casted = RuleError as Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.AST.Data.Node>;
 			casted.To = data;
 			if(save)
 			{
-			    Relationt.Add(casted.From, casted.To);
+			    Relationparams.Add(casted.From, casted.To);
 			}
 			RuleError = RuleError.Parent;
 		}
 
-		public void RuleEndt(bool success)
+		public void RuleEndparams(bool success)
 		{
-			RuleEndt(success, success, null);
+			RuleEndparams(success, success, null);
 		}
 
-		public void RulesFailedt((Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
+		public void RulesFailedparams((Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
 		{
-			Relationt.Add(data, null);
+			Relationparams.Add(data, null);
 		}
 
-		public void WrongPatternt(Compiler.AST.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		public void WrongPatternparams(Compiler.AST.Data.Node data, System.Collections.Generic.List<string> returnTypes)
 		{
 			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<(Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.AST.Data.Node>;
 			casted.IsError = true;
 			casted.ReturnTypes = returnTypes;
 			casted.IsPatternError = true;
 			casted.To = data;
+		}
+
+		public void RuleStarttype(System.Collections.Generic.List<string> returnTypes, string rule, (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
+		{
+			Compiler.Error.RuleError<(Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.AST.Data.Node> error = new Compiler.Error.RuleError<(Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.AST.Data.Node>();
+			error.ReturnTypes = returnTypes;
+			error.Parent = RuleError;
+			error.Rule = rule;
+			RuleError.Children.Add(error);
+			error.From = data;
+			RuleError = error;
+		}
+
+		public void RuleEndtype(bool success, bool save, Compiler.AST.Data.Node data)
+		{
+			RuleError.IsError = !success;
+			var casted = RuleError as Compiler.Error.RuleError<(Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.AST.Data.Node>;
+			casted.To = data;
+			if(save)
+			{
+			    Relationtype.Add(casted.From, casted.To);
+			}
+			RuleError = RuleError.Parent;
+		}
+
+		public void RuleEndtype(bool success)
+		{
+			RuleEndtype(success, success, null);
+		}
+
+		public void RulesFailedtype((Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
+		{
+			Relationtype.Add(data, null);
+		}
+
+		public void WrongPatterntype(Compiler.AST.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		{
+			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<(Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node), Compiler.AST.Data.Node>;
+			casted.IsError = true;
+			casted.ReturnTypes = returnTypes;
+			casted.IsPatternError = true;
+			casted.To = data;
+		}
+
+		public void RuleStartlargest(System.Collections.Generic.List<string> returnTypes, string rule, (Compiler.AST.Data.Node, Compiler.AST.Data.Node) data)
+		{
+			Compiler.Error.RuleError<(Compiler.AST.Data.Node, Compiler.AST.Data.Node), Compiler.AST.Data.Node> error = new Compiler.Error.RuleError<(Compiler.AST.Data.Node, Compiler.AST.Data.Node), Compiler.AST.Data.Node>();
+			error.ReturnTypes = returnTypes;
+			error.Parent = RuleError;
+			error.Rule = rule;
+			RuleError.Children.Add(error);
+			error.From = data;
+			RuleError = error;
+		}
+
+		public void RuleEndlargest(bool success, bool save, Compiler.AST.Data.Node data)
+		{
+			RuleError.IsError = !success;
+			var casted = RuleError as Compiler.Error.RuleError<(Compiler.AST.Data.Node, Compiler.AST.Data.Node), Compiler.AST.Data.Node>;
+			casted.To = data;
+			if(save)
+			{
+			    Relationlargest.Add(casted.From, casted.To);
+			}
+			RuleError = RuleError.Parent;
+		}
+
+		public void RuleEndlargest(bool success)
+		{
+			RuleEndlargest(success, success, null);
+		}
+
+		public void RulesFailedlargest((Compiler.AST.Data.Node, Compiler.AST.Data.Node) data)
+		{
+			Relationlargest.Add(data, null);
+		}
+
+		public void WrongPatternlargest(Compiler.AST.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		{
+			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<(Compiler.AST.Data.Node, Compiler.AST.Data.Node), Compiler.AST.Data.Node>;
+			casted.IsError = true;
+			casted.ReturnTypes = returnTypes;
+			casted.IsPatternError = true;
+			casted.To = data;
+		}
+
+		public void RuleStartastSym(System.Collections.Generic.List<string> returnTypes, string rule, Compiler.AST.Data.Node data)
+		{
+			Compiler.Error.RuleError<Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node> error = new Compiler.Error.RuleError<Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node>();
+			error.ReturnTypes = returnTypes;
+			error.Parent = RuleError;
+			error.Rule = rule;
+			RuleError.Children.Add(error);
+			error.From = data;
+			RuleError = error;
+		}
+
+		public void RuleEndastSym(bool success, bool save, Compiler.Translation.SymbolTable.Data.Node data)
+		{
+			RuleError.IsError = !success;
+			var casted = RuleError as Compiler.Error.RuleError<Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node>;
+			casted.To = data;
+			if(save)
+			{
+			    RelationastSym.Add(casted.From, casted.To);
+			}
+			RuleError = RuleError.Parent;
+		}
+
+		public void RuleEndastSym(bool success)
+		{
+			RuleEndastSym(success, success, null);
+		}
+
+		public void RulesFailedastSym(Compiler.AST.Data.Node data)
+		{
+			RelationastSym.Add(data, null);
+		}
+
+		public void WrongPatternastSym(Compiler.Translation.SymbolTable.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		{
+			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node>;
+			casted.IsError = true;
+			casted.ReturnTypes = returnTypes;
+			casted.IsPatternError = true;
+			casted.To = data;
+		}
+
+		public Compiler.Translation.SymbolTable.Data.Node TranslateastSym(Compiler.AST.Data.Token token)
+		{
+			bool _isMatching = false;
+			var key = (token);
+			if(RelationastSym.ContainsKey(key))
+			{
+			    var value = RelationastSym[key];
+			    RuleStartastSym(new System.Collections.Generic.List<string>() { token.Name }, "", key);
+			    RuleEndastSym(true, false, value);
+			    return value;
+			}
+			RuleStartastSym(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:astSym {token.Name}", token);
+			var result = new Compiler.Translation.SymbolTable.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
+			RuleEndastSym(true, true, result);
+			return result;
+		}
+
+		public void RuleStartastProg(System.Collections.Generic.List<string> returnTypes, string rule, Compiler.AST.Data.Node data)
+		{
+			Compiler.Error.RuleError<Compiler.AST.Data.Node, Compiler.Parsing.Data.Node> error = new Compiler.Error.RuleError<Compiler.AST.Data.Node, Compiler.Parsing.Data.Node>();
+			error.ReturnTypes = returnTypes;
+			error.Parent = RuleError;
+			error.Rule = rule;
+			RuleError.Children.Add(error);
+			error.From = data;
+			RuleError = error;
+		}
+
+		public void RuleEndastProg(bool success, bool save, Compiler.Parsing.Data.Node data)
+		{
+			RuleError.IsError = !success;
+			var casted = RuleError as Compiler.Error.RuleError<Compiler.AST.Data.Node, Compiler.Parsing.Data.Node>;
+			casted.To = data;
+			if(save)
+			{
+			    RelationastProg.Add(casted.From, casted.To);
+			}
+			RuleError = RuleError.Parent;
+		}
+
+		public void RuleEndastProg(bool success)
+		{
+			RuleEndastProg(success, success, null);
+		}
+
+		public void RulesFailedastProg(Compiler.AST.Data.Node data)
+		{
+			RelationastProg.Add(data, null);
+		}
+
+		public void WrongPatternastProg(Compiler.Parsing.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		{
+			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<Compiler.AST.Data.Node, Compiler.Parsing.Data.Node>;
+			casted.IsError = true;
+			casted.ReturnTypes = returnTypes;
+			casted.IsPatternError = true;
+			casted.To = data;
+		}
+
+		public Compiler.Parsing.Data.Node TranslateastProg(Compiler.AST.Data.Token token)
+		{
+			bool _isMatching = false;
+			var key = (token);
+			if(RelationastProg.ContainsKey(key))
+			{
+			    var value = RelationastProg[key];
+			    RuleStartastProg(new System.Collections.Generic.List<string>() { token.Name }, "", key);
+			    RuleEndastProg(true, false, value);
+			    return value;
+			}
+			RuleStartastProg(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:astProg {token.Name}", token);
+			var result = new Compiler.Parsing.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
+			RuleEndastProg(true, true, result);
+			return result;
+		}
+
+		public void RuleStartsymAST(System.Collections.Generic.List<string> returnTypes, string rule, Compiler.Translation.SymbolTable.Data.Node data)
+		{
+			Compiler.Error.RuleError<Compiler.Translation.SymbolTable.Data.Node, Compiler.AST.Data.Node> error = new Compiler.Error.RuleError<Compiler.Translation.SymbolTable.Data.Node, Compiler.AST.Data.Node>();
+			error.ReturnTypes = returnTypes;
+			error.Parent = RuleError;
+			error.Rule = rule;
+			RuleError.Children.Add(error);
+			error.From = data;
+			RuleError = error;
+		}
+
+		public void RuleEndsymAST(bool success, bool save, Compiler.AST.Data.Node data)
+		{
+			RuleError.IsError = !success;
+			var casted = RuleError as Compiler.Error.RuleError<Compiler.Translation.SymbolTable.Data.Node, Compiler.AST.Data.Node>;
+			casted.To = data;
+			if(save)
+			{
+			    RelationsymAST.Add(casted.From, casted.To);
+			}
+			RuleError = RuleError.Parent;
+		}
+
+		public void RuleEndsymAST(bool success)
+		{
+			RuleEndsymAST(success, success, null);
+		}
+
+		public void RulesFailedsymAST(Compiler.Translation.SymbolTable.Data.Node data)
+		{
+			RelationsymAST.Add(data, null);
+		}
+
+		public void WrongPatternsymAST(Compiler.AST.Data.Node data, System.Collections.Generic.List<string> returnTypes)
+		{
+			var casted = RuleError.Children[RuleError.Children.Count - 1] as Compiler.Error.RuleError<Compiler.Translation.SymbolTable.Data.Node, Compiler.AST.Data.Node>;
+			casted.IsError = true;
+			casted.ReturnTypes = returnTypes;
+			casted.IsPatternError = true;
+			casted.To = data;
+		}
+
+		public Compiler.AST.Data.Node TranslatesymAST(Compiler.Translation.SymbolTable.Data.Token token)
+		{
+			bool _isMatching = false;
+			var key = (token);
+			if(RelationsymAST.ContainsKey(key))
+			{
+			    var value = RelationsymAST[key];
+			    RuleStartsymAST(new System.Collections.Generic.List<string>() { token.Name }, "", key);
+			    RuleEndsymAST(true, false, value);
+			    return value;
+			}
+			RuleStartsymAST(new System.Collections.Generic.List<string>() { token.Name }, $"{token.Name} ->:symAST {token.Name}", token);
+			var result = new Compiler.AST.Data.Token() { Name = token.Name, Value = token.Value, Row = token.Row, Column = token.Column };
+			RuleEndsymAST(true, true, result);
+			return result;
 		}
 
 		public void RuleStart(System.Collections.Generic.List<string> returnTypes, string rule, (Compiler.Parsing.Data.Node, Compiler.Translation.SymbolTable.Data.Node) data)
@@ -5892,6 +6626,30 @@ namespace Compiler.Translation.ProgramToAST
 			for (int index = 0; index < left.Count; index++)
 			{
 			    if (!AreEqual(left[index], right[index]))
+			    {
+			        return false;
+			    }
+			}
+			return true;
+		}
+
+		public bool AreEqualast(Compiler.AST.Data.Node left, Compiler.AST.Data.Node right)
+		{
+			if (left.Count != right.Count || left.Name != right.Name)
+			{
+			    return false;
+			}
+			if (left is Compiler.AST.Data.Token || right is Compiler.AST.Data.Token)
+			{
+			    if (left is Compiler.AST.Data.Token leftToken && right is Compiler.AST.Data.Token rightToken && leftToken.Value == rightToken.Value)
+			    {
+			        return true;
+			    }
+			    return false;
+			}
+			for (int index = 0; index < left.Count; index++)
+			{
+			    if (!AreEqualast(left[index], right[index]))
 			    {
 			        return false;
 			    }

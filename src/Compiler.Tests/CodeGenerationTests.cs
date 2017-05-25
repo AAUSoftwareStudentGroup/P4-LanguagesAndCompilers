@@ -23,7 +23,7 @@ namespace Compiler.Tests
             ProgramParser parser = new ProgramParser();
             var parseTree = parser.ParseProgram(tokenEnumerator);
             var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
-            AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
+            AST.Data.AST ast = astTranslator.TranslatetoAST(parseTree) as AST.Data.AST;
             var cTranslator = new Translation.ASTToC.ASTToCTranslator();
             C.Data.C c = cTranslator.Translate(ast) as C.Data.C;
 

@@ -1,1 +1,2 @@
-register16 sum = sum
+for(int8 i from 1 to 10)
+    i = 0

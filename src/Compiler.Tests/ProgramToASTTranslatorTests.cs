@@ -45,7 +45,7 @@ namespace Compiler.Tests
             // Create a new instance of the ProgramToASTTranslator class
             var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
             // Use the ProgramToASTTranslator with parseTree as parameter to get the AST
-            AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
+            AST.Data.AST ast = astTranslator.TranslatetoAST(parseTree) as AST.Data.AST;
 
             // Below is a hardcoded tree of how the AST is expected to look
             var astExpected = new AST.Data.AST(true)
@@ -162,7 +162,7 @@ namespace Compiler.Tests
             var astTranslator = new Translation.ProgramToAST.ProgramToASTTranslator();
 
             // Use the ProgramToASTTranslator with parseTree as parameter to get the AST
-            AST.Data.AST ast = astTranslator.Translatep(parseTree) as AST.Data.AST;
+            AST.Data.AST ast = astTranslator.TranslatetoAST(parseTree) as AST.Data.AST;
 
             // Below is a hardcoded tree of how the AST is expected to look
             var astExpected = new AST.Data.AST(true)
