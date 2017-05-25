@@ -66,14 +66,15 @@ namespace Compiler.Tests
                                 {
                                     new C.Data.FunctionPrototype(true)
                                     {
-                                        new C.Data.Token(){ Name = "int" },
+                                        new C.Data.Token(){ Name = "signed" },
+                                        new C.Data.Token(){ Name = "long" },
                                         new C.Data.Token(){ Name = "Pow" },
                                         new C.Data.Token(){ Name = "(" },
                                         new C.Data.Token(){ Name = "signed" },
                                         new C.Data.Token(){ Name = "long" },
                                         new C.Data.Token(){ Name = "a" },
                                         new C.Data.Token(){ Name = "," },
-                                        new C.Data.Token(){ Name = "unsigned" },
+                                        new C.Data.Token(){ Name = "signed" },
                                         new C.Data.Token(){ Name = "long" },
                                         new C.Data.Token(){ Name = "b" },
                                         new C.Data.Token(){ Name = ")" }
@@ -108,14 +109,15 @@ namespace Compiler.Tests
                             {
                                 new C.Data.Function(true)
                                 {
-                                    new C.Data.Token(){ Name = "int" },
+                                    new C.Data.Token(){ Name = "signed" },
+                                    new C.Data.Token(){ Name = "long" },
                                     new C.Data.Token(){ Name = "Pow" },
                                     new C.Data.Token(){ Name = "(" },
                                     new C.Data.Token(){ Name = "signed" },
                                     new C.Data.Token(){ Name = "long" },
                                     new C.Data.Token(){ Name = "a" },
                                     new C.Data.Token(){ Name = "," },
-                                    new C.Data.Token(){ Name = "unsigned" },
+                                    new C.Data.Token(){ Name = "signed" },
                                     new C.Data.Token(){ Name = "long" },
                                     new C.Data.Token(){ Name = "b" },
                                     new C.Data.Token(){ Name = ")" },
@@ -124,12 +126,11 @@ namespace Compiler.Tests
                                     new C.Data.Token(){ Name = "long" },
                                     new C.Data.Token(){ Name = "r" },
                                     new C.Data.Token(){ Name = "=" },
-                                    new C.Data.Token(){ Name = "1" },
+                                    new C.Data.Token(){ Name = "1," },
+                                    new C.Data.Token(){ Name = "i" },
                                     new C.Data.Token(){ Name = ";" },
                                     new C.Data.Token(){ Name = "for" },
                                     new C.Data.Token(){ Name = "(" },
-                                    new C.Data.Token(){ Name = "unsigned" },
-                                    new C.Data.Token(){ Name = "long" },
                                     new C.Data.Token(){ Name = "i" },
                                     new C.Data.Token(){ Name = "=" },
                                     new C.Data.Token(){ Name = "0" },

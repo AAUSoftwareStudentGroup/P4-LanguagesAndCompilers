@@ -1,4 +1,0 @@
-int8 return(int16 num)
-	return num
-
-func(10)
