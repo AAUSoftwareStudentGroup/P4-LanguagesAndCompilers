@@ -16,14 +16,14 @@ namespace Compiler.Tests
         public void ConvertToASTCorrectly()
         {
             /* Alias.tang file:
-             * uint8 a
+             * int8 a
              * a = 2
-             * uint8 b
+             * int8 b
              * b = a
              * tokens:
-             * uint8 identifier newline
+             * int8 identifier newline
              * identifier = numeral newline
-             * uint8 identifier newline
+             * int8 identifier newline
              * identifier = identifier newline eof
              */
 
@@ -62,7 +62,7 @@ namespace Compiler.Tests
                                 {
                                     new AST.Data.IntType(true)
                                     {
-                                        new AST.Data.Token(){ Name = "uint8" }
+                                        new AST.Data.Token(){ Name = "int8" }
                                     },
                                     new AST.Data.Token(){ Name = "identifier" }
                                 }
@@ -101,7 +101,7 @@ namespace Compiler.Tests
                                                 {
                                                     new AST.Data.IntType(true)
                                                     {
-                                                        new AST.Data.Token(){ Name = "uint8" }
+                                                        new AST.Data.Token(){ Name = "int8" }
                                                     },
                                                     new AST.Data.Token(){ Name = "identifier" }
                                                 }

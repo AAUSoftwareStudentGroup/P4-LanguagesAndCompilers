@@ -1,3 +1,3 @@
 int8 a = 10
 int16 b = 20
-int8 c = a + b
+int16 c = a + b

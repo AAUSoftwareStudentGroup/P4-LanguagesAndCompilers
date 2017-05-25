@@ -1,7 +1,7 @@
 import Nano
 
-uint8 button
-uint8 led
+int8 button
+int8 led
 
 button = 10
 led = 13

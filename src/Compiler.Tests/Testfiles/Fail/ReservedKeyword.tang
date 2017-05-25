@@ -1,1 +1,1 @@
-uint32 return = 42
+int32 return = 42

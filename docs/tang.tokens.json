@@ -128,18 +128,6 @@
         "PatternString": "int32(?![a-zA-Z_0-9])"
     },
     {
-        "Name": "uint8",
-        "PatternString": "uint8(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "uint16",
-        "PatternString": "uint16(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "uint32",
-        "PatternString": "uint32(?![a-zA-Z_0-9])"
-    },
-    {
         "Name": "register8",
         "PatternString": "register8(?![a-zA-Z_0-9])"
     },
