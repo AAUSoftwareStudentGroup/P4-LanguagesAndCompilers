@@ -1,4 +1,4 @@
-sum(10, 10 + 127)
-
-int8 sum(int8 a, int8 b)
+int8 h(int8 a, int8 b)
     return a + b
+
+h(100, 0-+100)

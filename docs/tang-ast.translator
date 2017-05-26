@@ -448,6 +448,8 @@ IntType[int32] ->:symAST IntType[int32]
 RegisterType[register8] ->:symAST RegisterType[register8]
 RegisterType[register16] ->:symAST RegisterType[register16]
 
+BooleanType[bool] ->:symAST BooleanType[bool]
+
 [IdentifierStatement[identifier:id IdentifierStatementP[BitSelector[EPSILON] = Expression:expr newline]] SymbolTable:s] -> [RegisterAssignment[id1 = registerExpr] s]
     id ->:toAST identifier:id1
     [id s] ->:lookup Declaration[Variable[Type[RegisterType:t] identifier]]
@@ -502,8 +504,19 @@ RegisterType[register16] ->:symAST RegisterType[register16]
     t1 <=>:ast largestinttype2
     [stms s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]] -> [Statement:stms1 SymbolTable]
 
+//Translate expresions if type correct
+
 [Expression[OrExpression:orExpr] SymbolTable:s] -> [expr s]
-    [orExpr s] -> [*:expr SymbolTable]
+    [orExpr s] -> [IntegerExpression:expr SymbolTable]
+    [expr s] ->:type IntType
+
+[Expression[OrExpression:orExpr] SymbolTable:s] -> [expr s]
+    [orExpr s] -> [BooleanExpression:expr SymbolTable]
+    [expr s] ->:type BooleanType
+
+[Expression[OrExpression:orExpr] SymbolTable:s] -> [expr s]
+    [orExpr s] -> [RegisterExpression:expr SymbolTable]
+    [expr s] ->:type RegisterType
 
 [OrExpression[AndExpression:andExpr OrExpressionP[EPSILON]] SymbolTable:s] -> [expr s]
     [andExpr s] -> [*:expr SymbolTable]
@@ -755,6 +768,59 @@ RegisterType[register16] ->:symAST RegisterType[register16]
     f ->:toAST false:f1
 
 // type system
+
+// bool expressions
+[BooleanExpression[true] SymbolTable:s] ->:type BooleanType[bool] 
+[BooleanExpression[false] SymbolTable:s] ->:type BooleanType[bool] 
+[BooleanExpression[identifier] SymbolTable:s] ->:type BooleanType[bool]
+[BooleanExpression[DirectBitValue] SymbolTable:s] ->:type BooleanType[bool]
+[BooleanExpression[IndirectBitValue] SymbolTable:s] ->:type BooleanType[bool]
+[BooleanExpression[BooleanParenthesisExpression[( BooleanExpression:e )]] SymbolTable:s] ->:type BooleanType[bool]
+    [e s] ->:type BooleanType[bool]
+[BooleanExpression[IntegerEqExpression[IntegerExpression:e1 == IntegerExpression:e2]] SymbolTable:s] ->:type BooleanType[bool]
+    [e1 s] ->:type IntType:t1
+    [e2 s] ->:type IntType:t2
+[BooleanExpression[BooleanEqExpression[BooleanExpression:e1 == BooleanExpression:e2]] SymbolTable:s] ->:type BooleanType[bool]
+    [e1 s] ->:type BooleanType:t1
+    [e2 s] ->:type BooleanType:t2
+[BooleanExpression[RegisterEqExpression[RegisterExpression:e1 == RegisterExpression:e2]] SymbolTable:s] ->:type BooleanType[bool]
+    [e1 s] ->:type RegisterType:t1
+    [e2 s] ->:type RegisterType:t2
+    t1 <=>:ast t2
+[BooleanExpression[IntegerNotEqExpression[IntegerExpression:e1 != IntegerExpression:e2]] SymbolTable:s] ->:type BooleanType[bool]
+    [e1 s] ->:type IntType:t1
+    [e2 s] ->:type IntType:t2
+[BooleanExpression[BooleanNotEqExpression[BooleanExpression:e1 != BooleanExpression:e2]] SymbolTable:s] ->:type BooleanType[bool]
+    [e1 s] ->:type BooleanType:t1
+    [e2 s] ->:type BooleanType:t2
+[BooleanExpression[RegisterNotEqExpression[RegisterExpression:e1 != RegisterExpression:e2]] SymbolTable:s] ->:type BooleanType[bool]
+    [e1 s] ->:type RegisterType:t1
+    [e2 s] ->:type RegisterType:t2
+    t1 <=>:ast t2
+[BooleanExpression[LessThanExpression[IntegerExpression:e1 < IntegerExpression:e2]] SymbolTable:s] ->:type BooleanType[bool] 
+    [e1 s] ->:type IntType:t1
+    [e2 s] ->:type IntType:t2
+[BooleanExpression[GreaterThanExpression[IntegerExpression:e1 > IntegerExpression:e2]] SymbolTable:s] ->:type BooleanType[bool] 
+    [e1 s] ->:type IntType:t1
+    [e2 s] ->:type IntType:t2
+[BooleanExpression[LessThanOrEqExpression[IntegerExpression:e1 <= IntegerExpression:e2]] SymbolTable:s] ->:type BooleanType[bool] 
+    [e1 s] ->:type IntType:t1
+    [e2 s] ->:type IntType:t2
+[BooleanExpression[GreaterThanOrEqExpression[IntegerExpression:e1 >= IntegerExpression:e2]] SymbolTable:s] ->:type BooleanType[bool] 
+    [e1 s] ->:type IntType:t1
+    [e2 s] ->:type IntType:t2
+[BooleanExpression[NotExpression[! BooleanExpression:e]] SymbolTable:s] ->:type BooleanType[bool] 
+    [e s] ->:type BooleanType:t
+[BooleanExpression[AndExpression[BooleanExpression:e1 and BooleanExpression:e2]] SymbolTable:s] ->:type BooleanType[bool] 
+    [e1 s] ->:type BooleanType:t1
+    [e2 s] ->:type BooleanType:t2
+[BooleanExpression[OrExpression[BooleanExpression:e1 or BooleanExpression:e2]] SymbolTable:s] ->:type BooleanType[bool] 
+    [e1 s] ->:type BooleanType:t1
+    [e2 s] ->:type BooleanType:t2
+[BooleanExpression[Call[identifier:id ( ExpressionList )]] SymbolTable:s] ->:type BooleanType[bool]
+    id ->:astProg identifier:id1
+    [id1 s] ->:lookup Declaration[Function[ReturnType[Type[BooleanType:t]] identifier Parameters]]
+    t ->:symAST BooleanType:tres
 
 // integer expressions
 [IntegerExpression[identifier:id] SymbolTable:s] ->:type tres

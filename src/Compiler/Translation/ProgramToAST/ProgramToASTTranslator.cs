@@ -3464,6 +3464,29 @@ namespace Compiler.Translation.ProgramToAST
 			return (null);
 		}
 
+		public Compiler.AST.Data.Node TranslatesymAST(Compiler.Translation.SymbolTable.Data.BooleanType booleanType)
+		{
+			bool _isMatching = false;
+			var key = (booleanType);
+			if(RelationsymAST.ContainsKey(key))
+			{
+			    var value = RelationsymAST[key];
+			    RuleStartsymAST(new System.Collections.Generic.List<string>() { booleanType.Name }, "", key);
+			    RuleEndsymAST(true, false, value);
+			    return value;
+			}
+			if(booleanType != null && booleanType.Name == "BooleanType" && (booleanType.Count == 1 && booleanType[0] != null && booleanType[0].Name == "bool"))
+			{
+			    RuleStartsymAST(new System.Collections.Generic.List<string>() { "BooleanType" }, "BooleanType [ bool ] -> : symAST BooleanType [ bool ]", (booleanType));
+			    var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			    RuleEndsymAST(true, true, _result);
+			    return _result;
+			    RuleEndsymAST(false);
+			}
+			RulesFailedsymAST((booleanType));
+			return (null);
+		}
+
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.IfStatement ifStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
@@ -3763,18 +3786,79 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			if(expression != null && expression.Name == "Expression" && (expression.Count == 1 && expression[0] != null && expression[0].Name == "OrExpression") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStart(new System.Collections.Generic.List<string>() { "*", "SymbolTable" }, "[ Expression [ OrExpression : orExpr ] SymbolTable : s ] -> [ expr s ]", (expression, symbolTable));
+			    RuleStart(new System.Collections.Generic.List<string>() { "IntegerExpression", "SymbolTable" }, "[ Expression [ OrExpression : orExpr ] SymbolTable : s ] -> [ expr s ]", (expression, symbolTable));
 			    (Compiler.AST.Data.Node expr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expression[0] as Compiler.Parsing.Data.OrExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			    _isMatching = expr != null && expr.Name == expr.Name && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
+			    _isMatching = expr != null && expr.Name == "IntegerExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
 			    if(expr != null && symbolTable1 != null && !_isMatching)
 			    {
-			        WrongPattern((expr, symbolTable1), new System.Collections.Generic.List<string>() { "*", "SymbolTable" });
+			        WrongPattern((expr, symbolTable1), new System.Collections.Generic.List<string>() { "IntegerExpression", "SymbolTable" });
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = (expr as Compiler.AST.Data.Node, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			        RuleEnd(true, true, _result);
-			        return _result;
+			        Compiler.AST.Data.Node intType = Translatetype(expr as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = intType != null && intType.Name == "IntType";
+			        if(intType != null && !_isMatching)
+			        {
+			            WrongPatterntype((intType), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = (expr as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            RuleEnd(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEnd(false);
+			}
+			if(expression != null && expression.Name == "Expression" && (expression.Count == 1 && expression[0] != null && expression[0].Name == "OrExpression") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanExpression", "SymbolTable" }, "[ Expression [ OrExpression : orExpr ] SymbolTable : s ] -> [ expr s ]", (expression, symbolTable));
+			    (Compiler.AST.Data.Node expr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expression[0] as Compiler.Parsing.Data.OrExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = expr != null && expr.Name == "BooleanExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
+			    if(expr != null && symbolTable1 != null && !_isMatching)
+			    {
+			        WrongPattern((expr, symbolTable1), new System.Collections.Generic.List<string>() { "BooleanExpression", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node booleanType = Translatetype(expr as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = booleanType != null && booleanType.Name == "BooleanType";
+			        if(booleanType != null && !_isMatching)
+			        {
+			            WrongPatterntype((booleanType), new System.Collections.Generic.List<string>() { "BooleanType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = (expr as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            RuleEnd(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEnd(false);
+			}
+			if(expression != null && expression.Name == "Expression" && (expression.Count == 1 && expression[0] != null && expression[0].Name == "OrExpression") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterExpression", "SymbolTable" }, "[ Expression [ OrExpression : orExpr ] SymbolTable : s ] -> [ expr s ]", (expression, symbolTable));
+			    (Compiler.AST.Data.Node expr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expression[0] as Compiler.Parsing.Data.OrExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = expr != null && expr.Name == "RegisterExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
+			    if(expr != null && symbolTable1 != null && !_isMatching)
+			    {
+			        WrongPattern((expr, symbolTable1), new System.Collections.Generic.List<string>() { "RegisterExpression", "SymbolTable" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node registerType = Translatetype(expr as Compiler.AST.Data.RegisterExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = registerType != null && registerType.Name == "RegisterType";
+			        if(registerType != null && !_isMatching)
+			        {
+			            WrongPatterntype((registerType), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = (expr as Compiler.AST.Data.RegisterExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			            RuleEnd(true, true, _result);
+			            return _result;
+			        }
 			    }
 			    RuleEnd(false);
 			}
@@ -5762,6 +5846,448 @@ namespace Compiler.Translation.ProgramToAST
 			    RuleEndparams(false);
 			}
 			RulesFailedparams((expression, parameter, symbolTable));
+			return (null);
+		}
+
+		public Compiler.AST.Data.Node Translatetype(Compiler.AST.Data.BooleanExpression booleanExpression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		{
+			bool _isMatching = false;
+			var key = (booleanExpression, symbolTable);
+			if(Relationtype.ContainsKey(key))
+			{
+			    var value = Relationtype[key];
+			    RuleStarttype(new System.Collections.Generic.List<string>() { booleanExpression.Name, symbolTable.Name }, "", key);
+			    RuleEndtype(true, false, value);
+			    return value;
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "true") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ true ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			    RuleEndtype(true, true, _result);
+			    return _result;
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "false") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ false ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			    RuleEndtype(true, true, _result);
+			    return _result;
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ identifier ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			    RuleEndtype(true, true, _result);
+			    return _result;
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "DirectBitValue") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ DirectBitValue ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			    RuleEndtype(true, true, _result);
+			    return _result;
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "IndirectBitValue") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ IndirectBitValue ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			    RuleEndtype(true, true, _result);
+			    return _result;
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "BooleanParenthesisExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "(" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "BooleanExpression" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ BooleanParenthesisExpression [ ( BooleanExpression : e ) ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node booleanType = Translatetype(booleanExpression[0][1] as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = booleanType != null && booleanType.Name == "BooleanType" && (booleanType.Count == 1 && booleanType[0] != null && booleanType[0].Name == "bool");
+			    if(booleanType != null && !_isMatching)
+			    {
+			        WrongPatterntype((booleanType), new System.Collections.Generic.List<string>() { "BooleanType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			        RuleEndtype(true, true, _result);
+			        return _result;
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "IntegerEqExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "IntegerExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "==" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ IntegerEqExpression [ IntegerExpression : e1 == IntegerExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			            RuleEndtype(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "BooleanEqExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "BooleanExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "==" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "BooleanExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ BooleanEqExpression [ BooleanExpression : e1 == BooleanExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "BooleanType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "BooleanType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "BooleanType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			            RuleEndtype(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "RegisterEqExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "RegisterExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "==" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "RegisterExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ RegisterEqExpression [ RegisterExpression : e1 == RegisterExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.RegisterExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "RegisterType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.RegisterExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "RegisterType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            if(AreEqualast((t1 as Compiler.AST.Data.RegisterType), (t2 as Compiler.AST.Data.RegisterType)))
+			            {
+			                var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "IntegerNotEqExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "IntegerExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "!=" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ IntegerNotEqExpression [ IntegerExpression : e1 != IntegerExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			            RuleEndtype(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "BooleanNotEqExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "BooleanExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "!=" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "BooleanExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ BooleanNotEqExpression [ BooleanExpression : e1 != BooleanExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "BooleanType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "BooleanType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "BooleanType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			            RuleEndtype(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "RegisterNotEqExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "RegisterExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "!=" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "RegisterExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ RegisterNotEqExpression [ RegisterExpression : e1 != RegisterExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.RegisterExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "RegisterType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.RegisterExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "RegisterType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            if(AreEqualast((t1 as Compiler.AST.Data.RegisterType), (t2 as Compiler.AST.Data.RegisterType)))
+			            {
+			                var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "LessThanExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "IntegerExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "<" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ LessThanExpression [ IntegerExpression : e1 < IntegerExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			            RuleEndtype(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "GreaterThanExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "IntegerExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == ">" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ GreaterThanExpression [ IntegerExpression : e1 > IntegerExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			            RuleEndtype(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "LessThanOrEqExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "IntegerExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "<=" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ LessThanOrEqExpression [ IntegerExpression : e1 <= IntegerExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			            RuleEndtype(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "GreaterThanOrEqExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "IntegerExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == ">=" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "IntegerExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ GreaterThanOrEqExpression [ IntegerExpression : e1 >= IntegerExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "IntType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "IntType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "IntType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			            RuleEndtype(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "NotExpression" && (booleanExpression[0].Count == 2 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "!" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "BooleanExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ NotExpression [ ! BooleanExpression : e ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t = Translatetype(booleanExpression[0][1] as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t != null && t.Name == "BooleanType";
+			    if(t != null && !_isMatching)
+			    {
+			        WrongPatterntype((t), new System.Collections.Generic.List<string>() { "BooleanType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			        RuleEndtype(true, true, _result);
+			        return _result;
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "AndExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "BooleanExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "and" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "BooleanExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ AndExpression [ BooleanExpression : e1 and BooleanExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "BooleanType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "BooleanType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "BooleanType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			            RuleEndtype(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "OrExpression" && (booleanExpression[0].Count == 3 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "BooleanExpression" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "or" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "BooleanExpression")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ OrExpression [ BooleanExpression : e1 or BooleanExpression : e2 ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.AST.Data.Node t1 = Translatetype(booleanExpression[0][0] as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			    _isMatching = t1 != null && t1.Name == "BooleanType";
+			    if(t1 != null && !_isMatching)
+			    {
+			        WrongPatterntype((t1), new System.Collections.Generic.List<string>() { "BooleanType" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.AST.Data.Node t2 = Translatetype(booleanExpression[0][2] as Compiler.AST.Data.BooleanExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = t2 != null && t2.Name == "BooleanType";
+			        if(t2 != null && !_isMatching)
+			        {
+			            WrongPatterntype((t2), new System.Collections.Generic.List<string>() { "BooleanType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			            RuleEndtype(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "Call" && (booleanExpression[0].Count == 4 && booleanExpression[0][0] != null && booleanExpression[0][0].Name == "identifier" && booleanExpression[0][1] != null && booleanExpression[0][1].Name == "(" && booleanExpression[0][2] != null && booleanExpression[0][2].Name == "ExpressionList" && booleanExpression[0][3] != null && booleanExpression[0][3].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "BooleanType" }, "[ BooleanExpression [ Call [ identifier : id ( ExpressionList ) ] ] SymbolTable : s ] -> : type BooleanType [ bool ]", (booleanExpression, symbolTable));
+			    Compiler.Parsing.Data.Node id1 = TranslateastProg(booleanExpression[0][0] as Compiler.AST.Data.Token);
+			    _isMatching = id1 != null && id1.Name == "identifier";
+			    if(id1 != null && !_isMatching)
+			    {
+			        WrongPatternastProg((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(id1 as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "Type" && (declaration[0][0][0].Count == 1 && declaration[0][0][0][0] != null && declaration[0][0][0][0].Name == "BooleanType")) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && declaration[0][2] != null && declaration[0][2].Name == "Parameters"));
+			        if(declaration != null && !_isMatching)
+			        {
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node tres = TranslatesymAST(declaration[0][0][0][0] as Compiler.Translation.SymbolTable.Data.BooleanType);
+			            _isMatching = tres != null && tres.Name == "BooleanType";
+			            if(tres != null && !_isMatching)
+			            {
+			                WrongPatternsymAST((tres), new System.Collections.Generic.List<string>() { "BooleanType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                var _result = new Compiler.AST.Data.BooleanType(false) { new Compiler.AST.Data.Token() { Name = "bool", Value = "bool" } };
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			RulesFailedtype((booleanExpression, symbolTable));
 			return (null);
 		}
 

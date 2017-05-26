@@ -1,9 +1,9 @@
 volatile unsigned char * ddrb ;
 volatile unsigned char * port ;
 signed long counter ;
-int Pow ( signed long a , unsigned long b ) ;
+signed long Pow ( signed long a , signed long b ) ;
 void main ( ) ;
-int Pow ( signed long a , unsigned long b ) { signed long r = 1 ; for ( unsigned long i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
+signed long Pow ( signed long a , signed long b ) { signed long r = 1 , i ; for ( i = 0 ; i < b ; i ++ ) { r *= a ; } return r ; }
 void main ( )
 {
     ddrb = ( volatile unsigned char * ) ( 36 ) ;
