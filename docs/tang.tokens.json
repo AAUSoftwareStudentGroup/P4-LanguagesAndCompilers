@@ -1,214 +1,213 @@
 [
-    {
-        "Name": "lineComment",
-        "PatternString": "//.*",
-        "Ignore": true
-    },
-    {
-        "Name": "blockComment",
-        "PatternString": "/\\*.*\\*/",
-        "SingleLine": true,
-        "Ignore": true
-    },
-    {
-        "Name": "whitespace",
-        "PatternString": "[\\t ]+",
-        "Ignore": true
-    },
-    {
-        "Name": "interrupt",
-        "PatternString": "interrupt(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "+",
-        "PatternString": "\\+"
-    },
-    {
-        "Name": "!=",
-        "PatternString": "!="
-    },
-    {
-        "Name": "!",
-        "PatternString": "\\!"
-    },
+  {
+    "Name": "lineComment",
+    "PatternString": "//.*",
+    "Ignore": true
+  },
+  {
+    "Name": "blockComment",
+    "PatternString": "/\\*.*\\*/",
+    "SingleLine": true,
+    "Ignore": true
+  },
+  {
+    "Name": "whitespace",
+    "PatternString": "[\\t ]+",
+    "Ignore": true
+  },
+  {
+    "Name": "interrupt",
+    "PatternString": "interrupt(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "+",
+    "PatternString": "\\+"
+  },
+  {
+    "Name": "!=",
+    "PatternString": "!="
+  },
+  {
+    "Name": "!",
+    "PatternString": "\\!"
+  },
 
-    {
-        "Name": "%",
-        "PatternString": "\\%"
-    },
+  {
+    "Name": "%",
+    "PatternString": "\\%"
+  },
 
-    {
-        "Name": "^",
-        "PatternString": "\\^"
-    },
-
-    {
-        "Name": "-",
-        "PatternString": "\\-"
-    },
-    {
-        "Name": "*",
-        "PatternString": "\\*"
-    },
-    {
-        "Name": "/",
-        "PatternString": "\\/"
-    },
-    {
-        "Name": "(",
-        "PatternString": "\\("
-    },
-    {
-        "Name": ")",
-        "PatternString": "\\)"
-    },
-    {
-        "Name": "newline",
-        "PatternString": "\\r?\\n[\\r\\n\\t ]+",
-        "SingleLine": true
-    },
-    {
-        "Name": "numeral",
-        "PatternString": "([+-]?(0|([1-9][0-9]*)))"
-    },
-    {
-        "Name": "true",
-        "PatternString": "true(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "false",
-        "PatternString": "false(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "if",
-        "PatternString": "if(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "else",
-        "PatternString": "else(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "for",
-        "PatternString": "for(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "while",
-        "PatternString": "while(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "and",
-        "PatternString": "and(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "or",
-        "PatternString": "or(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "class",
-        "PatternString": "class(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "nothing",
-        "PatternString": "nothing"
-    },
-    {
-        "Name": "return",
-        "PatternString": "return(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "int8",
-        "PatternString": "int8(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "int16",
-        "PatternString": "int16(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "int32",
-        "PatternString": "int32(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "register8",
-        "PatternString": "register8(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "register16",
-        "PatternString": "register16(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "bool",
-        "PatternString": "bool(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "enableinterrupts",
-        "PatternString": "enableinterrupts(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "disableinterrupts",
-        "PatternString": "disableinterrupts(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "==",
-        "PatternString": "=="
-    },
-    {
-        "Name": "<=",
-        "PatternString": "<="
-    },
-    {
-        "Name": ">=",
-        "PatternString": ">="
-    },
-    {
-        "Name": "<",
-        "PatternString": "<"
-    },
-    {
-        "Name": ">",
-        "PatternString": ">"
-    },
-    {
-        "Name": "=",
-        "PatternString": "="
-    },
-    {
-        "Name": ",",
-        "PatternString": ","
-    },
-        {
-        "Name": "[",
-        "PatternString": "\\["
-    },
-    {
-        "Name": "]",
-        "PatternString": "\\]"
-    },
-    {
-        "Name": "{",
-        "PatternString": "\\{"
-    },
-    {
-        "Name": "}",
-        "PatternString": "\\}"
-    },
-    {
-        "Name": ".",
-        "PatternString": "\\."
-    },
-    {
-        "Name": "from",
-        "PatternString": "from(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "to",
-        "PatternString": "to(?![a-zA-Z_0-9])"
-    },
-    {
-        "Name": "import",
-        "PatternString": "import [a-zA-Z0-9_\\.]*"
-    },
-    {
-        "Name": "identifier",
-        "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
-    }
+  {
+    "Name": "^",
+    "PatternString": "\\^"
+  },
+  {
+    "Name": "*",
+    "PatternString": "\\*"
+  },
+  {
+    "Name": "/",
+    "PatternString": "\\/"
+  },
+  {
+    "Name": "(",
+    "PatternString": "\\("
+  },
+  {
+    "Name": ")",
+    "PatternString": "\\)"
+  },
+  {
+    "Name": "newline",
+    "PatternString": "\\r?\\n[\\r\\n\\t ]+",
+    "SingleLine": true
+  },
+  {
+    "Name": "-",
+    "PatternString": "\\-"
+  },
+  {
+    "Name": "numeral",
+    "PatternString": "([+-]?(0|([1-9][0-9]*)))"
+  },
+  {
+    "Name": "true",
+    "PatternString": "true(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "false",
+    "PatternString": "false(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "if",
+    "PatternString": "if(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "else",
+    "PatternString": "else(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "for",
+    "PatternString": "for(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "while",
+    "PatternString": "while(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "and",
+    "PatternString": "and(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "or",
+    "PatternString": "or(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "class",
+    "PatternString": "class(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "nothing",
+    "PatternString": "nothing"
+  },
+  {
+    "Name": "return",
+    "PatternString": "return(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "int8",
+    "PatternString": "int8(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "int16",
+    "PatternString": "int16(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "int32",
+    "PatternString": "int32(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "register8",
+    "PatternString": "register8(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "register16",
+    "PatternString": "register16(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "bool",
+    "PatternString": "bool(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "enableinterrupts",
+    "PatternString": "enableinterrupts(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "disableinterrupts",
+    "PatternString": "disableinterrupts(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "==",
+    "PatternString": "=="
+  },
+  {
+    "Name": "<=",
+    "PatternString": "<="
+  },
+  {
+    "Name": ">=",
+    "PatternString": ">="
+  },
+  {
+    "Name": "<",
+    "PatternString": "<"
+  },
+  {
+    "Name": ">",
+    "PatternString": ">"
+  },
+  {
+    "Name": "=",
+    "PatternString": "="
+  },
+  {
+    "Name": ",",
+    "PatternString": ","
+  },
+  {
+    "Name": "[",
+    "PatternString": "\\["
+  },
+  {
+    "Name": "]",
+    "PatternString": "\\]"
+  },
+  {
+    "Name": "{",
+    "PatternString": "\\{"
+  },
+  {
+    "Name": "}",
+    "PatternString": "\\}"
+  },
+  {
+    "Name": ".",
+    "PatternString": "\\."
+  },
+  {
+    "Name": "from",
+    "PatternString": "from(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "to",
+    "PatternString": "to(?![a-zA-Z_0-9])"
+  },
+  {
+    "Name": "import",
+    "PatternString": "import [a-zA-Z0-9_\\.]*"
+  },
+  {
+    "Name": "identifier",
+    "PatternString": "_*[a-zA-Z][a-zA-Z_0-9]*"
+  }
 ]

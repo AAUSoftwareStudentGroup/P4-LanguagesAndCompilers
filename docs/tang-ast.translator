@@ -381,6 +381,9 @@ SimpleDefinition[newline] ->:rewrite Definition[newline]
     id ->:toSym identifier:id2
     [expr s] -> [RegisterExpression:rexpr SymbolTable]
     [id s] ->:lookup Declaration[EPSILON]
+    [rexpr s] ->:type RegisterType:registertype
+    [t1 registertype] ->:largest RegisterType:largesttype
+    largesttype <=>:ast t1
 
 [RegisterStatement[RegisterType:t RegisterOperation[( Expression:expr1 ) { Expression:expr2 } = Expression:expr3 newline]] SymbolTable:s] 
 -> [DirectBitAssignment[regType ( intExpr1 ) { intExpr2 } = boolExpr] s]
@@ -442,10 +445,18 @@ IntType[int8] ->:symAST IntType[int8]
 IntType[int16] ->:symAST IntType[int16]
 IntType[int32] ->:symAST IntType[int32]
 
+RegisterType[register8] ->:symAST RegisterType[register8]
+RegisterType[register16] ->:symAST RegisterType[register16]
+
 [IdentifierStatement[identifier:id IdentifierStatementP[BitSelector[EPSILON] = Expression:expr newline]] SymbolTable:s] -> [RegisterAssignment[id1 = registerExpr] s]
     id ->:toAST identifier:id1
-    [id s] ->:lookup Declaration[Variable[Type[RegisterType] identifier]]
+    [id s] ->:lookup Declaration[Variable[Type[RegisterType:t] identifier]]
+    t ->:symAST RegisterType:t1
     [expr s] -> [RegisterExpression:registerExpr SymbolTable]
+    [registerExpr s] ->:type RegisterType:registertype
+    [t1 registertype] ->:largest RegisterType:largesttype
+    largesttype <=>:ast t1
+    
 
 [IdentifierStatement[identifier:id IdentifierStatementP[BitSelector[EPSILON] = Expression:expr newline]] SymbolTable:s] -> [BooleanAssignment[id1 = boolExpr] s]
     id ->:toAST identifier:id1
@@ -499,7 +510,12 @@ IntType[int32] ->:symAST IntType[int32]
     id ->:toSym identifier:id2
     [id s] ->:lookup Declaration[EPSILON]
     [expr1 s] -> [IntegerExpression:iexpr1 SymbolTable]
+    [iexpr1 s] ->:type IntType:intexprtype1
     [expr2 s] -> [IntegerExpression:iexpr2 SymbolTable]    
+    [iexpr2 s] ->:type IntType:intexprtype2
+    [intexprtype1 intexprtype2] ->:largest IntType:largestinttype1
+    [t1 largestinttype1] ->:largest IntType:largestinttype2
+    t1 <=>:ast largestinttype2
     [stms s <- Declarations[Declaration[Variable[Type[t2] id2]] %Declarations[EPSILON]]] -> [Statement:stms1 SymbolTable]
 
 [Expression[OrExpression:orExpr] SymbolTable:s] -> [expr s]
@@ -697,14 +713,22 @@ IntType[int32] ->:symAST IntType[int32]
     [p1 p3 s] ->:params ExpressionListArgs:p5
     [p2 p4 s] ->:params ExpressionListArgs:p6
 
-[Expression:expr Parameter[Type[IntType] identifier] SymbolTable:s] ->:params ExpressionListArgs[iexpr]
+[Expression:expr Parameter[Type[IntType:t] identifier] SymbolTable:s] ->:params ExpressionListArgs[iexpr]
     [expr s] -> [IntegerExpression:iexpr SymbolTable]
+    [iexpr s] ->:type IntType:inttype
+    t ->:symAST IntType:paraminttype
+    [inttype paraminttype] ->:largest IntType:largesttype
+    paraminttype <=>:ast largesttype
 
 [Expression:expr Parameter[Type[BooleanType] identifier] SymbolTable:s] ->:params ExpressionListArgs[bexpr]
     [expr s] -> [BooleanExpression:bexpr SymbolTable]
-
-[Expression:expr Parameter[Type[RegisterType] identifier] SymbolTable:s] ->:params ExpressionListArgs[rexpr]
+    
+[Expression:expr Parameter[Type[RegisterType:t] identifier] SymbolTable:s] ->:params ExpressionListArgs[rexpr]
     [expr s] -> [RegisterExpression:rexpr SymbolTable]
+    [rexpr s] ->:type RegisterType:regtype
+    t ->:symAST RegisterType:paramregtype
+    [regtype paramregtype] ->:largest RegisterType:largesttype
+    paramregtype <=>:ast largesttype
 
 [PrimaryExpression[identifier:id IdentifierOperation[BitSelector[{ Expression:expr }]]] SymbolTable:s] -> [BooleanExpression[IndirectBitValue[id1 { intExpr }]] s]
     id ->:toAST identifier:id1
@@ -729,6 +753,8 @@ IntType[int32] ->:symAST IntType[int32]
     f ->:toAST false:f1
 
 // type system
+
+// integer expressions
 [IntegerExpression[identifier:id] SymbolTable:s] ->:type tres
     id ->:astProg identifier:id1
     [id1 s] ->:lookup Declaration[Variable[Type[IntType:t] identifier]]
@@ -775,4 +801,22 @@ IntType[int32] ->:symAST IntType[int32]
 [IntType[int8] IntType[int16]] ->:largest IntType[int16]
 
 [IntType:t1 IntType:t2] ->:largest t2
+    t1 <=>:ast t2
+
+// register expressions
+[RegisterExpression[RegisterLiteral[RegisterType:t ( IntegerExpression )]] SymbolTable:s] ->:type t
+[RegisterExpression[identifier:id] SymbolTable:s] ->:type tres
+    id ->:astProg identifier:id1
+    [id1 s] ->:lookup Declaration[Variable[Type[RegisterType:t] identifier]]
+    t ->:symAST RegisterType:tres
+[RegisterExpression[Call[identifier:id ( ExpressionList )]] SymbolTable:s] ->:type tres
+    id ->:astProg identifier:id1
+    [id1 s] ->:lookup Declaration[Function[ReturnType[Type[RegisterType:t]] identifier Parameters]]
+    t ->:symAST RegisterType:tres
+
+[RegisterType[register8] RegisterType[register16]] ->:largest RegisterType[register16]
+
+[RegisterType[register16] RegisterType[register8]] ->:largest RegisterType[register16]
+
+[RegisterType:t1 RegisterType:t2] ->:largest t2
     t1 <=>:ast t2

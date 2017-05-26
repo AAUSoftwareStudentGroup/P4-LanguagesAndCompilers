@@ -2947,9 +2947,30 @@ namespace Compiler.Translation.ProgramToAST
 			                        }
 			                        else if(_isMatching)
 			                        {
-			                            var _result = (new Compiler.AST.Data.RegisterDeclarationInit(false) { t1 as Compiler.AST.Data.RegisterType, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, rexpr as Compiler.AST.Data.RegisterExpression }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.RegisterType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                            RuleEnd(true, true, _result);
-			                            return _result;
+			                            Compiler.AST.Data.Node registertype = Translatetype(rexpr as Compiler.AST.Data.RegisterExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                            _isMatching = registertype != null && registertype.Name == "RegisterType";
+			                            if(registertype != null && !_isMatching)
+			                            {
+			                                WrongPatterntype((registertype), new System.Collections.Generic.List<string>() { "RegisterType" });
+			                            }
+			                            else if(_isMatching)
+			                            {
+			                                Compiler.AST.Data.Node largesttype = Translatelargest(t1 as Compiler.AST.Data.RegisterType, registertype as Compiler.AST.Data.RegisterType);
+			                                _isMatching = largesttype != null && largesttype.Name == "RegisterType";
+			                                if(largesttype != null && !_isMatching)
+			                                {
+			                                    WrongPatternlargest((largesttype), new System.Collections.Generic.List<string>() { "RegisterType" });
+			                                }
+			                                else if(_isMatching)
+			                                {
+			                                    if(AreEqualast((largesttype as Compiler.AST.Data.RegisterType), (t1 as Compiler.AST.Data.RegisterType)))
+			                                    {
+			                                        var _result = (new Compiler.AST.Data.RegisterDeclarationInit(false) { t1 as Compiler.AST.Data.RegisterType, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, rexpr as Compiler.AST.Data.RegisterExpression }, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.RegisterType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                                        RuleEnd(true, true, _result);
+			                                        return _result;
+			                                    }
+			                                }
+			                            }
 			                        }
 			                    }
 			                }
@@ -3253,17 +3274,47 @@ namespace Compiler.Translation.ProgramToAST
 			        }
 			        else if(_isMatching)
 			        {
-			            (Compiler.AST.Data.Node registerExpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierStatement[1][2] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			            _isMatching = registerExpr != null && registerExpr.Name == "RegisterExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
-			            if(registerExpr != null && symbolTable1 != null && !_isMatching)
+			            Compiler.AST.Data.Node t1 = TranslatesymAST(declaration[0][0][0] as Compiler.Translation.SymbolTable.Data.RegisterType);
+			            _isMatching = t1 != null && t1.Name == "RegisterType";
+			            if(t1 != null && !_isMatching)
 			            {
-			                WrongPattern((registerExpr, symbolTable1), new System.Collections.Generic.List<string>() { "RegisterExpression", "SymbolTable" });
+			                WrongPatternsymAST((t1), new System.Collections.Generic.List<string>() { "RegisterType" });
 			            }
 			            else if(_isMatching)
 			            {
-			                var _result = (new Compiler.AST.Data.RegisterAssignment(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, registerExpr as Compiler.AST.Data.RegisterExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                RuleEnd(true, true, _result);
-			                return _result;
+			                (Compiler.AST.Data.Node registerExpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(identifierStatement[1][2] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                _isMatching = registerExpr != null && registerExpr.Name == "RegisterExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
+			                if(registerExpr != null && symbolTable1 != null && !_isMatching)
+			                {
+			                    WrongPattern((registerExpr, symbolTable1), new System.Collections.Generic.List<string>() { "RegisterExpression", "SymbolTable" });
+			                }
+			                else if(_isMatching)
+			                {
+			                    Compiler.AST.Data.Node registertype = Translatetype(registerExpr as Compiler.AST.Data.RegisterExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                    _isMatching = registertype != null && registertype.Name == "RegisterType";
+			                    if(registertype != null && !_isMatching)
+			                    {
+			                        WrongPatterntype((registertype), new System.Collections.Generic.List<string>() { "RegisterType" });
+			                    }
+			                    else if(_isMatching)
+			                    {
+			                        Compiler.AST.Data.Node largesttype = Translatelargest(t1 as Compiler.AST.Data.RegisterType, registertype as Compiler.AST.Data.RegisterType);
+			                        _isMatching = largesttype != null && largesttype.Name == "RegisterType";
+			                        if(largesttype != null && !_isMatching)
+			                        {
+			                            WrongPatternlargest((largesttype), new System.Collections.Generic.List<string>() { "RegisterType" });
+			                        }
+			                        else if(_isMatching)
+			                        {
+			                            if(AreEqualast((largesttype as Compiler.AST.Data.RegisterType), (t1 as Compiler.AST.Data.RegisterType)))
+			                            {
+			                                var _result = (new Compiler.AST.Data.RegisterAssignment(false) { id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "=", Value = "=" }, registerExpr as Compiler.AST.Data.RegisterExpression }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                                RuleEnd(true, true, _result);
+			                                return _result;
+			                            }
+			                        }
+			                    }
+			                }
 			            }
 			        }
 			    }
@@ -3487,6 +3538,37 @@ namespace Compiler.Translation.ProgramToAST
 			return (null);
 		}
 
+		public Compiler.AST.Data.Node TranslatesymAST(Compiler.Translation.SymbolTable.Data.RegisterType registerType)
+		{
+			bool _isMatching = false;
+			var key = (registerType);
+			if(RelationsymAST.ContainsKey(key))
+			{
+			    var value = RelationsymAST[key];
+			    RuleStartsymAST(new System.Collections.Generic.List<string>() { registerType.Name }, "", key);
+			    RuleEndsymAST(true, false, value);
+			    return value;
+			}
+			if(registerType != null && registerType.Name == "RegisterType" && (registerType.Count == 1 && registerType[0] != null && registerType[0].Name == "register8"))
+			{
+			    RuleStartsymAST(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register8 ] -> : symAST RegisterType [ register8 ]", (registerType));
+			    var _result = new Compiler.AST.Data.RegisterType(false) { new Compiler.AST.Data.Token() { Name = "register8", Value = "register8" } };
+			    RuleEndsymAST(true, true, _result);
+			    return _result;
+			    RuleEndsymAST(false);
+			}
+			if(registerType != null && registerType.Name == "RegisterType" && (registerType.Count == 1 && registerType[0] != null && registerType[0].Name == "register16"))
+			{
+			    RuleStartsymAST(new System.Collections.Generic.List<string>() { "RegisterType" }, "RegisterType [ register16 ] -> : symAST RegisterType [ register16 ]", (registerType));
+			    var _result = new Compiler.AST.Data.RegisterType(false) { new Compiler.AST.Data.Token() { Name = "register16", Value = "register16" } };
+			    RuleEndsymAST(true, true, _result);
+			    return _result;
+			    RuleEndsymAST(false);
+			}
+			RulesFailedsymAST((registerType));
+			return (null);
+		}
+
 		public (Compiler.AST.Data.Node, Compiler.Translation.SymbolTable.Data.Node) Translate(Compiler.Parsing.Data.IfStatement ifStatement, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
 		{
 			bool _isMatching = false;
@@ -3701,25 +3783,64 @@ namespace Compiler.Translation.ProgramToAST
 			                        }
 			                        else if(_isMatching)
 			                        {
-			                            (Compiler.AST.Data.Node iexpr2, Compiler.Translation.SymbolTable.Data.Node symbolTable2) = Translate(forStatement[7] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                            _isMatching = iexpr2 != null && iexpr2.Name == "IntegerExpression" && symbolTable2 != null && symbolTable2.Name == "SymbolTable";
-			                            if(iexpr2 != null && symbolTable2 != null && !_isMatching)
+			                            Compiler.AST.Data.Node intexprtype1 = Translatetype(iexpr1 as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                            _isMatching = intexprtype1 != null && intexprtype1.Name == "IntType";
+			                            if(intexprtype1 != null && !_isMatching)
 			                            {
-			                                WrongPattern((iexpr2, symbolTable2), new System.Collections.Generic.List<string>() { "IntegerExpression", "SymbolTable" });
+			                                WrongPatterntype((intexprtype1), new System.Collections.Generic.List<string>() { "IntType" });
 			                            }
 			                            else if(_isMatching)
 			                            {
-			                                (Compiler.AST.Data.Node stms1, Compiler.Translation.SymbolTable.Data.Node symbolTable3) = Translate(forStatement[10] as Compiler.Parsing.Data.Statements, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                                _isMatching = stms1 != null && stms1.Name == "Statement" && symbolTable3 != null && symbolTable3.Name == "SymbolTable";
-			                                if(stms1 != null && symbolTable3 != null && !_isMatching)
+			                                (Compiler.AST.Data.Node iexpr2, Compiler.Translation.SymbolTable.Data.Node symbolTable2) = Translate(forStatement[7] as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                                _isMatching = iexpr2 != null && iexpr2.Name == "IntegerExpression" && symbolTable2 != null && symbolTable2.Name == "SymbolTable";
+			                                if(iexpr2 != null && symbolTable2 != null && !_isMatching)
 			                                {
-			                                    WrongPattern((stms1, symbolTable3), new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" });
+			                                    WrongPattern((iexpr2, symbolTable2), new System.Collections.Generic.List<string>() { "IntegerExpression", "SymbolTable" });
 			                                }
 			                                else if(_isMatching)
 			                                {
-			                                    var _result = (new Compiler.AST.Data.ForStatement(false) { new Compiler.AST.Data.Token() { Name = "for", Value = "for" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, t1 as Compiler.AST.Data.IntType, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "from", Value = "from" }, iexpr1 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = "to", Value = "to" }, iexpr2 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stms1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
-			                                    RuleEnd(true, true, _result);
-			                                    return _result;
+			                                    Compiler.AST.Data.Node intexprtype2 = Translatetype(iexpr2 as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                                    _isMatching = intexprtype2 != null && intexprtype2.Name == "IntType";
+			                                    if(intexprtype2 != null && !_isMatching)
+			                                    {
+			                                        WrongPatterntype((intexprtype2), new System.Collections.Generic.List<string>() { "IntType" });
+			                                    }
+			                                    else if(_isMatching)
+			                                    {
+			                                        Compiler.AST.Data.Node largestinttype1 = Translatelargest(intexprtype1 as Compiler.AST.Data.IntType, intexprtype2 as Compiler.AST.Data.IntType);
+			                                        _isMatching = largestinttype1 != null && largestinttype1.Name == "IntType";
+			                                        if(largestinttype1 != null && !_isMatching)
+			                                        {
+			                                            WrongPatternlargest((largestinttype1), new System.Collections.Generic.List<string>() { "IntType" });
+			                                        }
+			                                        else if(_isMatching)
+			                                        {
+			                                            Compiler.AST.Data.Node largestinttype2 = Translatelargest(t1 as Compiler.AST.Data.IntType, largestinttype1 as Compiler.AST.Data.IntType);
+			                                            _isMatching = largestinttype2 != null && largestinttype2.Name == "IntType";
+			                                            if(largestinttype2 != null && !_isMatching)
+			                                            {
+			                                                WrongPatternlargest((largestinttype2), new System.Collections.Generic.List<string>() { "IntType" });
+			                                            }
+			                                            else if(_isMatching)
+			                                            {
+			                                                if(AreEqualast((t1 as Compiler.AST.Data.IntType), (largestinttype2 as Compiler.AST.Data.IntType)))
+			                                                {
+			                                                    (Compiler.AST.Data.Node stms1, Compiler.Translation.SymbolTable.Data.Node symbolTable3) = Translate(forStatement[10] as Compiler.Parsing.Data.Statements, Insert(symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable, new Compiler.Translation.SymbolTable.Data.Declarations(false) { new Compiler.Translation.SymbolTable.Data.Declaration(false) { new Compiler.Translation.SymbolTable.Data.Variable(false) { new Compiler.Translation.SymbolTable.Data.Type(false) { t2 as Compiler.Translation.SymbolTable.Data.IntType }, id2 as Compiler.Translation.SymbolTable.Data.Token } }, new Compiler.Translation.SymbolTable.Data.Declarations(true) { new Compiler.Translation.SymbolTable.Data.Token() { Name = "EPSILON", Value = "EPSILON" } } }) as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                                                    _isMatching = stms1 != null && stms1.Name == "Statement" && symbolTable3 != null && symbolTable3.Name == "SymbolTable";
+			                                                    if(stms1 != null && symbolTable3 != null && !_isMatching)
+			                                                    {
+			                                                        WrongPattern((stms1, symbolTable3), new System.Collections.Generic.List<string>() { "Statement", "SymbolTable" });
+			                                                    }
+			                                                    else if(_isMatching)
+			                                                    {
+			                                                        var _result = (new Compiler.AST.Data.ForStatement(false) { new Compiler.AST.Data.Token() { Name = "for", Value = "for" }, new Compiler.AST.Data.Token() { Name = "(", Value = "(" }, t1 as Compiler.AST.Data.IntType, id1 as Compiler.AST.Data.Token, new Compiler.AST.Data.Token() { Name = "from", Value = "from" }, iexpr1 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = "to", Value = "to" }, iexpr2 as Compiler.AST.Data.IntegerExpression, new Compiler.AST.Data.Token() { Name = ")", Value = ")" }, new Compiler.AST.Data.Token() { Name = "indent", Value = "indent" }, stms1 as Compiler.AST.Data.Statement, new Compiler.AST.Data.Token() { Name = "dedent", Value = "dedent" } }, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			                                                        RuleEnd(true, true, _result);
+			                                                        return _result;
+			                                                    }
+			                                                }
+			                                            }
+			                                        }
+			                                    }
 			                                }
 			                            }
 			                        }
@@ -5524,7 +5645,7 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			if(expression != null && expression.Name == "Expression" && parameter != null && parameter.Name == "Parameter" && (parameter.Count == 2 && parameter[0] != null && parameter[0].Name == "Type" && (parameter[0].Count == 1 && parameter[0][0] != null && parameter[0][0].Name == "IntType") && parameter[1] != null && parameter[1].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ Expression : expr Parameter [ Type [ IntType ] identifier ] SymbolTable : s ] -> : params ExpressionListArgs [ iexpr ]", (expression, parameter, symbolTable));
+			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ Expression : expr Parameter [ Type [ IntType : t ] identifier ] SymbolTable : s ] -> : params ExpressionListArgs [ iexpr ]", (expression, parameter, symbolTable));
 			    (Compiler.AST.Data.Node iexpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expression as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = iexpr != null && iexpr.Name == "IntegerExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
 			    if(iexpr != null && symbolTable1 != null && !_isMatching)
@@ -5533,9 +5654,39 @@ namespace Compiler.Translation.ProgramToAST
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = new Compiler.AST.Data.ExpressionListArgs(false) { iexpr as Compiler.AST.Data.IntegerExpression };
-			        RuleEndparams(true, true, _result);
-			        return _result;
+			        Compiler.AST.Data.Node inttype = Translatetype(iexpr as Compiler.AST.Data.IntegerExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = inttype != null && inttype.Name == "IntType";
+			        if(inttype != null && !_isMatching)
+			        {
+			            WrongPatterntype((inttype), new System.Collections.Generic.List<string>() { "IntType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node paraminttype = TranslatesymAST(parameter[0][0] as Compiler.Translation.SymbolTable.Data.IntType);
+			            _isMatching = paraminttype != null && paraminttype.Name == "IntType";
+			            if(paraminttype != null && !_isMatching)
+			            {
+			                WrongPatternsymAST((paraminttype), new System.Collections.Generic.List<string>() { "IntType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                Compiler.AST.Data.Node largesttype = Translatelargest(inttype as Compiler.AST.Data.IntType, paraminttype as Compiler.AST.Data.IntType);
+			                _isMatching = largesttype != null && largesttype.Name == "IntType";
+			                if(largesttype != null && !_isMatching)
+			                {
+			                    WrongPatternlargest((largesttype), new System.Collections.Generic.List<string>() { "IntType" });
+			                }
+			                else if(_isMatching)
+			                {
+			                    if(AreEqualast((paraminttype as Compiler.AST.Data.IntType), (largesttype as Compiler.AST.Data.IntType)))
+			                    {
+			                        var _result = new Compiler.AST.Data.ExpressionListArgs(false) { iexpr as Compiler.AST.Data.IntegerExpression };
+			                        RuleEndparams(true, true, _result);
+			                        return _result;
+			                    }
+			                }
+			            }
+			        }
 			    }
 			    RuleEndparams(false);
 			}
@@ -5558,7 +5709,7 @@ namespace Compiler.Translation.ProgramToAST
 			}
 			if(expression != null && expression.Name == "Expression" && parameter != null && parameter.Name == "Parameter" && (parameter.Count == 2 && parameter[0] != null && parameter[0].Name == "Type" && (parameter[0].Count == 1 && parameter[0][0] != null && parameter[0][0].Name == "RegisterType") && parameter[1] != null && parameter[1].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
 			{
-			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ Expression : expr Parameter [ Type [ RegisterType ] identifier ] SymbolTable : s ] -> : params ExpressionListArgs [ rexpr ]", (expression, parameter, symbolTable));
+			    RuleStartparams(new System.Collections.Generic.List<string>() { "ExpressionListArgs" }, "[ Expression : expr Parameter [ Type [ RegisterType : t ] identifier ] SymbolTable : s ] -> : params ExpressionListArgs [ rexpr ]", (expression, parameter, symbolTable));
 			    (Compiler.AST.Data.Node rexpr, Compiler.Translation.SymbolTable.Data.Node symbolTable1) = Translate(expression as Compiler.Parsing.Data.Expression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
 			    _isMatching = rexpr != null && rexpr.Name == "RegisterExpression" && symbolTable1 != null && symbolTable1.Name == "SymbolTable";
 			    if(rexpr != null && symbolTable1 != null && !_isMatching)
@@ -5567,9 +5718,39 @@ namespace Compiler.Translation.ProgramToAST
 			    }
 			    else if(_isMatching)
 			    {
-			        var _result = new Compiler.AST.Data.ExpressionListArgs(false) { rexpr as Compiler.AST.Data.RegisterExpression };
-			        RuleEndparams(true, true, _result);
-			        return _result;
+			        Compiler.AST.Data.Node regtype = Translatetype(rexpr as Compiler.AST.Data.RegisterExpression, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = regtype != null && regtype.Name == "RegisterType";
+			        if(regtype != null && !_isMatching)
+			        {
+			            WrongPatterntype((regtype), new System.Collections.Generic.List<string>() { "RegisterType" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node paramregtype = TranslatesymAST(parameter[0][0] as Compiler.Translation.SymbolTable.Data.RegisterType);
+			            _isMatching = paramregtype != null && paramregtype.Name == "RegisterType";
+			            if(paramregtype != null && !_isMatching)
+			            {
+			                WrongPatternsymAST((paramregtype), new System.Collections.Generic.List<string>() { "RegisterType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                Compiler.AST.Data.Node largesttype = Translatelargest(regtype as Compiler.AST.Data.RegisterType, paramregtype as Compiler.AST.Data.RegisterType);
+			                _isMatching = largesttype != null && largesttype.Name == "RegisterType";
+			                if(largesttype != null && !_isMatching)
+			                {
+			                    WrongPatternlargest((largesttype), new System.Collections.Generic.List<string>() { "RegisterType" });
+			                }
+			                else if(_isMatching)
+			                {
+			                    if(AreEqualast((paramregtype as Compiler.AST.Data.RegisterType), (largesttype as Compiler.AST.Data.RegisterType)))
+			                    {
+			                        var _result = new Compiler.AST.Data.ExpressionListArgs(false) { rexpr as Compiler.AST.Data.RegisterExpression };
+			                        RuleEndparams(true, true, _result);
+			                        return _result;
+			                    }
+			                }
+			            }
+			        }
 			    }
 			    RuleEndparams(false);
 			}
@@ -5961,6 +6142,141 @@ namespace Compiler.Translation.ProgramToAST
 			    RuleEndlargest(false);
 			}
 			RulesFailedlargest((intType, intType1));
+			return (null);
+		}
+
+		public Compiler.AST.Data.Node Translatetype(Compiler.AST.Data.RegisterExpression registerExpression, Compiler.Translation.SymbolTable.Data.SymbolTable symbolTable)
+		{
+			bool _isMatching = false;
+			var key = (registerExpression, symbolTable);
+			if(Relationtype.ContainsKey(key))
+			{
+			    var value = Relationtype[key];
+			    RuleStarttype(new System.Collections.Generic.List<string>() { registerExpression.Name, symbolTable.Name }, "", key);
+			    RuleEndtype(true, false, value);
+			    return value;
+			}
+			if(registerExpression != null && registerExpression.Name == "RegisterExpression" && (registerExpression.Count == 1 && registerExpression[0] != null && registerExpression[0].Name == "RegisterLiteral" && (registerExpression[0].Count == 4 && registerExpression[0][0] != null && registerExpression[0][0].Name == "RegisterType" && registerExpression[0][1] != null && registerExpression[0][1].Name == "(" && registerExpression[0][2] != null && registerExpression[0][2].Name == "IntegerExpression" && registerExpression[0][3] != null && registerExpression[0][3].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "RegisterType" }, "[ RegisterExpression [ RegisterLiteral [ RegisterType : t ( IntegerExpression ) ] ] SymbolTable : s ] -> : type t", (registerExpression, symbolTable));
+			    var _result = registerExpression[0][0] as Compiler.AST.Data.RegisterType;
+			    RuleEndtype(true, true, _result);
+			    return _result;
+			    RuleEndtype(false);
+			}
+			if(registerExpression != null && registerExpression.Name == "RegisterExpression" && (registerExpression.Count == 1 && registerExpression[0] != null && registerExpression[0].Name == "identifier") && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "RegisterType" }, "[ RegisterExpression [ identifier : id ] SymbolTable : s ] -> : type tres", (registerExpression, symbolTable));
+			    Compiler.Parsing.Data.Node id1 = TranslateastProg(registerExpression[0] as Compiler.AST.Data.Token);
+			    _isMatching = id1 != null && id1.Name == "identifier";
+			    if(id1 != null && !_isMatching)
+			    {
+			        WrongPatternastProg((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(id1 as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Variable" && (declaration[0].Count == 2 && declaration[0][0] != null && declaration[0][0].Name == "Type" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "RegisterType") && declaration[0][1] != null && declaration[0][1].Name == "identifier"));
+			        if(declaration != null && !_isMatching)
+			        {
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node tres = TranslatesymAST(declaration[0][0][0] as Compiler.Translation.SymbolTable.Data.RegisterType);
+			            _isMatching = tres != null && tres.Name == "RegisterType";
+			            if(tres != null && !_isMatching)
+			            {
+			                WrongPatternsymAST((tres), new System.Collections.Generic.List<string>() { "RegisterType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                var _result = tres as Compiler.AST.Data.RegisterType;
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			if(registerExpression != null && registerExpression.Name == "RegisterExpression" && (registerExpression.Count == 1 && registerExpression[0] != null && registerExpression[0].Name == "Call" && (registerExpression[0].Count == 4 && registerExpression[0][0] != null && registerExpression[0][0].Name == "identifier" && registerExpression[0][1] != null && registerExpression[0][1].Name == "(" && registerExpression[0][2] != null && registerExpression[0][2].Name == "ExpressionList" && registerExpression[0][3] != null && registerExpression[0][3].Name == ")")) && symbolTable != null && symbolTable.Name == "SymbolTable")
+			{
+			    RuleStarttype(new System.Collections.Generic.List<string>() { "RegisterType" }, "[ RegisterExpression [ Call [ identifier : id ( ExpressionList ) ] ] SymbolTable : s ] -> : type tres", (registerExpression, symbolTable));
+			    Compiler.Parsing.Data.Node id1 = TranslateastProg(registerExpression[0][0] as Compiler.AST.Data.Token);
+			    _isMatching = id1 != null && id1.Name == "identifier";
+			    if(id1 != null && !_isMatching)
+			    {
+			        WrongPatternastProg((id1), new System.Collections.Generic.List<string>() { "identifier" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.Translation.SymbolTable.Data.Node declaration = Translatelookup(id1 as Compiler.Parsing.Data.Token, symbolTable as Compiler.Translation.SymbolTable.Data.SymbolTable);
+			        _isMatching = declaration != null && declaration.Name == "Declaration" && (declaration.Count == 1 && declaration[0] != null && declaration[0].Name == "Function" && (declaration[0].Count == 3 && declaration[0][0] != null && declaration[0][0].Name == "ReturnType" && (declaration[0][0].Count == 1 && declaration[0][0][0] != null && declaration[0][0][0].Name == "Type" && (declaration[0][0][0].Count == 1 && declaration[0][0][0][0] != null && declaration[0][0][0][0].Name == "RegisterType")) && declaration[0][1] != null && declaration[0][1].Name == "identifier" && declaration[0][2] != null && declaration[0][2].Name == "Parameters"));
+			        if(declaration != null && !_isMatching)
+			        {
+			            WrongPatternlookup((declaration), new System.Collections.Generic.List<string>() { "Declaration" });
+			        }
+			        else if(_isMatching)
+			        {
+			            Compiler.AST.Data.Node tres = TranslatesymAST(declaration[0][0][0][0] as Compiler.Translation.SymbolTable.Data.RegisterType);
+			            _isMatching = tres != null && tres.Name == "RegisterType";
+			            if(tres != null && !_isMatching)
+			            {
+			                WrongPatternsymAST((tres), new System.Collections.Generic.List<string>() { "RegisterType" });
+			            }
+			            else if(_isMatching)
+			            {
+			                var _result = tres as Compiler.AST.Data.RegisterType;
+			                RuleEndtype(true, true, _result);
+			                return _result;
+			            }
+			        }
+			    }
+			    RuleEndtype(false);
+			}
+			RulesFailedtype((registerExpression, symbolTable));
+			return (null);
+		}
+
+		public Compiler.AST.Data.Node Translatelargest(Compiler.AST.Data.RegisterType registerType, Compiler.AST.Data.RegisterType registerType1)
+		{
+			bool _isMatching = false;
+			var key = (registerType, registerType1);
+			if(Relationlargest.ContainsKey(key))
+			{
+			    var value = Relationlargest[key];
+			    RuleStartlargest(new System.Collections.Generic.List<string>() { registerType.Name, registerType1.Name }, "", key);
+			    RuleEndlargest(true, false, value);
+			    return value;
+			}
+			if(registerType != null && registerType.Name == "RegisterType" && (registerType.Count == 1 && registerType[0] != null && registerType[0].Name == "register8") && registerType1 != null && registerType1.Name == "RegisterType" && (registerType1.Count == 1 && registerType1[0] != null && registerType1[0].Name == "register16"))
+			{
+			    RuleStartlargest(new System.Collections.Generic.List<string>() { "RegisterType" }, "[ RegisterType [ register8 ] RegisterType [ register16 ] ] -> : largest RegisterType [ register16 ]", (registerType, registerType1));
+			    var _result = new Compiler.AST.Data.RegisterType(false) { new Compiler.AST.Data.Token() { Name = "register16", Value = "register16" } };
+			    RuleEndlargest(true, true, _result);
+			    return _result;
+			    RuleEndlargest(false);
+			}
+			if(registerType != null && registerType.Name == "RegisterType" && (registerType.Count == 1 && registerType[0] != null && registerType[0].Name == "register16") && registerType1 != null && registerType1.Name == "RegisterType" && (registerType1.Count == 1 && registerType1[0] != null && registerType1[0].Name == "register8"))
+			{
+			    RuleStartlargest(new System.Collections.Generic.List<string>() { "RegisterType" }, "[ RegisterType [ register16 ] RegisterType [ register8 ] ] -> : largest RegisterType [ register16 ]", (registerType, registerType1));
+			    var _result = new Compiler.AST.Data.RegisterType(false) { new Compiler.AST.Data.Token() { Name = "register16", Value = "register16" } };
+			    RuleEndlargest(true, true, _result);
+			    return _result;
+			    RuleEndlargest(false);
+			}
+			if(registerType != null && registerType.Name == "RegisterType" && registerType1 != null && registerType1.Name == "RegisterType")
+			{
+			    RuleStartlargest(new System.Collections.Generic.List<string>() { "RegisterType" }, "[ RegisterType : t1 RegisterType : t2 ] -> : largest t2", (registerType, registerType1));
+			    if(AreEqualast((registerType as Compiler.AST.Data.RegisterType), (registerType1 as Compiler.AST.Data.RegisterType)))
+			    {
+			        var _result = registerType1 as Compiler.AST.Data.RegisterType;
+			        RuleEndlargest(true, true, _result);
+			        return _result;
+			    }
+			    RuleEndlargest(false);
+			}
+			RulesFailedlargest((registerType, registerType1));
 			return (null);
 		}
 
