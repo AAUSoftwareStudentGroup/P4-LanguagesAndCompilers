@@ -1,4 +1,5 @@
+h(100, h(100, 100))
+
 int8 h(int8 a, int8 b)
     return a + b
 
-h(100, 0-+100)
