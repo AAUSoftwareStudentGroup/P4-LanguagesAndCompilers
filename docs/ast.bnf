@@ -155,8 +155,10 @@ BooleanExpression -> true
                    | BooleanParenthesisExpression
                    | IntegerEqExpression 
                    | BooleanEqExpression 
+                   | RegisterEqExpression 
                    | BooleanNotEqExpression
                    | IntegerNotEqExpression
+                   | RegisterNotEqExpression
                    | LessThanExpression 
                    | GreaterThanExpression
                    | LessThanOrEqExpression
@@ -179,9 +181,13 @@ IntegerEqExpression -> IntegerExpression == IntegerExpression
 
 BooleanEqExpression -> BooleanExpression == BooleanExpression
 
+RegisterEqExpression -> RegisterExpression == RegisterExpression
+
 IntegerNotEqExpression -> IntegerExpression != IntegerExpression
 
 BooleanNotEqExpression -> BooleanExpression != BooleanExpression
+
+RegisterNotEqExpression -> RegisterExpression != RegisterExpression
 
 LessThanExpression -> IntegerExpression < IntegerExpression
 

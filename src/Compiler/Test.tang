@@ -1,2 +1,4 @@
-for(int8 i from 1 to 10)
-    i = 0
+sum(10, 10 + 127)
+
+int8 sum(int8 a, int8 b)
+    return a + b

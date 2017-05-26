@@ -2912,6 +2912,23 @@ namespace Compiler.Translation.ASTToC
 			    }
 			    RuleEnd(false);
 			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "RegisterEqExpression"))
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanExpression" }, "BooleanExpression [ RegisterEqExpression : s ] -> BooleanExpression [ s1 ]", (booleanExpression));
+			    Compiler.C.Data.Node s1 = Translate(booleanExpression[0] as Compiler.AST.Data.RegisterEqExpression);
+			    _isMatching = s1 != null && s1.Name == "RegisterEqExpression";
+			    if(s1 != null && !_isMatching)
+			    {
+			        WrongPattern((s1), new System.Collections.Generic.List<string>() { "RegisterEqExpression" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = new Compiler.C.Data.BooleanExpression(false) { s1 as Compiler.C.Data.Token };
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
 			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "BooleanEqExpression"))
 			{
 			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanExpression" }, "BooleanExpression [ BooleanEqExpression : s ] -> BooleanExpression [ s1 ]", (booleanExpression));
@@ -2941,6 +2958,23 @@ namespace Compiler.Translation.ASTToC
 			    else if(_isMatching)
 			    {
 			        var _result = new Compiler.C.Data.BooleanExpression(false) { s1 as Compiler.C.Data.IntegerNotEqExpression };
+			        RuleEnd(true, true, _result);
+			        return _result;
+			    }
+			    RuleEnd(false);
+			}
+			if(booleanExpression != null && booleanExpression.Name == "BooleanExpression" && (booleanExpression.Count == 1 && booleanExpression[0] != null && booleanExpression[0].Name == "RegisterNotEqExpression"))
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "BooleanExpression" }, "BooleanExpression [ RegisterNotEqExpression : s ] -> BooleanExpression [ s1 ]", (booleanExpression));
+			    Compiler.C.Data.Node s1 = Translate(booleanExpression[0] as Compiler.AST.Data.RegisterNotEqExpression);
+			    _isMatching = s1 != null && s1.Name == "RegisterNotEqExpression";
+			    if(s1 != null && !_isMatching)
+			    {
+			        WrongPattern((s1), new System.Collections.Generic.List<string>() { "RegisterNotEqExpression" });
+			    }
+			    else if(_isMatching)
+			    {
+			        var _result = new Compiler.C.Data.BooleanExpression(false) { s1 as Compiler.C.Data.Token };
 			        RuleEnd(true, true, _result);
 			        return _result;
 			    }
@@ -3267,6 +3301,47 @@ namespace Compiler.Translation.ASTToC
 			return (null);
 		}
 
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.RegisterEqExpression registerEqExpression)
+		{
+			bool _isMatching = false;
+			var key = (registerEqExpression);
+			if(Relation.ContainsKey(key))
+			{
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { registerEqExpression.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
+			}
+			if(registerEqExpression != null && registerEqExpression.Name == "RegisterEqExpression" && (registerEqExpression.Count == 3 && registerEqExpression[0] != null && registerEqExpression[0].Name == "RegisterExpression" && registerEqExpression[1] != null && registerEqExpression[1].Name == "==" && registerEqExpression[2] != null && registerEqExpression[2].Name == "RegisterExpression"))
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterEqExpression" }, "RegisterEqExpression [ RegisterExpression : iexpr1 == RegisterExpression : iexpr2 ] -> RegisterEqExpression [ ( iexpr3 == iexpr4 ) ]", (registerEqExpression));
+			    Compiler.C.Data.Node iexpr3 = Translate(registerEqExpression[0] as Compiler.AST.Data.RegisterExpression);
+			    _isMatching = iexpr3 != null && iexpr3.Name == "RegisterExpression";
+			    if(iexpr3 != null && !_isMatching)
+			    {
+			        WrongPattern((iexpr3), new System.Collections.Generic.List<string>() { "RegisterExpression" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.C.Data.Node iexpr4 = Translate(registerEqExpression[2] as Compiler.AST.Data.RegisterExpression);
+			        _isMatching = iexpr4 != null && iexpr4.Name == "RegisterExpression";
+			        if(iexpr4 != null && !_isMatching)
+			        {
+			            WrongPattern((iexpr4), new System.Collections.Generic.List<string>() { "RegisterExpression" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.C.Data.Token() { Name = "RegisterEqExpression", Value = "RegisterEqExpression" };
+			            RuleEnd(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEnd(false);
+			}
+			RulesFailed((registerEqExpression));
+			return (null);
+		}
+
 		public Compiler.C.Data.Node Translate(Compiler.AST.Data.BooleanEqExpression booleanEqExpression)
 		{
 			bool _isMatching = false;
@@ -3346,6 +3421,47 @@ namespace Compiler.Translation.ASTToC
 			    RuleEnd(false);
 			}
 			RulesFailed((integerNotEqExpression));
+			return (null);
+		}
+
+		public Compiler.C.Data.Node Translate(Compiler.AST.Data.RegisterNotEqExpression registerNotEqExpression)
+		{
+			bool _isMatching = false;
+			var key = (registerNotEqExpression);
+			if(Relation.ContainsKey(key))
+			{
+			    var value = Relation[key];
+			    RuleStart(new System.Collections.Generic.List<string>() { registerNotEqExpression.Name }, "", key);
+			    RuleEnd(true, false, value);
+			    return value;
+			}
+			if(registerNotEqExpression != null && registerNotEqExpression.Name == "RegisterNotEqExpression" && (registerNotEqExpression.Count == 3 && registerNotEqExpression[0] != null && registerNotEqExpression[0].Name == "RegisterExpression" && registerNotEqExpression[1] != null && registerNotEqExpression[1].Name == "!=" && registerNotEqExpression[2] != null && registerNotEqExpression[2].Name == "RegisterExpression"))
+			{
+			    RuleStart(new System.Collections.Generic.List<string>() { "RegisterNotEqExpression" }, "RegisterNotEqExpression [ RegisterExpression : iexpr1 != RegisterExpression : iexpr2 ] -> RegisterNotEqExpression [ ( iexpr3 != iexpr4 ) ]", (registerNotEqExpression));
+			    Compiler.C.Data.Node iexpr3 = Translate(registerNotEqExpression[0] as Compiler.AST.Data.RegisterExpression);
+			    _isMatching = iexpr3 != null && iexpr3.Name == "RegisterExpression";
+			    if(iexpr3 != null && !_isMatching)
+			    {
+			        WrongPattern((iexpr3), new System.Collections.Generic.List<string>() { "RegisterExpression" });
+			    }
+			    else if(_isMatching)
+			    {
+			        Compiler.C.Data.Node iexpr4 = Translate(registerNotEqExpression[2] as Compiler.AST.Data.RegisterExpression);
+			        _isMatching = iexpr4 != null && iexpr4.Name == "RegisterExpression";
+			        if(iexpr4 != null && !_isMatching)
+			        {
+			            WrongPattern((iexpr4), new System.Collections.Generic.List<string>() { "RegisterExpression" });
+			        }
+			        else if(_isMatching)
+			        {
+			            var _result = new Compiler.C.Data.Token() { Name = "RegisterNotEqExpression", Value = "RegisterNotEqExpression" };
+			            RuleEnd(true, true, _result);
+			            return _result;
+			        }
+			    }
+			    RuleEnd(false);
+			}
+			RulesFailed((registerNotEqExpression));
 			return (null);
 		}
 

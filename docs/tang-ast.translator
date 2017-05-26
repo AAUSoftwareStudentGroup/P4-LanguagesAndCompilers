@@ -456,7 +456,6 @@ RegisterType[register16] ->:symAST RegisterType[register16]
     [registerExpr s] ->:type RegisterType:registertype
     [t1 registertype] ->:largest RegisterType:largesttype
     largesttype <=>:ast t1
-    
 
 [IdentifierStatement[identifier:id IdentifierStatementP[BitSelector[EPSILON] = Expression:expr newline]] SymbolTable:s] -> [BooleanAssignment[id1 = boolExpr] s]
     id ->:toAST identifier:id1
@@ -466,22 +465,7 @@ RegisterType[register16] ->:symAST RegisterType[register16]
 //Function call
 [IdentifierStatement[identifier:id IdentifierStatementP[( ExpressionList:p )]] SymbolTable:s] -> [Call[id1 ( p2 )] s]
     id ->:toAST identifier:id1
-    [id s] ->:lookup Declaration[Function[ReturnType[Type[IntType]] identifier Parameters:p1]]
-    [p p1 s] ->:params ExpressionList:p2
-
-[IdentifierStatement[identifier:id IdentifierStatementP[( ExpressionList:p )]] SymbolTable:s] -> [Call[id1 ( p2 )] s]
-    id ->:toAST identifier:id1
-    [id s] ->:lookup Declaration[Function[ReturnType[Type[BooleanType]] identifier Parameters:p1]]
-    [p p1 s] ->:params ExpressionList:p2
-
-[IdentifierStatement[identifier:id IdentifierStatementP[( ExpressionList:p )]] SymbolTable:s] -> [Call[id1 ( p2 )] s]
-    id ->:toAST identifier:id1
-    [id s] ->:lookup Declaration[Function[ReturnType[Type[RegisterType]] identifier Parameters:p1]]
-    [p p1 s] ->:params ExpressionList:p2
-
-[IdentifierStatement[identifier:id IdentifierStatementP[( ExpressionList:p )]] SymbolTable:s] -> [Call[id1 ( p2 )] s]
-    id ->:toAST identifier:id1
-    [id s] ->:lookup Declaration[Function[ReturnType[nothing] identifier Parameters:p1]]
+    [id s] ->:lookup Declaration[Function[ReturnType identifier Parameters:p1]]
     [p p1 s] ->:params ExpressionList:p2
 
 [IfStatement[if ( Expression:expr ) indent Statements:stms dedent ElseStatement[EPSILON]] SymbolTable:s] -> [IfStatement[if ( boolExpr ) indent stm dedent] s]
@@ -556,13 +540,20 @@ RegisterType[register16] ->:symAST RegisterType[register16]
 
 [EqExpression[RelationalExpression:expr1 EqExpressionP:expr2] SymbolTable:s] -> [expr3 <- intExpr s]
     [expr1 s] -> [IntegerExpression:intExpr SymbolTable]
-    [expr2 s] -> [BooleanExpression:expr3 SymbolTable]    
+    [expr2 s] -> [BooleanExpression:expr3 SymbolTable]
+
+[EqExpression[RelationalExpression:expr1 EqExpressionP:expr2] SymbolTable:s] -> [expr3 <- regExpr s]
+    [expr1 s] -> [RegisterExpression:regExpr SymbolTable]
+    [expr2 s] -> [BooleanExpression:expr3 SymbolTable]
 
 [EqExpressionP[== RelationalExpression:expr EqExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[IntegerEqExpression[%IntegerExpression == intExpr]] s]
     [expr s] -> [IntegerExpression:intExpr SymbolTable]
 
 [EqExpressionP[== RelationalExpression:expr EqExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[BooleanEqExpression[%BooleanExpression == boolExpr]] s]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]
+
+[EqExpressionP[== RelationalExpression:expr EqExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[RegisterEqExpression[%RegisterExpression == intExpr]] s]
+    [expr s] -> [RegisterExpression:intExpr SymbolTable]
 
 [EqExpressionP[== RelationalExpression:expr1 EqExpressionP:expr2] SymbolTable:s] -> [expr3 <- BooleanExpression[IntegerEqExpression[%IntegerExpression == intExpr]] s]
     [expr1 s] -> [IntegerExpression:intExpr SymbolTable]
@@ -572,11 +563,18 @@ RegisterType[register16] ->:symAST RegisterType[register16]
     [expr1 s] -> [BooleanExpression:boolExpr SymbolTable]
     [expr2 s] -> [BooleanExpression:expr3 SymbolTable]
 
+[EqExpressionP[== RelationalExpression:expr1 EqExpressionP:expr2] SymbolTable:s] -> [expr3 <- BooleanExpression[RegisterEqExpression[%RegisterExpression == intExpr]] s]
+    [expr1 s] -> [RegisterExpression:intExpr SymbolTable]
+    [expr2 s] -> [BooleanExpression:expr3 SymbolTable]
+
  [EqExpressionP[!= RelationalExpression:expr EqExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[IntegerNotEqExpression[%IntegerExpression != intExpr]] s]
     [expr s] -> [IntegerExpression:intExpr SymbolTable]
 
 [EqExpressionP[!= RelationalExpression:expr EqExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[BooleanNotEqExpression[%BooleanExpression != boolExpr]] s]
     [expr s] -> [BooleanExpression:boolExpr SymbolTable]
+
+ [EqExpressionP[!= RelationalExpression:expr EqExpressionP[EPSILON]] SymbolTable:s] -> [BooleanExpression[RegisterNotEqExpression[%RegisterExpression != intExpr]] s]
+    [expr s] -> [RegisterExpression:intExpr SymbolTable]
 
 [EqExpressionP[!= RelationalExpression:expr1 EqExpressionP:expr2] SymbolTable:s] -> [expr3 <- BooleanExpression[IntegerNotEqExpression[%IntegerExpression != intExpr]] s]
     [expr1 s] -> [IntegerExpression:intExpr SymbolTable]
@@ -584,7 +582,11 @@ RegisterType[register16] ->:symAST RegisterType[register16]
 
 [EqExpressionP[!= RelationalExpression:expr1 EqExpressionP:expr2] SymbolTable:s] -> [expr3 <- BooleanExpression[BooleanNotEqExpression[%BooleanExpression != boolExpr]] s]
     [expr1 s] -> [BooleanExpression:boolExpr SymbolTable]
-    [expr2 s] -> [BooleanExpression:expr3 SymbolTable]   
+    [expr2 s] -> [BooleanExpression:expr3 SymbolTable]  
+
+[EqExpressionP[!= RelationalExpression:expr1 EqExpressionP:expr2] SymbolTable:s] -> [expr3 <- BooleanExpression[RegisterNotEqExpression[%RegisterExpression != intExpr]] s]
+    [expr1 s] -> [RegisterExpression:intExpr SymbolTable]
+    [expr2 s] -> [BooleanExpression:expr3 SymbolTable]  
 
 [RelationalExpression[AddSubExpression:expr RelationalExpressionP[EPSILON]] SymbolTable:s] -> [expr1 s]
     [expr s] -> [*:expr1 SymbolTable]

@@ -165,14 +165,16 @@ PowExpression -> Pow ( IntegerExpression , IntegerExpression )
 
 BooleanExpression -> 1 
                    | 0 
-			             | identifier
+			 | identifier
                    | DirectBitValue
                    | IndirectBitValue
                    | BooleanParenthesisExpression
                    | IntegerEqExpression 
                    | BooleanEqExpression 
+                   | RegisterEqExpression 
                    | IntegerNotEqExpression
                    | BooleanNotEqExpression
+                   | RegisterNotEqExpression
                    | LessThanExpression 
                    | GreaterThanExpression
                    | LessThanOrEqExpression

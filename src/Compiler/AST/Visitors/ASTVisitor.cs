@@ -277,12 +277,22 @@ namespace Compiler.AST.Visitors
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
+		public virtual T Visit(Compiler.AST.Data.RegisterEqExpression node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
 		public virtual T Visit(Compiler.AST.Data.IntegerNotEqExpression node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}
 
 		public virtual T Visit(Compiler.AST.Data.BooleanNotEqExpression node)
+		{
+			return Visit((Compiler.AST.Data.Node)node);
+		}
+
+		public virtual T Visit(Compiler.AST.Data.RegisterNotEqExpression node)
 		{
 			return Visit((Compiler.AST.Data.Node)node);
 		}

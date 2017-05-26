@@ -325,10 +325,14 @@ BooleanExpression[BooleanParenthesisExpression:s] -> BooleanExpression[s1]
     s -> BooleanParenthesisExpression:s1
 BooleanExpression[IntegerEqExpression:s] -> BooleanExpression[s1]
     s -> IntegerEqExpression:s1 
+BooleanExpression[RegisterEqExpression:s] -> BooleanExpression[s1]
+    s -> RegisterEqExpression:s1 
 BooleanExpression[BooleanEqExpression:s] -> BooleanExpression[s1]
     s -> BooleanEqExpression:s1 
 BooleanExpression[IntegerNotEqExpression:s] -> BooleanExpression[s1]
     s -> IntegerNotEqExpression:s1 
+BooleanExpression[RegisterNotEqExpression:s] -> BooleanExpression[s1]
+    s -> RegisterNotEqExpression:s1 
 BooleanExpression[BooleanNotEqExpression:s] -> BooleanExpression[s1]
     s -> BooleanNotEqExpression:s1 
 BooleanExpression[LessThanExpression:s] -> BooleanExpression[s1]
@@ -366,6 +370,10 @@ IntegerEqExpression[IntegerExpression:iexpr1 == IntegerExpression:iexpr2] -> Int
     iexpr1 -> IntegerExpression:iexpr3
     iexpr2 -> IntegerExpression:iexpr4
 
+RegisterEqExpression[RegisterExpression:iexpr1 == RegisterExpression:iexpr2] -> RegisterEqExpression[( iexpr3 == iexpr4 )]
+    iexpr1 -> RegisterExpression:iexpr3
+    iexpr2 -> RegisterExpression:iexpr4
+
 BooleanEqExpression[BooleanExpression:bexpr1 == BooleanExpression:bexpr2] -> BooleanEqExpression[( bexpr3 == bexpr4 )]
     bexpr1 -> BooleanExpression:bexpr3
     bexpr2 -> BooleanExpression:bexpr4
@@ -373,6 +381,10 @@ BooleanEqExpression[BooleanExpression:bexpr1 == BooleanExpression:bexpr2] -> Boo
 IntegerNotEqExpression[IntegerExpression:iexpr1 != IntegerExpression:iexpr2] -> IntegerNotEqExpression[( iexpr3 != iexpr4 )]
     iexpr1 -> IntegerExpression:iexpr3
     iexpr2 -> IntegerExpression:iexpr4
+
+RegisterNotEqExpression[RegisterExpression:iexpr1 != RegisterExpression:iexpr2] -> RegisterNotEqExpression[( iexpr3 != iexpr4 )]
+    iexpr1 -> RegisterExpression:iexpr3
+    iexpr2 -> RegisterExpression:iexpr4
 
 BooleanNotEqExpression[BooleanExpression:bexpr1 != BooleanExpression:bexpr2] -> BooleanNotEqExpression[( bexpr3 != bexpr4 )]
     bexpr1 -> BooleanExpression:bexpr3

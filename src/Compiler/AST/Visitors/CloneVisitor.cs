@@ -552,6 +552,16 @@ namespace Compiler.AST.Visitors
 			return clone;
 		}
 
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.RegisterEqExpression node)
+		{
+			var clone = new Compiler.AST.Data.RegisterEqExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.IntegerNotEqExpression node)
 		{
 			var clone = new Compiler.AST.Data.IntegerNotEqExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
@@ -565,6 +575,16 @@ namespace Compiler.AST.Visitors
 		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.BooleanNotEqExpression node)
 		{
 			var clone = new Compiler.AST.Data.BooleanNotEqExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
+			foreach(var child in node)
+			{
+			    clone.Add(child.Accept(this));
+			}
+			return clone;
+		}
+
+		public override Compiler.AST.Data.Node Visit(Compiler.AST.Data.RegisterNotEqExpression node)
+		{
+			var clone = new Compiler.AST.Data.RegisterNotEqExpression() { Name = node.Name, IsPlaceholder = node.IsPlaceholder };
 			foreach(var child in node)
 			{
 			    clone.Add(child.Accept(this));
