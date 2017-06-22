@@ -81,16 +81,30 @@ namespace Generator
                 }).GetEnumerator();
                 toCTranslatorTokens.MoveNext();
 
+                IEnumerator<Translation.Data.Token> toAsmTranslatorTokens = lexer.Analyse(File.ReadAllText("../../docs/ast-asm.translator"), "ast-asm.translator").Select(t => new Translation.Data.Token()
+                {
+                    FileName = "ast-asm.translator",
+                    Name = t.Name,
+                    Value = t.Value,
+                    Row = t.Row,
+                    Column = t.Column
+                }).GetEnumerator();
+                toAsmTranslatorTokens.MoveNext();
+
                 TranslatorParser translatorParser = new TranslatorParser();
 
                 Translation.Data.Translator astTranslator = translatorParser.ParseTranslator(tokens);
 
                 Translation.Data.Translator cTranslator = translatorParser.ParseTranslator(toCTranslatorTokens);
 
+                Translation.Data.Translator asmTranslator = translatorParser.ParseTranslator(toAsmTranslatorTokens);
+
                 string translatorName = "ProgramToASTTranslator";
                 string translatorNamespace = "Compiler.Translation.ProgramToAST";
                 string cTranslatorName = "ASTToCTranslator";
                 string cTranslatorNamespace = "Compiler.Translation.ASTToC";
+                string asmTranslatorName = "ASTToASMTranslator";
+                string asmTranslatorNamespace = "Compiler.Translation.ASTToASM";
                 string symbolTableDataNamspace = "Compiler.Translation.SymbolTable.Data";
                 string symbolTableVisitorNamspace = "Compiler.Translation.SymbolTable.Visitors";
                 string symbolTableVisitorName = "SymbolTableVisitor";
@@ -100,8 +114,12 @@ namespace Generator
                 string cDataNamspace = "Compiler.C.Data";
                 string cVisitorNamespace = "Compiler.C.Visitors";
                 string cVisitorName = "CVisitor";
+                string asmDataNamspace = "Compiler.ASM.Data";
+                string asmVisitorNamespace = "Compiler.ASM.Visitors";
+                string asmVisitorName = "ASMVisitor";
 
                 BNF cGrammar = bnfParser.Parse("../../docs/c.bnf");
+                BNF asmGrammar = bnfParser.Parse("../../docs/asm.bnf");
                 BNF astGrammar = bnfParser.Parse("../../docs/ast.bnf");
                 BNF symbolTableGrammar = bnfParser.Parse("../../docs/symboltable.bnf");
 
@@ -111,6 +129,8 @@ namespace Generator
                 classesToGenerate = classesToGenerate.Union(parserGenerator.GenerateSyntaxTreeClasses(astGrammar, astVisitorName, astDataNamspace, astVisitorNamespace));
                 classesToGenerate = classesToGenerate.Union(parserGenerator.GenerateVisitorClasses(cGrammar, cVisitorName, cDataNamspace, cVisitorNamespace));
                 classesToGenerate = classesToGenerate.Union(parserGenerator.GenerateSyntaxTreeClasses(cGrammar, cVisitorName, cDataNamspace, cVisitorNamespace));
+                classesToGenerate = classesToGenerate.Union(parserGenerator.GenerateVisitorClasses(asmGrammar, asmVisitorName, asmDataNamspace, asmVisitorNamespace));
+                classesToGenerate = classesToGenerate.Union(parserGenerator.GenerateSyntaxTreeClasses(asmGrammar, asmVisitorName, asmDataNamspace, asmVisitorNamespace));
 
                 List<RelationDomain> relationDomains = new List<RelationDomain>()
                 {
@@ -132,6 +152,16 @@ namespace Generator
                 ClassType toCTranslator = translatorGenerator.GenerateTranslatorClass(cTranslator, cTranslatorName, cRelationDomains, cTranslatorNamespace);
 
                 classesToGenerate = classesToGenerate.Append(toCTranslator);
+
+                List<RelationDomain> asmRelationDomains = new List<RelationDomain>()
+                {
+                    new RelationDomain(){ Identifier = "AST", Grammar = astGrammar, DataNamespace = astDataNamspace, VisitorNamespace = astVisitorNamespace },
+                    new RelationDomain(){ Identifier = "ASM", Grammar = asmGrammar, DataNamespace = asmDataNamspace, VisitorNamespace = asmVisitorNamespace },
+                };
+
+                ClassType toASMTranslator = translatorGenerator.GenerateTranslatorClass(asmTranslator, asmTranslatorName, asmRelationDomains, asmTranslatorNamespace);
+
+                classesToGenerate = classesToGenerate.Append(toASMTranslator);
 
                 foreach (ClassType classType in classesToGenerate)
                 {

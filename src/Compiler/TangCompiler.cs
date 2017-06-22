@@ -156,7 +156,53 @@ namespace Compiler
                 Console.WriteLine();
             }
 
-            if(DebugLevel >= 1)
+            var asmTranslator = new Translation.ASTToASM.ASTToASMTranslator();
+
+            var free = new ASM.Data.RegTable() {
+                new ASM.Data.Token() {
+                    Name = "register", Value = "r1"
+                },
+                new ASM.Data.RegTable() {
+                    new ASM.Data.Token() {
+                        Name = "register", Value = "r2"
+                    },
+                    new ASM.Data.RegTable() {
+                        new ASM.Data.Token() {
+                            Name = "register", Value = "r3"
+                        },
+                        new ASM.Data.RegTable() {
+                            new ASM.Data.Token() {
+                                Name = "EPSILON", Value = "EPSILON"
+                            }
+                        }
+                    }
+                }
+            };
+            free.Name = "RegTable";
+            free.Nodes<ASM.Data.RegTable>()[0].Name = "RegTable";
+            free.Nodes<ASM.Data.RegTable>()[0].Nodes<ASM.Data.RegTable>()[0].Name = "RegTable";
+            free.Nodes<ASM.Data.RegTable>()[0].Nodes<ASM.Data.RegTable>()[0].Nodes<ASM.Data.RegTable>()[0].Name = "RegTable";
+
+            var used = new ASM.Data.RegTable() {
+                        new ASM.Data.Token() {
+                            Name = "EPSILON", Value = "EPSILON"
+                        }
+                    };
+            used.Name = "RegTable";
+
+            var asm = asmTranslator.Translate(ast, free, used).Item1 as ASM.Data.ASM;
+
+            if(asm != null)
+            {
+                var asmLines = asm.Accept(new ASM.Visitors.TextPrintVisitor());
+
+                foreach (var line in asmLines)
+                {
+                    Console.WriteLine(line);
+                }
+            }
+
+            if (DebugLevel >= 1)
                 Console.WriteLine("Compiler run-time: " + DateTime.Now.Subtract(tStart).TotalMilliseconds + " ms" );
             return string.Join("\n", cStr);
             /*// File path relative to where the debug file is located which is in a land far, far away

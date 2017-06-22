@@ -1,0 +1,17 @@
+﻿-> := [AST ASM ASM] -> [ASM ASM ASM]
+->:toASM := AST -> ASM
+
+[AST[GlobalStatement[Statement[IntegerDeclarationInit[IntType identifier = IntegerExpression:e]]] eof] RegTable:free RegTable:used] -> [asm free1 used1]
+    [e free used] -> [ASM:asm RegTable:free1 RegTable:used1]
+
+[IntegerExpression[numeral:cnum] RegTable[register:reg RegTable:free] RegTable:used] 
+-> [ASM[LDI reg , num] free RegTable[reg used]]
+    cnum ->:toASM numeral:num
+
+[IntegerExpression[IntegerParenthesisExpression[( IntegerExpression:e )]] RegTable:free RegTable:used] -> [asm free1 used1]
+    [e free used] -> [ASM:asm RegTable:free1 RegTable:used1]
+
+[IntegerExpression[AddExpression[IntegerExpression:e1 + IntegerExpression:e2]] RegTable:free RegTable:used] 
+-> [ASM[ASM[asm1 asm2] ASM[ADD r2 , r1]] RegTable[r1 free2] used2] 
+    [e1 free used] -> [ASM:asm1 RegTable:free1 RegTable:used1]
+    [e2 free1 used1] -> [ASM:asm2 RegTable:free2 RegTable[register:r1 RegTable:used2[register:r2 RegTable]]]

@@ -1,0 +1,6 @@
+ASM -> LDI register , numeral 
+     | ADD register , register
+     | ASM ASM
+
+RegTable -> register RegTable
+          | EPSILON
